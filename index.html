@@ -30,7 +30,7 @@
         .edith-orb { animation: pulseGlow 4s ease-in-out infinite; background: linear-gradient(135deg, #6366f1, #a855f7); }
 
         @keyframes slideIn { from { opacity: 0; transform: translateY(16px) scale(0.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        .animate-msg { animation: slideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-msg { animation: slideIn 0.3s ease-out forwards; }
 
         @keyframes micPulse {
             0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
@@ -42,14 +42,9 @@
         .glass-panel { background: rgba(10, 11, 23, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.06); }
         .ai-bubble { background: rgba(23, 24, 51, 0.6); border: 1px solid rgba(99, 102, 241, 0.25); color: #f3f4f6; border-radius: 20px 20px 20px 4px; }
         .user-bubble { background: linear-gradient(135deg, #4f46e5, #3730a3); color: white; border-radius: 20px 20px 4px 20px; box-shadow: 0 4px 16px rgba(79, 70, 229, 0.25); }
-
-        pre { background: #020617 !important; padding: 18px 16px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); overflow-x: auto; }
-        code { color: #a5b4fc; font-size: 0.875rem; }
-
-        .typing-dot { animation: typingBounce 1.4s infinite ease-in-out both; width: 6px; height: 6px; background-color: #a5b4fc; border-radius: 50%; display: inline-block; }
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes typingBounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+        
+        pre { background: #020617 !important; padding: 14px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); margin: 8px 0; overflow-x: auto; }
+        code { color: #a5b4fc; font-size: 0.85rem; }
     </style>
 </head>
 
@@ -59,17 +54,20 @@
     
     <div class="p-4 border-b border-white/5 flex justify-between items-center bg-gray-950/20 px-6">
         <div class="flex items-center gap-3.5">
-            <div class="edith-orb w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-lg">E</div>
+            <div class="edith-orb w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold shadow-lg">E</div>
             <div>
-                <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-indigo-300 bg-clip-text text-transparent">EDITH <span class="text-xs text-indigo-400">V3.2</span></h1>
+                <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-white to-indigo-300 bg-clip-text text-transparent">EDITH <span class="text-xs text-indigo-400">V3.2</span></h1>
                 <p class="text-[10px] uppercase tracking-widest text-indigo-400 font-bold flex items-center gap-1.5">
-                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span> Operator: <span id="displayUserName">Student</span>
+                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span> ONLINE
                 </p>
             </div>
         </div>
         
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-3">
             <div id="voiceStatus" class="hidden text-[10px] text-indigo-400 font-mono animate-pulse">SPEAKING...</div>
+            <button onclick="clearHistory()" title="Clear Chat" class="w-8 h-8 rounded-lg border border-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-all">
+                <i class="fa-solid fa-trash-can text-xs"></i>
+            </button>
             <button onclick="stopSpeaking()" title="Stop Voice" class="w-8 h-8 rounded-lg border border-red-500/30 flex items-center justify-center text-red-400 hover:bg-red-500/10 transition-all">
                 <i class="fa-solid fa-volume-xmark text-xs"></i>
             </button>
@@ -81,8 +79,8 @@
             <div class="edith-orb w-20 h-20 rounded-3xl flex items-center justify-center text-3xl text-white mb-6">
                 <i class="fa-solid fa-brain"></i>
             </div>
-            <h2 class="text-2xl font-bold mb-2 text-white">How can I assist you today?</h2>
-            <p class="text-gray-400 text-sm max-w-sm font-light">I am EDITH. Built by SRINIVASARAO POKALA to empower your learning.</p>
+            <h2 class="text-2xl font-bold mb-2 text-white">System Initialized</h2>
+            <p class="text-gray-400 text-sm max-w-sm font-light">History Loaded. Ready for your commands.</p>
         </div>
     </div>
 
@@ -98,7 +96,7 @@
         </div>
 
         <div class="flex gap-3 items-center relative">
-            <input type="text" id="msg" placeholder="Ask EDITH anything..." class="w-full bg-gray-900/80 border border-white/10 focus:border-indigo-500/50 rounded-2xl pl-5 pr-28 py-4 outline-none text-sm text-gray-100 shadow-inner" onkeypress="if(event.key==='Enter')sendMsg()" />
+            <input type="text" id="msg" placeholder="Type your message..." class="w-full bg-gray-900/80 border border-white/10 focus:border-indigo-500/50 rounded-2xl pl-5 pr-28 py-4 outline-none text-sm text-gray-100 shadow-inner" onkeypress="if(event.key==='Enter')sendMsg()" />
             <div class="absolute right-2 flex items-center gap-1.5">
                 <button onclick="toggleVoiceInput()" id="micBtn" class="w-10 h-10 bg-white/5 border border-white/10 text-gray-300 rounded-xl flex items-center justify-center transition-all">
                     <i class="fa-solid fa-microphone text-sm"></i>
@@ -117,62 +115,79 @@ const chatArea = document.getElementById("chatArea");
 const welcomeScreen = document.getElementById("welcomeScreen");
 let isSummarize = false;
 
-// --- IMPROVED VOICE OVER SYSTEM ---
-let voices = [];
-function loadVoices() {
-    voices = window.speechSynthesis.getVoices();
+// --- CHAT HISTORY LOGIC ---
+function saveToHistory(text, isUser) {
+    let history = JSON.parse(localStorage.getItem("edith_v3_history") || "[]");
+    history.push({ text, isUser });
+    localStorage.setItem("edith_v3_history", JSON.stringify(history));
 }
+
+function loadHistory() {
+    let history = JSON.parse(localStorage.getItem("edith_v3_history") || "[]");
+    if (history.length > 0) {
+        if (welcomeScreen) welcomeScreen.style.display = "none";
+        history.forEach(m => renderMessage(m.text, m.isUser, false));
+        chatArea.scrollTop = chatArea.scrollHeight;
+    }
+}
+
+function clearHistory() {
+    if(confirm("Clear all chat history?")) {
+        localStorage.removeItem("edith_v3_history");
+        location.reload();
+    }
+}
+
+// --- VOICE (TTS) ---
+let voices = [];
+function loadVoices() { voices = window.speechSynthesis.getVoices(); }
 window.speechSynthesis.onvoiceschanged = loadVoices;
 loadVoices();
 
 function speakText(text) {
     if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel(); 
-        
-        // Cleanup Markdown
+        window.speechSynthesis.cancel();
         const cleanText = text.replace(/[#*`_~]/g, '').trim();
         const utterance = new SpeechSynthesisUtterance(cleanText);
-        
-        // Find Indian Voice or English Voice
-        const preferredVoice = voices.find(v => v.lang === 'en-IN') || voices.find(v => v.lang.includes('en'));
-        if (preferredVoice) utterance.voice = preferredVoice;
-
-        utterance.lang = 'en-IN';
-        utterance.rate = 1.0;
-
+        const v = voices.find(v => v.lang === 'en-IN') || voices.find(v => v.lang.includes('en'));
+        if (v) utterance.voice = v;
         utterance.onstart = () => document.getElementById("voiceStatus").classList.remove("hidden");
         utterance.onend = () => document.getElementById("voiceStatus").classList.add("hidden");
-
         window.speechSynthesis.speak(utterance);
     }
 }
 
 function stopSpeaking() {
-    if (window.speechSynthesis) {
-        window.speechSynthesis.cancel();
-        document.getElementById("voiceStatus").classList.add("hidden");
-    }
+    window.speechSynthesis.cancel();
+    document.getElementById("voiceStatus").classList.add("hidden");
 }
 
-// --- VOICE INPUT (STT) ---
+// --- VOICE (STT) ---
 let recognition;
-let isRecording = false;
 if ('webkitSpeechRecognition' in window) {
     recognition = new webkitSpeechRecognition();
-    recognition.continuous = false;
-    recognition.lang = 'en-US';
-    recognition.onstart = () => { isRecording = true; document.getElementById("micBtn").classList.add("mic-active"); };
-    recognition.onend = () => { isRecording = false; document.getElementById("micBtn").classList.remove("mic-active"); };
-    recognition.onresult = (e) => { document.getElementById("msg").value = e.results[0][0].transcript; };
+    recognition.onstart = () => document.getElementById("micBtn").classList.add("mic-active");
+    recognition.onend = () => document.getElementById("micBtn").classList.remove("mic-active");
+    recognition.onresult = (e) => document.getElementById("msg").value = e.results[0][0].transcript;
 }
 
 function toggleVoiceInput() {
-    if (!recognition) return alert("Microphone not supported on this browser.");
-    stopSpeaking(); // Record chesetappudu AI matladakudadhu
-    isRecording ? recognition.stop() : recognition.start();
+    if (!recognition) return alert("Browser not supported");
+    stopSpeaking();
+    recognition.start();
 }
 
-// --- LOGIC ---
+// --- UI ---
+function renderMessage(text, isUser, animate = true) {
+    if (welcomeScreen) welcomeScreen.style.display = "none";
+    const div = document.createElement("div");
+    div.className = `flex ${isUser ? "justify-end" : "justify-start"} ${animate ? 'animate-msg' : ''} w-full`;
+    div.innerHTML = `<div class="p-4 px-5 max-w-[85%] text-sm leading-relaxed shadow-sm ${isUser ? "user-bubble" : "ai-bubble"}">${isUser ? text : marked.parse(text)}</div>`;
+    chatArea.appendChild(div);
+    chatArea.scrollTop = chatArea.scrollHeight;
+    return div.querySelector("div");
+}
+
 function toggleSummarize() {
     isSummarize = !isSummarize;
     document.getElementById("sumStatus").innerText = isSummarize ? "ON" : "OFF";
@@ -184,16 +199,7 @@ function updateFileStatus() {
     document.getElementById("fileCount").innerText = files.length > 0 ? `• ${files.length} ready` : "";
 }
 
-function addMessage(text, isUser) {
-    if (welcomeScreen) welcomeScreen.style.display = "none";
-    const div = document.createElement("div");
-    div.className = `flex ${isUser ? "justify-end" : "justify-start"} animate-msg w-full`;
-    div.innerHTML = `<div class="p-4 px-5 max-w-[85%] text-sm leading-relaxed shadow-sm ${isUser ? "user-bubble" : "ai-bubble"}">${isUser ? text : marked.parse(text)}</div>`;
-    chatArea.appendChild(div);
-    chatArea.scrollTop = chatArea.scrollHeight;
-    return div.querySelector("div");
-}
-
+// --- CORE ---
 async function sendMsg() {
     const input = document.getElementById("msg");
     const fileInput = document.getElementById("fileInput");
@@ -202,14 +208,15 @@ async function sendMsg() {
 
     if (!message && fileInput.files.length === 0) return;
 
-    stopSpeaking(); 
-    addMessage(message || "Analyzing...", true);
+    stopSpeaking();
+    renderMessage(message || "Processing file...", true);
+    saveToHistory(message || "Sent a file", true);
     input.value = "";
 
     const formData = new FormData();
     formData.append("message", message);
     formData.append("isSummarize", isSummarize);
-    for (let file of fileInput.files) formData.append("files", file);
+    for (let f of fileInput.files) formData.append("files", f);
 
     try {
         const res = await fetch(`${API_BASE}/api/chat`, {
@@ -220,7 +227,7 @@ async function sendMsg() {
 
         const reader = res.body.getReader();
         const decoder = new TextDecoder();
-        const aiBubble = addMessage("", false);
+        const aiBubble = renderMessage("", false);
         let aiText = "";
 
         while (true) {
@@ -231,16 +238,23 @@ async function sendMsg() {
             chatArea.scrollTop = chatArea.scrollHeight;
         }
 
+        saveToHistory(aiText, false);
         speakText(aiText);
 
     } catch (err) {
-        addMessage("❌ Matrix Error", false);
+        renderMessage("❌ Error: Check Connection", false);
     }
     fileInput.value = "";
     document.getElementById("fileCount").innerText = "";
 }
 
-window.onload = () => { if (!localStorage.getItem("token")) window.location.href = "login.html"; };
+window.onload = () => {
+    if (!localStorage.getItem("token")) {
+        window.location.href = "login.html";
+    } else {
+        loadHistory();
+    }
+};
 </script>
 </body>
 </html>
