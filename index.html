@@ -49,13 +49,13 @@
         <div class="p-4 border-b border-white/5 flex justify-between items-center bg-gray-950/40 px-6 backdrop-blur-md">
             <div class="flex items-center gap-3">
                 <div class="edith-orb w-9 h-9 rounded-lg flex items-center justify-center text-white font-bold shadow-lg">E</div>
-                <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-white to-indigo-300 bg-clip-text text-transparent">EDITH <span class="text-[10px] text-indigo-400">V3.5</span></h1>
+                <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-white to-indigo-300 bg-clip-text text-transparent">EDITH <span class="text-[10px] text-indigo-400 font-mono tracking-tighter">OS V3.5</span></h1>
             </div>
             
             <div class="flex items-center gap-3">
-                <div id="voiceStatus" class="hidden text-[10px] text-indigo-400 font-mono animate-pulse mr-2 italic">VOICE ACTIVE...</div>
+                <div id="voiceStatus" class="hidden text-[10px] text-indigo-400 font-mono animate-pulse mr-2">VOICE FEED ACTIVE</div>
                 <button onclick="newChat()" class="px-4 py-1.5 bg-indigo-600/20 hover:bg-indigo-600/40 border border-indigo-500/30 rounded-full text-xs font-bold transition-all flex items-center gap-2">
-                    <i class="fa-solid fa-plus"></i> NEW CHAT
+                    <i class="fa-solid fa-plus"></i> NEW SESSION
                 </button>
             </div>
         </div>
@@ -63,10 +63,10 @@
         <div id="chatArea" class="flex-1 overflow-y-auto p-6 space-y-6 chat-container pb-32">
             <div id="welcomeScreen" class="flex flex-col justify-center items-center mt-32 text-center">
                 <div class="edith-orb w-16 h-16 rounded-2xl flex items-center justify-center text-2xl text-white mb-6">
-                    <i class="fa-solid fa-shield-halved"></i>
+                    <i class="fa-solid fa-terminal"></i>
                 </div>
-                <h2 class="text-xl font-bold mb-2">Systems Online</h2>
-                <p class="text-gray-500 text-xs tracking-widest uppercase">Encryption Active | Ready to Process</p>
+                <h2 class="text-xl font-bold mb-2">Interface Initialized</h2>
+                <p class="text-gray-500 text-xs tracking-widest uppercase">Global Language: English | System Ready</p>
             </div>
         </div>
 
@@ -83,7 +83,7 @@
                 </div>
 
                 <div class="flex gap-3 items-center glass-panel p-2 rounded-2xl border-white/10 shadow-2xl">
-                    <input type="text" id="msg" placeholder="Ask anything..." class="flex-1 bg-transparent pl-4 py-3 outline-none text-sm text-gray-100" onkeypress="if(event.key==='Enter')sendMsg()" />
+                    <input type="text" id="msg" placeholder="Command EDITH..." class="flex-1 bg-transparent pl-4 py-3 outline-none text-sm text-gray-100" onkeypress="if(event.key==='Enter')sendMsg()" />
                     <button onclick="toggleVoiceInput()" id="micBtn" class="w-10 h-10 text-gray-400 hover:text-indigo-400 transition-colors">
                         <i class="fa-solid fa-microphone"></i>
                     </button>
@@ -95,15 +95,15 @@
         </div>
     </div>
 
-    <div class="hidden lg:flex w-72 border-l border-white/5 bg-gray-950/50 flex-col">
+    <div class="hidden lg:flex w-72 border-l border-white/5 bg-gray-950/60 flex-col backdrop-blur-xl">
         <div class="p-5 border-b border-white/5">
-            <h3 class="text-xs font-bold tracking-widest text-gray-500 uppercase">Recent Activity</h3>
+            <h3 class="text-xs font-bold tracking-widest text-indigo-400 uppercase">Recent Logs</h3>
         </div>
         <div id="historyList" class="flex-1 overflow-y-auto p-2 history-container">
             </div>
         <div class="p-4">
-            <button onclick="clearHistory()" class="w-full py-2 text-[10px] border border-red-500/20 text-red-400/60 hover:bg-red-500/10 rounded-lg transition-all">
-                <i class="fa-solid fa-trash-can mr-2"></i> WIPE ALL DATA
+            <button onclick="clearHistory()" class="w-full py-2 text-[10px] border border-white/5 text-gray-500 hover:text-white hover:bg-red-500/10 hover:border-red-500/20 rounded-lg transition-all">
+                WIPE SESSION LOGS
             </button>
         </div>
     </div>
@@ -116,23 +116,23 @@ const historyList = document.getElementById("historyList");
 const welcomeScreen = document.getElementById("welcomeScreen");
 let isSummarize = false;
 
-// --- HISTORY & NEW CHAT ---
-function saveToHistory(text, isUser) {
-    if(!isUser) return; // Only save user prompts as titles
-    let history = JSON.parse(localStorage.getItem("edith_sessions") || "[]");
-    const title = text.length > 30 ? text.substring(0, 30) + "..." : text;
-    history.unshift({ title, time: new Date().toLocaleTimeString(), fullText: text });
-    if(history.length > 15) history.pop();
-    localStorage.setItem("edith_sessions", JSON.stringify(history));
-    updateHistoryUI();
+// --- LOGS MANAGEMENT ---
+function saveToLogs(text, isUser) {
+    if(!isUser) return;
+    let logs = JSON.parse(localStorage.getItem("edith_logs") || "[]");
+    const title = text.length > 25 ? text.substring(0, 25) + "..." : text;
+    logs.unshift({ title, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
+    if(logs.length > 20) logs.pop();
+    localStorage.setItem("edith_logs", JSON.stringify(logs));
+    updateLogsUI();
 }
 
-function updateHistoryUI() {
-    let history = JSON.parse(localStorage.getItem("edith_sessions") || "[]");
-    historyList.innerHTML = history.map(item => `
-        <div class="history-item p-3 mb-1 rounded-lg cursor-default">
+function updateLogsUI() {
+    let logs = JSON.parse(localStorage.getItem("edith_logs") || "[]");
+    historyList.innerHTML = logs.map(item => `
+        <div class="history-item p-3 mb-1 rounded-lg">
             <p class="text-[11px] text-gray-300 font-medium truncate">${item.title}</p>
-            <span class="text-[9px] text-gray-600">${item.time}</span>
+            <span class="text-[9px] text-gray-600 font-mono">${item.time}</span>
         </div>
     `).join('');
 }
@@ -144,67 +144,62 @@ function newChat() {
 }
 
 function clearHistory() {
-    if(confirm("Confirm data wipe?")) {
-        localStorage.removeItem("edith_sessions");
-        updateHistoryUI();
-        newChat();
-    }
+    localStorage.removeItem("edith_logs");
+    updateLogsUI();
+    newChat();
 }
 
-// --- VOICE (TTS) - MANUAL ONLY ---
+// --- VOICE (MANUAL TRIGGER) ---
 function speakText(text) {
     window.speechSynthesis.cancel();
     const cleanText = text.replace(/[#*`_~]/g, '').trim();
     const utterance = new SpeechSynthesisUtterance(cleanText);
-    utterance.lang = 'en-IN';
+    utterance.lang = 'en-US'; // Strict English
+    utterance.rate = 1.0;
     utterance.onstart = () => document.getElementById("voiceStatus").classList.remove("hidden");
     utterance.onend = () => document.getElementById("voiceStatus").classList.add("hidden");
     window.speechSynthesis.speak(utterance);
 }
 
-function stopSpeaking() {
-    window.speechSynthesis.cancel();
-}
-
-// --- VOICE (STT) ---
+// --- VOICE INPUT ---
 let recognition;
 if ('webkitSpeechRecognition' in window) {
     recognition = new webkitSpeechRecognition();
+    recognition.lang = 'en-US';
     recognition.onresult = (e) => document.getElementById("msg").value = e.results[0][0].transcript;
 }
 
 function toggleVoiceInput() {
-    if (!recognition) return;
+    if (!recognition) return alert("System Mic Unsupported");
     recognition.start();
 }
 
-// --- CORE UI ---
+// --- RENDERING ---
 function renderMessage(text, isUser) {
     if (welcomeScreen) welcomeScreen.style.display = "none";
     const div = document.createElement("div");
     div.className = `flex ${isUser ? "justify-end" : "justify-start"} animate-msg w-full`;
     
-    // AI response includes a volume button for manual voice
     const content = isUser ? text : `
         <div class="relative group">
             ${marked.parse(text)}
-            <button onclick="this.parentElement.dataset.text ? speakText(this.parentElement.dataset.text) : ''" class="absolute -right-8 bottom-0 opacity-0 group-hover:opacity-100 text-indigo-400 hover:text-white transition-all">
+            <button onclick="speakText(this.parentElement.dataset.full)" class="absolute -right-8 bottom-0 opacity-0 group-hover:opacity-100 text-indigo-400 hover:text-white transition-all p-1">
                 <i class="fa-solid fa-volume-high text-xs"></i>
             </button>
         </div>`;
 
     const bubble = document.createElement("div");
-    bubble.className = `p-4 px-5 max-w-[85%] text-sm leading-relaxed shadow-sm ${isUser ? "user-bubble" : "ai-bubble"}`;
+    bubble.className = `p-4 px-5 max-w-[85%] text-sm leading-relaxed ${isUser ? "user-bubble" : "ai-bubble"}`;
     bubble.innerHTML = content;
-    if(!isUser) bubble.querySelector('.relative').dataset.text = text;
+    
+    if(!isUser) bubble.querySelector('.relative').dataset.full = text;
 
     div.appendChild(bubble);
     chatArea.appendChild(div);
     chatArea.scrollTop = chatArea.scrollHeight;
-    return bubble;
 }
 
-// --- SEND LOGIC ---
+// --- CORE DISPATCH ---
 async function sendMsg() {
     const input = document.getElementById("msg");
     const fileInput = document.getElementById("fileInput");
@@ -213,8 +208,8 @@ async function sendMsg() {
 
     if (!message && fileInput.files.length === 0) return;
 
-    saveToHistory(message, true);
-    renderMessage(message || "Processing file...", true);
+    saveToLogs(message, true);
+    renderMessage(message || "Analyzing input stream...", true);
     input.value = "";
 
     const formData = new FormData();
@@ -231,21 +226,34 @@ async function sendMsg() {
 
         const reader = res.body.getReader();
         const decoder = new TextDecoder();
-        const aiBubble = renderMessage("", false);
-        const textWrapper = aiBubble.querySelector('.relative');
+        
+        // Setup AI bubble for streaming
+        if (welcomeScreen) welcomeScreen.style.display = "none";
+        const div = document.createElement("div");
+        div.className = "flex justify-start animate-msg w-full";
+        const bubble = document.createElement("div");
+        bubble.className = "p-4 px-5 max-w-[85%] text-sm leading-relaxed ai-bubble";
+        bubble.innerHTML = `<div class="relative group"><div class="stream-box"></div><button class="absolute -right-8 bottom-0 opacity-0 group-hover:opacity-100 text-indigo-400 p-1"><i class="fa-solid fa-volume-high text-xs"></i></button></div>`;
+        div.appendChild(bubble);
+        chatArea.appendChild(div);
+        
+        const streamBox = bubble.querySelector('.stream-box');
+        const volBtn = bubble.querySelector('button');
         let aiText = "";
 
         while (true) {
             const { done, value } = await reader.read();
             if (done) break;
             aiText += decoder.decode(value, { stream: true });
-            textWrapper.innerHTML = marked.parse(aiText);
+            streamBox.innerHTML = marked.parse(aiText);
             chatArea.scrollTop = chatArea.scrollHeight;
         }
-        textWrapper.dataset.text = aiText; // Save for voice button
+        
+        bubble.querySelector('.relative').dataset.full = aiText;
+        volBtn.onclick = () => speakText(aiText);
 
     } catch (err) {
-        renderMessage("❌ Error Connecting to Core.", false);
+        renderMessage("CONNECTION ERROR: Unable to reach core.", false);
     }
 }
 
@@ -262,7 +270,7 @@ function updateFileStatus() {
 
 window.onload = () => {
     if (!localStorage.getItem("token")) window.location.href = "login.html";
-    updateHistoryUI();
+    updateLogsUI();
 };
 </script>
 </body>
