@@ -1,122 +1,289 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VisionCore AI | Create Identity</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Student Hub AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
-    <style>
-        :root {
-            --primary: #6366f1;
-            --bg: #0b0f1a;
-            --glass: rgba(255,255,255,0.03);
-            --glass-border: rgba(255,255,255,0.1);
-            --text-muted: #94a3b8;
-        }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      background-color: #030712;
+    }
 
-        body {
-            margin: 0;
-            background: var(--bg);
-            color: white;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+    .bg-animate {
+      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #030712 75%);
+      min-height: 100vh;
+    }
 
-        .container {
-            background: var(--glass);
-            padding: 2.5rem;
-            border-radius: 20px;
-            width: 400px;
-            border: 1px solid var(--glass-border);
-        }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      background: linear-gradient(to right, #6366f1, #a855f7);
+      filter: blur(80px);
+      z-index: -1;
+      animation: float 12s infinite alternate;
+    }
 
-        input {
-            width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            border-radius: 10px;
-            border: 1px solid var(--glass-border);
-            background: black;
-            color: white;
-        }
+    @keyframes float {
+      from { transform: translate(0, 0) scale(1); }
+      to { transform: translate(60px, -30px) scale(1.15); }
+    }
 
-        button {
-            width: 100%;
-            margin-top: 20px;
-            padding: 14px;
-            background: var(--primary);
-            border: none;
-            color: white;
-            border-radius: 10px;
-            cursor: pointer;
-        }
+    .glass-card {
+      background: rgba(10, 11, 23, 0.65);
+      backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transform-style: preserve-3d;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
 
-        button:hover {
-            background: #4f46e5;
-        }
+    .inner-3d {
+      transform: translateZ(60px);
+    }
 
-        .footer-text {
-            margin-top: 15px;
-        }
+    .neon-input {
+      background: rgba(7, 8, 18, 0.6) !important;
+      border: 1px solid rgba(99, 102, 241, 0.15) !important;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
 
-        .footer-text a {
-            color: var(--primary);
-        }
-    </style>
+    .neon-input:focus {
+      border-color: rgba(99, 102, 241, 0.5) !important;
+      box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+      background: rgba(7, 8, 18, 0.8) !important;
+    }
+
+    .btn-gradient {
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-gradient:hover:not(:disabled) {
+      box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+      transform: translateY(-2px);
+      opacity: 0.95;
+    }
+
+    /* Core Animated Orb Logo matching Dashboard */
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 20px 2px rgba(99, 102, 241, 0.4); }
+      50% { box-shadow: 0 0 35px 6px rgba(168, 85, 247, 0.5); }
+    }
+    .shai-orb {
+      animation: pulseGlow 4s ease-in-out infinite;
+    }
+
+    /* Custom Notification Toast */
+    .toast-notification {
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    .toast-show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
 </head>
 
-<body>
+<body class="bg-animate flex items-center justify-center relative px-4 py-10">
 
-<div class="container">
-    <h2>Create Account</h2>
+  <!-- Dynamic Toast Overlay Container -->
+  <div id="toastContainer" class="fixed top-6 z-50 pointer-events-none w-full max-w-sm px-4">
+    <div id="toast" class="toast-notification bg-gray-950/90 backdrop-blur-md border border-red-500/30 text-gray-200 px-5 py-4 rounded-2xl shadow-xl flex items-center gap-3 text-sm">
+      <i id="toastIcon" class="fa-solid fa-circle-exclamation text-red-400 text-base"></i>
+      <span id="toastMessage" class="font-medium">Notification message</span>
+    </div>
+  </div>
 
-    <form id="registerForm">
-        <input type="text" id="regName" placeholder="Name" required>
-        <input type="email" id="regEmail" placeholder="Email" required>
-        <input type="password" id="regPassword" placeholder="Password" required>
+  <div class="blob w-72 h-72 top-20 right-20 opacity-15"></div>
+  <div class="blob w-96 h-96 -bottom-20 -left-20 opacity-5" style="animation-delay: 3s; background: #6366f1;"></div>
 
-        <button type="submit">Register</button>
-    </form>
+  <div class="w-full max-w-lg">
+    <div class="glass-card rounded-[40px] shadow-2xl p-8 md:p-10" data-tilt data-tilt-max="4" data-tilt-glare data-tilt-max-glare="0.05">
+      
+      <div class="inner-3d">
+        <!-- App Identity Logo Header -->
+        <div class="text-center mb-8">
+          <div class="shai-orb w-16 h-16 mx-auto bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-xl text-white">
+            <i class="fa-solid fa-user-plus"></i>
+          </div>
+          <h1 class="text-3xl font-bold text-white mb-1.5 tracking-tight">Join <span class="text-indigo-400">Hub AI</span></h1>
+          <p class="text-gray-400 text-xs font-light tracking-wide">Create your student account node today</p>
+        </div>
 
-    <p class="footer-text">
-        Already user? <a href="/login.html">Login</a>
-    </p>
-</div>
+        <form id="regForm" class="space-y-4">
+          <!-- Username Block -->
+          <div>
+            <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 ml-1">Username (For Login)</label>
+            <div class="relative group">
+              <i class="fa-solid fa-user absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-indigo-400 transition-colors"></i>
+              <input type="text" id="username" required placeholder="john_doe" 
+                class="neon-input w-full rounded-2xl pl-12 pr-6 py-3.5 text-white text-sm focus:outline-none">
+            </div>
+          </div>
 
-<script>
-document.getElementById("registerForm").addEventListener("submit", function(e){
-    e.preventDefault();
+          <!-- Contact Metrics Grid Row -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 ml-1">Email Vector</label>
+              <div class="relative group">
+                <i class="fa-solid fa-envelope absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-indigo-400 transition-colors"></i>
+                <input type="email" id="email" required placeholder="email@hub.com" 
+                  class="neon-input w-full rounded-2xl pl-12 pr-6 py-3.5 text-white text-sm focus:outline-none">
+              </div>
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 ml-1">Phone Link (Optional)</label>
+              <div class="relative group">
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold text-xs group-focus-within:text-indigo-400 transition-colors">+91</span>
+                <input type="tel" id="phone" maxlength="10" placeholder="987654..." 
+                  class="neon-input w-full rounded-2xl pl-12 pr-4 py-3.5 text-white text-sm focus:outline-none">
+              </div>
+            </div>
+          </div>
 
-    const name = document.getElementById("regName").value;
-    const email = document.getElementById("regEmail").value;
-    const password = document.getElementById("regPassword").value;
+          <!-- Create Password Input Block -->
+          <div>
+            <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 ml-1">Create Password</label>
+            <div class="relative group">
+              <i class="fa-solid fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-indigo-400 transition-colors"></i>
+              <input type="password" id="pass" required placeholder="••••••••" 
+                class="neon-input w-full rounded-2xl pl-12 pr-14 py-3.5 text-white text-sm focus:outline-none">
+              
+              <!-- Primary Visibility Eye Trigger -->
+              <button type="button" onclick="toggleFieldVisibility('pass', 'toggleEyeIcon1')" class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-indigo-400 transition-colors focus:outline-none py-1">
+                <i id="toggleEyeIcon1" class="fa-solid fa-eye text-xs"></i>
+              </button>
+            </div>
+          </div>
 
-    fetch("/register", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ name, email, password })
-    })
-    .then(res => res.json())
-    .then(data => {
-        alert(data.message);
+          <!-- Verify Password Input Block -->
+          <div>
+            <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 ml-1">Confirm Password</label>
+            <div class="relative group">
+              <i class="fa-solid fa-shield-halved absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-indigo-400 transition-colors"></i>
+              <input type="password" id="confirmPass" required placeholder="••••••••" 
+                class="neon-input w-full rounded-2xl pl-12 pr-14 py-3.5 text-white text-sm focus:outline-none">
+              
+              <!-- Secondary Visibility Eye Trigger -->
+              <button type="button" onclick="toggleFieldVisibility('confirmPass', 'toggleEyeIcon2')" class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-indigo-400 transition-colors focus:outline-none py-1">
+                <i id="toggleEyeIcon2" class="fa-solid fa-eye text-xs"></i>
+              </button>
+            </div>
+          </div>
 
-        if(data.message === "Register success"){
-            window.location.href = "/login.html";
+          <!-- Registration Core Action Trigger -->
+          <button type="submit" id="reg-btn"
+            class="btn-gradient w-full text-white font-semibold py-4 rounded-2xl shadow-xl transition-all mt-4 disabled:opacity-50 text-sm tracking-wide">
+            CREATE ACCOUNT NODE
+          </button>
+        </form>
+
+        <p class="text-center mt-6 text-gray-500 text-xs font-light">
+          Already a certified member? <a href="login.html" class="text-indigo-400 font-medium hover:text-purple-400 hover:underline ml-1">Sign In</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Local development proxy sync logic
+   const API_BASE = "https://student-hub-edith-backend.onrender.com";
+    VanillaTilt.init(document.querySelectorAll(".glass-card"), { max: 4, speed: 400, glare: true, "max-glare": 0.1 });
+
+    // CUSTOM SYSTEM NOTIFICATION OVERLAY
+    function showNotification(message, isSuccess = false) {
+      const toast = document.getElementById("toast");
+      const icon = document.getElementById("toastIcon");
+      const msgSpan = document.getElementById("toastMessage");
+
+      msgSpan.innerText = message;
+      
+      if(isSuccess) {
+        toast.classList.replace("border-red-500/30", "border-emerald-500/30");
+        icon.className = "fa-solid fa-circle-check text-emerald-400 text-base";
+      } else {
+        toast.classList.replace("border-emerald-500/30", "border-red-500/30");
+        icon.className = "fa-solid fa-circle-exclamation text-red-400 text-base";
+      }
+
+      toast.classList.add("toast-show");
+      setTimeout(() => {
+        toast.classList.remove("toast-show");
+      }, 4000);
+    }
+
+    // REUSABLE FIELD VISIBILITY CONTROL ROUTINE
+    function toggleFieldVisibility(fieldId, iconId) {
+      const targetField = document.getElementById(fieldId);
+      const targetIcon = document.getElementById(iconId);
+
+      if (targetField.type === "password") {
+        targetField.type = "text";
+        targetIcon.classList.remove("fa-eye");
+        targetIcon.classList.add("fa-eye-slash");
+      } else {
+        targetField.type = "password";
+        targetIcon.classList.remove("fa-eye-slash");
+        targetIcon.classList.add("fa-eye");
+      }
+    }
+
+    // REGISTRATION FORM SUBMISSION DISPATCHER
+    document.getElementById('regForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('pass').value;
+      const confirmPass = document.getElementById('confirmPass').value;
+      const btn = document.getElementById('reg-btn');
+
+      if(password !== confirmPass) {
+        return showNotification("Validation error: Passwords do not match!");
+      }
+
+      btn.innerText = "Registering...";
+      btn.disabled = true;
+
+      try {
+        const response = await fetch(`${API_BASE}/api/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password }) 
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          localStorage.setItem('userEmail', email);
+          showNotification("Registration successful! Route switching to login window...", true);
+          
+          setTimeout(() => {
+            window.location.href = "login.html";
+          }, 1200);
+        } else {
+          showNotification(data.error || "Registration validation error");
+          btn.innerText = "CREATE ACCOUNT NODE";
+          btn.disabled = false;
         }
-    })
-    .catch(err => {
-        alert("Error");
-        console.log(err);
+      } catch (err) {
+        console.error(err);
+        showNotification("Core registration interface connection error");
+        btn.innerText = "CREATE ACCOUNT NODE";
+        btn.disabled = false;
+      }
     });
-});
-</script>
-
+  </script>
 </body>
+
 </html>
