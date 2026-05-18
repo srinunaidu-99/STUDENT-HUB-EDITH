@@ -19,25 +19,17 @@
             overflow: hidden;
         }
 
-        /* Custom Scrollbar */
         .chat-container::-webkit-scrollbar { width: 6px; }
         .chat-container::-webkit-scrollbar-track { background: transparent; }
-        .chat-container::-webkit-scrollbar-thumb {
-            background: rgba(99, 102, 241, 0.2);
-            border-radius: 10px;
-        }
+        .chat-container::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.2); border-radius: 10px; }
 
-        /* Core Orb Animations */
         @keyframes pulseGlow {
             0%, 100% { transform: scale(1); box-shadow: 0 0 25px 2px rgba(99, 102, 241, 0.4), 0 0 50px 10px rgba(168, 85, 247, 0.2); }
             50% { transform: scale(1.03); box-shadow: 0 0 40px 8px rgba(99, 102, 241, 0.6), 0 0 70px 20px rgba(168, 85, 247, 0.4); }
         }
         .edith-orb { animation: pulseGlow 4s ease-in-out infinite; background: linear-gradient(135deg, #6366f1, #a855f7); }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(16px) scale(0.99); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(16px) scale(0.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
         .animate-msg { animation: slideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
         @keyframes micPulse {
@@ -54,7 +46,6 @@
         pre { background: #020617 !important; padding: 18px 16px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); overflow-x: auto; }
         code { color: #a5b4fc; font-size: 0.875rem; }
 
-        /* Typing Dots */
         .typing-dot { animation: typingBounce 1.4s infinite ease-in-out both; width: 6px; height: 6px; background-color: #a5b4fc; border-radius: 50%; display: inline-block; }
         .typing-dot:nth-child(2) { animation-delay: 0.2s; }
         .typing-dot:nth-child(3) { animation-delay: 0.4s; }
@@ -78,13 +69,10 @@
         </div>
         
         <div class="flex items-center gap-4">
+            <div id="voiceStatus" class="hidden text-[10px] text-indigo-400 font-mono animate-pulse">SPEAKING...</div>
             <button onclick="stopSpeaking()" title="Stop Voice" class="w-8 h-8 rounded-lg border border-red-500/30 flex items-center justify-center text-red-400 hover:bg-red-500/10 transition-all">
                 <i class="fa-solid fa-volume-xmark text-xs"></i>
             </button>
-            <div class="hidden sm:block text-right">
-                <span class="text-gray-500 uppercase block text-[9px] font-bold">Latency</span>
-                <span class="text-emerald-400 font-mono text-xs">14ms</span>
-            </div>
         </div>
     </div>
 
@@ -129,25 +117,44 @@ const chatArea = document.getElementById("chatArea");
 const welcomeScreen = document.getElementById("welcomeScreen");
 let isSummarize = false;
 
-// --- VOICE OVER SYSTEM (TTS) ---
+// --- IMPROVED VOICE OVER SYSTEM ---
+let voices = [];
+function loadVoices() {
+    voices = window.speechSynthesis.getVoices();
+}
+window.speechSynthesis.onvoiceschanged = loadVoices;
+loadVoices();
+
 function speakText(text) {
     if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel(); // Clear previous speech
-        // Markdown symbols ni voice lo skip cheyadaniki clean chesthunna
-        const cleanText = text.replace(/[*#`_]/g, '').trim();
+        window.speechSynthesis.cancel(); 
+        
+        // Cleanup Markdown
+        const cleanText = text.replace(/[#*`_~]/g, '').trim();
         const utterance = new SpeechSynthesisUtterance(cleanText);
-        utterance.lang = 'en-IN'; // Indian accent (Tenglish ki idi baguntundi)
+        
+        // Find Indian Voice or English Voice
+        const preferredVoice = voices.find(v => v.lang === 'en-IN') || voices.find(v => v.lang.includes('en'));
+        if (preferredVoice) utterance.voice = preferredVoice;
+
+        utterance.lang = 'en-IN';
         utterance.rate = 1.0;
-        utterance.pitch = 1.0;
+
+        utterance.onstart = () => document.getElementById("voiceStatus").classList.remove("hidden");
+        utterance.onend = () => document.getElementById("voiceStatus").classList.add("hidden");
+
         window.speechSynthesis.speak(utterance);
     }
 }
 
 function stopSpeaking() {
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+        document.getElementById("voiceStatus").classList.add("hidden");
+    }
 }
 
-// --- VOICE INPUT SYSTEM (STT) ---
+// --- VOICE INPUT (STT) ---
 let recognition;
 let isRecording = false;
 if ('webkitSpeechRecognition' in window) {
@@ -160,11 +167,12 @@ if ('webkitSpeechRecognition' in window) {
 }
 
 function toggleVoiceInput() {
-    if (!recognition) return alert("Browser not supported");
+    if (!recognition) return alert("Microphone not supported on this browser.");
+    stopSpeaking(); // Record chesetappudu AI matladakudadhu
     isRecording ? recognition.stop() : recognition.start();
 }
 
-// --- CORE CHAT LOGIC ---
+// --- LOGIC ---
 function toggleSummarize() {
     isSummarize = !isSummarize;
     document.getElementById("sumStatus").innerText = isSummarize ? "ON" : "OFF";
@@ -194,8 +202,8 @@ async function sendMsg() {
 
     if (!message && fileInput.files.length === 0) return;
 
-    stopSpeaking(); // User message send cheyyagane patha voice ni aapali
-    addMessage(message || "Processing...", true);
+    stopSpeaking(); 
+    addMessage(message || "Analyzing...", true);
     input.value = "";
 
     const formData = new FormData();
@@ -223,11 +231,10 @@ async function sendMsg() {
             chatArea.scrollTop = chatArea.scrollHeight;
         }
 
-        // Response motham vachaka matladu (Voice Over)
         speakText(aiText);
 
     } catch (err) {
-        addMessage("❌ Connection Error", false);
+        addMessage("❌ Matrix Error", false);
     }
     fileInput.value = "";
     document.getElementById("fileCount").innerText = "";
