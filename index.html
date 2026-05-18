@@ -20,6 +20,7 @@
             height: 100vh;
         }
 
+        /* Custom Scrollbar */
         .chat-container::-webkit-scrollbar, .history-container::-webkit-scrollbar { width: 4px; }
         .chat-container::-webkit-scrollbar-thumb, .history-container::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.2); border-radius: 10px; }
 
@@ -53,7 +54,6 @@
             </div>
             
             <div class="flex items-center gap-3">
-                <div id="voiceStatus" class="hidden text-[10px] text-indigo-400 font-mono animate-pulse mr-2">VOICE FEED ACTIVE</div>
                 <button onclick="newChat()" class="px-4 py-1.5 bg-indigo-600/20 hover:bg-indigo-600/40 border border-indigo-500/30 rounded-full text-xs font-bold transition-all flex items-center gap-2">
                     <i class="fa-solid fa-plus"></i> NEW SESSION
                 </button>
@@ -65,8 +65,8 @@
                 <div class="edith-orb w-16 h-16 rounded-2xl flex items-center justify-center text-2xl text-white mb-6">
                     <i class="fa-solid fa-terminal"></i>
                 </div>
-                <h2 class="text-xl font-bold mb-2">Interface Initialized</h2>
-                <p class="text-gray-500 text-xs tracking-widest uppercase">Global Language: English | System Ready</p>
+                <h2 class="text-xl font-bold mb-2 text-white">Interface Initialized</h2>
+                <p class="text-gray-500 text-xs tracking-widest uppercase italic">English Interaction Protocol Active</p>
             </div>
         </div>
 
@@ -83,7 +83,7 @@
                 </div>
 
                 <div class="flex gap-3 items-center glass-panel p-2 rounded-2xl border-white/10 shadow-2xl">
-                    <input type="text" id="msg" placeholder="Command EDITH..." class="flex-1 bg-transparent pl-4 py-3 outline-none text-sm text-gray-100" onkeypress="if(event.key==='Enter')sendMsg()" />
+                    <input type="text" id="msg" placeholder="Type your command..." class="flex-1 bg-transparent pl-4 py-3 outline-none text-sm text-gray-100" onkeypress="if(event.key==='Enter')sendMsg()" />
                     <button onclick="toggleVoiceInput()" id="micBtn" class="w-10 h-10 text-gray-400 hover:text-indigo-400 transition-colors">
                         <i class="fa-solid fa-microphone"></i>
                     </button>
@@ -96,14 +96,15 @@
     </div>
 
     <div class="hidden lg:flex w-72 border-l border-white/5 bg-gray-950/60 flex-col backdrop-blur-xl">
-        <div class="p-5 border-b border-white/5">
-            <h3 class="text-xs font-bold tracking-widest text-indigo-400 uppercase">Recent Logs</h3>
+        <div class="p-5 border-b border-white/5 flex justify-between items-center">
+            <h3 class="text-xs font-bold tracking-widest text-indigo-400 uppercase">Interaction Logs</h3>
+            <i class="fa-solid fa-clock-rotate-left text-xs text-gray-600"></i>
         </div>
         <div id="historyList" class="flex-1 overflow-y-auto p-2 history-container">
             </div>
-        <div class="p-4">
-            <button onclick="clearHistory()" class="w-full py-2 text-[10px] border border-white/5 text-gray-500 hover:text-white hover:bg-red-500/10 hover:border-red-500/20 rounded-lg transition-all">
-                WIPE SESSION LOGS
+        <div class="p-4 border-t border-white/5">
+            <button onclick="clearHistory()" class="w-full py-2 text-[10px] border border-red-500/10 text-gray-500 hover:text-red-400 hover:bg-red-500/5 rounded-lg transition-all">
+                WIPE ALL LAB DATA
             </button>
         </div>
     </div>
@@ -116,25 +117,32 @@ const historyList = document.getElementById("historyList");
 const welcomeScreen = document.getElementById("welcomeScreen");
 let isSummarize = false;
 
-// --- LOGS MANAGEMENT ---
+// --- PERSISTENT HISTORY (LAB SAVED) ---
 function saveToLogs(text, isUser) {
-    if(!isUser) return;
-    let logs = JSON.parse(localStorage.getItem("edith_logs") || "[]");
-    const title = text.length > 25 ? text.substring(0, 25) + "..." : text;
-    logs.unshift({ title, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
-    if(logs.length > 20) logs.pop();
-    localStorage.setItem("edith_logs", JSON.stringify(logs));
+    let logs = JSON.parse(localStorage.getItem("edith_lab_history") || "[]");
+    logs.push({ text, isUser, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
+    if(logs.length > 50) logs.shift();
+    localStorage.setItem("edith_lab_history", JSON.stringify(logs));
     updateLogsUI();
 }
 
 function updateLogsUI() {
-    let logs = JSON.parse(localStorage.getItem("edith_logs") || "[]");
-    historyList.innerHTML = logs.map(item => `
+    let logs = JSON.parse(localStorage.getItem("edith_lab_history") || "[]");
+    historyList.innerHTML = logs.filter(l => l.isUser).reverse().map(item => `
         <div class="history-item p-3 mb-1 rounded-lg">
-            <p class="text-[11px] text-gray-300 font-medium truncate">${item.title}</p>
-            <span class="text-[9px] text-gray-600 font-mono">${item.time}</span>
+            <p class="text-[11px] text-gray-300 font-medium truncate">${item.text}</p>
+            <span class="text-[9px] text-gray-600 font-mono italic">${item.time}</span>
         </div>
     `).join('');
+}
+
+function loadSavedChat() {
+    let logs = JSON.parse(localStorage.getItem("edith_lab_history") || "[]");
+    if (logs.length > 0) {
+        welcomeScreen.style.display = "none";
+        logs.forEach(msg => renderMessage(msg.text, msg.isUser, false));
+        chatArea.scrollTop = chatArea.scrollHeight;
+    }
 }
 
 function newChat() {
@@ -144,20 +152,19 @@ function newChat() {
 }
 
 function clearHistory() {
-    localStorage.removeItem("edith_logs");
-    updateLogsUI();
-    newChat();
+    if(confirm("Wipe all persistent lab logs?")) {
+        localStorage.removeItem("edith_lab_history");
+        location.reload();
+    }
 }
 
-// --- VOICE (MANUAL TRIGGER) ---
+// --- VOICE (MANUAL TRIGGER - STRICT ENGLISH) ---
 function speakText(text) {
     window.speechSynthesis.cancel();
     const cleanText = text.replace(/[#*`_~]/g, '').trim();
     const utterance = new SpeechSynthesisUtterance(cleanText);
-    utterance.lang = 'en-US'; // Strict English
+    utterance.lang = 'en-US'; 
     utterance.rate = 1.0;
-    utterance.onstart = () => document.getElementById("voiceStatus").classList.remove("hidden");
-    utterance.onend = () => document.getElementById("voiceStatus").classList.add("hidden");
     window.speechSynthesis.speak(utterance);
 }
 
@@ -166,112 +173,4 @@ let recognition;
 if ('webkitSpeechRecognition' in window) {
     recognition = new webkitSpeechRecognition();
     recognition.lang = 'en-US';
-    recognition.onresult = (e) => document.getElementById("msg").value = e.results[0][0].transcript;
-}
-
-function toggleVoiceInput() {
-    if (!recognition) return alert("System Mic Unsupported");
-    recognition.start();
-}
-
-// --- RENDERING ---
-function renderMessage(text, isUser) {
-    if (welcomeScreen) welcomeScreen.style.display = "none";
-    const div = document.createElement("div");
-    div.className = `flex ${isUser ? "justify-end" : "justify-start"} animate-msg w-full`;
-    
-    const content = isUser ? text : `
-        <div class="relative group">
-            ${marked.parse(text)}
-            <button onclick="speakText(this.parentElement.dataset.full)" class="absolute -right-8 bottom-0 opacity-0 group-hover:opacity-100 text-indigo-400 hover:text-white transition-all p-1">
-                <i class="fa-solid fa-volume-high text-xs"></i>
-            </button>
-        </div>`;
-
-    const bubble = document.createElement("div");
-    bubble.className = `p-4 px-5 max-w-[85%] text-sm leading-relaxed ${isUser ? "user-bubble" : "ai-bubble"}`;
-    bubble.innerHTML = content;
-    
-    if(!isUser) bubble.querySelector('.relative').dataset.full = text;
-
-    div.appendChild(bubble);
-    chatArea.appendChild(div);
-    chatArea.scrollTop = chatArea.scrollHeight;
-}
-
-// --- CORE DISPATCH ---
-async function sendMsg() {
-    const input = document.getElementById("msg");
-    const fileInput = document.getElementById("fileInput");
-    const message = input.value.trim();
-    const token = localStorage.getItem("token");
-
-    if (!message && fileInput.files.length === 0) return;
-
-    saveToLogs(message, true);
-    renderMessage(message || "Analyzing input stream...", true);
-    input.value = "";
-
-    const formData = new FormData();
-    formData.append("message", message);
-    formData.append("isSummarize", isSummarize);
-    for (let f of fileInput.files) formData.append("files", f);
-
-    try {
-        const res = await fetch(`${API_BASE}/api/chat`, {
-            method: "POST",
-            headers: { Authorization: `Bearer ${token}` },
-            body: formData
-        });
-
-        const reader = res.body.getReader();
-        const decoder = new TextDecoder();
-        
-        // Setup AI bubble for streaming
-        if (welcomeScreen) welcomeScreen.style.display = "none";
-        const div = document.createElement("div");
-        div.className = "flex justify-start animate-msg w-full";
-        const bubble = document.createElement("div");
-        bubble.className = "p-4 px-5 max-w-[85%] text-sm leading-relaxed ai-bubble";
-        bubble.innerHTML = `<div class="relative group"><div class="stream-box"></div><button class="absolute -right-8 bottom-0 opacity-0 group-hover:opacity-100 text-indigo-400 p-1"><i class="fa-solid fa-volume-high text-xs"></i></button></div>`;
-        div.appendChild(bubble);
-        chatArea.appendChild(div);
-        
-        const streamBox = bubble.querySelector('.stream-box');
-        const volBtn = bubble.querySelector('button');
-        let aiText = "";
-
-        while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-            aiText += decoder.decode(value, { stream: true });
-            streamBox.innerHTML = marked.parse(aiText);
-            chatArea.scrollTop = chatArea.scrollHeight;
-        }
-        
-        bubble.querySelector('.relative').dataset.full = aiText;
-        volBtn.onclick = () => speakText(aiText);
-
-    } catch (err) {
-        renderMessage("CONNECTION ERROR: Unable to reach core.", false);
-    }
-}
-
-function toggleSummarize() {
-    isSummarize = !isSummarize;
-    document.getElementById("sumStatus").innerText = isSummarize ? "ON" : "OFF";
-    document.getElementById("sumDot").className = isSummarize ? "w-1.5 h-1.5 rounded-full bg-indigo-400" : "w-1.5 h-1.5 rounded-full bg-gray-500";
-}
-
-function updateFileStatus() {
-    const files = document.getElementById("fileInput").files;
-    document.getElementById("fileCount").innerText = files.length > 0 ? `• ${files.length} ready` : "";
-}
-
-window.onload = () => {
-    if (!localStorage.getItem("token")) window.location.href = "login.html";
-    updateLogsUI();
-};
-</script>
-</body>
-</html>
+    recognition.onresult = (e) => document.getElementById("msg").value
