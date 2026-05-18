@@ -245,7 +245,7 @@
         const imageData = canvas.toDataURL('image/png');
 
         // Use your Server IP
-       fetch("https://michele-nonrousing-joni.ngrok-free.dev/detect-emotion", {
+       fetch("https://student-hub-edith-backend.onrender.com/detect-emotion", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ image: imageData })
