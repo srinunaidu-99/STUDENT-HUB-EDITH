@@ -21,70 +21,83 @@
         }
 
         /* Custom Scrollbar */
-        .chat-container::-webkit-scrollbar, .history-container::-webkit-scrollbar { width: 4px; }
+        .chat-container::-webkit-scrollbar, .history-container::-webkit-scrollbar { width: 6px; }
         .chat-container::-webkit-scrollbar-thumb, .history-container::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.2); border-radius: 10px; }
 
         @keyframes pulseGlow {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 20px 2px rgba(99, 102, 241, 0.3); }
-            50% { transform: scale(1.05); box-shadow: 0 0 35px 5px rgba(168, 85, 247, 0.4); }
+            0%, 100% { transform: scale(1); box-shadow: 0 0 25px 2px rgba(99, 102, 241, 0.4); }
+            50% { transform: scale(1.03); box-shadow: 0 0 40px 8px rgba(168, 85, 247, 0.4); }
         }
         .edith-orb { animation: pulseGlow 4s ease-in-out infinite; background: linear-gradient(135deg, #6366f1, #a855f7); }
 
-        .glass-panel { background: rgba(10, 11, 23, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .ai-bubble { background: rgba(23, 24, 51, 0.6); border: 1px solid rgba(99, 102, 241, 0.2); color: #f3f4f6; border-radius: 18px 18px 18px 4px; position: relative; }
-        .user-bubble { background: linear-gradient(135deg, #4f46e5, #3730a3); color: white; border-radius: 18px 18px 4px 18px; }
-        
-        .history-item { transition: all 0.2s; border-left: 2px solid transparent; }
+        .glass-panel { background: rgba(10, 11, 23, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.06); }
+        .ai-bubble { background: rgba(23, 24, 51, 0.6); border: 1px solid rgba(99, 102, 241, 0.25); color: #f3f4f6; border-radius: 20px 20px 20px 4px; }
+        .user-bubble { background: linear-gradient(135deg, #4f46e5, #3730a3); color: white; border-radius: 20px 20px 4px 20px; box-shadow: 0 4px 16px rgba(79, 70, 229, 0.25); }
+
+        .history-item { transition: all 0.2s; border-left: 2px solid transparent; cursor: pointer; }
         .history-item:hover { background: rgba(99, 102, 241, 0.1); border-left: 2px solid #6366f1; }
 
-        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-msg { animation: slideIn 0.3s ease-out forwards; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-msg { animation: slideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        /* Code Block Copy Utilities */
+        .code-block-wrapper { position: relative; margin: 12px 0; }
+        pre { background: #020617 !important; padding: 18px 16px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .copy-code-btn { position: absolute; top: 8px; right: 8px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 4px 8px; border-radius: 6px; font-size: 11px; color: #94a3b8; transition: all 0.2s; }
+        .copy-code-btn:hover { background: rgba(255, 255, 255, 0.15); color: #fff; }
+
+        .typing-dot { animation: typingBounce 1.4s infinite ease-in-out both; width: 6px; height: 6px; background-color: #a5b4fc; border-radius: 50%; display: inline-block; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typingBounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
     </style>
 </head>
 
-<body class="text-gray-100 flex items-center justify-center">
+<body class="text-gray-100 flex items-center justify-center p-0 sm:p-4">
 
-<div class="w-full h-full flex flex-row overflow-hidden">
+<div class="w-full max-w-6xl h-screen sm:h-[92vh] flex flex-row glass-panel sm:rounded-3xl shadow-2xl relative overflow-hidden">
     
     <div class="flex-1 flex flex-col relative h-full">
-        <div class="p-4 border-b border-white/5 flex justify-between items-center bg-gray-950/40 px-6 backdrop-blur-md">
-            <div class="flex items-center gap-3">
-                <div class="edith-orb w-9 h-9 rounded-lg flex items-center justify-center text-white font-bold shadow-lg">E</div>
-                <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-white to-indigo-300 bg-clip-text text-transparent">EDITH <span class="text-[10px] text-indigo-400 font-mono tracking-tighter">OS V3.5</span></h1>
+        <div class="p-4 border-b border-white/5 flex justify-between items-center bg-gray-950/20 px-6 backdrop-blur-md">
+            <div class="flex items-center gap-3.5">
+                <div class="edith-orb w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold tracking-wider text-sm shadow-lg shadow-indigo-500/30">E</div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-white to-indigo-300 bg-clip-text text-transparent">EDITH <span class="text-[10px] font-semibold text-indigo-400 border border-indigo-500/30 px-1.5 py-0.5 rounded-md ml-1.5 bg-indigo-500/10">V3.5</span></h1>
+                    <p class="text-[10px] uppercase tracking-widest text-indigo-400 font-bold flex items-center gap-1.5 mt-0.5">
+                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block animate-pulse"></span> Operator: <span id="displayUserName">Student</span>
+                    </p>
+                </div>
             </div>
-            
-            <div class="flex items-center gap-3">
-                <button onclick="newChat()" class="px-4 py-1.5 bg-indigo-600/20 hover:bg-indigo-600/40 border border-indigo-500/30 rounded-full text-xs font-bold transition-all flex items-center gap-2">
+            <div class="flex gap-2">
+                <button onclick="newChat()" class="px-4 py-1.5 bg-indigo-600/10 hover:bg-indigo-600/20 border border-indigo-500/30 rounded-full text-[10px] font-bold transition-all flex items-center gap-2">
                     <i class="fa-solid fa-plus"></i> NEW SESSION
                 </button>
             </div>
         </div>
 
         <div id="chatArea" class="flex-1 overflow-y-auto p-6 space-y-6 chat-container pb-32">
-            <div id="welcomeScreen" class="flex flex-col justify-center items-center mt-32 text-center">
-                <div class="edith-orb w-16 h-16 rounded-2xl flex items-center justify-center text-2xl text-white mb-6">
-                    <i class="fa-solid fa-terminal"></i>
-                </div>
-                <h2 class="text-xl font-bold mb-2 text-white">Interface Initialized</h2>
-                <p class="text-gray-500 text-xs tracking-widest uppercase italic">English Interaction Protocol Active</p>
+            <div id="welcomeScreen" class="flex flex-col justify-center items-center mt-24 text-center px-4">
+                <div class="edith-orb w-20 h-20 rounded-3xl flex items-center justify-center text-3xl text-white mb-6"><i class="fa-solid fa-brain"></i></div>
+                <h2 class="text-2xl font-bold mb-2 text-white">System Ready</h2>
+                <p class="text-gray-400 text-sm max-w-sm font-light">History and voice protocols initialized. English primary mode active.</p>
             </div>
         </div>
 
-        <div class="absolute bottom-0 w-full p-4 sm:p-6 bg-gradient-to-t from-gray-950 via-gray-950/90 to-transparent">
-            <div class="max-w-4xl mx-auto">
-                <div class="flex flex-wrap gap-2 mb-3 px-1">
-                    <button onclick="toggleSummarize()" id="sumBtn" class="px-3 py-1 rounded-md border border-white/10 bg-white/5 text-[10px] font-medium transition-all flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 rounded-full bg-gray-500" id="sumDot"></span> SUMMARIZE: <span id="sumStatus" class="text-gray-400">OFF</span>
-                    </button>
-                    <label class="px-3 py-1 rounded-md border border-white/10 bg-white/5 text-[10px] font-medium cursor-pointer flex items-center gap-1.5">
-                        <i class="fa-solid fa-link text-indigo-400"></i> ATTACH <input type="file" id="fileInput" multiple class="hidden" onchange="updateFileStatus()" />
-                    </label>
-                    <span id="fileCount" class="text-[10px] text-indigo-300 self-center"></span>
-                </div>
+        <div class="p-4 sm:p-6 bg-gray-950/40 border-t border-white/5 backdrop-blur-md">
+            <div class="flex flex-wrap gap-2 mb-3.5 px-1">
+                <button onclick="toggleSummarize()" id="sumBtn" class="px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-[11px] font-medium transition-all flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-gray-400" id="sumDot"></span> Summarize: <span id="sumStatus">OFF</span>
+                </button>
+                <label class="px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-[11px] font-medium cursor-pointer transition-all flex items-center gap-1.5">
+                    <i class="fa-solid fa-paperclip text-indigo-400"></i> Attach <input type="file" id="fileInput" multiple class="hidden" onchange="updateFileStatus()" />
+                </label>
+                <span id="fileCount" class="text-[11px] text-indigo-300 self-center"></span>
+            </div>
 
-                <div class="flex gap-3 items-center glass-panel p-2 rounded-2xl border-white/10 shadow-2xl">
-                    <input type="text" id="msg" placeholder="Type your command..." class="flex-1 bg-transparent pl-4 py-3 outline-none text-sm text-gray-100" onkeypress="if(event.key==='Enter')sendMsg()" />
-                    <button onclick="toggleVoiceInput()" id="micBtn" class="w-10 h-10 text-gray-400 hover:text-indigo-400 transition-colors">
+            <div class="flex gap-3 items-center relative">
+                <input type="text" id="msg" placeholder="Command EDITH..." class="w-full bg-gray-900/80 border border-white/10 focus:border-indigo-500/50 rounded-2xl pl-5 pr-28 py-4 outline-none transition-all text-sm text-gray-100" onkeypress="if(event.key==='Enter')sendMsg()" />
+                <div class="absolute right-2 flex items-center gap-1.5">
+                    <button onclick="toggleVoiceInput()" id="micBtn" class="w-10 h-10 bg-white/5 border border-white/10 text-gray-300 rounded-xl flex items-center justify-center transition-all">
                         <i class="fa-solid fa-microphone"></i>
                     </button>
                     <button onclick="sendMsg()" class="w-10 h-10 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl flex items-center justify-center transition-all">
@@ -97,15 +110,13 @@
 
     <div class="hidden lg:flex w-72 border-l border-white/5 bg-gray-950/60 flex-col backdrop-blur-xl">
         <div class="p-5 border-b border-white/5 flex justify-between items-center">
-            <h3 class="text-xs font-bold tracking-widest text-indigo-400 uppercase">Interaction Logs</h3>
+            <h3 class="text-xs font-bold tracking-widest text-indigo-400 uppercase">Lab Logs</h3>
             <i class="fa-solid fa-clock-rotate-left text-xs text-gray-600"></i>
         </div>
         <div id="historyList" class="flex-1 overflow-y-auto p-2 history-container">
             </div>
         <div class="p-4 border-t border-white/5">
-            <button onclick="clearHistory()" class="w-full py-2 text-[10px] border border-red-500/10 text-gray-500 hover:text-red-400 hover:bg-red-500/5 rounded-lg transition-all">
-                WIPE ALL LAB DATA
-            </button>
+            <button onclick="clearHistory()" class="w-full py-2 text-[10px] border border-red-500/10 text-gray-500 hover:text-red-400 transition-all">WIPE PERSISTENT DATA</button>
         </div>
     </div>
 </div>
@@ -117,17 +128,17 @@ const historyList = document.getElementById("historyList");
 const welcomeScreen = document.getElementById("welcomeScreen");
 let isSummarize = false;
 
-// --- PERSISTENT HISTORY (LAB SAVED) ---
+// --- PERSISTENCE SYSTEM ---
 function saveToLogs(text, isUser) {
-    let logs = JSON.parse(localStorage.getItem("edith_lab_history") || "[]");
+    let logs = JSON.parse(localStorage.getItem("edith_persistent_db") || "[]");
     logs.push({ text, isUser, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
     if(logs.length > 50) logs.shift();
-    localStorage.setItem("edith_lab_history", JSON.stringify(logs));
+    localStorage.setItem("edith_persistent_db", JSON.stringify(logs));
     updateLogsUI();
 }
 
 function updateLogsUI() {
-    let logs = JSON.parse(localStorage.getItem("edith_lab_history") || "[]");
+    let logs = JSON.parse(localStorage.getItem("edith_persistent_db") || "[]");
     historyList.innerHTML = logs.filter(l => l.isUser).reverse().map(item => `
         <div class="history-item p-3 mb-1 rounded-lg">
             <p class="text-[11px] text-gray-300 font-medium truncate">${item.text}</p>
@@ -136,8 +147,8 @@ function updateLogsUI() {
     `).join('');
 }
 
-function loadSavedChat() {
-    let logs = JSON.parse(localStorage.getItem("edith_lab_history") || "[]");
+function loadHistory() {
+    let logs = JSON.parse(localStorage.getItem("edith_persistent_db") || "[]");
     if (logs.length > 0) {
         welcomeScreen.style.display = "none";
         logs.forEach(msg => renderMessage(msg.text, msg.isUser, false));
@@ -152,25 +163,141 @@ function newChat() {
 }
 
 function clearHistory() {
-    if(confirm("Wipe all persistent lab logs?")) {
-        localStorage.removeItem("edith_lab_history");
+    if(confirm("Wipe all persistent lab data?")) {
+        localStorage.removeItem("edith_persistent_db");
         location.reload();
     }
 }
 
-// --- VOICE (MANUAL TRIGGER - STRICT ENGLISH) ---
+// --- VOICE & UI PROTOCOLS ---
 function speakText(text) {
     window.speechSynthesis.cancel();
     const cleanText = text.replace(/[#*`_~]/g, '').trim();
     const utterance = new SpeechSynthesisUtterance(cleanText);
     utterance.lang = 'en-US'; 
-    utterance.rate = 1.0;
     window.speechSynthesis.speak(utterance);
 }
 
-// --- VOICE INPUT ---
-let recognition;
-if ('webkitSpeechRecognition' in window) {
-    recognition = new webkitSpeechRecognition();
-    recognition.lang = 'en-US';
-    recognition.onresult = (e) => document.getElementById("msg").value
+function renderMessage(text, isUser, shouldSave = true) {
+    if (welcomeScreen) welcomeScreen.style.display = "none";
+    const div = document.createElement("div");
+    div.className = `flex ${isUser ? "justify-end" : "justify-start"} animate-msg w-full`;
+    
+    const content = isUser ? escapeHtml(text) : `
+        <div class="relative group">
+            <div class="markdown-body">${cleanAndParseMarkdown(text)}</div>
+            <button onclick="speakText(this.parentElement.dataset.raw)" class="absolute -right-8 bottom-0 opacity-0 group-hover:opacity-100 text-indigo-400 p-1 hover:text-white transition-all">
+                <i class="fa-solid fa-volume-high text-xs"></i>
+            </button>
+        </div>`;
+
+    const bubble = document.createElement("div");
+    bubble.className = `p-4 px-5 max-w-[85%] text-sm leading-relaxed ${isUser ? "user-bubble" : "ai-bubble"}`;
+    bubble.innerHTML = content;
+    if(!isUser) bubble.querySelector('.relative').dataset.raw = text;
+
+    div.appendChild(bubble);
+    chatArea.appendChild(div);
+    chatArea.scrollTop = chatArea.scrollHeight;
+
+    if(shouldSave) saveToLogs(text, isUser);
+}
+
+function cleanAndParseMarkdown(text) {
+    let rawHtml = marked.parse(text);
+    const container = document.createElement('div');
+    container.innerHTML = rawHtml;
+    container.querySelectorAll('pre').forEach((pre) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'copy-code-btn';
+        copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i>';
+        copyBtn.onclick = () => {
+            navigator.clipboard.writeText(pre.innerText);
+            copyBtn.innerHTML = '<i class="fa-solid fa-check text-emerald-400"></i>';
+            setTimeout(() => copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i>', 2000);
+        };
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+        wrapper.appendChild(copyBtn);
+    });
+    return container.innerHTML;
+}
+
+// --- CORE FUNCTIONS ---
+async function sendMsg() {
+    const input = document.getElementById("msg");
+    const fileInput = document.getElementById("fileInput");
+    const message = input.value.trim();
+    const token = localStorage.getItem("token");
+
+    if (!message && fileInput.files.length === 0) return;
+    renderMessage(message || "Analyzing files...", true);
+    input.value = "";
+
+    const formData = new FormData();
+    formData.append("message", message);
+    formData.append("isSummarize", isSummarize);
+    for (let f of fileInput.files) formData.append("files", f);
+
+    try {
+        const res = await fetch(`${API_BASE}/api/chat`, {
+            method: "POST",
+            headers: { Authorization: `Bearer ${token}` },
+            body: formData
+        });
+
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        
+        const div = document.createElement("div");
+        div.className = "flex justify-start animate-msg w-full";
+        const bubble = document.createElement("div");
+        bubble.className = "p-4 px-5 max-w-[85%] text-sm leading-relaxed ai-bubble";
+        bubble.innerHTML = `<div class="relative group"><div class="stream-box"></div><button class="absolute -right-8 bottom-0 opacity-0 group-hover:opacity-100 text-indigo-400 p-1"><i class="fa-solid fa-volume-high text-xs"></i></button></div>`;
+        div.appendChild(bubble);
+        chatArea.appendChild(div);
+        
+        const streamBox = bubble.querySelector('.stream-box');
+        let aiText = "";
+
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            aiText += decoder.decode(value, { stream: true });
+            streamBox.innerHTML = cleanAndParseMarkdown(aiText);
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+        
+        bubble.querySelector('.relative').dataset.raw = aiText;
+        bubble.querySelector('button').onclick = () => speakText(aiText);
+        saveToLogs(aiText, false);
+
+    } catch (err) {
+        renderMessage("❌ Core Connection Interrupted.", false);
+    }
+}
+
+function toggleSummarize() {
+    isSummarize = !isSummarize;
+    document.getElementById("sumStatus").innerText = isSummarize ? "ON" : "OFF";
+    document.getElementById("sumDot").className = isSummarize ? "w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" : "w-1.5 h-1.5 rounded-full bg-gray-400";
+}
+
+function updateFileStatus() {
+    const files = document.getElementById("fileInput").files;
+    document.getElementById("fileCount").innerText = files.length > 0 ? `• ${files.length} ready` : "";
+}
+
+function escapeHtml(text) { return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+
+window.onload = () => {
+    const name = localStorage.getItem("userName");
+    if (name) document.getElementById("displayUserName").innerText = name;
+    loadHistory();
+    updateLogsUI();
+};
+</script>
+</body>
+</html>
