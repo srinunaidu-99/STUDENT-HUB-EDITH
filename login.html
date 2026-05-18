@@ -1,171 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VisionCore AI | Secure Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
-            --bg: #0b0f1a;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --text-muted: #94a3b8;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Student Hub AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
 
-        * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;600&display=swap');
 
-        body {
-            margin: 0;
-            background-color: var(--bg);
-            background-image: 
-                radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 100% 100%, rgba(0, 242, 255, 0.1) 0%, transparent 40%);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            overflow: hidden;
-        }
+    body {
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+      background-color: #020617;
+    }
 
-        .glow-orb {
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            background: var(--primary);
-            filter: blur(150px);
-            opacity: 0.1;
-            z-index: -1;
-            animation: drift 20s infinite alternate;
-        }
+    .bg-animate {
+      background:
+        radial-gradient(circle at top right, #1e1b4b, #020617),
+        radial-gradient(circle at bottom left, #1e1b4b, #020617);
+      height: 100vh;
+    }
 
-        @keyframes drift {
-            from { transform: translate(-20%, -20%); }
-            to { transform: translate(20%, 20%); }
-        }
+    .glow-sphere {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+      border-radius: 50%;
+      z-index: -1;
+      animation: pulse 8s infinite alternate;
+    }
 
-        .container {
-            background: var(--glass);
-            backdrop-filter: blur(25px);
-            border: 1px solid var(--glass-border);
-            padding: 3rem;
-            border-radius: 32px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            width: 100%;
-            max-width: 420px;
-            text-align: center;
-        }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.5; }
+      100% { transform: scale(1.2); opacity: 0.8; }
+    }
 
-        h2 {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-        }
+    .glass-card {
+      background: rgba(15, 23, 42, 0.3);
+      backdrop-filter: blur(25px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transform-style: preserve-3d;
+    }
 
-        p.subtitle {
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-        }
+    .inner-3d {
+      transform: translateZ(60px);
+    }
 
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            text-align: left;
-        }
+    .neon-input {
+      background: rgba(15, 23, 42, 0.6) !important;
+      border: 1px solid rgba(168, 85, 247, 0.2) !important;
+      transition: all 0.3s ease;
+    }
 
-        label {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
+    .neon-input:focus {
+      border-color: #a855f7 !important;
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+    }
 
-        input {
-            padding: 14px;
-            border-radius: 10px;
-            border: 1px solid var(--glass-border);
-            background: rgba(0,0,0,0.3);
-            color: white;
-        }
+    .btn-gradient {
+      background: linear-gradient(90deg, #a855f7, #6366f1);
+      transition: all 0.3s ease;
+    }
 
-        button {
-            padding: 16px;
-            border-radius: 12px;
-            border: none;
-            background: var(--primary);
-            color: white;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: var(--primary-hover);
-        }
-
-        .footer-text {
-            margin-top: 20px;
-            color: var(--text-muted);
-        }
-
-        .footer-text a {
-            color: var(--primary);
-            text-decoration: none;
-        }
-    </style>
+    .btn-gradient:hover:not(:disabled) {
+      box-shadow: 0 0 25px rgba(168, 85, 247, 0.5);
+      transform: scale(1.02);
+    }
+  </style>
 </head>
-<body>
 
-<div class="glow-orb"></div>
+<body class="bg-animate flex items-center justify-center relative px-4">
 
-<div class="container">
-    <h2>Secure Login</h2>
-    <p class="subtitle">Access your VisionCore Dashboard</p>
+  <div class="glow-sphere top-[-100px] right-[-100px]"></div>
+  <div class="glow-sphere bottom-[-100px] left-[-100px]" style="background: radial-gradient(circle, rgba(6,182,212,0.1) 0%, rgba(0,0,0,0) 70%);"></div>
 
-    <form id="loginForm">
-        <label>Email</label>
-        <input type="email" id="loginEmail" required>
+  <div class="w-full max-w-md">
+    <div class="glass-card rounded-[50px] p-10 text-center" data-tilt data-tilt-max="10" data-tilt-glare data-tilt-max-glare="0.1">
+      <div class="inner-3d">
+        <div class="w-24 h-24 mx-auto bg-gradient-to-br from-purple-500 to-indigo-600 rounded-[30px] flex items-center justify-center text-5xl mb-6 shadow-[0_0_30px_rgba(168,85,247,0.4)]">
+          🎓
+        </div>
 
-        <label>Password</label>
-        <input type="password" id="loginPassword" required>
+        <h1 class="text-4xl font-bold text-white mb-2 tracking-tight">
+          Student Hub <span class="text-cyan-400">AI</span>
+        </h1>
+        <p class="text-slate-400 text-sm mb-10 tracking-wide">
+          Enter the future of learning
+        </p>
 
-        <button type="submit">Login</button>
-    </form>
+        <form id="loginForm" class="space-y-6 text-left">
+          <!-- Username Input -->
+          <div>
+            <div class="relative">
+              <i class="fa-solid fa-user absolute left-5 top-1/2 -translate-y-1/2 text-slate-500"></i>
+              <input type="text" id="username" required placeholder="Username" class="neon-input w-full rounded-2xl pl-12 pr-6 py-4 text-white focus:outline-none" />
+            </div>
+          </div>
 
-    <p class="footer-text">
-        New user? <a href="/register.html">Register</a>
-    </p>
-</div>
+          <!-- Password Input (with Visibility Toggle Button) -->
+          <div>
+            <div class="relative">
+              <i class="fa-solid fa-shield-halved absolute left-5 top-1/2 -translate-y-1/2 text-slate-500"></i>
+              <input type="password" id="password" required placeholder="Password" class="neon-input w-full rounded-2xl pl-12 pr-14 py-4 text-white focus:outline-none" />
+              <!-- Eye Toggle Button Placement -->
+              <button type="button" onclick="togglePasswordVisibility()" class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-purple-400 transition-colors focus:outline-none">
+                <i id="toggleEyeIcon" class="fa-solid fa-eye"></i>
+              </button>
+            </div>
+          </div>
 
-<script>
-document.getElementById("loginForm").addEventListener("submit", function(e){
-    e.preventDefault();
+          <button type="submit" id="login-btn" class="btn-gradient w-full text-white font-bold py-4 rounded-2xl shadow-lg mt-4 disabled:opacity-50 disabled:cursor-not-allowed">
+            Sign In
+          </button>
+        </form>
 
-    const email = document.getElementById("loginEmail").value;
-    const password = document.getElementById("loginPassword").value;
+        <div class="mt-10 space-y-2">
+          <p class="text-slate-500 text-sm">Don't have an account?</p>
+          <a href="register.html" class="inline-block text-cyan-400 font-semibold hover:text-white transition-colors underline-offset-4 hover:underline">
+            Register for account
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    fetch("/login", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ email, password })
-    })
-    .then(res => res.json())
-    .then(data => {
-        alert(data.message);
+  <script>
+   const API_BASE = "https://student-hub-edith-backend.onrender.com";
 
-        if(data.message === "Login success"){
-            window.location.href = "/dashboard.html";
-        }
-    })
-    .catch(err => {
-        alert("Server error");
-        console.log(err);
+    VanillaTilt.init(document.querySelectorAll(".glass-card"), {
+      max: 10,
+      speed: 400,
+      glare: true,
+      "max-glare": 0.2,
     });
-});
-</script>
 
+    // PASSWORD VISIBILITY TOGGLE FUNCTION
+    function togglePasswordVisibility() {
+      const passwordInput = document.getElementById("password");
+      const eyeIcon = document.getElementById("toggleEyeIcon");
+
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        eyeIcon.classList.remove("fa-eye");
+        eyeIcon.classList.add("fa-eye-slash");
+      } else {
+        passwordInput.type = "password";
+        eyeIcon.classList.remove("fa-eye-slash");
+        eyeIcon.classList.add("fa-eye");
+      }
+    }
+
+    // FORM SUBMISSION HANDLER
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const btn = document.getElementById("login-btn");
+
+      btn.innerText = "Authenticating...";
+      btn.disabled = true;
+
+      try {
+        const response = await fetch(`${API_BASE}/api/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("userName", data.username);
+
+          btn.innerText = "Access Granted...";
+          setTimeout(() => {
+            window.location.href = "dashboard.html";
+          }, 800);
+        } else {
+          alert(data.error || "Login failed");
+          btn.innerText = "Sign In";
+          btn.disabled = false;
+        }
+      } catch (err) {
+        console.log(err);
+        alert("❌ Server connection failed");
+        btn.innerText = "Sign In";
+        btn.disabled = false;
+      }
+    });
+  </script>
 </body>
+
 </html>
