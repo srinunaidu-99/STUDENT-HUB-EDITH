@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisionCore AI | Create Identity</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #6366f1;
+            --bg: #0b0f1a;
+            --glass: rgba(255,255,255,0.03);
+            --glass-border: rgba(255,255,255,0.1);
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: white;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: var(--glass);
+            padding: 2.5rem;
+            border-radius: 20px;
+            width: 400px;
+            border: 1px solid var(--glass-border);
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            background: black;
+            color: white;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 14px;
+            background: var(--primary);
+            border: none;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #4f46e5;
+        }
+
+        .footer-text {
+            margin-top: 15px;
+        }
+
+        .footer-text a {
+            color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Create Account</h2>
+
+    <form id="registerForm">
+        <input type="text" id="regName" placeholder="Name" required>
+        <input type="email" id="regEmail" placeholder="Email" required>
+        <input type="password" id="regPassword" placeholder="Password" required>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <p class="footer-text">
+        Already user? <a href="/login.html">Login</a>
+    </p>
+</div>
+
+<script>
+document.getElementById("registerForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    const name = document.getElementById("regName").value;
+    const email = document.getElementById("regEmail").value;
+    const password = document.getElementById("regPassword").value;
+
+    fetch("/register", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name, email, password })
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert(data.message);
+
+        if(data.message === "Register success"){
+            window.location.href = "/login.html";
+        }
+    })
+    .catch(err => {
+        alert("Error");
+        console.log(err);
+    });
+});
+</script>
+
+</body>
+</html>
