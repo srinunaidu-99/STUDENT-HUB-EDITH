@@ -1,269 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VisionCore AI | Neural Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #6366f1;
-            --accent: #00f2ff;
-            --bg: #0b0f1a;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.1);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - EDITH Intelligence</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+    
+    body { 
+      font-family: 'Plus Jakarta Sans', sans-serif; 
+      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #030712 75%); 
+      overflow-x: hidden; 
+    }
+    
+    /* Advanced Glassmorphism Panel */
+    .glass-card {
+      background: rgba(10, 11, 23, 0.65);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .glass-card:hover { 
+      transform: translateY(-8px) scale(1.01); 
+      background: rgba(15, 17, 36, 0.8);
+      border-color: rgba(99, 102, 241, 0.3);
+      box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.25); 
+    }
 
-        body {
-            margin: 0;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg);
-            background-image: 
-                radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 90% 90%, rgba(0, 242, 255, 0.05) 0%, transparent 40%);
-            color: white;
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
+    /* Core Animated Orb Logo (Identical to Index) */
+    @keyframes pulseGlow {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 20px 2px rgba(99, 102, 241, 0.4), 0 0 40px 8px rgba(168, 85, 247, 0.2);
+      }
+      50% {
+        transform: scale(1.04);
+        box-shadow: 0 0 35px 6px rgba(99, 102, 241, 0.6), 0 0 60px 16px rgba(168, 85, 247, 0.4);
+      }
+    }
+    .edith-orb {
+      animation: pulseGlow 4s ease-in-out infinite;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+    }
 
-        /* --- Sidebar Navigation --- */
-        nav {
-            width: 80px;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid var(--glass-border);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 30px 0;
-            gap: 30px;
-        }
-
-        .nav-icon {
-            width: 45px; height: 45px;
-            border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: 0.3s;
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            font-size: 1.2rem;
-        }
-
-        .nav-icon:hover { border-color: var(--primary); color: var(--primary); }
-        .nav-icon.active { background: var(--primary); box-shadow: 0 0 20px rgba(99, 102, 241, 0.4); border: none; }
-
-        /* --- Main Content --- */
-        main {
-            flex: 1;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .header { text-align: center; margin-bottom: 30px; }
-        .header h1 { font-weight: 800; font-size: 2rem; margin: 0; letter-spacing: -1px; }
-        .header span { color: var(--primary); }
-
-        /* --- Camera Viewport with HUD --- */
-        .viewport-container {
-            position: relative;
-            width: 100%;
-            max-width: 640px;
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            padding: 10px;
-            border-radius: 24px;
-            box-shadow: 0 50px 100px -20px rgba(0,0,0,0.7);
-        }
-
-        .video-wrapper {
-            position: relative;
-            border-radius: 16px;
-            overflow: hidden;
-            background: #000;
-            aspect-ratio: 16/9;
-        }
-
-        video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transform: scaleX(-1); /* Mirror View */
-        }
-
-        /* Scanning HUD Overlay */
-        .hud-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            border: 2px solid transparent;
-            pointer-events: none;
-            box-sizing: border-box;
-            z-index: 2;
-        }
-
-        .corner {
-            position: absolute; width: 30px; height: 30px;
-            border: 2px solid var(--accent);
-            opacity: 0.5;
-        }
-        .top-left { top: 20px; left: 20px; border-right: 0; border-bottom: 0; }
-        .top-right { top: 20px; right: 20px; border-left: 0; border-bottom: 0; }
-        .bottom-left { bottom: 20px; left: 20px; border-right: 0; border-top: 0; }
-        .bottom-right { bottom: 20px; right: 20px; border-left: 0; border-top: 0; }
-
-        .scan-line {
-            position: absolute;
-            width: 100%; height: 2px;
-            background: linear-gradient(to right, transparent, var(--accent), transparent);
-            box-shadow: 0 0 15px var(--accent);
-            top: -2px;
-            display: none;
-        }
-
-        @keyframes scanMove {
-            0% { top: 0%; }
-            100% { top: 100%; }
-        }
-
-        /* --- Controls & Status --- */
-        .controls {
-            margin-top: 20px;
-            width: 100%;
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 15px;
-        }
-
-        button {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 18px;
-            border-radius: 16px;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        button:hover {
-            background: #4f46e5;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
-        }
-
-        .status-box {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 15px;
-        }
-
-        #emotionText {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--accent);
-            text-align: center;
-        }
-    </style>
+    /* Account Sliding Control Panel Transition */
+    #profilePanel {
+      backdrop-filter: blur(20px);
+      background: rgba(7, 8, 18, 0.85);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .panel-open { transform: translateX(0) !important; }
+  </style>
 </head>
-<body>
+<body class="text-gray-200 min-h-screen">
 
-<nav>
-    <div class="nav-icon">📊</div>
-    <div class="nav-icon active">📷</div>
-    <div class="nav-icon">👤</div>
-    <div class="nav-icon" onclick="location.href='index.html'">🚪</div>
-</nav>
+  <!-- Main System Top Header Layout -->
+  <header class="sticky top-0 z-40 bg-gray-950/20 backdrop-blur-md border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3.5">
+        <!-- Exact Logo Matching Index Page Structure -->
+        <div class="edith-orb w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold tracking-wider text-sm shadow-lg">
+          E
+        </div>
+        <h1 class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-indigo-300 bg-clip-text text-transparent">
+          EDITH <span class="text-xs font-semibold text-indigo-400 border border-indigo-500/30 px-1.5 py-0.5 rounded-md ml-1 bg-indigo-500/10">V3.2</span>
+        </h1>
+      </div>
 
-<main>
-    <div class="header">
-        <h1>NEURAL<span>CORE</span> DASHBOARD</h1>
-        <p style="color: #64748b; font-size: 0.9rem; margin-top: 5px;">Biometric Emotion Analysis System v2.0</p>
+      <!-- Right Interaction Hub Trigger -->
+      <div class="flex items-center gap-4">
+        <div onclick="toggleProfile()" class="flex items-center gap-3 cursor-pointer hover:bg-white/5 p-1.5 px-3 rounded-2xl border border-transparent hover:border-white/5 transition-all">
+          <div class="text-right hidden md:block">
+            <p id="navUserName" class="font-semibold text-gray-200 text-sm tracking-tight">Student</p>
+            <p class="text-[9px] text-indigo-400 font-bold uppercase tracking-widest mt-0.5">Control Registry</p>
+          </div>
+          <div class="w-9 h-9 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-sm font-bold text-white shadow-md ring-2 ring-indigo-500/20">
+            <i class="fa-solid fa-user-gear"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Flyout Settings Registry Node Drawer Panel -->
+  <div id="profilePanel" class="fixed top-0 right-0 h-full w-80 border-l border-white/5 z-50 shadow-2xl translate-x-full">
+    <div class="p-6 flex flex-col h-full">
+      <div class="flex justify-between items-center mb-8">
+        <h3 class="text-lg font-bold text-white tracking-tight">System Core Profile</h3>
+        <button onclick="toggleProfile()" class="text-gray-400 hover:text-white transition-colors text-base"><i class="fas fa-times"></i></button>
+      </div>
+
+      <div class="text-center mb-8">
+        <div class="edith-orb w-20 h-20 rounded-3xl mx-auto mb-4 flex items-center justify-center text-3xl text-white">
+          <i class="fa-solid fa-id-badge"></i>
+        </div>
+        <h4 id="profileName" class="text-xl font-bold text-white tracking-tight">Student</h4>
+        <p class="text-indigo-400 text-xs font-semibold tracking-wider uppercase mt-1">Authorized Operator</p>
+      </div>
+
+      <div class="space-y-3 flex-1">
+        <div class="bg-gray-950/50 p-4 rounded-2xl border border-white/5">
+          <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wider mb-1">Email Interface Vector</p>
+          <p id="profileEmail" class="text-sm text-gray-300 truncate font-medium">Not set</p>
+        </div>
+        <div class="bg-gray-950/50 p-4 rounded-2xl border border-white/5">
+          <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wider mb-1">Secure Line Contact</p>
+          <p id="profilePhone" class="text-sm text-gray-300 font-mono">+91 98765 43210</p>
+        </div>
+        <div class="bg-gray-950/50 p-4 rounded-2xl border border-white/5">
+          <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wider mb-1">Academic Direct Goal</p>
+          <p class="text-sm text-gray-300 font-medium">B.Tech / Degree</p>
+        </div>
+        <div class="bg-gray-950/50 p-4 rounded-2xl border border-white/5">
+          <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wider mb-1">Authorization Clearance</p>
+          <p class="text-sm text-gray-300 font-medium flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block animate-pulse"></span> Active Session
+          </p>
+        </div>
+      </div>
+
+      <button id="logoutBtn" class="w-full mt-6 py-3.5 bg-white/5 hover:bg-red-500/20 text-gray-400 hover:text-red-300 border border-white/10 hover:border-red-500/30 rounded-2xl font-semibold text-sm transition-all flex items-center justify-center gap-2">
+        <i class="fas fa-sign-out-alt"></i> Kill Active Session
+      </button>
+    </div>
+  </div>
+
+  <!-- Primary Hub Workspace -->
+  <main class="max-w-7xl mx-auto px-6 py-12 sm:py-16">
+    <div class="mb-14">
+      <h2 class="text-3xl sm:text-5xl font-bold mb-3 tracking-tight text-white">
+        Welcome Back, <span id="welcomeName" class="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Operator!</span>
+      </h2>
+      <p class="text-gray-400 text-sm sm:text-base font-light tracking-wide">
+        System interfaces operational. Choose a tool matrix module to begin task execution.
+      </p>
     </div>
 
-    <div class="viewport-container">
-        <div class="video-wrapper">
-            <div class="hud-overlay">
-                <div class="corner top-left"></div>
-                <div class="corner top-right"></div>
-                <div class="corner bottom-left"></div>
-                <div class="corner bottom-right"></div>
-                <div id="scanLine" class="scan-line"></div>
-            </div>
-            
-            <video id="video" autoplay playsinline></video>
+    <!-- Interface Modules Grid View -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <!-- Module 1: Chat Interface -->
+      <div onclick="window.location.href='index.html'" class="glass-card rounded-[32px] p-8 cursor-pointer group">
+        <div class="w-14 h-14 bg-indigo-600/20 border border-indigo-500/30 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-md shadow-indigo-500/10 group-hover:bg-indigo-600 group-hover:text-white text-indigo-400 transition-all duration-300">
+          <i class="fa-solid fa-brain"></i>
         </div>
+        <h3 class="text-xl font-bold mb-2 group-hover:text-indigo-400 text-white tracking-tight transition-colors">AI Intelligence Lab</h3>
+        <p class="text-gray-400 text-sm font-light leading-relaxed mb-8">
+          Engage EDITH core nodes to solve engineering puzzles, compose code, or synthesize data records.
+        </p>
+        <span class="text-indigo-400 text-sm font-semibold flex items-center gap-2 tracking-wide">
+          Connect Terminal <i class="fas fa-arrow-right text-xs group-hover:translate-x-1.5 transition-transform"></i>
+        </span>
+      </div>
 
-        <div class="controls">
-            <button id="btn">Initiate Neural Scan</button>
-            <div class="status-box">
-                <p id="emotionText">SYSTEM READY</p>
-            </div>
+      <!-- Module 2: Document Vault Vault -->
+      <div onclick="window.location.href='notes.html'" class="glass-card rounded-[32px] p-8 cursor-pointer group">
+        <div class="w-14 h-14 bg-purple-600/20 border border-purple-500/30 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-md shadow-purple-500/10 group-hover:bg-purple-600 group-hover:text-white text-purple-400 transition-all duration-300">
+          <i class="fa-solid fa-folder-closed"></i>
         </div>
+        <h3 class="text-xl font-bold mb-2 group-hover:text-purple-400 text-white tracking-tight transition-colors">Digital Vault Storage</h3>
+        <p class="text-gray-400 text-sm font-light leading-relaxed mb-8">
+          Review generated analytical transcripts, study parameters, and curated structured system memories.
+        </p>
+        <span class="text-purple-400 text-sm font-semibold flex items-center gap-2 tracking-wide">
+          Unlock Records <i class="fas fa-arrow-right text-xs group-hover:translate-x-1.5 transition-transform"></i>
+        </span>
+      </div>
+
+      <!-- Module 3: Specialized Task Pipelines -->
+      <div onclick="window.location.href='aitools.html'" class="glass-card rounded-[32px] p-8 cursor-pointer group">
+        <div class="w-14 h-14 bg-cyan-600/20 border border-cyan-500/30 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-md shadow-cyan-500/10 group-hover:bg-cyan-600 group-hover:text-white text-cyan-400 transition-all duration-300">
+          <i class="fa-solid fa-bolt"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-2 group-hover:text-cyan-400 text-white tracking-tight transition-colors">Specialized Task Pipelines</h3>
+        <p class="text-gray-400 text-sm font-light leading-relaxed mb-8">
+          Accelerated macro utility processors built for semantic content building and complex asset manipulation.
+        </p>
+        <span class="text-cyan-400 text-sm font-semibold flex items-center gap-2 tracking-wide">
+          Initialize Suite <i class="fas fa-arrow-right text-xs group-hover:translate-x-1.5 transition-transform"></i>
+        </span>
+      </div>
+
     </div>
-</main>
+  </main>
 
-<canvas id="canvas" style="display:none;"></canvas>
+  <script>
+    window.onload = () => {
+      // SECURITY VERIFICATION CHECK
+      const token = localStorage.getItem('token');
+      if (!token) {
+        window.location.href = 'login.html';
+        return;
+      }
 
-<script>
-    const video = document.getElementById('video');
-    const btn = document.getElementById('btn');
-    const emotionText = document.getElementById('emotionText');
-    const scanLine = document.getElementById('scanLine');
+      // INTEGRATE LOCAL SYSTEM PARAMETERS
+      const savedName = localStorage.getItem('userName');
+      const savedEmail = localStorage.getItem('userEmail');
 
-    // ✅ START CAMERA
-    navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } })
-    .then(stream => {
-        video.srcObject = stream;
-    })
-    .catch(err => {
-        emotionText.innerText = "CAMERA ERROR";
-        alert("Please enable camera access.");
+      if (savedName) {
+        document.getElementById('navUserName').innerText = savedName;
+        document.getElementById('profileName').innerText = savedName;
+        document.getElementById('welcomeName').innerText = savedName + '!';
+      }
+
+      if (savedEmail) {
+        document.getElementById('profileEmail').innerText = savedEmail;
+      }
+    };
+
+    // TERMINATE SECURE SESSION
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.clear();
+      window.location.href = 'login.html';
     });
 
-    // ✅ ANALYSIS LOGIC
-    btn.addEventListener("click", () => {
-        // Start Scanning Animation
-        scanLine.style.display = "block";
-        scanLine.style.animation = "scanMove 2s linear infinite";
-        emotionText.innerText = "SCANNING...";
+    function toggleProfile() {
+      const panel = document.getElementById('profilePanel');
+      panel.classList.toggle('panel-open');
+    }
 
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        ctx.drawImage(video, 0, 0);
-
-        const imageData = canvas.toDataURL('image/png');
-
-        // Use your Server IP
-       fetch("https://student-hub-edith-backend.onrender.com/detect-emotion", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ image: imageData })
-        })
-        .then(res => res.json())
-        .then(data => {
-            // Stop animation and show result
-            scanLine.style.display = "none";
-            scanLine.style.animation = "none";
-            emotionText.innerText = (data.emotion || "UNKNOWN").toUpperCase();
-        })
-        .catch(err => {
-            scanLine.style.display = "none";
-            emotionText.innerText = "SERVER ERROR";
-            console.error(err);
-        });
+    // Intercept bounding click events to clear focus states outside drawer panel
+    document.addEventListener('click', (e) => {
+      const panel = document.getElementById('profilePanel');
+      const trigger = document.querySelector('[onclick="toggleProfile()"]');
+      if (!panel.contains(e.target) && !trigger.contains(e.target) && panel.classList.contains('panel-open')) {
+        panel.classList.remove('panel-open');
+      }
     });
-</script>
-
+  </script>
 </body>
 </html>
