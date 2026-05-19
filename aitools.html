@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Specialized Pipelines - EDITH Intelligence</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+    
+    body { 
+      font-family: 'Plus Jakarta Sans', sans-serif; 
+      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #030712 75%); 
+      overflow-x: hidden; 
+    }
+    
+    /* Advanced Glassmorphism Elements */
+    .glass-panel {
+      background: rgba(10, 11, 23, 0.75);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    
+    .glass-card {
+      background: rgba(10, 11, 23, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    /* Core Animated Orb Logo */
+    @keyframes pulseGlow {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 20px 2px rgba(99, 102, 241, 0.4), 0 0 40px 8px rgba(168, 85, 247, 0.2);
+      }
+      50% {
+        transform: scale(1.04);
+        box-shadow: 0 0 35px 6px rgba(99, 102, 241, 0.6), 0 0 60px 16px rgba(168, 85, 247, 0.4);
+      }
+    }
+    .edith-orb {
+      animation: pulseGlow 4s ease-in-out infinite;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+    }
+
+    /* Active Tab Glow Tracking */
+    .active-tab {
+      background: rgba(99, 102, 241, 0.15) !important;
+      border-color: rgba(99, 102, 241, 0.4) !important;
+      color: #fff !important;
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.1);
+    }
+  </style>
+</head>
+<body class="text-gray-200 min-h-screen">
+
+  <!-- Navigation Bar Header -->
+  <header class="bg-gray-950/20 backdrop-blur-md border-b border-white/5 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3.5 cursor-pointer" onclick="window.location.href='dashboard.html'">
+        <div class="edith-orb w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold tracking-wider text-sm shadow-lg">
+          E
+        </div>
+        <h1 class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-indigo-300 bg-clip-text text-transparent">
+          EDITH <span class="text-xs font-semibold text-cyan-400 border border-cyan-500/30 px-1.5 py-0.5 rounded-md ml-1 bg-cyan-500/10">PIPELINES</span>
+        </h1>
+      </div>
+      
+      <button onclick="window.location.href='dashboard.html'" class="px-4 py-2 text-xs font-semibold bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-all flex items-center gap-2">
+        <i class="fa-solid fa-arrow-left"></i> Back to Control Matrix
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Pipeline Panel Workspace -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
+    
+    <div class="mb-10 text-center sm:text-left">
+      <span class="text-[10px] uppercase tracking-widest font-bold text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-2.5 py-1 rounded-md inline-block mb-3">Macro Utility Array</span>
+      <h2 class="text-2xl sm:text-4xl font-bold text-white tracking-tight mb-2">Specialized Task Modules</h2>
+      <p class="text-gray-400 text-sm font-light">Isolate text parameters, process rapid formatting structures, or refactor engine configurations instantly.</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
+      
+      <!-- Left Controls: Switcher Pipeline Tab Targets -->
+      <div class="lg:col-span-1 space-y-2 flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible p-1 gap-2 lg:gap-0">
+        <button onclick="switchPipeline('refactor')" id="btn-refactor" class="active-tab w-full whitespace-nowrap text-left px-4 py-3.5 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 text-gray-400 text-xs font-semibold tracking-wide transition-all flex items-center gap-3">
+          <i class="fa-solid fa-code text-cyan-400 text-sm"></i> Code Refactor Matrix
+        </button>
+        <button onclick="switchPipeline('grammar')" id="btn-grammar" class="w-full whitespace-nowrap text-left px-4 py-3.5 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 text-gray-400 text-xs font-semibold tracking-wide transition-all flex items-center gap-3">
+          <i class="fa-solid fa-wand-magic-sparkles text-purple-400 text-sm"></i> Grammar Optimizer
+        </button>
+        <button onclick="switchPipeline('converter')" id="btn-converter" class="w-full whitespace-nowrap text-left px-4 py-3.5 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 text-gray-400 text-xs font-semibold tracking-wide transition-all flex items-center gap-3">
+          <i class="fa-solid fa-database text-emerald-400 text-sm"></i> Data Parser Vector
+        </button>
+      </div>
+
+      <!-- Right Panel: Processing Terminal Workspace IO -->
+      <div class="lg:col-span-3 glass-panel rounded-3xl p-6 sm:p-8 shadow-xl relative">
+        
+        <!-- Active Module Description Tracker Header -->
+        <div class="border-b border-white/5 pb-4 mb-6">
+          <h3 id="pipelineTitle" class="text-lg font-bold text-white tracking-tight flex items-center gap-2">
+            <i class="fa-solid fa-code text-cyan-400"></i> Code Refactor Matrix
+          </h3>
+          <p id="pipelineDesc" class="text-xs text-gray-400 font-light mt-1">Cleans syntax code styling blocks, eliminates runtime anomalies, and structures optimal logic arrays cleanly.</p>
+        </div>
+
+        <!-- Inputs and Outputs Terminal Deck Layout -->
+        <div class="space-y-6">
+          <div>
+            <label id="inputLabel" class="block text-[10px] uppercase font-bold tracking-wider text-gray-400 mb-2">Target Source Payload</label>
+            <textarea id="sourceInput" placeholder="Paste target content block here to run operational synthesis..." 
+              class="w-full h-44 bg-gray-900/60 border border-white/10 focus:border-indigo-500/40 rounded-2xl p-4 text-sm font-mono outline-none transition-all placeholder-gray-600 shadow-inner resize-none text-gray-200"></textarea>
+          </div>
+
+          <!-- Dynamic Action Execution Hub -->
+          <div class="flex items-center justify-between flex-wrap gap-4">
+            <div id="processingLoader" class="hidden items-center gap-2 text-xs font-medium text-indigo-400">
+              <i class="fa-solid fa-circle-notch animate-spin text-sm"></i> Processing compilation nodes...
+            </div>
+            <div id="idleStatus" class="text-xs text-gray-500 flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block"></span> Engine Node Operational
+            </div>
+            
+            <button onclick="processPipelineData()" class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 active:scale-95 text-white font-bold text-xs tracking-wider rounded-xl transition-all shadow-lg shadow-indigo-600/10 flex items-center gap-2">
+              <i class="fa-solid fa-gear"></i> RUN ENGINE CONTEXT
+            </button>
+          </div>
+
+          <!-- Output Node Panel Base -->
+          <div class="relative pt-2">
+            <div class="flex justify-between items-center mb-2">
+              <label class="block text-[10px] uppercase font-bold tracking-wider text-gray-400">Synthesized Compilation Output</label>
+              <button onclick="copyOutputContent()" id="copyBtn" class="text-[11px] text-indigo-400 hover:text-indigo-300 font-semibold transition-all flex items-center gap-1.5 bg-indigo-500/5 hover:bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-1 rounded-lg">
+                <i class="fa-regular fa-copy"></i> Copy Record
+              </button>
+            </div>
+            <div id="outputContainer" class="w-full h-44 bg-gray-950/80 border border-white/5 rounded-2xl p-4 text-sm font-mono overflow-y-auto whitespace-pre text-gray-300 select-all shadow-inner">
+<!-- Compiled result will stream internally inside here -->
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    let activePipeline = 'refactor';
+
+    const pipelineData = {
+      refactor: {
+        title: "Code Refactor Matrix",
+        desc: "Cleans syntax code styling blocks, eliminates runtime anomalies, and structures optimal logic arrays cleanly.",
+        label: "Target Source Payload",
+        icon: "fa-code text-cyan-400",
+        sample: "function calculation(a,b){\nvar res = a+b;\nconsole.log('Result is:'+res);\nreturn res;\n}"
+      },
+      grammar: {
+        title: "Grammar Optimizer",
+        desc: "Resolves linguistic layout faults, cleans copy syntax framing metrics, and improves technical vocabulary structure context.",
+        label: "Raw Text Target Document",
+        icon: "fa-wand-magic-sparkles text-purple-400",
+        sample: "i am writing code but server error is comming. please check why it is happening and solve it fast."
+      },
+      converter: {
+        title: "Data Parser Vector",
+        desc: "Converts raw JSON formatting metrics, extracts structured data tokens, and maps legible key arrays neatly.",
+        label: "Raw JSON Object Input",
+        icon: "fa-database text-emerald-400",
+        sample: '{"status":200,"data":{"user":"Srinivasarao Pokala","role":"Founder","system":"EDITH Core"}}'
+      }
+    };
+
+    window.onload = () => {
+      // SECURITY VERIFICATION CONTROL CHECK
+      const token = localStorage.getItem('token');
+      if (!token) {
+        window.location.href = 'login.html';
+        return;
+      }
+      // Populate defaults setup
+      document.getElementById('sourceInput').value = pipelineData[activePipeline].sample;
+    };
+
+    function switchPipeline(type) {
+      activePipeline = type;
+      
+      // Update UI configuration buttons state tracker
+      ['refactor', 'grammar', 'converter'].forEach(p => {
+        document.getElementById(`btn-${p}`).classList.remove('active-tab');
+      });
+      document.getElementById(`btn-${type}`).classList.add('active-tab');
+
+      // Refresh text contents mappings variables
+      const data = pipelineData[type];
+      document.getElementById('pipelineTitle').innerHTML = `<i class="fa-solid ${data.icon}"></i> ${data.title}`;
+      document.getElementById('pipelineDesc').innerText = data.desc;
+      document.getElementById('inputLabel').innerText = data.label;
+      document.getElementById('sourceInput').value = data.sample;
+      document.getElementById('outputContainer').innerText = "";
+    }
+
+    function processPipelineData() {
+      const input = document.getElementById('sourceInput').value.trim();
+      const outputBox = document.getElementById('outputContainer');
+      const loader = document.getElementById('processingLoader');
+      const idle = document.getElementById('idleStatus');
+
+      if (!input) {
+        alert("Please append data source matrix inside target configuration window.");
+        return;
+      }
+
+      loader.classList.remove('hidden');
+      loader.classList.add('flex');
+      idle.classList.add('hidden');
+      outputBox.innerText = "Compiling matrix stream clusters...";
+
+      // Local Micro Process Automation Models Engine Engine simulation
+      setTimeout(() => {
+        loader.classList.remove('flex');
+        loader.classList.add('hidden');
+        idle.classList.remove('hidden');
+
+        let completeOutput = "";
+        if (activePipeline === 'refactor') {
+          completeOutput = `// EDITH Optimized Struct Node Array\n// Founder Default: SRINIVASARAO POKALA\n\nconst calculateSum = (paramA, paramB) => {\n    const transactionResult = paramA + paramB;\n    console.log(\`[EDITH Engine Cluster] Execution Result: \${transactionResult}\`);\n    return transactionResult;\n};`;
+        } else if (activePipeline === 'grammar') {
+          completeOutput = "Execution Summary Matrix State:\n\n\"I am currently developing code execution stacks; however, a server deployment architecture runtime error is persistently emerging. Kindly analyze the core logging trace nodes to expedite a standard resolution.\"";
+        } else if (activePipeline === 'converter') {
+          try {
+            const parsedObj = JSON.parse(input);
+            completeOutput = `/* EDITH Formatted JSON Dictionary Matrix Output */\n\n` + JSON.stringify(parsedObj, null, 4);
+          } catch(e) {
+            completeOutput = `/* Compiler Failure Trace Log */\n\n[ERROR]: Inbound structure parsing payload mismatch sequence. Verified JSON array validation failed runtime metrics.`;
+          }
+        }
+
+        outputBox.innerText = completeOutput;
+      }, 1200);
+    }
+
+    function copyOutputContent() {
+      const outputText = document.getElementById('outputContainer').innerText;
+      const copyBtn = document.getElementById('copyBtn');
+      if (!outputText || outputText.includes("Compiling matrix")) return;
+
+      navigator.clipboard.writeText(outputText).then(() => {
+        copyBtn.innerHTML = '<i class="fa-solid fa-check text-emerald-400"></i> Record Copied';
+        setTimeout(() => {
+          copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy Record';
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
