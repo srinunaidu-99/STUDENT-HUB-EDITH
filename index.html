@@ -4,705 +4,480 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EDITH - Intelligence Hub</title>
 
-    <title>EDITH AI</title>
-
-    <!-- Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
-    <!-- Icons -->
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
-
-    <!-- Markdown Styling -->
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
-        * {
-            box-sizing: border-box;
-        }
-
         body {
-            margin: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background:
-                radial-gradient(circle at top,
-                    #1e1b4b 0%,
-                    #020617 55%);
-            color: white;
+            background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #030712 70%);
             overflow: hidden;
         }
 
-        /* SCROLLBAR */
-
+        /* Custom Scrollbar */
         .chat-container::-webkit-scrollbar {
             width: 6px;
         }
-
-        .chat-container::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-        }
-
         .chat-container::-webkit-scrollbar-track {
             background: transparent;
         }
+        .chat-container::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.2);
+            border-radius: 10px;
+        }
+        .chat-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(99, 102, 241, 0.4);
+        }
 
-        /* MESSAGE ANIMATION */
+        /* Core Orb Animations */
+        @keyframes pulseGlow {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 25px 2px rgba(99, 102, 241, 0.4), 0 0 50px 10px rgba(168, 85, 247, 0.2);
+            }
+            50% {
+                transform: scale(1.03);
+                box-shadow: 0 0 40px 8px rgba(99, 102, 241, 0.6), 0 0 70px 20px rgba(168, 85, 247, 0.4);
+            }
+        }
+        .edith-orb {
+            animation: pulseGlow 4s ease-in-out infinite;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+        }
 
+        /* Smooth slide in for incoming messages */
         @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(16px) scale(0.99);
             }
-
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
-
         .animate-msg {
-            animation: slideIn 0.25s ease;
+            animation: slideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* AI BUBBLE */
+        /* Mic Pulsing Effect when recording */
+        @keyframes micPulse {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
+            70% { box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .mic-active {
+            animation: micPulse 1.5s infinite;
+            background-color: #ef4444 !important;
+            color: white !important;
+            border-color: #f87171 !important;
+        }
 
-        .ai-bubble {
-            background: rgba(17, 24, 39, 0.75);
-            backdrop-filter: blur(14px);
+        /* Glassmorphism Classes */
+        .glass-panel {
+            background: rgba(10, 11, 23, 0.75);
+            backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 18px 18px 18px 6px;
-            color: #e5e7eb;
         }
-
-        /* USER BUBBLE */
-
+        .ai-bubble {
+            background: rgba(23, 24, 51, 0.6);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            color: #f3f4f6;
+            border-radius: 20px 20px 20px 4px;
+        }
         .user-bubble {
-            background: linear-gradient(135deg,
-                    #4f46e5,
-                    #4338ca);
-            border-radius: 18px 18px 6px 18px;
+            background: linear-gradient(135deg, #4f46e5, #3730a3);
             color: white;
-            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.25);
+            border-radius: 20px 20px 4px 20px;
+            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.25);
         }
 
-        /* MARKDOWN */
-
-        .markdown-body-content {
-            color: #e5e7eb;
-            background: transparent !important;
-            font-size: 15px;
-            line-height: 1.8;
-        }
-
-        .markdown-body-content h1,
-        .markdown-body-content h2,
-        .markdown-body-content h3 {
-            font-weight: 700;
-            margin-top: 20px;
-            margin-bottom: 10px;
-        }
-
-        .markdown-body-content p {
+        /* Code Block Copy Enhancement Wrapper */
+        .code-block-wrapper {
+            position: relative;
             margin: 12px 0;
+            width: 100%;
         }
-
-        .markdown-body-content ul {
-            padding-left: 20px;
-        }
-
-        .markdown-body-content li {
-            margin: 8px 0;
-        }
-
-        .markdown-body-content pre {
+        pre {
             background: #020617 !important;
-            padding: 16px;
+            padding: 18px 16px 16px 16px;
             border-radius: 12px;
             overflow-x: auto;
             border: 1px solid rgba(255, 255, 255, 0.05);
+            max-width: 100%;
         }
-
-        .markdown-body-content code {
+        code {
             color: #a5b4fc;
+            font-size: 0.875rem;
+            white-space: pre;
+        }
+        .copy-code-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+        .copy-code-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
         }
 
-        /* INPUT */
-
-        textarea {
-            scrollbar-width: none;
-        }
-
-        textarea::-webkit-scrollbar {
-            display: none;
-        }
-
-        /* TYPING DOTS */
-
+        /* Typing Dots Animation */
         .typing-dot {
-            width: 7px;
-            height: 7px;
+            animation: typingBounce 1.4s infinite ease-in-out both;
+            width: 6px;
+            height: 6px;
+            background-color: #a5b4fc;
             border-radius: 50%;
-            background: #a5b4fc;
-            animation: bounce 1.4s infinite ease-in-out both;
+            display: inline-block;
         }
-
-        .typing-dot:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .typing-dot:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        @keyframes bounce {
-
-            0%,
-            80%,
-            100% {
-                transform: scale(0);
-            }
-
-            40% {
-                transform: scale(1);
-            }
-        }
-
-        /* MIC ACTIVE */
-
-        .mic-active {
-            background: #ef4444 !important;
-            color: white !important;
-            border-color: #ef4444 !important;
-        }
-
-        /* ORB */
-
-        @keyframes pulseGlow {
-
-            0%,
-            100% {
-                transform: scale(1);
-                box-shadow:
-                    0 0 30px rgba(99, 102, 241, 0.5);
-            }
-
-            50% {
-                transform: scale(1.05);
-                box-shadow:
-                    0 0 50px rgba(99, 102, 241, 0.8);
-            }
-        }
-
-        .edith-orb {
-            animation: pulseGlow 4s infinite ease-in-out;
-            background: linear-gradient(135deg,
-                    #6366f1,
-                    #a855f7);
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typingBounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
         }
     </style>
 </head>
 
-<body>
+<body class="text-gray-100 min-h-screen flex items-center justify-center p-0 sm:p-4">
 
-    <!-- MAIN -->
-
-    <div class="w-full h-screen flex flex-col">
-
-        <!-- HEADER -->
-
-        <div
-            class="h-16 border-b border-white/5 flex items-center justify-between px-6 bg-black/20 backdrop-blur-xl">
-
-            <div class="flex items-center gap-4">
-
-                <div
-                    class="edith-orb w-11 h-11 rounded-2xl flex items-center justify-center font-bold text-lg">
-                    E
-                </div>
-
-                <div>
-                    <h1 class="font-bold text-lg tracking-tight">
-                        EDITH AI
-                    </h1>
-
-                    <p class="text-xs text-indigo-300">
-                        Advanced Intelligence Assistant
-                    </p>
-                </div>
-
+<div class="w-full max-w-5xl h-screen sm:h-[92vh] flex flex-col glass-panel sm:rounded-3xl shadow-2xl relative overflow-hidden">
+    
+    <!-- Top Navbar (Cleaned & High-Tech Upgraded) -->
+    <div class="p-4 border-b border-white/5 flex justify-between items-center bg-gray-950/20 px-6">
+        <div class="flex items-center gap-3.5">
+            <div class="edith-orb w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold tracking-wider text-sm shadow-lg shadow-indigo-500/30">
+                E
             </div>
-
-            <div class="hidden sm:flex items-center gap-6 text-xs">
-
-                <div>
-                    <span class="text-gray-500 block">
-                        STATUS
-                    </span>
-
-                    <span class="text-emerald-400">
-                        ONLINE
-                    </span>
-                </div>
-
-                <div>
-                    <span class="text-gray-500 block">
-                        LATENCY
-                    </span>
-
-                    <span class="text-indigo-400">
-                        14ms
-                    </span>
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- CHAT AREA -->
-
-        <div id="chatArea"
-            class="flex-1 overflow-y-auto px-4 sm:px-8 py-6 space-y-4 chat-container">
-
-            <!-- WELCOME -->
-
-            <div id="welcomeScreen"
-                class="h-full flex flex-col items-center justify-center text-center">
-
-                <div
-                    class="edith-orb w-24 h-24 rounded-3xl flex items-center justify-center text-4xl mb-6">
-                    <i class="fa-solid fa-brain"></i>
-                </div>
-
-                <h1 class="text-4xl font-bold mb-3">
-                    Welcome to EDITH
+            <div>
+                <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-indigo-300 bg-clip-text text-transparent">
+                    EDITH <span class="text-xs font-semibold text-indigo-400 border border-indigo-500/30 px-1.5 py-0.5 rounded-md ml-1.5 bg-indigo-500/10">V3.2</span>
                 </h1>
-
-                <p class="text-gray-400 max-w-md leading-relaxed">
-                    Ask anything, generate code,
-                    analyze documents,
-                    create notes,
-                    brainstorm ideas,
-                    and chat naturally.
+                <p class="text-[10px] uppercase tracking-widest text-indigo-400 font-bold flex items-center gap-1.5 mt-0.5">
+                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block animate-pulse"></span>
+                    Operator: <span id="displayUserName">Student</span>
                 </p>
-
             </div>
-
         </div>
-
-        <!-- INPUT -->
-
-        <div
-            class="sticky bottom-0 w-full p-4 bg-[#0b1120]/80 backdrop-blur-xl border-t border-white/5">
-
-            <div class="relative max-w-4xl mx-auto">
-
-                <textarea id="msg" rows="1"
-                    placeholder="Message EDITH..."
-                    class="w-full resize-none overflow-hidden bg-[#111827]
-                    border border-white/10 rounded-2xl py-4 pl-5 pr-36
-                    text-sm outline-none focus:border-indigo-500
-                    transition-all text-white placeholder-gray-500"></textarea>
-
-                <div
-                    class="absolute right-3 bottom-3 flex items-center gap-2">
-
-                    <!-- MIC -->
-
-                    <button onclick="toggleVoiceInput()"
-                        id="micBtn"
-                        class="w-10 h-10 rounded-xl bg-white/5
-                        hover:bg-white/10 border border-white/10
-                        transition-all">
-
-                        <i class="fa-solid fa-microphone"></i>
-
-                    </button>
-
-                    <!-- SEND -->
-
-                    <button onclick="sendMsg()"
-                        class="w-10 h-10 rounded-xl
-                        bg-indigo-600 hover:bg-indigo-500
-                        transition-all text-white">
-
-                        <i class="fa-solid fa-arrow-up"></i>
-
-                    </button>
-
-                </div>
-
+        
+        <!-- Live Infrastructure Monitoring Metrics -->
+        <div class="hidden sm:flex items-center gap-4 text-right">
+            <div class="text-[11px] font-medium text-gray-400">
+                <span class="text-gray-500 uppercase block text-[9px] tracking-wider font-bold">Latency</span>
+                <span class="text-emerald-400 font-mono">14ms</span>
             </div>
-
+            <div class="w-px h-6 bg-white/10"></div>
+            <div class="text-[11px] font-medium text-gray-400">
+                <span class="text-gray-500 uppercase block text-[9px] tracking-wider font-bold">Core Load</span>
+                <span class="text-indigo-400 font-mono">2.4%</span>
+            </div>
         </div>
-
     </div>
 
-    <script>
+    <!-- Chat Space -->
+    <div id="chatArea" class="flex-1 overflow-y-auto p-6 space-y-6 chat-container">
+        <!-- Rebranded Welcome Screen -->
+        <div id="welcomeScreen" class="flex flex-col justify-center items-center mt-24 text-center px-4">
+            <div class="edith-orb w-20 h-20 rounded-3xl flex items-center justify-center text-3xl text-white mb-6">
+                <i class="fa-solid fa-brain"></i>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-bold mb-2 tracking-tight text-white">
+                How can I assist you today?
+            </h2>
+            <p class="text-gray-400 text-sm max-w-sm font-light leading-relaxed">
+                I can process documents, parse voice input, analyze complex media datasets, or just run brainstorm sessions.
+            </p>
+        </div>
+    </div>
 
-        // =========================
-        // CONFIG
-        // =========================
+    <!-- Input Dashboard -->
+    <div class="p-4 sm:p-6 bg-gray-950/40 border-t border-white/5 backdrop-blur-md">
+        <div class="flex flex-wrap gap-2 mb-3.5 px-1">
+            <!-- Mode Selector Toggles -->
+            <button onclick="toggleSummarize()" id="sumBtn" class="px-4 py-1.5 rounded-full border border-white/10 hover:border-indigo-500/40 bg-white/5 text-[11px] font-medium transition-all flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-gray-400" id="sumDot"></span>
+                Summarize Notes: <span id="sumStatus" class="font-bold text-gray-400">OFF</span>
+            </button>
 
-        const API_BASE =
-            window.location.hostname === "127.0.0.1"
-                ? "http://localhost:5000"
-                : "https://student-hub-edith-backend.onrender.com";
+            <label class="px-4 py-1.5 rounded-full border border-white/10 hover:border-indigo-500/40 bg-white/5 text-[11px] font-medium cursor-pointer transition-all flex items-center gap-1.5">
+                <i class="fa-solid fa-paperclip text-indigo-400"></i> Attach Files
+                <input type="file" id="fileInput" multiple class="hidden" onchange="updateFileStatus()" />
+            </label>
+            <span id="fileCount" class="text-[11px] text-indigo-300 self-center font-medium"></span>
+        </div>
 
-        const chatArea =
-            document.getElementById("chatArea");
+        <!-- System Control Interaction Line -->
+        <div class="flex gap-3 items-center relative">
+            <input type="text" id="msg" placeholder="Ask EDITH anything..." 
+                class="w-full bg-gray-900/80 border border-white/10 focus:border-indigo-500/50 rounded-2xl pl-5 pr-28 py-4 outline-none transition-all text-sm placeholder-gray-500 text-gray-100 shadow-inner"
+                onkeypress="if(event.key==='Enter')sendMsg()" />
 
-        const textarea =
-            document.getElementById("msg");
+            <div class="absolute right-2 flex items-center gap-1.5">
+                <!-- Microphone System Input Button -->
+                <button onclick="toggleVoiceInput()" id="micBtn" title="Voice Input"
+                    class="w-10 h-10 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 rounded-xl flex items-center justify-center transition-all">
+                    <i class="fa-solid fa-microphone text-sm"></i>
+                </button>
+                
+                <!-- Action Send Button -->
+                <button onclick="sendMsg()" class="w-10 h-10 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white rounded-xl flex items-center justify-center transition-all shadow-lg shadow-indigo-600/20">
+                    <i class="fa-solid fa-paper-plane text-xs"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
-        const welcomeScreen =
-            document.getElementById("welcomeScreen");
+<script>
+const API_BASE = window.location.hostname === "127.0.0.1"
+    ? "http://localhost:5000"
+    : "https://student-hub-edith-backend.onrender.com";
 
-        // =========================
-        // AUTO RESIZE
-        // =========================
+const chatArea = document.getElementById("chatArea");
+const welcomeScreen = document.getElementById("welcomeScreen");
+let isSummarize = false;
 
-        textarea.addEventListener("input", () => {
-            textarea.style.height = "auto";
-            textarea.style.height =
-                textarea.scrollHeight + "px";
+// Audio Configuration (Web Speech API Integration)
+let recognition;
+let isRecording = false;
+
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = 'en-US';
+
+    recognition.onstart = () => {
+        isRecording = true;
+        document.getElementById("micBtn").classList.add("mic-active");
+        document.getElementById("msg").placeholder = "Listening intelligently...";
+    };
+
+    recognition.onend = () => {
+        isRecording = false;
+        document.getElementById("micBtn").classList.remove("mic-active");
+        document.getElementById("msg").placeholder = "Ask EDITH anything...";
+    };
+
+    recognition.onresult = (event) => {
+        const speechToText = event.results[0][0].transcript;
+        document.getElementById("msg").value = speechToText;
+    };
+
+    recognition.onerror = (err) => {
+        console.error("Speech Architecture Fault:", err);
+        isRecording = false;
+        document.getElementById("micBtn").classList.remove("mic-active");
+    };
+}
+
+function toggleVoiceInput() {
+    if (!recognition) {
+        alert("Voice recognition is not supported natively in this browser window configuration.");
+        return;
+    }
+    if (isRecording) {
+        recognition.stop();
+    } else {
+        try {
+            recognition.start();
+        } catch(e) {
+            console.warn("Recognition structure is already active contextually.", e);
+        }
+    }
+}
+
+window.onload = () => {
+    const token = localStorage.getItem("token");
+    const name = localStorage.getItem("userName");
+
+    if (!token) {
+        window.location.href = "login.html";
+        return;
+    }
+    if (name) {
+        document.getElementById("displayUserName").innerText = name;
+    }
+};
+
+function toggleSummarize() {
+    isSummarize = !isSummarize;
+    const statusText = document.getElementById("sumStatus");
+    const dotElement = document.getElementById("sumDot");
+    const btn = document.getElementById("sumBtn");
+
+    if (isSummarize) {
+        statusText.innerText = "ON";
+        statusText.className = "font-bold text-indigo-400";
+        dotElement.className = "w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse";
+        btn.classList.add("border-indigo-500/40", "bg-indigo-500/5");
+    } else {
+        statusText.innerText = "OFF";
+        statusText.className = "font-bold text-gray-400";
+        dotElement.className = "w-1.5 h-1.5 rounded-full bg-gray-400";
+        btn.classList.remove("border-indigo-500/40", "bg-indigo-500/5");
+    }
+}
+
+function updateFileStatus() {
+    const files = document.getElementById("fileInput").files;
+    document.getElementById("fileCount").innerText = files.length > 0 
+        ? `•  ${files.length} ready` 
+        : "";
+}
+
+// Intercepts custom formatting hooks to enrich code blocks with clear actions
+function cleanAndParseMarkdown(text) {
+    let rawHtml = marked.parse(text);
+    const container = document.createElement('div');
+    container.innerHTML = rawHtml;
+
+    // Process code segments to add inline copy utilities
+    const preBlocks = container.querySelectorAll('pre');
+    preBlocks.forEach((pre) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'copy-code-btn';
+        copyBtn.innerHTML = '<i class="fa-regular fa-copy mr-1"></i> Copy';
+        
+        copyBtn.onclick = () => {
+            const codeText = pre.querySelector('code')?.innerText || pre.innerText;
+            navigator.clipboard.writeText(codeText).then(() => {
+                copyBtn.innerHTML = '<i class="fa-solid fa-check text-emerald-400 mr-1"></i> Copied';
+                setTimeout(() => {
+                    copyBtn.innerHTML = '<i class="fa-regular fa-copy mr-1"></i> Copy';
+                }, 2000);
+            });
+        };
+
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+        wrapper.appendChild(copyBtn);
+    });
+
+    return container.innerHTML;
+}
+
+function addMessage(text, isUser) {
+    if (welcomeScreen && welcomeScreen.style.display !== "none") {
+        welcomeScreen.style.display = "none";
+    }
+
+    const div = document.createElement("div");
+    div.className = `flex ${isUser ? "justify-end" : "justify-start"} animate-msg w-full`;
+
+    div.innerHTML = `
+        <div class="p-4 px-5 max-w-[85%] text-sm leading-relaxed shadow-sm ${isUser ? "user-bubble" : "ai-bubble break-words overflow-hidden"}">
+            ${isUser ? escapeHtml(text) : cleanAndParseMarkdown(text)}
+        </div>
+    `;
+
+    chatArea.appendChild(div);
+    chatArea.scrollTop = chatArea.scrollHeight;
+    return div.querySelector("div");
+}
+
+function showTypingIndicator() {
+    const div = document.createElement("div");
+    div.id = "edithTypingIndicator";
+    div.className = "flex justify-start animate-msg";
+    div.innerHTML = `
+        <div class="p-4 px-5 ai-bubble flex items-center gap-1.5 shadow-sm">
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+        </div>
+    `;
+    chatArea.appendChild(div);
+    chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+function removeTypingIndicator() {
+    const indicator = document.getElementById("edithTypingIndicator");
+    if (indicator) indicator.remove();
+}
+
+function escapeHtml(text) {
+    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+async function sendMsg() {
+    const input = document.getElementById("msg");
+    const fileInput = document.getElementById("fileInput");
+    const message = input.value.trim();
+    const token = localStorage.getItem("token");
+
+    if (!message && fileInput.files.length === 0) return;
+
+    addMessage(message || "Analyzing documents...", true);
+    input.value = "";
+
+    const formData = new FormData();
+    formData.append("message", message);
+    formData.append("isSummarize", isSummarize);
+
+    for (let file of fileInput.files) {
+        formData.append("files", file);
+    }
+
+    // Initialize temporary display layout
+    showTypingIndicator();
+
+    try {
+        const res = await fetch(`${API_BASE}/api/chat`, {
+            method: "POST",
+            headers: { Authorization: `Bearer ${token}` },
+            body: formData
         });
 
-        // =========================
-        // ENTER SEND
-        // =========================
+        removeTypingIndicator();
 
-        textarea.addEventListener("keydown", (e) => {
-
-            if (
-                e.key === "Enter" &&
-                !e.shiftKey
-            ) {
-                e.preventDefault();
-                sendMsg();
-            }
-
-        });
-
-        // =========================
-        // SPEECH
-        // =========================
-
-        let recognition;
-        let isRecording = false;
-
-        if (
-            'webkitSpeechRecognition' in window ||
-            'SpeechRecognition' in window
-        ) {
-
-            const SpeechRecognition =
-                window.SpeechRecognition ||
-                window.webkitSpeechRecognition;
-
-            recognition =
-                new SpeechRecognition();
-
-            recognition.continuous = false;
-            recognition.interimResults = false;
-            recognition.lang = "en-US";
-
-            recognition.onstart = () => {
-
-                isRecording = true;
-
-                document
-                    .getElementById("micBtn")
-                    .classList.add("mic-active");
-
-                textarea.placeholder =
-                    "Listening...";
-
-            };
-
-            recognition.onend = () => {
-
-                isRecording = false;
-
-                document
-                    .getElementById("micBtn")
-                    .classList.remove("mic-active");
-
-                textarea.placeholder =
-                    "Message EDITH...";
-
-            };
-
-            recognition.onresult = (event) => {
-
-                const text =
-                    event.results[0][0].transcript;
-
-                textarea.value = text;
-
-            };
-
+        if (!res.ok) {
+            const err = await res.text();
+            addMessage("❌ " + err, false);
+            return;
         }
 
-        function toggleVoiceInput() {
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        const aiBubble = addMessage("", false);
+        let aiText = "";
 
-            if (!recognition) {
-                alert("Voice not supported.");
-                return;
-            }
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
 
-            if (isRecording) {
-                recognition.stop();
-            } else {
-                recognition.start();
-            }
-
+            aiText += decoder.decode(value, { stream: true });
+            aiBubble.innerHTML = cleanAndParseMarkdown(aiText);
+            chatArea.scrollTop = chatArea.scrollHeight;
         }
-
-        // =========================
-        // ESCAPE HTML
-        // =========================
-
-        function escapeHtml(text) {
-
-            return text
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;");
-
-        }
-
-        // =========================
-        // ADD MESSAGE
-        // =========================
-
-        function addMessage(
-            text,
-            isUser = false
-        ) {
-
-            if (welcomeScreen) {
-                welcomeScreen.style.display = "none";
-            }
-
-            const wrapper =
-                document.createElement("div");
-
-            wrapper.className =
-                `w-full flex ${isUser
-                    ? "justify-end"
-                    : "justify-start"
-                } animate-msg`;
-
-            if (isUser) {
-
-                wrapper.innerHTML = `
-                    <div class="user-bubble p-4 px-5 max-w-[75%] text-sm leading-relaxed">
-                        ${escapeHtml(text)}
-                    </div>
-                `;
-
-            } else {
-
-                wrapper.innerHTML = `
-                    <div class="flex gap-3 items-start max-w-[80%]">
-
-                        <div class="w-9 h-9 rounded-xl
-                            bg-indigo-600
-                            flex items-center justify-center
-                            text-white shrink-0">
-                            <i class="fa-solid fa-brain"></i>
-                        </div>
-
-                        <div class="ai-bubble p-4 px-5">
-                            <div class="markdown-body-content">
-                                ${marked.parse(text)}
-                            </div>
-                        </div>
-
-                    </div>
-                `;
-
-            }
-
-            chatArea.appendChild(wrapper);
-
-            chatArea.scrollTop =
-                chatArea.scrollHeight;
-
-            return wrapper;
-
-        }
-
-        // =========================
-        // TYPING
-        // =========================
-
-        function showTypingIndicator() {
-
-            const div =
-                document.createElement("div");
-
-            div.id = "typingIndicator";
-
-            div.className =
-                "flex justify-start animate-msg";
-
-            div.innerHTML = `
-                <div class="flex gap-3 items-start">
-
-                    <div class="w-9 h-9 rounded-xl
-                        bg-indigo-600
-                        flex items-center justify-center
-                        text-white">
-                        <i class="fa-solid fa-brain"></i>
-                    </div>
-
-                    <div class="ai-bubble px-5 py-4 flex gap-1.5">
-
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
-
-                    </div>
-
-                </div>
-            `;
-
-            chatArea.appendChild(div);
-
-            chatArea.scrollTop =
-                chatArea.scrollHeight;
-
-        }
-
-        function removeTypingIndicator() {
-
-            const el =
-                document.getElementById(
-                    "typingIndicator"
-                );
-
-            if (el) el.remove();
-
-        }
-
-        // =========================
-        // SEND MESSAGE
-        // =========================
-
-        async function sendMsg() {
-
-            const message =
-                textarea.value.trim();
-
-            if (!message) return;
-
-            // USER MSG
-
-            addMessage(message, true);
-
-            textarea.value = "";
-            textarea.style.height = "auto";
-
-            // TYPING
-
-            showTypingIndicator();
-
-            try {
-
-                const response =
-                    await fetch(
-                        `${API_BASE}/api/chat`,
-                        {
-                            method: "POST",
-                            headers: {
-                                "Content-Type":
-                                    "application/json"
-                            },
-                            body: JSON.stringify({
-                                message
-                            })
-                        }
-                    );
-
-                removeTypingIndicator();
-
-                if (!response.ok) {
-
-                    addMessage(
-                        "❌ Server Error",
-                        false
-                    );
-
-                    return;
-
-                }
-
-                // STREAM
-
-                const reader =
-                    response.body.getReader();
-
-                const decoder =
-                    new TextDecoder();
-
-                // CREATE EMPTY AI MESSAGE
-
-                const aiWrapper =
-                    addMessage("", false);
-
-                const markdownEl =
-                    aiWrapper.querySelector(
-                        ".markdown-body-content"
-                    );
-
-                let fullText = "";
-
-                while (true) {
-
-                    const {
-                        done,
-                        value
-                    } = await reader.read();
-
-                    if (done) break;
-
-                    fullText +=
-                        decoder.decode(value);
-
-                    markdownEl.innerHTML =
-                        marked.parse(fullText);
-
-                    chatArea.scrollTop =
-                        chatArea.scrollHeight;
-
-                }
-
-            } catch (err) {
-
-                console.error(err);
-
-                removeTypingIndicator();
-
-                addMessage(
-                    "❌ Connection Failed",
-                    false
-                );
-
-            }
-
-        }
-
-    </script>
+    } catch (err) {
+        console.error(err);
+        removeTypingIndicator();
+        addMessage("❌ Matrix Connection Interrupted (Server Failure)", false);
+    }
+
+    fileInput.value = "";
+    document.getElementById("fileCount").innerText = "";
+}
+</script>
 
 </body>
-
 </html>
