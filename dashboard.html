@@ -17,7 +17,6 @@
       width: 100%;
     }
     
-    /* Advanced Glassmorphism Panel with smooth 3D transitions */
     .glass-card {
       background: rgba(10, 11, 23, 0.55);
       backdrop-filter: blur(16px) saturate(120%);
@@ -32,7 +31,6 @@
       box-shadow: 0 30px 60px -15px rgba(99, 102, 241, 0.3), 0 0 30px 2px rgba(168, 85, 247, 0.15); 
     }
 
-    /* Core Animated Orb Logo */
     @keyframes pulseGlow {
       0%, 100% {
         transform: scale(1);
@@ -48,13 +46,11 @@
       background: linear-gradient(135deg, #6366f1, #a855f7);
     }
 
-    /* Flyout Profile Drawer Overlay System */
     #profilePanel {
       backdrop-filter: blur(24px);
       background: rgba(7, 8, 18, 0.95);
     }
 
-    /* Entry animations for UI elements */
     .fade-in-up {
       animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
@@ -130,7 +126,7 @@
         </div>
         <div class="bg-gray-950/50 p-4 rounded-2xl border border-white/5">
           <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wider mb-1">Academic Direct Goal</p>
-          <p class="text-sm text-gray-300 font-medium">B.Tech / Degree</p>
+          <p id="profileAcademic" class="text-sm text-gray-300 font-medium">Loading...</p>
         </div>
         <div class="bg-gray-950/50 p-4 rounded-2xl border border-white/5">
           <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wider mb-1">Authorization Clearance</p>
@@ -160,7 +156,7 @@
     <!-- Interface Modules Grid View -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
       
-      <!-- Module 1: Chat Interface -->
+      <!-- Module 1 -->
       <div onclick="window.location.href='index.html'" class="glass-card rounded-[32px] p-8 cursor-pointer group flex flex-col justify-between">
         <div>
           <div class="w-14 h-14 bg-indigo-600/20 border border-indigo-500/30 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-md shadow-indigo-500/10 group-hover:bg-indigo-600 group-hover:text-white text-indigo-400 transition-all duration-300">
@@ -176,7 +172,7 @@
         </span>
       </div>
 
-      <!-- Module 2: Document Vault Storage -->
+      <!-- Module 2 -->
       <div onclick="window.location.href='notes.html'" class="glass-card rounded-[32px] p-8 cursor-pointer group flex flex-col justify-between">
         <div>
           <div class="w-14 h-14 bg-purple-600/20 border border-purple-500/30 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-md shadow-purple-500/10 group-hover:bg-purple-600 group-hover:text-white text-purple-400 transition-all duration-300">
@@ -192,7 +188,7 @@
         </span>
       </div>
 
-      <!-- Module 3: Specialized Task Pipelines -->
+      <!-- Module 3 -->
       <div onclick="window.location.href='aitools.html'" class="glass-card rounded-[32px] p-8 cursor-pointer group flex flex-col justify-between">
         <div>
           <div class="w-14 h-14 bg-cyan-600/20 border border-cyan-500/30 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-md shadow-cyan-500/10 group-hover:bg-cyan-600 group-hover:text-white text-cyan-400 transition-all duration-300">
@@ -203,7 +199,6 @@
             Accelerated macro processors built for dynamic semantic building & complex asset manipulation.
           </p>
           
-          <!-- Micro Pipelines Badge List Widget -->
           <div class="space-y-2 mb-6 pointer-events-none">
             <div class="flex items-center justify-between p-2 rounded-xl bg-white/5 border border-white/5 text-[11px]">
               <span class="text-gray-300 flex items-center gap-2"><i class="fa-solid fa-code text-cyan-400"></i> Code Refactoring</span>
@@ -226,19 +221,20 @@
 
   <script>
     window.onload = () => {
-      // SECURITY AUTHENTICATION CHECK
       const token = localStorage.getItem('token');
       if (!token) {
         window.location.href = 'login.html';
         return;
       }
 
-      // INJECT RECOVERED DATA STREAMS DIRECTLY INTO UI INTERFACES
       const savedName = localStorage.getItem('userName');
       const savedEmail = localStorage.getItem('userEmail');
-      const savedPhone = localStorage.getItem('userPhone'); 
+      // బహుళ ఫోన్ కీస్ చెకింగ్
+      const savedPhone = localStorage.getItem('userPhone') || localStorage.getItem('phone') || localStorage.getItem('mobile'); 
+      // అకడమిక్ గోల్/బ్రాంచ్ చెకింగ్
+      const savedAcademic = localStorage.getItem('userAcademic') || localStorage.getItem('branch') || localStorage.getItem('course');
 
-      // Render User Names safely with strict text evaluation fallbacks
+      // Operator Name Injection
       if (savedName && savedName.trim() !== "") {
         document.getElementById('navUserName').innerText = savedName;
         document.getElementById('profileName').innerText = savedName;
@@ -249,34 +245,38 @@
         document.getElementById('welcomeName').innerText = "Operator!";
       }
 
-      // Render Email Vectors safely
+      // Email Vector Injection
       if (savedEmail && savedEmail.trim() !== "") {
         document.getElementById('profileEmail').innerText = savedEmail;
       } else {
         document.getElementById('profileEmail').innerText = "Not Configured";
       }
 
-      // Render Phone Lines safely
+      // Secure Phone Line Injection
       if (savedPhone && savedPhone.trim() !== "") {
         document.getElementById('profilePhone').innerText = savedPhone;
       } else {
         document.getElementById('profilePhone').innerText = "Not Configured";
       }
+
+      // Academic Direct Goal Injection (ఇక్కడ అప్‌డేట్ చేశాను)
+      if (savedAcademic && savedAcademic.trim() !== "") {
+        document.getElementById('profileAcademic').innerText = savedAcademic;
+      } else {
+        document.getElementById('profileAcademic').innerText = "B.Tech / Degree"; // డేటా లేకపోతే డిఫాల్ట్ వాల్యూ వస్తుంది
+      }
     };
 
-    // TERMINATE ACTIVE SECURE SESSION
     document.getElementById('logoutBtn').addEventListener('click', () => {
       localStorage.clear();
       window.location.href = 'login.html';
     });
 
-    // HARDWARE-ACCELERATED DRAWER TOGGLE
     function toggleProfile() {
       const panel = document.getElementById('profilePanel');
       panel.classList.toggle('translate-x-full');
     }
 
-    // DISMISS DRAWER WHEN CLICKING OUTSIDE
     document.addEventListener('click', (e) => {
       const panel = document.getElementById('profilePanel');
       const trigger = document.getElementById('profileTrigger');
