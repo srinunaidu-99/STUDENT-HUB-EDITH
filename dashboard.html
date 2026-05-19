@@ -30,7 +30,7 @@
       box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.25); 
     }
 
-    /* Core Animated Orb Logo (Identical to Index) */
+    /* Core Animated Orb Logo */
     @keyframes pulseGlow {
       0%, 100% {
         transform: scale(1);
@@ -61,7 +61,6 @@
   <header class="sticky top-0 z-40 bg-gray-950/20 backdrop-blur-md border-b border-white/5">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3.5">
-        <!-- Exact Logo Matching Index Page Structure -->
         <div class="edith-orb w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold tracking-wider text-sm shadow-lg">
           E
         </div>
@@ -85,7 +84,7 @@
     </div>
   </header>
 
-  <!-- Flyout Settings Registry Node Drawer Panel -->
+  <!-- Flyout Settings Registry Drawer Panel -->
   <div id="profilePanel" class="fixed top-0 right-0 h-full w-80 border-l border-white/5 z-50 shadow-2xl translate-x-full">
     <div class="p-6 flex flex-col h-full">
       <div class="flex justify-between items-center mb-8">
@@ -143,43 +142,62 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       
       <!-- Module 1: Chat Interface -->
-      <div onclick="window.location.href='index.html'" class="glass-card rounded-[32px] p-8 cursor-pointer group">
-        <div class="w-14 h-14 bg-indigo-600/20 border border-indigo-500/30 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-md shadow-indigo-500/10 group-hover:bg-indigo-600 group-hover:text-white text-indigo-400 transition-all duration-300">
-          <i class="fa-solid fa-brain"></i>
+      <div onclick="window.location.href='index.html'" class="glass-card rounded-[32px] p-8 cursor-pointer group flex flex-col justify-between">
+        <div>
+          <div class="w-14 h-14 bg-indigo-600/20 border border-indigo-500/30 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-md shadow-indigo-500/10 group-hover:bg-indigo-600 group-hover:text-white text-indigo-400 transition-all duration-300">
+            <i class="fa-solid fa-brain"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-2 group-hover:text-indigo-400 text-white tracking-tight transition-colors">AI Intelligence Lab</h3>
+          <p class="text-gray-400 text-sm font-light leading-relaxed mb-6">
+            Engage EDITH core nodes to solve engineering puzzles, compose code, or synthesize data records.
+          </p>
         </div>
-        <h3 class="text-xl font-bold mb-2 group-hover:text-indigo-400 text-white tracking-tight transition-colors">AI Intelligence Lab</h3>
-        <p class="text-gray-400 text-sm font-light leading-relaxed mb-8">
-          Engage EDITH core nodes to solve engineering puzzles, compose code, or synthesize data records.
-        </p>
-        <span class="text-indigo-400 text-sm font-semibold flex items-center gap-2 tracking-wide">
+        <span class="text-indigo-400 text-sm font-semibold flex items-center gap-2 tracking-wide mt-auto">
           Connect Terminal <i class="fas fa-arrow-right text-xs group-hover:translate-x-1.5 transition-transform"></i>
         </span>
       </div>
 
-      <!-- Module 2: Document Vault Vault -->
-      <div onclick="window.location.href='notes.html'" class="glass-card rounded-[32px] p-8 cursor-pointer group">
-        <div class="w-14 h-14 bg-purple-600/20 border border-purple-500/30 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-md shadow-purple-500/10 group-hover:bg-purple-600 group-hover:text-white text-purple-400 transition-all duration-300">
-          <i class="fa-solid fa-folder-closed"></i>
+      <!-- Module 2: Document Vault Storage -->
+      <div onclick="window.location.href='notes.html'" class="glass-card rounded-[32px] p-8 cursor-pointer group flex flex-col justify-between">
+        <div>
+          <div class="w-14 h-14 bg-purple-600/20 border border-purple-500/30 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-md shadow-purple-500/10 group-hover:bg-purple-600 group-hover:text-white text-purple-400 transition-all duration-300">
+            <i class="fa-solid fa-folder-closed"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-2 group-hover:text-purple-400 text-white tracking-tight transition-colors">Digital Vault Storage</h3>
+          <p class="text-gray-400 text-sm font-light leading-relaxed mb-6">
+            Review generated analytical transcripts, study parameters, and curated structured system memories.
+          </p>
         </div>
-        <h3 class="text-xl font-bold mb-2 group-hover:text-purple-400 text-white tracking-tight transition-colors">Digital Vault Storage</h3>
-        <p class="text-gray-400 text-sm font-light leading-relaxed mb-8">
-          Review generated analytical transcripts, study parameters, and curated structured system memories.
-        </p>
-        <span class="text-purple-400 text-sm font-semibold flex items-center gap-2 tracking-wide">
+        <span class="text-purple-400 text-sm font-semibold flex items-center gap-2 tracking-wide mt-auto">
           Unlock Records <i class="fas fa-arrow-right text-xs group-hover:translate-x-1.5 transition-transform"></i>
         </span>
       </div>
 
-      <!-- Module 3: Specialized Task Pipelines -->
-      <div onclick="window.location.href='aitools.html'" class="glass-card rounded-[32px] p-8 cursor-pointer group">
-        <div class="w-14 h-14 bg-cyan-600/20 border border-cyan-500/30 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-md shadow-cyan-500/10 group-hover:bg-cyan-600 group-hover:text-white text-cyan-400 transition-all duration-300">
-          <i class="fa-solid fa-bolt"></i>
+      <!-- Module 3: Specialized Task Pipelines (ENHANCED MODULE PART) -->
+      <div onclick="window.location.href='aitools.html'" class="glass-card rounded-[32px] p-8 cursor-pointer group flex flex-col justify-between">
+        <div>
+          <div class="w-14 h-14 bg-cyan-600/20 border border-cyan-500/30 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-md shadow-cyan-500/10 group-hover:bg-cyan-600 group-hover:text-white text-cyan-400 transition-all duration-300">
+            <i class="fa-solid fa-bolt"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-2 group-hover:text-cyan-400 text-white tracking-tight transition-colors">Specialized Pipelines</h3>
+          <p class="text-gray-400 text-sm font-light leading-relaxed mb-4">
+            Accelerated macro processors built for dynamic semantic building & complex asset manipulation.
+          </p>
+          
+          <!-- Micro Pipelines Badge List Widget -->
+          <div class="space-y-2 mb-6 pointer-events-none">
+            <div class="flex items-center justify-between p-2 rounded-xl bg-white/5 border border-white/5 text-[11px]">
+              <span class="text-gray-300 flex items-center gap-2"><i class="fa-solid fa-code text-cyan-400"></i> Code Refactoring</span>
+              <span class="text-cyan-400 font-mono text-[9px] bg-cyan-500/10 px-1.5 py-0.5 rounded-md border border-cyan-500/20">READY</span>
+            </div>
+            <div class="flex items-center justify-between p-2 rounded-xl bg-white/5 border border-white/5 text-[11px]">
+              <span class="text-gray-300 flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles text-purple-400"></i> Grammar AI Optimizer</span>
+              <span class="text-purple-400 font-mono text-[9px] bg-purple-500/10 px-1.5 py-0.5 rounded-md border border-purple-500/20">READY</span>
+            </div>
+          </div>
         </div>
-        <h3 class="text-xl font-bold mb-2 group-hover:text-cyan-400 text-white tracking-tight transition-colors">Specialized Task Pipelines</h3>
-        <p class="text-gray-400 text-sm font-light leading-relaxed mb-8">
-          Accelerated macro utility processors built for semantic content building and complex asset manipulation.
-        </p>
-        <span class="text-cyan-400 text-sm font-semibold flex items-center gap-2 tracking-wide">
+        
+        <span class="text-cyan-400 text-sm font-semibold flex items-center gap-2 tracking-wide mt-auto">
           Initialize Suite <i class="fas fa-arrow-right text-xs group-hover:translate-x-1.5 transition-transform"></i>
         </span>
       </div>
