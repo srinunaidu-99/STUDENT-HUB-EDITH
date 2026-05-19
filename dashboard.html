@@ -2,17 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Dashboard - EDITH Intelligence</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap');
     
-    body { 
+    html, body {
       font-family: 'Plus Jakarta Sans', sans-serif; 
       background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #030712 75%); 
-      overflow-x: hidden; 
+      overflow-x: hidden !important;
+      position: relative;
+      width: 100%;
     }
     
     /* Advanced Glassmorphism Panel with smooth 3D transitions */
@@ -46,17 +48,17 @@
       background: linear-gradient(135deg, #6366f1, #a855f7);
     }
 
-    /* Slidout Drawer Styling */
+    /* Flyout Profile Drawer Overlay System */
     #profilePanel {
       backdrop-filter: blur(24px);
-      background: rgba(7, 8, 18, 0.92);
+      background: rgba(7, 8, 18, 0.95);
     }
   </style>
 </head>
 <body class="text-gray-200 min-h-screen">
 
   <!-- Main System Top Header Layout -->
-  <header class="sticky top-0 z-40 bg-gray-950/20 backdrop-blur-md border-b border-white/5">
+  <header class="sticky top-0 z-40 bg-gray-950/20 backdrop-blur-md border-b border-white/5 w-full">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3.5">
         <div class="edith-orb w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold tracking-wider text-sm shadow-lg">
@@ -83,11 +85,11 @@
   </header>
 
   <!-- Flyout Settings Registry Drawer Panel -->
-  <div id="profilePanel" class="fixed top-0 right-0 h-full w-80 border-l border-white/5 z-50 shadow-2xl transform translate-x-full transition-transform duration-300 cubic-bezier(0.16, 1, 0.3, 1)">
+  <div id="profilePanel" class="fixed top-0 right-0 h-full w-72 sm:w-80 border-l border-white/5 z-50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out">
     <div class="p-6 flex flex-col h-full">
       <div class="flex justify-between items-center mb-8">
         <h3 class="text-lg font-bold text-white tracking-tight">System Core Profile</h3>
-        <button onclick="toggleProfile()" class="text-gray-400 hover:text-white transition-colors text-base">
+        <button onclick="toggleProfile()" class="text-gray-400 hover:text-white transition-colors text-base p-2">
           <i class="fas fa-times"></i>
         </button>
       </div>
@@ -100,7 +102,7 @@
         <p class="text-indigo-400 text-xs font-semibold tracking-wider uppercase mt-1">Authorized Operator</p>
       </div>
 
-      <!-- Scrollable Context Fields -->
+      <!-- Scrollable Context Fields (Dynamically Fed) -->
       <div class="space-y-3 flex-1 overflow-y-auto pr-1">
         <div class="bg-gray-950/50 p-4 rounded-2xl border border-white/5">
           <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wider mb-1">Email Interface Vector</p>
@@ -108,7 +110,7 @@
         </div>
         <div class="bg-gray-950/50 p-4 rounded-2xl border border-white/5">
           <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wider mb-1">Secure Line Contact</p>
-          <p id="profilePhone" class="text-sm text-gray-300 font-mono">+91 98765 43210</p>
+          <p id="profilePhone" class="text-sm text-gray-300 font-mono">Not set</p>
         </div>
         <div class="bg-gray-950/50 p-4 rounded-2xl border border-white/5">
           <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wider mb-1">Academic Direct Goal</p>
@@ -129,7 +131,7 @@
   </div>
 
   <!-- Primary Hub Workspace -->
-  <main class="max-w-7xl mx-auto px-6 py-12 sm:py-16">
+  <main class="max-w-7xl mx-auto px-6 py-12 sm:py-16 w-full">
     <div class="mb-14">
       <h2 class="text-3xl sm:text-5xl font-bold mb-3 tracking-tight text-white">
         Welcome Back, <span id="welcomeName" class="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Operator!</span>
@@ -140,7 +142,7 @@
     </div>
 
     <!-- Interface Modules Grid View -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
       
       <!-- Module 1: Chat Interface -->
       <div onclick="window.location.href='index.html'" class="glass-card rounded-[32px] p-8 cursor-pointer group flex flex-col justify-between">
@@ -215,9 +217,10 @@
         return;
       }
 
-      // INTEGRATE LOCAL SYSTEM PARAMETERS
+      // DATA MAPPING VECTOR INTO UI LAYERS
       const savedName = localStorage.getItem('userName');
       const savedEmail = localStorage.getItem('userEmail');
+      const savedPhone = localStorage.getItem('userPhone'); 
 
       if (savedName) {
         document.getElementById('navUserName').innerText = savedName;
@@ -227,6 +230,10 @@
 
       if (savedEmail) {
         document.getElementById('profileEmail').innerText = savedEmail;
+      }
+
+      if (savedPhone) {
+        document.getElementById('profilePhone').innerText = savedPhone;
       }
     };
 
@@ -247,7 +254,6 @@
       const panel = document.getElementById('profilePanel');
       const trigger = document.getElementById('profileTrigger');
       
-      // If the panel is open and click lands entirely outside both panel and nav-trigger button
       if (!panel.contains(e.target) && !trigger.contains(e.target) && !panel.classList.contains('translate-x-full')) {
         panel.classList.add('translate-x-full');
       }
