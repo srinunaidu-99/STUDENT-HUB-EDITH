@@ -15,70 +15,73 @@
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
       overflow-x: hidden;
-      background-color: #020617;
+      background-color: #030712;
     }
 
+    /* Premium Stationary Radial Glow Background */
     .bg-animate {
-      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #020617 75%);
+      background: radial-gradient(circle at 50% 50%, #0f172a 0%, #030712 100%);
       min-height: 100vh;
     }
 
+    /* Ambient Premium Blobs - Pulsing but stationary (No structural movement) */
     .blob {
       position: absolute;
       border-radius: 50%;
-      background: linear-gradient(to right, #6366f1, #a855f7);
-      filter: blur(80px);
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      filter: blur(120px);
       z-index: -1;
-      animation: float 12s infinite alternate;
+      animation: pulseGlowEffect 8s ease-in-out infinite alternate;
     }
 
-    @keyframes float {
-      from { transform: translate(0, 0) scale(1); }
-      to { transform: translate(60px, -30px) scale(1.15); }
+    @keyframes pulseGlowEffect {
+      0% { opacity: 0.15; transform: scale(1); }
+      100% { opacity: 0.3; transform: scale(1.1); }
     }
 
+    /* Luxury Cyber Glass Card */
     .glass-card {
-      background: rgba(15, 23, 42, 0.45);
-      backdrop-filter: blur(25px) saturate(180%);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      transform-style: preserve-3d;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      background: rgba(10, 15, 30, 0.7);
+      backdrop-filter: blur(30px) saturate(200%);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 0 50px rgba(168, 85, 247, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.1);
     }
 
-    .inner-3d {
-      transform: translateZ(60px);
-    }
-
+    /* Ultra-sleek Cyber Input Styling */
     .neon-input {
-      background: rgba(15, 23, 42, 0.6) !important;
-      border: 1px solid rgba(168, 85, 247, 0.2) !important;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      background: rgba(3, 7, 18, 0.6) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      transition: all 0.3s ease;
     }
 
     .neon-input:focus {
-      border-color: #a855f7 !important;
-      box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
-      background: rgba(15, 23, 42, 0.8) !important;
+      border-color: #38bdf8 !important; /* Premium Cyan-Purple Transition */
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+      background: rgba(3, 7, 18, 0.8) !important;
     }
 
+    /* Elegant Metallic Button Gradient */
     .btn-gradient {
-      background: linear-gradient(135deg, #a855f7, #6366f1);
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      background: linear-gradient(135deg, #7c3aed, #2563eb);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
     }
 
     .btn-gradient:hover:not(:disabled) {
-      box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
-      transform: translateY(-2px);
-      opacity: 0.95;
+      box-shadow: 0 0 25px rgba(124, 58, 237, 0.4);
+      transform: translateY(-1px);
+      filter: brightness(1.1);
     }
 
-    /* Core Animated Orb Logo matching Dashboard */
-    @keyframes pulseGlow {
-      0%, 100% { box-shadow: 0 0 20px 2px rgba(168, 85, 247, 0.4); }
-      50% { box-shadow: 0 0 35px 6px rgba(6, 182, 212, 0.5); }
+    /* Core Smooth Animated Orb Logo */
+    @keyframes orbAnimation {
+      0% { box-shadow: 0 0 15px rgba(124, 58, 237, 0.5); }
+      50% { box-shadow: 0 0 30px rgba(56, 189, 248, 0.6); }
+      100% { box-shadow: 0 0 15px rgba(124, 58, 237, 0.5); }
     }
     .shai-orb {
-      animation: pulseGlow 4s ease-in-out infinite;
+      animation: orbAnimation 3s ease-in-out infinite;
     }
 
     /* Custom Notification Toast */
@@ -98,70 +101,70 @@
 
   <!-- Dynamic Toast Overlay Container -->
   <div id="toastContainer" class="fixed top-6 z-50 pointer-events-none w-full max-w-sm px-4">
-    <div id="toast" class="toast-notification bg-slate-950/90 backdrop-blur-md border border-red-500/30 text-gray-200 px-5 py-4 rounded-2xl shadow-xl flex items-center gap-3 text-sm">
+    <div id="toast" class="toast-notification bg-slate-950/95 backdrop-blur-md border border-red-500/30 text-gray-200 px-5 py-4 rounded-2xl shadow-xl flex items-center gap-3 text-sm">
       <i id="toastIcon" class="fa-solid fa-circle-exclamation text-red-400 text-base"></i>
       <span id="toastMessage" class="font-medium">Notification message</span>
     </div>
   </div>
 
-  <div class="blob w-72 h-72 top-20 right-20 opacity-20"></div>
-  <div class="blob w-96 h-96 -bottom-20 -left-20 opacity-10" style="animation-delay: 3s; background: #6366f1;"></div>
+  <!-- Ambient Backdrop Lights (Constant positions) -->
+  <div class="blob w-80 h-80 top-1/4 left-1/4"></div>
+  <div class="blob w-96 h-96 bottom-1/4 right-1/4" style="background: #3b82f6; animation-delay: -3s;"></div>
 
   <div class="w-full max-w-lg">
-    <div class="glass-card rounded-[40px] shadow-2xl p-8 md:p-10" data-tilt data-tilt-max="4" data-tilt-glare data-tilt-max-glare="0.05">
+    <!-- Perfectly Contained Premium Card with Soft Tilt -->
+    <div class="glass-card rounded-[32px] p-8 md:p-10" data-tilt data-tilt-max="3" data-tilt-glare data-tilt-max-glare="0.03">
       
-      <div class="inner-3d">
+      <div>
         <!-- App Identity Logo Header -->
         <div class="text-center mb-8">
-          <div class="shai-orb w-16 h-16 mx-auto bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-xl text-white">
+          <div class="shai-orb w-14 h-14 mx-auto bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl flex items-center justify-center text-xl mb-4 shadow-xl text-white">
             <i class="fa-solid fa-user-plus"></i>
           </div>
-          <!-- Brand Identity Updated to EDITH -->
-          <h1 class="text-3xl font-bold text-white mb-1.5 tracking-tight">Join <span class="text-cyan-400">EDITH AI</span></h1>
-          <p class="text-slate-400 text-xs font-light tracking-wide">Create your student account node today</p>
+          <h1 class="text-3xl font-bold text-white mb-1.5 tracking-tight">Join <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">EDITH AI</span></h1>
+          <p class="text-slate-400 text-xs font-light tracking-wide">Create your secure gateway credentials</p>
         </div>
 
         <form id="regForm" class="space-y-4">
           <!-- Username Block -->
           <div>
-            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Username (For Login)</label>
+            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Username</label>
             <div class="relative group">
-              <i class="fa-solid fa-user absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-purple-400 transition-colors"></i>
-              <input type="text" id="username" required placeholder="john_doe" 
-                class="neon-input w-full rounded-2xl pl-12 pr-6 py-3.5 text-white text-sm focus:outline-none">
+              <i class="fa-solid fa-user absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-cyan-400 transition-colors"></i>
+              <input type="text" id="username" required placeholder="Enter username" 
+                class="neon-input w-full rounded-xl pl-12 pr-6 py-3.5 text-white text-sm focus:outline-none">
             </div>
           </div>
 
           <!-- Contact Metrics Grid Row -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Email Vector</label>
+              <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Email Address</label>
               <div class="relative group">
-                <i class="fa-solid fa-envelope absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-purple-400 transition-colors"></i>
-                <input type="email" id="email" required placeholder="email@edith.com" 
-                  class="neon-input w-full rounded-2xl pl-12 pr-6 py-3.5 text-white text-sm focus:outline-none">
+                <i class="fa-solid fa-envelope absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-cyan-400 transition-colors"></i>
+                <input type="email" id="email" required placeholder="name@domain.com" 
+                  class="neon-input w-full rounded-xl pl-12 pr-6 py-3.5 text-white text-sm focus:outline-none">
               </div>
             </div>
             <div>
-              <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Phone Link (Optional)</label>
+              <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Phone Number (Optional)</label>
               <div class="relative group">
-                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-xs group-focus-within:text-purple-400 transition-colors">+91</span>
-                <input type="tel" id="phone" maxlength="10" placeholder="987654..." 
-                  class="neon-input w-full rounded-2xl pl-12 pr-4 py-3.5 text-white text-sm focus:outline-none">
+                <i class="fa-solid fa-phone absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-cyan-400 transition-colors"></i>
+                <input type="tel" id="phone" maxlength="15" placeholder="Enter contact number" 
+                  class="neon-input w-full rounded-xl pl-12 pr-4 py-3.5 text-white text-sm focus:outline-none">
               </div>
             </div>
           </div>
 
           <!-- Create Password Input Block -->
           <div>
-            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Create Password</label>
+            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Password</label>
             <div class="relative group">
-              <i class="fa-solid fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-purple-400 transition-colors"></i>
+              <i class="fa-solid fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-cyan-400 transition-colors"></i>
               <input type="password" id="pass" required placeholder="••••••••" 
-                class="neon-input w-full rounded-2xl pl-12 pr-14 py-3.5 text-white text-sm focus:outline-none">
+                class="neon-input w-full rounded-xl pl-12 pr-14 py-3.5 text-white text-sm focus:outline-none">
               
-              <!-- Primary Visibility Eye Trigger -->
-              <button type="button" onclick="toggleFieldVisibility('pass', 'toggleEyeIcon1')" class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-purple-400 transition-colors focus:outline-none py-1">
+              <button type="button" onclick="toggleFieldVisibility('pass', 'toggleEyeIcon1')" class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors focus:outline-none py-1">
                 <i id="toggleEyeIcon1" class="fa-solid fa-eye text-xs"></i>
               </button>
             </div>
@@ -169,38 +172,45 @@
 
           <!-- Verify Password Input Block -->
           <div>
-            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Confirm Password</label>
+            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Confirm Password</label>
             <div class="relative group">
-              <i class="fa-solid fa-shield-halved absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-purple-400 transition-colors"></i>
+              <i class="fa-solid fa-shield-halved absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-cyan-400 transition-colors"></i>
               <input type="password" id="confirmPass" required placeholder="••••••••" 
-                class="neon-input w-full rounded-2xl pl-12 pr-14 py-3.5 text-white text-sm focus:outline-none">
+                class="neon-input w-full rounded-xl pl-12 pr-14 py-3.5 text-white text-sm focus:outline-none">
               
-              <!-- Secondary Visibility Eye Trigger -->
-              <button type="button" onclick="toggleFieldVisibility('confirmPass', 'toggleEyeIcon2')" class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-purple-400 transition-colors focus:outline-none py-1">
+              <button type="button" onclick="toggleFieldVisibility('confirmPass', 'toggleEyeIcon2')" class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors focus:outline-none py-1">
                 <i id="toggleEyeIcon2" class="fa-solid fa-eye text-xs"></i>
               </button>
             </div>
           </div>
 
-          <!-- Registration Core Action Trigger -->
+          <!-- Action Button -->
           <button type="submit" id="reg-btn"
-            class="btn-gradient w-full text-white font-semibold py-4 rounded-2xl shadow-xl transition-all mt-4 disabled:opacity-50 text-sm tracking-wide">
+            class="btn-gradient w-full text-white font-semibold py-4 rounded-xl shadow-xl transition-all mt-4 disabled:opacity-50 text-sm tracking-wide">
             CREATE ACCOUNT NODE
           </button>
         </form>
 
-          <p class="text-center mt-6 text-slate-500 text-xs font-light">
-            Already a certified member? <a href="login.html" class="text-cyan-400 font-medium hover:text-purple-400 hover:underline ml-1">Sign In</a>
-          </p>
+        <p class="text-center mt-6 text-slate-400 text-xs font-light">
+          Already a certified member? <a href="login.html" class="text-cyan-400 font-medium hover:text-purple-400 hover:underline ml-1">Sign In</a>
+        </p>
       </div>
     </div>
   </div>
 
   <script>
     const API_BASE = "https://student-hub-edith-backend.onrender.com";
-    VanillaTilt.init(document.querySelectorAll(".glass-card"), { max: 4, speed: 400, glare: true, "max-glare": 0.1 });
+    
+    // Balanced Tilt Configuration for flawless appearance
+    VanillaTilt.init(document.querySelectorAll(".glass-card"), { 
+      max: 3, 
+      speed: 800, 
+      glare: true, 
+      "max-glare": 0.05,
+      scale: 1.01
+    });
 
-    // CUSTOM SYSTEM NOTIFICATION OVERLAY
+    // Custom System Notifications
     function showNotification(message, isSuccess = false) {
       const toast = document.getElementById("toast");
       const icon = document.getElementById("toastIcon");
@@ -222,7 +232,7 @@
       }, 4000);
     }
 
-    // REUSABLE FIELD VISIBILITY CONTROL ROUTINE
+    // Toggle Field Visibility Feature
     function toggleFieldVisibility(fieldId, iconId) {
       const targetField = document.getElementById(fieldId);
       const targetIcon = document.getElementById(iconId);
@@ -238,7 +248,7 @@
       }
     }
 
-    // REGISTRATION FORM SUBMISSION DISPATCHER
+    // Submission Handler
     document.getElementById('regForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       
