@@ -196,11 +196,14 @@
                     <span class="block text-[9px] text-gray-500 font-light">Engine System Integration</span>
                 </div>
             </div>
-            <button onclick="localStorage.clear(); window.location.reload();" title="Logout Stream" class="text-gray-500 hover:text-red-400 transition-all text-xs p-1">
+            <button onclick="localStorage.clear(); window.location.href = 'login.html';" title="Logout Stream" class="text-gray-500 hover:text-red-400 transition-all text-xs p-1">
                 <i class="fa-solid fa-power-off"></i>
             </button>
         </div>
     </aside>
+
+    <!-- Overlay backdrop for mobile view sidebar drawer -->
+    <div id="sidebarBackdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-20 hidden lg:hidden"></div>
 
     <!-- RIGHT PANEL: CHAT INTERACTION CORE SYSTEM LAYOUT -->
     <div class="flex-1 flex flex-col h-full relative overflow-hidden bg-transparent">
@@ -209,7 +212,7 @@
         <div class="p-4 border-b border-white/5 flex justify-between items-center bg-gray-950/20 px-6">
             <div class="flex items-center gap-3.5">
                 <!-- Mobile Sidebar Responsive Drawer Toggle Button -->
-                <button onclick="toggleMobileSidebar()" class="lg:hidden w-9 h-9 border border-white/10 bg-white/5 rounded-xl flex items-center justify-center text-gray-300">
+                <button onclick="toggleMobileSidebar()" class="lg:hidden w-9 h-9 border border-white/10 bg-white/5 rounded-xl flex items-center justify-center text-gray-300 transition-colors hover:bg-white/10">
                     <i class="fa-solid fa-bars text-sm"></i>
                 </button>
 
@@ -303,7 +306,6 @@ const API_BASE = window.location.hostname === "127.0.0.1" || window.location.hos
     : "https://student-hub-edith-backend.onrender.com";
 
 const chatArea = document.getElementById("chatArea");
-const welcomeScreen = document.getElementById("welcomeScreen");
 const historyLogContainer = document.getElementById("historyLogContainer");
 let isSummarize = false;
 let currentActiveSessionId = null; 
@@ -371,7 +373,6 @@ window.onload = () => {
     if (name) {
         document.getElementById("displayUserName").innerText = name;
     }
-    // Call background load history tree data pipeline
     loadChatHistory();
 };
 
@@ -410,12 +411,11 @@ function renderSidebarHistoryList(historyArray) {
         return;
     }
 
-    historyLogContainer.innerHTML = ""; // Wipe container layer clean to start iteration updates
+    historyLogContainer.innerHTML = ""; 
     
     historyArray.forEach((session) => {
         const id = session._id || session.id;
         
-        // Isolate message body string parameters to construct standard visible header block names snippets
         let displayTitle = "Optimization Process Array";
         if (session.messages && session.messages.length > 0) {
             const firstUserMessage = session.messages.find(m => m.role === "user");
@@ -428,7 +428,11 @@ function renderSidebarHistoryList(historyArray) {
 
         const btn = document.createElement("button");
         btn.id = `sidebar-session-${id}`;
-        btn.onclick = () => loadSelectedSessionStream(id);
+        btn.onclick = () => {
+            loadSelectedSessionStream(id);
+            // Auto close mobile drawer when an option is tapped
+            if (window.innerWidth < 1024) toggleMobileSidebar();
+        };
         btn.className = `w-full text-left px-3 py-2.5 rounded-xl border border-transparent hover:bg-white/5 text-gray-400 text-xs font-medium tracking-wide transition-all flex items-center gap-2.5 overflow-hidden text-ellipsis whitespace-nowrap group`;
         
         if (id === currentActiveSessionId) {
@@ -448,19 +452,15 @@ function renderSidebarHistoryList(historyArray) {
 function loadSelectedSessionStream(sessionId) {
     currentActiveSessionId = sessionId;
     
-    // Manage dynamic styling highlights structures elements loop tracking state switches
     const blocks = historyLogContainer.querySelectorAll("button");
     blocks.forEach(b => b.classList.remove("history-active"));
     
     const targetedActiveBtn = document.getElementById(`sidebar-session-${sessionId}`);
     if (targetedActiveBtn) targetedActiveBtn.classList.add("history-active");
 
-    // Pull out core record from memory metrics local map object array tree container data store
     const targetedSession = globallyCachedHistoryTree.find(s => (s._id || s.id) === sessionId);
     
-    // Reset view container matrix blocks to prepare drawing stream contents
     chatArea.innerHTML = "";
-    if (welcomeScreen) welcomeScreen.style.display = "none";
 
     if (targetedSession && Array.isArray(targetedSession.messages)) {
         targetedSession.messages.forEach(msg => {
@@ -475,11 +475,9 @@ function loadSelectedSessionStream(sessionId) {
 function createNewChatSession() {
     currentActiveSessionId = null;
     
-    // Clear active styling tracking marks safely from sidebar array rows
     const blocks = historyLogContainer.querySelectorAll("button");
     blocks.forEach(b => b.classList.remove("history-active"));
 
-    // Draw native blank dashboard metrics layer interface configurations mapping view setups
     chatArea.innerHTML = `
         <div id="welcomeScreen" class="flex flex-col justify-center items-center mt-24 text-center px-4 animate-msg">
             <div class="edith-orb w-20 h-20 rounded-3xl flex items-center justify-center text-3xl text-white mb-6">
@@ -494,10 +492,9 @@ function createNewChatSession() {
         </div>
     `;
     
-    // Mobile viewport slide helper interaction auto closure execution handling
     const sidebar = document.getElementById("sidebarPanel");
     if (!sidebar.classList.contains("hidden") && window.innerWidth < 1024) {
-        sidebar.classList.add("hidden");
+        toggleMobileSidebar();
     }
     
     document.getElementById("msg").focus();
@@ -505,16 +502,23 @@ function createNewChatSession() {
 
 function toggleMobileSidebar() {
     const sidebar = document.getElementById("sidebarPanel");
+    const backdrop = document.getElementById("sidebarBackdrop");
+    
     if (sidebar.classList.contains("hidden")) {
         sidebar.classList.remove("hidden");
-        sidebar.classList.add("fixed", "inset-y-0", "left-0", "w-64", "shadow-3xl");
+        sidebar.classList.add("fixed", "inset-y-0", "left-0", "w-64", "shadow-3xl", "bg-gray-950");
+        backdrop.classList.remove("hidden");
     } else {
         sidebar.classList.add("hidden");
-        sidebar.classList.remove("fixed", "inset-y-0", "left-0", "w-64", "shadow-3xl");
+        sidebar.classList.remove("fixed", "inset-y-0", "left-0", "w-64", "shadow-3xl", "bg-gray-950");
+        backdrop.classList.add("hidden");
     }
 }
 
 function appendHistoryMessageToUI(text, isUser) {
+    const welcome = document.getElementById("welcomeScreen");
+    if (welcome) welcome.remove();
+
     const div = document.createElement("div");
     div.className = `flex ${isUser ? "justify-end" : "justify-start"} animate-msg w-full`;
     div.innerHTML = `
@@ -585,22 +589,20 @@ function cleanAndParseMarkdown(text) {
 
 function addMessage(text, isUser) {
     const internalWelcome = document.getElementById("welcomeScreen");
-    if (internalWelcome) {
-        internalWelcome.remove();
-    }
+    if (internalWelcome) internalWelcome.remove();
 
     const div = document.createElement("div");
     div.className = `flex ${isUser ? "justify-end" : "justify-start"} animate-msg w-full`;
 
     div.innerHTML = `
-        <div class="p-4 px-5 max-w-[85%] text-sm leading-relaxed shadow-sm ${isUser ? "user-bubble" : "ai-bubble break-words overflow-hidden"}">
+        <div class="msg-content p-4 px-5 max-w-[85%] text-sm leading-relaxed shadow-sm ${isUser ? "user-bubble" : "ai-bubble break-words overflow-hidden"}">
             ${isUser ? escapeHtml(text) : cleanAndParseMarkdown(text)}
         </div>
     `;
 
     chatArea.appendChild(div);
     chatArea.scrollTop = chatArea.scrollHeight;
-    return div.querySelector("div");
+    return div.querySelector(".msg-content");
 }
 
 function showTypingIndicator() {
@@ -666,7 +668,6 @@ async function sendMsg() {
             return;
         }
 
-        // Catch response header configurations payload markers tokens to check if new session was auto created 
         const responseSessionIdHeader = res.headers.get("x-session-id");
         if (responseSessionIdHeader && !currentActiveSessionId) {
             currentActiveSessionId = responseSessionIdHeader;
@@ -682,11 +683,13 @@ async function sendMsg() {
             if (done) break;
 
             aiText += decoder.decode(value, { stream: true });
+            
+            // Fixed: We use raw text accumulation during streaming to avoid breaking markdown parsers mid-chunk
             aiBubble.innerHTML = cleanAndParseMarkdown(aiText);
             chatArea.scrollTop = chatArea.scrollHeight;
         }
 
-        // Re-hydrate full background history tracking lists automatically 
+        // Post-stream cleanup/sync
         loadChatHistory();
 
     } catch (err) {
