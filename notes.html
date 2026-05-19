@@ -31,6 +31,22 @@
       border-color: rgba(168, 85, 247, 0.3);
       box-shadow: 0 20px 40px -15px rgba(168, 85, 247, 0.15); 
     }
+    
+    /* Code block fixes inside dashboard cards */
+    .note-content pre {
+      background: #020617 !important;
+      padding: 12px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 8px 0;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .note-content code {
+      color: #a5b4fc;
+      font-family: monospace;
+    }
+    .note-content ul { list-style-type: disc; margin-left: 20px; }
+    .note-content ol { list-style-type: decimal; margin-left: 20px; }
   </style>
 </head>
 <body class="text-gray-200 min-h-screen">
@@ -87,7 +103,15 @@
     function renderNotes() {
       const container = document.getElementById('notesContainer');
       const emptyState = document.getElementById('emptyState');
-      const notes = JSON.parse(localStorage.getItem('edith_vault_notes')) || [];
+      
+      // Fetch dynamic database key securely
+      let notes = [];
+      try {
+        notes = JSON.parse(localStorage.getItem('edith_vault_notes')) || [];
+      } catch (e) {
+        console.error("Database parsing fault, resetting stream registry.", e);
+        notes = [];
+      }
 
       if (notes.length === 0) {
         container.innerHTML = '';
@@ -96,35 +120,44 @@
       }
 
       emptyState.classList.add('hidden');
-      container.innerHTML = notes.map(note => {
-        // Markdown formatting clean display structure mapping
-        let renderedMarkdown = marked.parse(note.content);
+      
+      let htmlContent = "";
+      notes.forEach(note => {
+        // Safe check for marked parser initialization rules
+        let renderedMarkdown = "";
+        try {
+          renderedMarkdown = typeof marked.parse === 'function' ? marked.parse(note.content || "") : note.content;
+        } catch(err) {
+          renderedMarkdown = note.content;
+        }
 
-        return `
+        htmlContent += `
           <div class="glass-card rounded-2xl p-6 relative flex flex-col justify-between" id="card_${note.id}">
             <div>
               <div class="flex justify-between items-start mb-4 pr-8">
-                <h3 class="text-lg font-bold text-purple-400 tracking-tight">${escapeHtml(note.title)}</h3>
+                <h3 class="text-lg font-bold text-purple-400 tracking-tight">${escapeHtml(note.title || "Synthesized Knowledge Unit")}</h3>
                 <button onclick="deleteNote('${note.id}')" title="Delete Note" class="text-gray-500 hover:text-red-400 transition-colors absolute top-6 right-6 text-sm">
                   <i class="fa-solid fa-trash-can"></i>
                 </button>
               </div>
               <!-- Content Area with clean formatting layout -->
-              <div class="text-gray-300 text-sm font-light leading-relaxed break-words overflow-hidden space-y-2">
+              <div class="note-content text-gray-300 text-sm font-light leading-relaxed break-words overflow-hidden space-y-2">
                 ${renderedMarkdown}
               </div>
             </div>
             
             <!-- Bottom Control Utilities bar Inside Cards -->
             <div class="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-[11px] text-gray-500 font-mono">
-              <span>${note.timestamp}</span>
+              <span>${note.timestamp || "Recent Build"}</span>
               <button onclick="downloadSingleNoteAsPDF('${note.id}')" class="px-2.5 py-1 bg-purple-600/20 hover:bg-purple-600 border border-purple-500/30 text-purple-300 hover:text-white rounded-md font-sans font-semibold transition-all flex items-center gap-1 text-[11px]">
                 <i class="fa-solid fa-file-pdf"></i> PDF
               </button>
             </div>
           </div>
         `;
-      }).join('');
+      });
+
+      container.innerHTML = htmlContent;
     }
 
     // PDF Single File Download Core Action
@@ -137,13 +170,19 @@
         return;
       }
 
-      // Design custom virtual clean node framework optimized specifically for multi-page document printing
       const printWrapper = document.createElement('div');
       printWrapper.style.padding = '40px';
       printWrapper.style.color = '#111827';
       printWrapper.style.backgroundColor = '#ffffff';
       printWrapper.style.fontFamily = 'Arial, sans-serif';
       printWrapper.style.lineHeight = '1.6';
+
+      let parsedContent = "";
+      try {
+        parsedContent = typeof marked.parse === 'function' ? marked.parse(note.content) : note.content;
+      } catch(e) {
+        parsedContent = note.content;
+      }
 
       printWrapper.innerHTML = `
         <div style="border-bottom: 2px solid #6b21a8; padding-bottom: 12px; margin-bottom: 24px;">
@@ -156,11 +195,10 @@
           <h2 style="color: #111827; font-size: 18px; margin-top: 0; font-weight: 700;">${note.title}</h2>
         </div>
         <div style="color: #374151; font-size: 13px; font-weight: normal;">
-          ${marked.parse(note.content)}
+          ${parsedContent}
         </div>
       `;
 
-      // Formulate styling changes inside virtual printing window elements to bypass low-contrast rules
       printWrapper.querySelectorAll('pre').forEach(p => {
         p.style.backgroundColor = '#f3f4f6';
         p.style.color = '#1f2937';
@@ -199,6 +237,7 @@
     }
 
     function escapeHtml(text) {
+      if (!text) return "";
       return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
   </script>
