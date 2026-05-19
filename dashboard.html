@@ -15,19 +15,19 @@
       overflow-x: hidden; 
     }
     
-    /* Advanced Glassmorphism Panel */
+    /* Advanced Glassmorphism Panel with smooth 3D transitions */
     .glass-card {
-      background: rgba(10, 11, 23, 0.65);
-      backdrop-filter: blur(16px);
+      background: rgba(10, 11, 23, 0.55);
+      backdrop-filter: blur(16px) saturate(120%);
       border: 1px solid rgba(255, 255, 255, 0.05);
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     }
     
     .glass-card:hover { 
-      transform: translateY(-8px) scale(1.01); 
-      background: rgba(15, 17, 36, 0.8);
-      border-color: rgba(99, 102, 241, 0.3);
-      box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.25); 
+      transform: translateY(-6px) scale(1.015); 
+      background: rgba(15, 17, 36, 0.75);
+      border-color: rgba(99, 102, 241, 0.4);
+      box-shadow: 0 30px 60px -15px rgba(99, 102, 241, 0.3), 0 0 30px 2px rgba(168, 85, 247, 0.15); 
     }
 
     /* Core Animated Orb Logo */
@@ -37,7 +37,7 @@
         box-shadow: 0 0 20px 2px rgba(99, 102, 241, 0.4), 0 0 40px 8px rgba(168, 85, 247, 0.2);
       }
       50% {
-        transform: scale(1.04);
+        transform: scale(1.05);
         box-shadow: 0 0 35px 6px rgba(99, 102, 241, 0.6), 0 0 60px 16px rgba(168, 85, 247, 0.4);
       }
     }
@@ -46,13 +46,11 @@
       background: linear-gradient(135deg, #6366f1, #a855f7);
     }
 
-    /* Account Sliding Control Panel Transition */
+    /* Slidout Drawer Styling */
     #profilePanel {
-      backdrop-filter: blur(20px);
-      background: rgba(7, 8, 18, 0.85);
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      backdrop-filter: blur(24px);
+      background: rgba(7, 8, 18, 0.92);
     }
-    .panel-open { transform: translateX(0) !important; }
   </style>
 </head>
 <body class="text-gray-200 min-h-screen">
@@ -71,7 +69,7 @@
 
       <!-- Right Interaction Hub Trigger -->
       <div class="flex items-center gap-4">
-        <div onclick="toggleProfile()" class="flex items-center gap-3 cursor-pointer hover:bg-white/5 p-1.5 px-3 rounded-2xl border border-transparent hover:border-white/5 transition-all">
+        <div id="profileTrigger" onclick="toggleProfile()" class="flex items-center gap-3 cursor-pointer hover:bg-white/5 p-1.5 px-3 rounded-2xl border border-transparent hover:border-white/5 transition-all">
           <div class="text-right hidden md:block">
             <p id="navUserName" class="font-semibold text-gray-200 text-sm tracking-tight">Student</p>
             <p class="text-[9px] text-indigo-400 font-bold uppercase tracking-widest mt-0.5">Control Registry</p>
@@ -85,11 +83,13 @@
   </header>
 
   <!-- Flyout Settings Registry Drawer Panel -->
-  <div id="profilePanel" class="fixed top-0 right-0 h-full w-80 border-l border-white/5 z-50 shadow-2xl translate-x-full">
+  <div id="profilePanel" class="fixed top-0 right-0 h-full w-80 border-l border-white/5 z-50 shadow-2xl transform translate-x-full transition-transform duration-300 cubic-bezier(0.16, 1, 0.3, 1)">
     <div class="p-6 flex flex-col h-full">
       <div class="flex justify-between items-center mb-8">
         <h3 class="text-lg font-bold text-white tracking-tight">System Core Profile</h3>
-        <button onclick="toggleProfile()" class="text-gray-400 hover:text-white transition-colors text-base"><i class="fas fa-times"></i></button>
+        <button onclick="toggleProfile()" class="text-gray-400 hover:text-white transition-colors text-base">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
 
       <div class="text-center mb-8">
@@ -100,7 +100,8 @@
         <p class="text-indigo-400 text-xs font-semibold tracking-wider uppercase mt-1">Authorized Operator</p>
       </div>
 
-      <div class="space-y-3 flex-1">
+      <!-- Scrollable Context Fields -->
+      <div class="space-y-3 flex-1 overflow-y-auto pr-1">
         <div class="bg-gray-950/50 p-4 rounded-2xl border border-white/5">
           <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wider mb-1">Email Interface Vector</p>
           <p id="profileEmail" class="text-sm text-gray-300 truncate font-medium">Not set</p>
@@ -173,7 +174,7 @@
         </span>
       </div>
 
-      <!-- Module 3: Specialized Task Pipelines (ENHANCED MODULE PART) -->
+      <!-- Module 3: Specialized Task Pipelines -->
       <div onclick="window.location.href='aitools.html'" class="glass-card rounded-[32px] p-8 cursor-pointer group flex flex-col justify-between">
         <div>
           <div class="w-14 h-14 bg-cyan-600/20 border border-cyan-500/30 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-md shadow-cyan-500/10 group-hover:bg-cyan-600 group-hover:text-white text-cyan-400 transition-all duration-300">
@@ -207,7 +208,7 @@
 
   <script>
     window.onload = () => {
-      // SECURITY VERIFICATION CHECK
+      // SECURITY AUTHENTICATION CHECK
       const token = localStorage.getItem('token');
       if (!token) {
         window.location.href = 'login.html';
@@ -229,23 +230,26 @@
       }
     };
 
-    // TERMINATE SECURE SESSION
+    // TERMINATE ACTIVE SECURE SESSION
     document.getElementById('logoutBtn').addEventListener('click', () => {
       localStorage.clear();
       window.location.href = 'login.html';
     });
 
+    // HARDWARE-ACCELERATED DRAWER TOGGLE
     function toggleProfile() {
       const panel = document.getElementById('profilePanel');
-      panel.classList.toggle('panel-open');
+      panel.classList.toggle('translate-x-full');
     }
 
-    // Intercept bounding click events to clear focus states outside drawer panel
+    // DISMISS DRAWER WHEN CLICKING OUTSIDE
     document.addEventListener('click', (e) => {
       const panel = document.getElementById('profilePanel');
-      const trigger = document.querySelector('[onclick="toggleProfile()"]');
-      if (!panel.contains(e.target) && !trigger.contains(e.target) && panel.classList.contains('panel-open')) {
-        panel.classList.remove('panel-open');
+      const trigger = document.getElementById('profileTrigger');
+      
+      // If the panel is open and click lands entirely outside both panel and nav-trigger button
+      if (!panel.contains(e.target) && !trigger.contains(e.target) && !panel.classList.contains('translate-x-full')) {
+        panel.classList.add('translate-x-full');
       }
     });
   </script>
