@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Vault - EDITH Intelligence</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <!-- Markdown Parsing Module inside Cards -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- PDF Generation Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+    
+    body { 
+      font-family: 'Plus Jakarta Sans', sans-serif; 
+      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #030712 75%); 
+      overflow-x: hidden; 
+    }
+    
+    .glass-card {
+      background: rgba(10, 11, 23, 0.65);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+    }
+    
+    .glass-card:hover { 
+      border-color: rgba(168, 85, 247, 0.3);
+      box-shadow: 0 20px 40px -15px rgba(168, 85, 247, 0.15); 
+    }
+  </style>
+</head>
+<body class="text-gray-200 min-h-screen">
+
+  <!-- Header Layout -->
+  <header class="sticky top-0 z-40 bg-gray-950/20 backdrop-blur-md border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3.5">
+        <div onclick="window.location.href='dashboard.html'" class="cursor-pointer w-10 h-10 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-lg">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <h1 class="text-xl font-bold tracking-tight text-white">
+          Digital Vault <span class="text-xs font-semibold text-purple-400 border border-purple-500/30 px-1.5 py-0.5 rounded-md ml-1 bg-purple-500/10">Storage</span>
+        </h1>
+      </div>
+    </div>
+  </header>
+
+  <!-- Notes Grid Section -->
+  <main class="max-w-7xl mx-auto px-6 py-12">
+    <div class="mb-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div>
+        <h2 class="text-3xl font-bold text-white tracking-tight">System Transcripts</h2>
+        <p class="text-gray-400 text-sm font-light mt-1">Review saved analytical records and custom compiled notes.</p>
+      </div>
+      <button onclick="clearAllNotes()" class="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 text-xs font-semibold rounded-xl transition-all">
+        <i class="fa-solid fa-dumpster-fire mr-1"></i> Clear All Vaults
+      </button>
+    </div>
+
+    <!-- Dynamic Cards Grid Container -->
+    <div id="notesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Notes items will be auto-generated here via JS -->
+    </div>
+
+    <!-- Empty State Handle -->
+    <div id="emptyState" class="hidden text-center py-20">
+      <div class="text-gray-600 text-5xl mb-4"><i class="fa-solid fa-folder-open"></i></div>
+      <p class="text-gray-400 font-medium">No notes synthesized yet.</p>
+      <p class="text-gray-500 text-sm mt-1">Ask EDITH to "prepare notes" in the Intelligence Lab terminal.</p>
+    </div>
+  </main>
+
+  <script>
+    window.onload = () => {
+      // Token Check Security Verification
+      if (!localStorage.getItem('token')) {
+        window.location.href = 'login.html';
+        return;
+      }
+      renderNotes();
+    };
+
+    function renderNotes() {
+      const container = document.getElementById('notesContainer');
+      const emptyState = document.getElementById('emptyState');
+      const notes = JSON.parse(localStorage.getItem('edith_vault_notes')) || [];
+
+      if (notes.length === 0) {
+        container.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+      container.innerHTML = notes.map(note => {
+        // Markdown formatting clean display structure mapping
+        let renderedMarkdown = marked.parse(note.content);
+
+        return `
+          <div class="glass-card rounded-2xl p-6 relative flex flex-col justify-between" id="card_${note.id}">
+            <div>
+              <div class="flex justify-between items-start mb-4 pr-8">
+                <h3 class="text-lg font-bold text-purple-400 tracking-tight">${escapeHtml(note.title)}</h3>
+                <button onclick="deleteNote('${note.id}')" title="Delete Note" class="text-gray-500 hover:text-red-400 transition-colors absolute top-6 right-6 text-sm">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </div>
+              <!-- Content Area with clean formatting layout -->
+              <div class="text-gray-300 text-sm font-light leading-relaxed break-words overflow-hidden space-y-2">
+                ${renderedMarkdown}
+              </div>
+            </div>
+            
+            <!-- Bottom Control Utilities bar Inside Cards -->
+            <div class="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-[11px] text-gray-500 font-mono">
+              <span>${note.timestamp}</span>
+              <button onclick="downloadSingleNoteAsPDF('${note.id}')" class="px-2.5 py-1 bg-purple-600/20 hover:bg-purple-600 border border-purple-500/30 text-purple-300 hover:text-white rounded-md font-sans font-semibold transition-all flex items-center gap-1 text-[11px]">
+                <i class="fa-solid fa-file-pdf"></i> PDF
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // PDF Single File Download Core Action
+    function downloadSingleNoteAsPDF(noteId) {
+      const notes = JSON.parse(localStorage.getItem('edith_vault_notes')) || [];
+      const note = notes.find(n => n.id === noteId);
+
+      if (!note) {
+        alert("Transcript not found.");
+        return;
+      }
+
+      // Design custom virtual clean node framework optimized specifically for multi-page document printing
+      const printWrapper = document.createElement('div');
+      printWrapper.style.padding = '40px';
+      printWrapper.style.color = '#111827';
+      printWrapper.style.backgroundColor = '#ffffff';
+      printWrapper.style.fontFamily = 'Arial, sans-serif';
+      printWrapper.style.lineHeight = '1.6';
+
+      printWrapper.innerHTML = `
+        <div style="border-bottom: 2px solid #6b21a8; padding-bottom: 12px; margin-bottom: 24px;">
+          <h1 style="color: #6b21a8; margin: 0; font-size: 22px; font-weight: bold;">EDITH DIGITAL VAULT</h1>
+          <p style="color: #6b7280; margin: 4px 0 0 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">
+            Vault Security Item Reference: ${note.id} • Saved: ${note.timestamp}
+          </p>
+        </div>
+        <div style="margin-bottom: 20px;">
+          <h2 style="color: #111827; font-size: 18px; margin-top: 0; font-weight: 700;">${note.title}</h2>
+        </div>
+        <div style="color: #374151; font-size: 13px; font-weight: normal;">
+          ${marked.parse(note.content)}
+        </div>
+      `;
+
+      // Formulate styling changes inside virtual printing window elements to bypass low-contrast rules
+      printWrapper.querySelectorAll('pre').forEach(p => {
+        p.style.backgroundColor = '#f3f4f6';
+        p.style.color = '#1f2937';
+        p.style.padding = '12px';
+        p.style.borderRadius = '6px';
+        p.style.border = '1px solid #e5e7eb';
+        p.style.overflowX = 'auto';
+      });
+      printWrapper.querySelectorAll('code').forEach(c => c.style.color = '#b91c1c');
+
+      const printOptions = {
+        margin:       15,
+        filename:     `${note.title.replace(/[^a-z0-9]/gi, '_')}_Notes.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true, logging: false },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      html2pdf().from(printWrapper).set(printOptions).save();
+    }
+
+    function deleteNote(noteId) {
+      if(confirm("Delete this specific analytical transcript note entry?")) {
+        let notes = JSON.parse(localStorage.getItem('edith_vault_notes')) || [];
+        notes = notes.filter(note => note.id !== noteId);
+        localStorage.setItem('edith_vault_notes', JSON.stringify(notes));
+        renderNotes();
+      }
+    }
+
+    function clearAllNotes() {
+      if(confirm("CRITICAL ACTION: Completely purge all structured vault summaries permanently?")) {
+        localStorage.removeItem('edith_vault_notes');
+        renderNotes();
+      }
+    }
+
+    function escapeHtml(text) {
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+  </script>
+</body>
+</html>
