@@ -7,7 +7,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap');
     
     html, body {
       font-family: 'Plus Jakarta Sans', sans-serif; 
@@ -17,6 +17,7 @@
       width: 100%;
     }
     
+    /* Advanced Glassmorphism Panel with smooth 3D transitions */
     .glass-card {
       background: rgba(10, 11, 23, 0.55);
       backdrop-filter: blur(16px) saturate(120%);
@@ -125,10 +126,6 @@
           <p id="profilePhone" class="text-sm text-gray-300 font-mono">Loading...</p>
         </div>
         <div class="bg-gray-950/50 p-4 rounded-2xl border border-white/5">
-          <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wider mb-1">Academic Direct Goal</p>
-          <p id="profileAcademic" class="text-sm text-gray-300 font-medium">Loading...</p>
-        </div>
-        <div class="bg-gray-950/50 p-4 rounded-2xl border border-white/5">
           <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wider mb-1">Authorization Clearance</p>
           <p class="text-sm text-gray-300 font-medium flex items-center gap-1.5">
             <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block animate-pulse"></span> Active Session
@@ -227,14 +224,12 @@
         return;
       }
 
+      // LocalStorage నుండి రిజిస్టర్డ్ డీటెయిల్స్ ని రీడ్ చేయడం
       const savedName = localStorage.getItem('userName');
       const savedEmail = localStorage.getItem('userEmail');
-      // బహుళ ఫోన్ కీస్ చెకింగ్
       const savedPhone = localStorage.getItem('userPhone') || localStorage.getItem('phone') || localStorage.getItem('mobile'); 
-      // అకడమిక్ గోల్/బ్రాంచ్ చెకింగ్
-      const savedAcademic = localStorage.getItem('userAcademic') || localStorage.getItem('branch') || localStorage.getItem('course');
 
-      // Operator Name Injection
+      // Name Injection Logic
       if (savedName && savedName.trim() !== "") {
         document.getElementById('navUserName').innerText = savedName;
         document.getElementById('profileName').innerText = savedName;
@@ -245,25 +240,18 @@
         document.getElementById('welcomeName').innerText = "Operator!";
       }
 
-      // Email Vector Injection
+      // Email Injection Logic
       if (savedEmail && savedEmail.trim() !== "") {
         document.getElementById('profileEmail').innerText = savedEmail;
       } else {
         document.getElementById('profileEmail').innerText = "Not Configured";
       }
 
-      // Secure Phone Line Injection
+      // Phone Number Injection Logic
       if (savedPhone && savedPhone.trim() !== "") {
         document.getElementById('profilePhone').innerText = savedPhone;
       } else {
         document.getElementById('profilePhone').innerText = "Not Configured";
-      }
-
-      // Academic Direct Goal Injection (ఇక్కడ అప్‌డేట్ చేశాను)
-      if (savedAcademic && savedAcademic.trim() !== "") {
-        document.getElementById('profileAcademic').innerText = savedAcademic;
-      } else {
-        document.getElementById('profileAcademic').innerText = "B.Tech / Degree"; // డేటా లేకపోతే డిఫాల్ట్ వాల్యూ వస్తుంది
       }
     };
 
