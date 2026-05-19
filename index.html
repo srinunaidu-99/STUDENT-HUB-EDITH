@@ -19,19 +19,20 @@
             overflow: hidden;
         }
 
-        /* Custom Scrollbar */
-        .chat-container::-webkit-scrollbar {
-            width: 6px;
+        /* Custom Scrollbar for Chat & Sidebar Containers */
+        .chat-container::-webkit-scrollbar, .sidebar-scroll::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
         }
-        .chat-container::-webkit-scrollbar-track {
+        .chat-container::-webkit-scrollbar-track, .sidebar-scroll::-webkit-scrollbar-track {
             background: transparent;
         }
-        .chat-container::-webkit-scrollbar-thumb {
-            background: rgba(99, 102, 241, 0.2);
+        .chat-container::-webkit-scrollbar-thumb, .sidebar-scroll::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.15);
             border-radius: 10px;
         }
-        .chat-container::-webkit-scrollbar-thumb:hover {
-            background: rgba(99, 102, 241, 0.4);
+        .chat-container::-webkit-scrollbar-thumb:hover, .sidebar-scroll::-webkit-scrollbar-thumb:hover {
+            background: rgba(99, 102, 241, 0.35);
         }
 
         /* Core Orb Animations */
@@ -97,6 +98,13 @@
             box-shadow: 0 4px 16px rgba(79, 70, 229, 0.25);
         }
 
+        /* Sidebar active selection history node */
+        .history-active {
+            background: rgba(99, 102, 241, 0.15) !important;
+            border-color: rgba(99, 102, 241, 0.3) !important;
+            color: white !important;
+        }
+
         /* Code Block Copy Enhancement Wrapper */
         .code-block-wrapper {
             position: relative;
@@ -155,90 +163,137 @@
 
 <body class="text-gray-100 min-h-screen flex items-center justify-center p-0 sm:p-4">
 
-<div class="w-full max-w-5xl h-screen sm:h-[92vh] flex flex-col glass-panel sm:rounded-3xl shadow-2xl relative overflow-hidden">
+<div class="w-full max-w-6xl h-screen sm:h-[92vh] flex glass-panel sm:rounded-3xl shadow-2xl relative overflow-hidden">
     
-    <!-- Top Navbar -->
-    <div class="p-4 border-b border-white/5 flex justify-between items-center bg-gray-950/20 px-6">
-        <div class="flex items-center gap-3.5">
-            <div class="edith-orb w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold tracking-wider text-sm shadow-lg shadow-indigo-500/30">
-                E
+    <!-- LEFT SIDEBAR: CHAT HISTORY ENGINE ARCHITECTURE -->
+    <aside id="sidebarPanel" class="w-64 border-r border-white/5 bg-gray-950/40 flex flex-col h-full hidden lg:flex transition-all z-30">
+        <!-- Sidebar Engine Header Row -->
+        <div class="p-4 border-b border-white/5 flex flex-col gap-3">
+            <div class="flex items-center gap-2.5">
+                <div class="w-6 h-6 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-xs text-white">E</div>
+                <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Database Streams</span>
             </div>
-            <div>
-                <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-indigo-300 bg-clip-text text-transparent">
-                    EDITH <span class="text-xs font-semibold text-indigo-400 border border-indigo-500/30 px-1.5 py-0.5 rounded-md ml-1.5 bg-indigo-500/10">V3.2</span>
-                </h1>
-                <p class="text-[10px] uppercase tracking-widest text-indigo-400 font-bold flex items-center gap-1.5 mt-0.5">
-                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block animate-pulse"></span>
-                    Operator: <span id="displayUserName">Student</span>
+            
+            <!-- NEW CHAT AUTOMATION EMITTER NODE -->
+            <button onclick="createNewChatSession()" class="w-full py-2.5 px-4 rounded-xl border border-dashed border-indigo-500/30 hover:border-indigo-500/60 bg-indigo-500/5 hover:bg-indigo-500/10 text-xs font-semibold text-indigo-300 transition-all flex items-center justify-center gap-2 group">
+                <i class="fa-solid fa-plus text-[10px] group-hover:rotate-90 transition-all"></i> New Chat Session
+            </button>
+        </div>
+
+        <!-- Scrollable Log Container Nodes -->
+        <div id="historyLogContainer" class="flex-1 overflow-y-auto p-3 space-y-1.5 sidebar-scroll">
+            <div class="text-center py-8 text-xs text-gray-600 font-light">Loading database history tree...</div>
+        </div>
+
+        <!-- Sidebar Base Dynamic Identity Block -->
+        <div class="p-3.5 border-t border-white/5 bg-gray-950/40 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-full bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-xs text-indigo-400 font-bold">
+                    SH
+                </div>
+                <div class="text-[11px]">
+                    <span class="block font-semibold text-gray-300">Student Hub AI</span>
+                    <span class="block text-[9px] text-gray-500 font-light">Engine System Integration</span>
+                </div>
+            </div>
+            <button onclick="localStorage.clear(); window.location.reload();" title="Logout Stream" class="text-gray-500 hover:text-red-400 transition-all text-xs p-1">
+                <i class="fa-solid fa-power-off"></i>
+            </button>
+        </div>
+    </aside>
+
+    <!-- RIGHT PANEL: CHAT INTERACTION CORE SYSTEM LAYOUT -->
+    <div class="flex-1 flex flex-col h-full relative overflow-hidden bg-transparent">
+        
+        <!-- Top Navbar Row Structure -->
+        <div class="p-4 border-b border-white/5 flex justify-between items-center bg-gray-950/20 px-6">
+            <div class="flex items-center gap-3.5">
+                <!-- Mobile Sidebar Responsive Drawer Toggle Button -->
+                <button onclick="toggleMobileSidebar()" class="lg:hidden w-9 h-9 border border-white/10 bg-white/5 rounded-xl flex items-center justify-center text-gray-300">
+                    <i class="fa-solid fa-bars text-sm"></i>
+                </button>
+
+                <div class="edith-orb w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold tracking-wider text-sm shadow-lg shadow-indigo-500/30">
+                    E
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-indigo-300 bg-clip-text text-transparent">
+                        EDITH <span class="text-xs font-semibold text-indigo-400 border border-indigo-500/30 px-1.5 py-0.5 rounded-md ml-1.5 bg-indigo-500/10">V3.2</span>
+                    </h1>
+                    <p class="text-[10px] uppercase tracking-widest text-indigo-400 font-bold flex items-center gap-1.5 mt-0.5">
+                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block animate-pulse"></span>
+                        Operator: <span id="displayUserName">Student</span>
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Live Infrastructure Monitoring Metrics -->
+            <div class="hidden sm:flex items-center gap-4 text-right">
+                <div class="text-[11px] font-medium text-gray-400">
+                    <span class="text-gray-500 uppercase block text-[9px] tracking-wider font-bold">Latency</span>
+                    <span class="text-emerald-400 font-mono">14ms</span>
+                </div>
+                <div class="w-px h-6 bg-white/10"></div>
+                <div class="text-[11px] font-medium text-gray-400">
+                    <span class="text-gray-500 uppercase block text-[9px] tracking-wider font-bold">Core Load</span>
+                    <span class="text-indigo-400 font-mono">2.4%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Space Canvas Viewport -->
+        <div id="chatArea" class="flex-1 overflow-y-auto p-6 space-y-6 chat-container">
+            <!-- Rebranded Welcome Greeting Banner Screen -->
+            <div id="welcomeScreen" class="flex flex-col justify-center items-center mt-24 text-center px-4">
+                <div class="edith-orb w-20 h-20 rounded-3xl flex items-center justify-center text-3xl text-white mb-6">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-bold mb-2 tracking-tight text-white">
+                    How can I assist you today?
+                </h2>
+                <p class="text-gray-400 text-sm max-w-sm font-light leading-relaxed">
+                    I can process documents, parse voice input, analyze complex media datasets, or just run brainstorm sessions.
                 </p>
             </div>
         </div>
-        
-        <!-- Live Infrastructure Monitoring Metrics -->
-        <div class="hidden sm:flex items-center gap-4 text-right">
-            <div class="text-[11px] font-medium text-gray-400">
-                <span class="text-gray-500 uppercase block text-[9px] tracking-wider font-bold">Latency</span>
-                <span class="text-emerald-400 font-mono">14ms</span>
-            </div>
-            <div class="w-px h-6 bg-white/10"></div>
-            <div class="text-[11px] font-medium text-gray-400">
-                <span class="text-gray-500 uppercase block text-[9px] tracking-wider font-bold">Core Load</span>
-                <span class="text-indigo-400 font-mono">2.4%</span>
-            </div>
-        </div>
-    </div>
 
-    <!-- Chat Space -->
-    <div id="chatArea" class="flex-1 overflow-y-auto p-6 space-y-6 chat-container">
-        <!-- Rebranded Welcome Screen -->
-        <div id="welcomeScreen" class="flex flex-col justify-center items-center mt-24 text-center px-4">
-            <div class="edith-orb w-20 h-20 rounded-3xl flex items-center justify-center text-3xl text-white mb-6">
-                <i class="fa-solid fa-brain"></i>
-            </div>
-            <h2 class="text-2xl sm:text-3xl font-bold mb-2 tracking-tight text-white">
-                How can I assist you today?
-            </h2>
-            <p class="text-gray-400 text-sm max-w-sm font-light leading-relaxed">
-                I can process documents, parse voice input, analyze complex media datasets, or just run brainstorm sessions.
-            </p>
-        </div>
-    </div>
-
-    <!-- Input Dashboard -->
-    <div class="p-4 sm:p-6 bg-gray-950/40 border-t border-white/5 backdrop-blur-md">
-        <div class="flex flex-wrap gap-2 mb-3.5 px-1">
-            <!-- Mode Selector Toggles -->
-            <button onclick="toggleSummarize()" id="sumBtn" class="px-4 py-1.5 rounded-full border border-white/10 hover:border-indigo-500/40 bg-white/5 text-[11px] font-medium transition-all flex items-center gap-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-gray-400" id="sumDot"></span>
-                Summarize Notes: <span id="sumStatus" class="font-bold text-gray-400">OFF</span>
-            </button>
-
-            <label class="px-4 py-1.5 rounded-full border border-white/10 hover:border-indigo-500/40 bg-white/5 text-[11px] font-medium cursor-pointer transition-all flex items-center gap-1.5">
-                <i class="fa-solid fa-paperclip text-indigo-400"></i> Attach Files
-                <input type="file" id="fileInput" multiple class="hidden" onchange="updateFileStatus()" />
-            </label>
-            <span id="fileCount" class="text-[11px] text-indigo-300 self-center font-medium"></span>
-        </div>
-
-        <!-- System Control Interaction Line -->
-        <div class="flex gap-3 items-center relative">
-            <input type="text" id="msg" placeholder="Ask EDITH anything..." 
-                class="w-full bg-gray-900/80 border border-white/10 focus:border-indigo-500/50 rounded-2xl pl-5 pr-28 py-4 outline-none transition-all text-sm placeholder-gray-500 text-gray-100 shadow-inner"
-                onkeypress="if(event.key==='Enter')sendMsg()" />
-
-            <div class="absolute right-2 flex items-center gap-1.5">
-                <!-- Microphone System Input Button -->
-                <button onclick="toggleVoiceInput()" id="micBtn" title="Voice Input"
-                    class="w-10 h-10 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 rounded-xl flex items-center justify-center transition-all">
-                    <i class="fa-solid fa-microphone text-sm"></i>
+        <!-- Input Control Panel Dashboard Structure -->
+        <div class="p-4 sm:p-6 bg-gray-950/40 border-t border-white/5 backdrop-blur-md">
+            <div class="flex flex-wrap gap-2 mb-3.5 px-1">
+                <!-- Mode Selector Action Toggles Buttons -->
+                <button onclick="toggleSummarize()" id="sumBtn" class="px-4 py-1.5 rounded-full border border-white/10 hover:border-indigo-500/40 bg-white/5 text-[11px] font-medium transition-all flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-gray-400" id="sumDot"></span>
+                    Summarize Notes: <span id="sumStatus" class="font-bold text-gray-400">OFF</span>
                 </button>
-                
-                <!-- Action Send Button -->
-                <button onclick="sendMsg()" class="w-10 h-10 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white rounded-xl flex items-center justify-center transition-all shadow-lg shadow-indigo-600/20">
-                    <i class="fa-solid fa-paper-plane text-xs"></i>
-                </button>
+
+                <label class="px-4 py-1.5 rounded-full border border-white/10 hover:border-indigo-500/40 bg-white/5 text-[11px] font-medium cursor-pointer transition-all flex items-center gap-1.5">
+                    <i class="fa-solid fa-paperclip text-indigo-400"></i> Attach Files
+                    <input type="file" id="fileInput" multiple class="hidden" onchange="updateFileStatus()" />
+                </label>
+                <span id="fileCount" class="text-[11px] text-indigo-300 self-center font-medium"></span>
+            </div>
+
+            <!-- System Control Interaction Line Deck -->
+            <div class="flex gap-3 items-center relative">
+                <input type="text" id="msg" placeholder="Ask EDITH anything..." 
+                    class="w-full bg-gray-900/80 border border-white/10 focus:border-indigo-500/50 rounded-2xl pl-5 pr-28 py-4 outline-none transition-all text-sm placeholder-gray-500 text-gray-100 shadow-inner"
+                    onkeypress="if(event.key==='Enter')sendMsg()" />
+
+                <div class="absolute right-2 flex items-center gap-1.5">
+                    <!-- Microphone System Input Button Trigger Component -->
+                    <button onclick="toggleVoiceInput()" id="micBtn" title="Voice Input"
+                        class="w-10 h-10 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 rounded-xl flex items-center justify-center transition-all">
+                        <i class="fa-solid fa-microphone text-sm"></i>
+                    </button>
+                    
+                    <!-- Action Send Matrix Transmission Execution Button Trigger Component -->
+                    <button onclick="sendMsg()" class="w-10 h-10 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white rounded-xl flex items-center justify-center transition-all shadow-lg shadow-indigo-600/20">
+                        <i class="fa-solid fa-paper-plane text-xs"></i>
+                    </button>
+                </div>
             </div>
         </div>
+
     </div>
 </div>
 
@@ -249,9 +304,12 @@ const API_BASE = window.location.hostname === "127.0.0.1" || window.location.hos
 
 const chatArea = document.getElementById("chatArea");
 const welcomeScreen = document.getElementById("welcomeScreen");
+const historyLogContainer = document.getElementById("historyLogContainer");
 let isSummarize = false;
+let currentActiveSessionId = null; 
+let globallyCachedHistoryTree = []; 
 
-// Audio Configuration (Web Speech API Integration)
+// Audio Web Speech API Recognition Setup Architecture Configurations Mappings 
 let recognition;
 let isRecording = false;
 
@@ -313,9 +371,11 @@ window.onload = () => {
     if (name) {
         document.getElementById("displayUserName").innerText = name;
     }
+    // Call background load history tree data pipeline
+    loadChatHistory();
 };
 
-// --- CHAT HISTORY HYDRATION INTERACTION ---
+// --- CHAT HISTORY STREAM LOADER & SIDEBAR HYDRATION PIPELINE ---
 async function loadChatHistory() {
     const token = localStorage.getItem("token");
     if (!token) return;
@@ -327,31 +387,133 @@ async function loadChatHistory() {
         });
 
         if (response.ok) {
-            const history = await response.json();
-            if (history && history.length > 0) {
-                // Remove the greeting page layer immediately if there is historical data
-                if (welcomeScreen) {
-                    welcomeScreen.style.display = "none";
-                }
-                
-                // Sort history chronologically (oldest first) to build the text conversation upward
-                history.reverse().forEach(chatNode => {
-                    if (Array.isArray(chatNode.messages)) {
-                        chatNode.messages.forEach(msg => {
-                            const isUser = msg.role === "user";
-                            appendHistoryMessageToUI(msg.content, isUser);
-                        });
-                    }
-                });
-                chatArea.scrollTop = chatArea.scrollHeight;
+            globallyCachedHistoryTree = await response.json();
+            renderSidebarHistoryList(globallyCachedHistoryTree);
+            
+            // Auto load first active stream cluster if history records populated
+            if (globallyCachedHistoryTree && globallyCachedHistoryTree.length > 0 && currentActiveSessionId === null) {
+                loadSelectedSessionStream(globallyCachedHistoryTree[0]._id || globallyCachedHistoryTree[0].id);
             }
+        } else {
+            historyLogContainer.innerHTML = `<div class="text-center py-6 text-xs text-gray-500">Failed to pull database maps.</div>`;
         }
     } catch (err) {
         console.error("Error context rendering history logs:", err);
+        historyLogContainer.innerHTML = `<div class="text-center py-6 text-xs text-red-400/60">Server Matrix Sync Timeout</div>`;
     }
 }
 
-// Special separate append function to load history blocks safely without disrupting scroll indexes
+// Side-bar list items rendering engine template logic mapper control
+function renderSidebarHistoryList(historyArray) {
+    if (!historyArray || historyArray.length === 0) {
+        historyLogContainer.innerHTML = `<div class="text-center py-8 text-[11px] text-gray-500 font-light">No historical stream logs found.</div>`;
+        return;
+    }
+
+    historyLogContainer.innerHTML = ""; // Wipe container layer clean to start iteration updates
+    
+    historyArray.forEach((session) => {
+        const id = session._id || session.id;
+        
+        // Isolate message body string parameters to construct standard visible header block names snippets
+        let displayTitle = "Optimization Process Array";
+        if (session.messages && session.messages.length > 0) {
+            const firstUserMessage = session.messages.find(m => m.role === "user");
+            if (firstUserMessage && firstUserMessage.content) {
+                displayTitle = firstUserMessage.content.length > 24 
+                    ? firstUserMessage.content.substring(0, 24) + "..." 
+                    : firstUserMessage.content;
+            }
+        }
+
+        const btn = document.createElement("button");
+        btn.id = `sidebar-session-${id}`;
+        btn.onclick = () => loadSelectedSessionStream(id);
+        btn.className = `w-full text-left px-3 py-2.5 rounded-xl border border-transparent hover:bg-white/5 text-gray-400 text-xs font-medium tracking-wide transition-all flex items-center gap-2.5 overflow-hidden text-ellipsis whitespace-nowrap group`;
+        
+        if (id === currentActiveSessionId) {
+            btn.classList.add("history-active");
+        }
+
+        btn.innerHTML = `
+            <i class="fa-regular fa-comment text-[13px] text-indigo-400/70 group-hover:text-indigo-400 transition-all flex-shrink-0"></i>
+            <span class="truncate block w-full text-gray-300 group-hover:text-white transition-all">${escapeHtml(displayTitle)}</span>
+        `;
+        
+        historyLogContainer.appendChild(btn);
+    });
+}
+
+// Loads isolated target session dataset inside central main layout framework
+function loadSelectedSessionStream(sessionId) {
+    currentActiveSessionId = sessionId;
+    
+    // Manage dynamic styling highlights structures elements loop tracking state switches
+    const blocks = historyLogContainer.querySelectorAll("button");
+    blocks.forEach(b => b.classList.remove("history-active"));
+    
+    const targetedActiveBtn = document.getElementById(`sidebar-session-${sessionId}`);
+    if (targetedActiveBtn) targetedActiveBtn.classList.add("history-active");
+
+    // Pull out core record from memory metrics local map object array tree container data store
+    const targetedSession = globallyCachedHistoryTree.find(s => (s._id || s.id) === sessionId);
+    
+    // Reset view container matrix blocks to prepare drawing stream contents
+    chatArea.innerHTML = "";
+    if (welcomeScreen) welcomeScreen.style.display = "none";
+
+    if (targetedSession && Array.isArray(targetedSession.messages)) {
+        targetedSession.messages.forEach(msg => {
+            const isUser = msg.role === "user";
+            appendHistoryMessageToUI(msg.content, isUser);
+        });
+        chatArea.scrollTop = chatArea.scrollHeight;
+    }
+}
+
+// Emitters execution function module to generate clean workspace setups
+function createNewChatSession() {
+    currentActiveSessionId = null;
+    
+    // Clear active styling tracking marks safely from sidebar array rows
+    const blocks = historyLogContainer.querySelectorAll("button");
+    blocks.forEach(b => b.classList.remove("history-active"));
+
+    // Draw native blank dashboard metrics layer interface configurations mapping view setups
+    chatArea.innerHTML = `
+        <div id="welcomeScreen" class="flex flex-col justify-center items-center mt-24 text-center px-4 animate-msg">
+            <div class="edith-orb w-20 h-20 rounded-3xl flex items-center justify-center text-3xl text-white mb-6">
+                <i class="fa-solid fa-brain"></i>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-bold mb-2 tracking-tight text-white">
+                Initialization Matrix Ready
+            </h2>
+            <p class="text-gray-400 text-sm max-w-sm font-light leading-relaxed">
+                New operational stack context created. Transmit payload elements inside control lines to begin synthesis pipelines.
+            </p>
+        </div>
+    `;
+    
+    // Mobile viewport slide helper interaction auto closure execution handling
+    const sidebar = document.getElementById("sidebarPanel");
+    if (!sidebar.classList.contains("hidden") && window.innerWidth < 1024) {
+        sidebar.classList.add("hidden");
+    }
+    
+    document.getElementById("msg").focus();
+}
+
+function toggleMobileSidebar() {
+    const sidebar = document.getElementById("sidebarPanel");
+    if (sidebar.classList.contains("hidden")) {
+        sidebar.classList.remove("hidden");
+        sidebar.classList.add("fixed", "inset-y-0", "left-0", "w-64", "shadow-3xl");
+    } else {
+        sidebar.classList.add("hidden");
+        sidebar.classList.remove("fixed", "inset-y-0", "left-0", "w-64", "shadow-3xl");
+    }
+}
+
 function appendHistoryMessageToUI(text, isUser) {
     const div = document.createElement("div");
     div.className = `flex ${isUser ? "justify-end" : "justify-start"} animate-msg w-full`;
@@ -362,9 +524,6 @@ function appendHistoryMessageToUI(text, isUser) {
     `;
     chatArea.appendChild(div);
 }
-
-// Run history setup immediately when the core UI window mounts
-window.addEventListener("DOMContentLoaded", loadChatHistory);
 
 function toggleSummarize() {
     isSummarize = !isSummarize;
@@ -425,8 +584,9 @@ function cleanAndParseMarkdown(text) {
 }
 
 function addMessage(text, isUser) {
-    if (welcomeScreen && welcomeScreen.style.display !== "none") {
-        welcomeScreen.style.display = "none";
+    const internalWelcome = document.getElementById("welcomeScreen");
+    if (internalWelcome) {
+        internalWelcome.remove();
     }
 
     const div = document.createElement("div");
@@ -481,6 +641,9 @@ async function sendMsg() {
     const formData = new FormData();
     formData.append("message", message);
     formData.append("isSummarize", isSummarize);
+    if (currentActiveSessionId) {
+        formData.append("sessionId", currentActiveSessionId); 
+    }
 
     for (let file of fileInput.files) {
         formData.append("files", file);
@@ -503,6 +666,12 @@ async function sendMsg() {
             return;
         }
 
+        // Catch response header configurations payload markers tokens to check if new session was auto created 
+        const responseSessionIdHeader = res.headers.get("x-session-id");
+        if (responseSessionIdHeader && !currentActiveSessionId) {
+            currentActiveSessionId = responseSessionIdHeader;
+        }
+
         const reader = res.body.getReader();
         const decoder = new TextDecoder();
         const aiBubble = addMessage("", false);
@@ -516,6 +685,10 @@ async function sendMsg() {
             aiBubble.innerHTML = cleanAndParseMarkdown(aiText);
             chatArea.scrollTop = chatArea.scrollHeight;
         }
+
+        // Re-hydrate full background history tracking lists automatically 
+        loadChatHistory();
+
     } catch (err) {
         console.error(err);
         removeTypingIndicator();
