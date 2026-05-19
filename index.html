@@ -245,9 +245,9 @@ const API_BASE = window.location.hostname === "127.0.0.1"
 const chatArea = document.getElementById("chatArea");
 const welcomeScreen = document.getElementById("welcomeScreen");
 let isSummarize = false;
-let currentActiveUserPrompt = ""; // Tracks current active workflow string
+let currentActiveUserPrompt = "";
 
-// Audio Configuration (Web Speech API Integration)
+// Audio Configuration
 let recognition;
 let isRecording = false;
 
@@ -342,7 +342,6 @@ function cleanAndParseMarkdown(text) {
     const container = document.createElement('div');
     container.innerHTML = rawHtml;
 
-    // Process code segments to add inline copy utilities
     const preBlocks = container.querySelectorAll('pre');
     preBlocks.forEach((pre) => {
         const wrapper = document.createElement('div');
@@ -380,29 +379,15 @@ function addMessage(text, isUser, isNotesBlock = false, uniqueNoteId = '') {
 
     let innerContent = isUser ? escapeHtml(text) : cleanAndParseMarkdown(text);
     
-    // If it's a confirmed note block, attach high-tech PDF download actions wrapper UI
-    if (isNotesBlock && !isUser) {
-        innerContent += `
-            <div class="mt-4 pt-3.5 border-t border-indigo-500/20 flex flex-wrap gap-2 items-center justify-between">
-                <span class="text-[11px] text-purple-400 font-mono font-bold uppercase tracking-wider">
-                    <i class="fa-solid fa-box-archive mr-1"></i> Vault Storage Sync Active
-                </span>
-                <button onclick="downloadNotesAsPDF('${uniqueNoteId}')" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold rounded-lg transition-all shadow-md flex items-center gap-1.5">
-                    <i class="fa-solid fa-file-pdf"></i> Download Notes PDF
-                </button>
-            </div>
-        `;
-    }
-
     div.innerHTML = `
-        <div id="${uniqueNoteId ? uniqueNoteId : ''}" class="p-4 px-5 max-w-[85%] text-sm leading-relaxed shadow-sm ${isUser ? "user-bubble" : "ai-bubble break-words overflow-hidden"}">
-            ${innerContent}
+        <div ${uniqueNoteId ? `id="${uniqueNoteId}"` : ''} class="p-4 px-5 max-w-[85%] text-sm leading-relaxed shadow-sm ${isUser ? "user-bubble" : "ai-bubble break-words overflow-hidden"}">
+            <div class="markdown-body-content">${innerContent}</div>
         </div>
     `;
 
     chatArea.appendChild(div);
     chatArea.scrollTop = chatArea.scrollHeight;
-    return div.querySelector("div");
+    return div.querySelector(isUser ? ".user-bubble" : ".markdown-body-content");
 }
 
 function showTypingIndicator() {
@@ -429,7 +414,7 @@ function escapeHtml(text) {
     return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-// Global Automated Vault Compiler Execution Logic
+// Global Automated Vault Compiler Execution Logic Fix
 function executeAutomatedNotesCompilation(finalAiText, userQuery) {
     const checkQuery = userQuery.toLowerCase();
     if (checkQuery.includes('prepare notes') || checkQuery.includes('notes prepare') || checkQuery.includes('create notes')) {
@@ -437,7 +422,6 @@ function executeAutomatedNotesCompilation(finalAiText, userQuery) {
         let currentNotes = JSON.parse(localStorage.getItem('edith_vault_notes')) || [];
         const uniqueId = 'note_' + Date.now();
         
-        // Formulate clean title parameters from user request metadata
         let extractedTitle = "Synthesized Knowledge Notes";
         if(checkQuery.includes("about ")) {
             extractedTitle = "Notes: " + userQuery.substring(checkQuery.indexOf("about ") + 6);
@@ -455,10 +439,10 @@ function executeAutomatedNotesCompilation(finalAiText, userQuery) {
         currentNotes.unshift(noteObject);
         localStorage.setItem('edith_vault_notes', JSON.stringify(currentNotes));
         
-        // Re-inject the block template action directly into the view bubble state
-        const lastBubble = chatArea.lastElementChild?.querySelector('.ai-bubble');
-        if (lastBubble) {
-            lastBubble.id = uniqueId;
+        // Accurate alignment to parent context holder node wrapper
+        const lastBubbleContainer = chatArea.lastElementChild?.querySelector('.ai-bubble');
+        if (lastBubbleContainer) {
+            lastBubbleContainer.id = uniqueId;
             const actionDock = document.createElement('div');
             actionDock.className = "mt-4 pt-3.5 border-t border-indigo-500/20 flex flex-wrap gap-2 items-center justify-between";
             actionDock.innerHTML = `
@@ -469,12 +453,12 @@ function executeAutomatedNotesCompilation(finalAiText, userQuery) {
                     <i class="fa-solid fa-file-pdf"></i> Download Notes PDF
                 </button>
             `;
-            lastBubble.appendChild(actionDock);
+            lastBubbleContainer.appendChild(actionDock);
         }
     }
 }
 
-// High-Tech Client Runtime PDF Compiler System Engine
+// Fixed Client Runtime PDF Compiler System Engine
 function downloadNotesAsPDF(containerElementId) {
     const targetBubble = document.getElementById(containerElementId);
     if (!targetBubble) {
@@ -482,16 +466,16 @@ function downloadNotesAsPDF(containerElementId) {
         return;
     }
 
-    // Clone element cleanly to isolate text content from control layout loops
-    const printClone = targetBubble.cloneNode(true);
-    const actionButtons = printClone.querySelector('.border-t');
-    if (actionButtons) actionButtons.remove();
+    const mainContent = targetBubble.querySelector('.markdown-body-content');
+    if(!mainContent) return;
+
+    // Clone element cleanly
+    const printClone = mainContent.cloneNode(true);
     
-    // Remove all copy buttons inside code blocks for clean text layout
+    // Safety check cleanup
     const copyButtons = printClone.querySelectorAll('.copy-code-btn');
     copyButtons.forEach(btn => btn.remove());
 
-    // Injection of premium elegant documentation style tokens
     const pdfStyleWrapper = document.createElement('div');
     pdfStyleWrapper.style.padding = '40px';
     pdfStyleWrapper.style.color = '#111827';
@@ -512,12 +496,14 @@ function downloadNotesAsPDF(containerElementId) {
     
     pdfStyleWrapper.appendChild(docHeader);
     
-    // Invert block color tokens inside template clones to handle printable pages neatly
     const preBlocks = printClone.querySelectorAll('pre');
     preBlocks.forEach(p => {
         p.style.backgroundColor = '#f3f4f6';
         p.style.color = '#1f2937';
         p.style.border = '1px solid #e5e7eb';
+        p.style.padding = '12px';
+        p.style.borderRadius = '6px';
+        p.style.overflowX = 'auto';
     });
     
     const codeTokens = printClone.querySelectorAll('code');
@@ -544,7 +530,7 @@ async function sendMsg() {
 
     if (!message && fileInput.files.length === 0) return;
 
-    currentActiveUserPrompt = message; // Store reference frame context
+    currentActiveUserPrompt = message;
     addMessage(message || "Analyzing documents...", true);
     input.value = "";
 
@@ -587,7 +573,7 @@ async function sendMsg() {
             chatArea.scrollTop = chatArea.scrollHeight;
         }
         
-        // Stream completed successfully -> Invoke pipeline automation checks
+        // Auto-Compile triggers successfully after absolute resolution
         executeAutomatedNotesCompilation(aiText, currentActiveUserPrompt);
 
     } catch (err) {
