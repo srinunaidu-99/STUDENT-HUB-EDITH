@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap');
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -157,7 +157,7 @@
 
 <div class="w-full max-w-5xl h-screen sm:h-[92vh] flex flex-col glass-panel sm:rounded-3xl shadow-2xl relative overflow-hidden">
     
-    <!-- Top Navbar (Cleaned & High-Tech Upgraded) -->
+    <!-- Top Navbar -->
     <div class="p-4 border-b border-white/5 flex justify-between items-center bg-gray-950/20 px-6">
         <div class="flex items-center gap-3.5">
             <div class="edith-orb w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold tracking-wider text-sm shadow-lg shadow-indigo-500/30">
@@ -243,7 +243,7 @@
 </div>
 
 <script>
-const API_BASE = window.location.hostname === "127.0.0.1"
+const API_BASE = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"
     ? "http://localhost:5000"
     : "https://student-hub-edith-backend.onrender.com";
 
@@ -315,6 +315,57 @@ window.onload = () => {
     }
 };
 
+// --- CHAT HISTORY HYDRATION INTERACTION ---
+async function loadChatHistory() {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    try {
+        const response = await fetch(`${API_BASE}/api/history`, {
+            method: "GET",
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+
+        if (response.ok) {
+            const history = await response.json();
+            if (history && history.length > 0) {
+                // Remove the greeting page layer immediately if there is historical data
+                if (welcomeScreen) {
+                    welcomeScreen.style.display = "none";
+                }
+                
+                // Sort history chronologically (oldest first) to build the text conversation upward
+                history.reverse().forEach(chatNode => {
+                    if (Array.isArray(chatNode.messages)) {
+                        chatNode.messages.forEach(msg => {
+                            const isUser = msg.role === "user";
+                            appendHistoryMessageToUI(msg.content, isUser);
+                        });
+                    }
+                });
+                chatArea.scrollTop = chatArea.scrollHeight;
+            }
+        }
+    } catch (err) {
+        console.error("Error context rendering history logs:", err);
+    }
+}
+
+// Special separate append function to load history blocks safely without disrupting scroll indexes
+function appendHistoryMessageToUI(text, isUser) {
+    const div = document.createElement("div");
+    div.className = `flex ${isUser ? "justify-end" : "justify-start"} animate-msg w-full`;
+    div.innerHTML = `
+        <div class="p-4 px-5 max-w-[85%] text-sm leading-relaxed shadow-sm ${isUser ? "user-bubble" : "ai-bubble break-words overflow-hidden"}">
+            ${isUser ? escapeHtml(text) : cleanAndParseMarkdown(text)}
+        </div>
+    `;
+    chatArea.appendChild(div);
+}
+
+// Run history setup immediately when the core UI window mounts
+window.addEventListener("DOMContentLoaded", loadChatHistory);
+
 function toggleSummarize() {
     isSummarize = !isSummarize;
     const statusText = document.getElementById("sumStatus");
@@ -341,13 +392,11 @@ function updateFileStatus() {
         : "";
 }
 
-// Intercepts custom formatting hooks to enrich code blocks with clear actions
 function cleanAndParseMarkdown(text) {
     let rawHtml = marked.parse(text);
     const container = document.createElement('div');
     container.innerHTML = rawHtml;
 
-    // Process code segments to add inline copy utilities
     const preBlocks = container.querySelectorAll('pre');
     preBlocks.forEach((pre) => {
         const wrapper = document.createElement('div');
@@ -437,7 +486,6 @@ async function sendMsg() {
         formData.append("files", file);
     }
 
-    // Initialize temporary display layout
     showTypingIndicator();
 
     try {
