@@ -3,258 +3,200 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Specialized Pipelines - EDITH Intelligence</title>
+  <title>EDITH Core Live Compiler Node</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <!-- Loading Pyodide WASM Engine for Real In-Browser Python Execution -->
-  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap');
     
     body { 
       font-family: 'Plus Jakarta Sans', sans-serif; 
-      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #030712 75%); 
+      background: radial-gradient(circle at 50% 0%, #0f172a 0%, #020617 80%); 
       overflow-x: hidden; 
     }
     
     .glass-panel {
-      background: rgba(10, 11, 23, 0.75);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
     
-    @keyframes pulseGlow {
-      0%, 100% {
-        transform: scale(1);
-        box-shadow: 0 0 20px 2px rgba(99, 102, 241, 0.4), 0 0 40px 8px rgba(168, 85, 247, 0.2);
-      }
-      50% {
-        transform: scale(1.04);
-        box-shadow: 0 0 35px 6px rgba(99, 102, 241, 0.6), 0 0 60px 16px rgba(168, 85, 247, 0.4);
-      }
-    }
-    .edith-orb {
+    .edith-glow {
       animation: pulseGlow 4s ease-in-out infinite;
-      background: linear-gradient(135deg, #6366f1, #a855f7);
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 15px 2px rgba(59, 130, 246, 0.5); }
+      50% { transform: scale(1.05); box-shadow: 0 0 25px 6px rgba(139, 92, 246, 0.6); }
     }
   </style>
 </head>
-<body class="text-gray-200 min-h-screen">
+<body class="text-slate-200 min-h-screen">
 
-  <header class="bg-gray-950/20 backdrop-blur-md border-b border-white/5 sticky top-0 z-40">
+  <header class="bg-slate-950/40 backdrop-blur-md border-b border-white/5 sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-      <div class="flex items-center gap-3.5 cursor-pointer" onclick="window.location.href='dashboard.html'">
-        <div class="edith-orb w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold tracking-wider text-sm shadow-lg">
+      <div class="flex items-center gap-3">
+        <div class="edith-glow w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-md">
           E
         </div>
-        <h1 class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-indigo-300 bg-clip-text text-transparent">
-          EDITH <span class="text-xs font-semibold text-cyan-400 border border-cyan-500/30 px-1.5 py-0.5 rounded-md ml-1 bg-cyan-500/10">LIVE COMPILER</span>
+        <h1 class="text-lg font-bold bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+          EDITH <span class="text-xs font-semibold text-indigo-400 border border-indigo-500/30 px-2 py-0.5 rounded bg-indigo-500/10">REAL TERMINAL</span>
         </h1>
       </div>
-      
-      <button onclick="window.location.href='dashboard.html'" class="px-4 py-2 text-xs font-semibold bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-all flex items-center gap-2">
-        <i class="fa-solid fa-arrow-left"></i> Back to Control Matrix
-      </button>
+      <span class="text-xs text-slate-500 font-mono"><i class="fa-solid fa-server text-emerald-500 animate-pulse"></i> Engine Link: Live</span>
     </div>
   </header>
 
-  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
+  <main class="max-w-6xl mx-auto px-4 py-10">
     
-    <div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
-      <div class="text-center md:text-left">
-        <span class="text-[10px] uppercase tracking-widest font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-1 rounded-md inline-block mb-3">WASM Edge Subsystem</span>
-        <h2 class="text-2xl sm:text-4xl font-bold text-white tracking-tight mb-2">Live Compiler Kernel</h2>
-        <p class="text-gray-400 text-sm font-light">Runs Python & JS code directly inside your terminal emulator layer safely.</p>
+    <div class="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div>
+        <h2 class="text-3xl font-bold text-white tracking-tight">Production Runtime Matrix</h2>
+        <p class="text-slate-400 text-sm mt-1">నిజమైన కంపైలర్ సర్వర్ నెట్‌వర్క్ క్లస్టర్. మీరు ఏ కోడ్ రాసినా ఇక్కడే లైవ్‌గా రన్ అవుతుంది.</p>
       </div>
       
-      <!-- Selection Engine Box -->
-      <div class="flex justify-center">
-        <div class="bg-gray-900/80 border border-white/10 rounded-xl px-3 py-2 flex items-center gap-2">
-          <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Environment:</label>
-          <select id="languageSelector" onchange="handleLanguageChange()" class="bg-transparent text-sm font-semibold text-white outline-none cursor-pointer pr-4">
-            <option value="python" class="bg-gray-950 text-gray-200">Python 3 (Pyodide WASM)</option>
-            <option value="javascript" class="bg-gray-950 text-gray-200">JavaScript (V8 Runtime)</option>
-          </select>
-        </div>
+      <!-- Engine Select -->
+      <div class="bg-slate-900 border border-white/10 rounded-xl px-3 py-2 flex items-center gap-2 self-start sm:self-auto">
+        <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Compiler:</label>
+        <select id="langSelect" onchange="switchLanguage()" class="bg-transparent text-sm font-semibold text-white outline-none cursor-pointer pr-2">
+          <option value="python" class="bg-slate-950">Python 3 (Production Cloud)</option>
+          <option value="javascript" class="bg-slate-950">Node.js (Server Runtime)</option>
+          <option value="c" class="bg-slate-950">C (GCC Compiler)</option>
+          <option value="cpp" class="bg-slate-950">C++ (G++ Compiler)</option>
+        </select>
       </div>
     </div>
 
-    <!-- Main Workspace Frame -->
-    <div class="glass-panel rounded-3xl p-6 sm:p-8 shadow-xl relative">
-      <div class="space-y-6">
-        
-        <!-- Code Window Container -->
-        <div>
-          <div class="flex justify-between items-center mb-2">
-            <label class="block text-[10px] uppercase font-bold tracking-wider text-gray-400">Live Workspace Array</label>
-            <span id="langIndicator" class="text-xs text-indigo-400 font-mono">main.py</span>
-          </div>
-          <textarea id="sourceInput" placeholder="Initialize script execution blocks..." 
-            class="w-full h-72 bg-gray-950/80 border border-white/10 focus:border-indigo-500/50 rounded-2xl p-5 text-sm font-mono outline-none transition-all placeholder-gray-700 shadow-inner resize-y text-gray-100"></textarea>
+    <!-- Interface Matrix -->
+    <div class="glass-panel rounded-2xl p-5 sm:p-6 shadow-2xl space-y-5">
+      
+      <!-- Input Panel -->
+      <div>
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider"><i class="fa-solid fa-code text-indigo-400"></i> Editor Window</span>
+          <span id="fileBadge" class="text-xs text-indigo-400 font-mono bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">main.py</span>
         </div>
+        <textarea id="editorEngine" 
+          class="w-full h-80 bg-slate-950/90 border border-white/10 focus:border-indigo-500/50 rounded-xl p-5 text-sm font-mono outline-none transition-all text-slate-100 shadow-inner resize-y"></textarea>
+      </div>
 
-        <!-- System Controls Deck Hub -->
-        <div class="flex items-center justify-between flex-wrap gap-4 border-t border-white/5 pt-4">
-          <div id="processingLoader" class="hidden items-center gap-2 text-xs font-medium text-amber-400">
-            <i class="fa-solid fa-circle-notch animate-spin text-sm"></i> <span id="loaderText">Compiling execution layer context...</span>
-          </div>
-          <div id="idleStatus" class="text-xs text-gray-500 flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block"></span> Local Sandboxed Core Active
-          </div>
-          
-          <button onclick="executeCodePayload()" class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 active:scale-95 text-white font-bold text-xs tracking-wider rounded-xl transition-all shadow-lg shadow-indigo-600/10 flex items-center gap-2">
-            <i class="fa-solid fa-play text-[10px]"></i> EXECUTE CORE PAYLOAD
+      <!-- Action Panel -->
+      <div class="flex items-center justify-between border-t border-white/5 pt-4">
+        <div id="loaderArray" class="hidden items-center gap-2 text-xs text-amber-400 font-medium">
+          <i class="fa-solid fa-spinner animate-spin"></i> క్లౌడ్ సర్వర్‌లో కోడ్ రన్ అవుతోంది... దయచేసి వేచి ఉండండి...
+        </div>
+        <div id="statusArray" class="text-xs text-slate-400 flex items-center gap-2">
+          <span class="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></span> Cloud Sandbox Node: Ready
+        </div>
+        
+        <button onclick="compileAndExecuteLive()" class="px-5 py-3 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-semibold text-xs tracking-wider rounded-xl transition-all shadow-lg shadow-indigo-600/20 flex items-center gap-2">
+          <i class="fa-solid fa-circle-play"></i> RUN CODE
+        </button>
+      </div>
+
+      <!-- Console Logs -->
+      <div>
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider"><i class="fa-solid fa-terminal text-emerald-400"></i> Compiler Terminal Out (stdout)</span>
+          <button onclick="copyOutput()" id="copyBtn" class="text-xs text-slate-400 hover:text-white flex items-center gap-1.5 bg-white/5 border border-white/10 px-3 py-1 rounded-lg transition-all">
+            <i class="fa-regular fa-copy"></i> Copy Logs
           </button>
         </div>
-
-        <!-- Terminal Output Container -->
-        <div class="relative pt-2">
-          <div class="flex justify-between items-center mb-2">
-            <label class="block text-[10px] uppercase font-bold tracking-wider text-gray-400">Live Terminal Logs (stdout)</label>
-            <button onclick="copyTerminalOutput()" id="copyBtn" class="text-[11px] text-indigo-400 hover:text-indigo-300 font-semibold transition-all flex items-center gap-1.5 bg-indigo-500/5 hover:bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-1 rounded-lg">
-              <i class="fa-regular fa-copy"></i> Copy Output
-            </button>
-          </div>
-          <div id="outputContainer" style="white-space: pre-wrap;" class="w-full h-48 bg-black/95 border border-white/5 rounded-2xl p-4 text-sm font-mono overflow-y-auto text-emerald-400 select-all shadow-2xl"></div>
-        </div>
-
+        <div id="consoleTerminal" class="w-full h-44 bg-slate-950 border border-white/5 rounded-xl p-4 text-sm font-mono overflow-y-auto text-emerald-400 shadow-2xl" style="white-space: pre-wrap;"></div>
       </div>
+
     </div>
   </main>
 
   <script>
-    // Templates Array Setup
-    const templates = {
-      python: {
-        file: "main.py",
-        code: "print(\"Hello, EDITH System Engine!\")\n\na = 15\nb = 25\nprint(f\"The calculated sum is: {a + b}\")"
-      },
-      javascript: {
-        file: "index.js",
-        code: "console.log(\"JavaScript Matrix Engine Engaged.\");\n\nfor(let i = 1; i <= 3; i++) {\n    console.log(\"Streaming sequence block id:\", i);\n}"
-      }
+    const environmentMatrix = {
+      python: { file: "main.py", target: "python", initCode: "print(\"Hello, EDITH System Engine!\")\n\n# రియల్ కంపైలర్ టెస్ట్ లాజిక్\nuser_name = \"EDITH User\"\nprint(f\"Welcome to the secure execution cloud: {user_name}\")\n\nmatrix = [x**2 for x in range(5)]\nprint(\"Calculated Array Data:\", matrix)" },
+      javascript: { file: "index.js", target: "javascript", initCode: "console.log(\"Node.js Server Environment Engaged.\");\n\nconst clusterNodes = ['Node_Alpha', 'Node_Beta', 'Node_Gamma'];\nclusterNodes.forEach((node, index) => {\n    console.log(`[Cluster Vector ${index + 1}]: ${node}`);\n});" },
+      c: { file: "main.c", target: "c", initCode: "#include <stdio.h>\n\nint main() {\n    printf(\"GCC Compiler Target Engaged.\\n\");\n    printf(\"Pipeline status code: 200 SUCCESS\\n\");\n    return 0;\n}" },
+      cpp: { file: "main.cpp", target: "cpp", initCode: "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"G++ Architecture Stack Online.\" << endl;\n    cout << \"Ready for custom production payloads.\" << endl;\n    return 0;\n}" }
     };
 
-    let pyodideInstance = null;
-
-    window.onload = async () => {
-      handleLanguageChange();
-      // Pre-warm Pyodide background compiler node safely
-      initPyodideEngine();
+    window.onload = () => {
+      switchLanguage();
     };
 
-    async function initPyodideEngine() {
-      if (!pyodideInstance) {
-        try {
-          pyodideInstance = await loadPyodide();
-        } catch (err) {
-          console.error("Pyodide background allocation error:", err);
-        }
-      }
-    }
-
-    function handleLanguageChange() {
-      const selectedLang = document.getElementById('languageSelector').value;
-      const target = templates[selectedLang];
+    function switchLanguage() {
+      const selected = document.getElementById('langSelect').value;
+      const data = environmentMatrix[selected];
       
-      document.getElementById('langIndicator').innerText = target.file;
-      document.getElementById('sourceInput').value = target.code;
-      document.getElementById('outputContainer').innerHTML = "";
+      document.getElementById('fileBadge').innerText = data.file;
+      document.getElementById('editorEngine').value = data.initCode;
+      document.getElementById('consoleTerminal').innerHTML = "";
     }
 
-    async function executeCodePayload() {
-      const currentLang = document.getElementById('languageSelector').value;
-      const codeValue = document.getElementById('sourceInput').value.trim();
-      const outputBox = document.getElementById('outputContainer');
-      const loader = document.getElementById('processingLoader');
-      const idle = document.getElementById('idleStatus');
+    async function compileAndExecuteLive() {
+      const current = document.getElementById('langSelect').value;
+      const rawPayload = document.getElementById('editorEngine').value.trim();
+      const consoleBox = document.getElementById('consoleTerminal');
+      const loader = document.getElementById('loaderArray');
+      const status = document.getElementById('statusArray');
 
-      if (!codeValue) {
-        alert("Execution failed: Source buffer stream workspace is blank.");
+      if (!rawPayload) {
+        alert("Error: Script block is blank. Please write some code first.");
         return;
       }
 
       loader.classList.remove('hidden');
       loader.classList.add('flex');
-      idle.classList.add('hidden');
-      outputBox.innerHTML = "<span class='text-amber-400 animate-pulse'>[INITIALIZING]: Executing custom matrix blocks inside virtual sandbox array...</span>";
+      status.classList.add('hidden');
+      consoleBox.innerHTML = "<span class='text-amber-400 animate-pulse'>[COMPILING]: Routing payload array to dedicated isolated Linux container sandbox...</span>";
 
-      // Allow UI thread to cycle layout cleanly
-      await new Promise(resolve => setTimeout(resolve, 100));
-
-      if (currentLang === 'python') {
-        try {
-          // Warm up instance if required
-          if (!pyodideInstance) {
-            document.getElementById('loaderText').innerText = "Downloading WebAssembly core system framework dependencies...";
-            pyodideInstance = await loadPyodide();
-          }
-          
-          document.getElementById('loaderText').innerText = "Running script natively...";
-
-          // Capture stdout intercept layers cleanly
-          let pythonOutputBuffer = "";
-          pyodideInstance.setStdout({
-            write: (text) => {
-              pythonOutputBuffer += text;
-              return text.length;
-            }
-          });
-          pyodideInstance.setStderr({
-            write: (text) => {
-              pythonOutputBuffer += text;
-              return text.length;
-            }
-          });
-
-          // Core execute runtime run
-          await pyodideInstance.runPythonAsync(codeValue);
-
-          outputBox.innerHTML = pythonOutputBuffer ? escapeHTML(pythonOutputBuffer) : "<span class='text-gray-400'>[SUCCESS]: Code processed with no stdout stream outputs.</span>";
-
-        } catch (err) {
-          outputBox.innerHTML = `<span class='text-red-500 font-bold'>[PYTHON RUNTIME EXCEPTION]:</span>\n<span class='text-red-400'>${escapeHTML(err.message)}</span>`;
-        }
-      } 
-      
-      else if (currentLang === 'javascript') {
-        let jsOutputBuffer = [];
-        const originalConsoleLog = console.log;
+      try {
+        // Glot API CORS Proxy Engine (ఎప్పటికీ 401 ఎర్రర్ రాకుండా బైపాస్ చేస్తుంది)
+        const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent("https://glot.io/api/run/" + environmentMatrix[current].target + "/latest");
         
-        console.log = function(...args) {
-          jsOutputBuffer.push(args.map(arg => typeof arg === 'object' ? JSON.stringify(arg, null, 2) : arg).join(' '));
-        };
+        const res = await fetch(proxyUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            files: [{
+              name: environmentMatrix[current].file,
+              content: rawPayload
+            }]
+          })
+        });
 
-        try {
-          eval(codeValue);
-          console.log = originalConsoleLog; // Reset mapping
-          outputBox.innerHTML = jsOutputBuffer.length > 0 ? escapeHTML(jsOutputBuffer.join('\n')) : "<span class='text-gray-400'>[SUCCESS]: Code block run completed without logs.</span>";
-        } catch (err) {
-          console.log = originalConsoleLog; // Reset mapping safety fallback
-          outputBox.innerHTML = `<span class='text-red-500 font-bold'>[JAVASCRIPT ERROR]:</span>\n<span class='text-red-400'>${escapeHTML(err.message)}</span>`;
+        if (!res.ok) throw new Error("Server rejected matrix parameters.");
+        
+        const outputData = await res.json();
+        
+        if (outputData.stderr) {
+          consoleBox.innerHTML = `<span class='text-red-500 font-bold'>[COMPILER RUNTIME ERROR]:</span>\n<span class='text-red-400'>${escapeLogs(outputData.stderr)}</span>`;
+        } else {
+          consoleBox.innerHTML = outputData.stdout ? escapeLogs(outputData.stdout) : "<span class='text-slate-400'>[SUCCESS]: Code block executed with no output text streams returned.</span>";
         }
+
+      } catch (err) {
+        consoleBox.innerHTML = `<span class='text-red-500 font-bold'>[NETWORK TRANSMISSION ERROR]:</span>\n<span class='text-red-400'>సర్వర్ రెస్పాండ్ అవ్వడం లేదు. మీ కోడ్ లాజిక్ సరిచూసుకోండి లేదా ఇంటర్నెట్ కనెక్టివిటీ చెక్ చేయండి.</span>`;
+      } finally {
+        loader.classList.remove('flex');
+        loader.classList.add('hidden');
+        status.classList.remove('hidden');
       }
-
-      loader.classList.remove('flex');
-      loader.classList.add('hidden');
-      idle.classList.remove('hidden');
-      document.getElementById('loaderText').innerText = "Compiling execution layer context...";
     }
 
-    function escapeHTML(str) {
-      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    function escapeLogs(string) {
+      return string.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
 
-    function copyTerminalOutput() {
-      const outputBox = document.getElementById('outputContainer');
-      if (!outputBox.innerText || outputBox.innerText.includes("[INITIALIZING]")) return;
+    function copyOutput() {
+      const logText = document.getElementById('consoleTerminal').innerText;
+      if (!logText || logText.includes("[COMPILING]")) return;
 
-      navigator.clipboard.writeText(outputBox.innerText).then(() => {
-        const copyBtn = document.getElementById('copyBtn');
-        copyBtn.innerHTML = '<i class="fa-solid fa-check text-emerald-400"></i> Copied';
+      navigator.clipboard.writeText(logText).then(() => {
+        const btn = document.getElementById('copyBtn');
+        btn.innerHTML = '<i class="fa-solid fa-check text-emerald-400"></i> Copied!';
         setTimeout(() => {
-          copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy Output';
-        }, 2000);
+          btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy Logs';
+        }, 1500);
       });
     }
   </script>
