@@ -65,17 +65,17 @@
         <p class="text-gray-400 text-sm font-light">Write code natively, execute in safe remote sandboxes, and capture stdout/stderr instantly.</p>
       </div>
       
-      <!-- Selection Hub -->
+      <!-- Selector Hub -->
       <div class="flex justify-center">
         <div class="bg-gray-900/80 border border-white/10 rounded-xl px-3 py-2 flex items-center gap-2">
           <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Environment:</label>
           <select id="languageSelector" onchange="handleLanguageChange()" class="bg-transparent text-sm font-semibold text-white outline-none cursor-pointer pr-4">
-            <option value="python" class="bg-gray-950 text-gray-200">Python 3</option>
-            <option value="javascript" class="bg-gray-950 text-gray-200">JavaScript (Node.js)</option>
-            <option value="c" class="bg-gray-950 text-gray-200">C (GCC)</option>
-            <option value="cpp" class="bg-gray-950 text-gray-200">C++ (G++)</option>
-            <option value="java" class="bg-gray-950 text-gray-200">Java (OpenJDK)</option>
-            <option value="go" class="bg-gray-950 text-gray-200">Go Lang</option>
+            <option value="python" class="bg-gray-950 text-gray-200">Python 3 (3.10.0)</option>
+            <option value="javascript" class="bg-gray-950 text-gray-200">JavaScript (Node v18)</option>
+            <option value="c" class="bg-gray-950 text-gray-200">C (GCC 10.2.0)</option>
+            <option value="cpp" class="bg-gray-950 text-gray-200">C++ (GCC 10.2.0)</option>
+            <option value="java" class="bg-gray-950 text-gray-200">Java (OpenJDK 15)</option>
+            <option value="go" class="bg-gray-950 text-gray-200">Go Lang (1.16.2)</option>
           </select>
         </div>
       </div>
@@ -109,7 +109,7 @@
           </button>
         </div>
 
-        <!-- Terminal Terminal Logs -->
+        <!-- Terminal Logs -->
         <div class="relative pt-2">
           <div class="flex justify-between items-center mb-2">
             <label class="block text-[10px] uppercase font-bold tracking-wider text-gray-400">Live Terminal Logs (stdout)</label>
@@ -125,14 +125,14 @@
   </main>
 
   <script>
-    // System Configurations Array Matrix
+    // Exact Piston API Version Mappings to bypass 401/400 errors
     const runtimeConfig = {
-      python: { version: "*", file: "main.py", code: "print(\"Hello, EDITH System Engine!\")\n\n# Quick Test Loop\nfor i in range(1, 4):\n    print(f\"Processing secure pipeline stack: {i}\")" },
-      javascript: { version: "*", file: "index.js", code: "console.log(\"Node.js Virtual Sandbox Active.\");\n\nconst items = ['Auth_Node', 'Database_Core', 'API_Gateway'];\nitems.forEach((item, index) => {\n    console.log(`[Matrix Key ${index + 1}]: ${item}`);\n});" },
-      c: { version: "*", file: "main.c", code: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello from Native C Runtime Environment!\\n\");\n    int val = 42;\n    printf(\"Allocated system constant core: %d\\n\", val);\n    return 0;\n}" },
-      cpp: { version: "*", file: "main.cpp", code: "#include <iostream>\n#include <vector>\nusing namespace std;\n\nint main() {\n    cout << \"C++ Sandboxed Compiler Online.\" << endl;\n    vector<int> stream = {10, 20, 30};\n    cout << \"Stream buffer size parsed: \" << stream.size() << endl;\n    return 0;\n}" },
-      java: { version: "*", file: "Main.java", code: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Java Sandbox Stream Initialized successfully.\");\n        System.out.println(\"System Architecture: OpenJDK Engine\");\n    }\n}" },
-      go: { version: "*", file: "main.go", code: "package main\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Go Language Core active inside compiler cluster.\")\n}" }
+      python: { version: "3.10.0", file: "main.py", code: "print(\"Hello, EDITH System Engine!\")\n\n# Quick Test Loop\nfor i in range(1, 4):\n    print(f\"Processing secure pipeline stack: {i}\")" },
+      javascript: { version: "18.15.0", file: "index.js", code: "console.log(\"Node.js Virtual Sandbox Active.\");\n\nconst items = ['Auth_Node', 'Database_Core', 'API_Gateway'];\nitems.forEach((item, index) => {\n    console.log(`[Matrix Key ${index + 1}]: ${item}`);\n});" },
+      c: { version: "10.2.0", file: "main.c", code: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello from Native C Runtime Environment!\\n\");\n    int val = 42;\n    printf(\"Allocated system constant core: %d\\n\", val);\n    return 0;\n}" },
+      cpp: { version: "10.2.0", file: "main.cpp", code: "#include <iostream>\n#include <vector>\nusing namespace std;\n\nint main() {\n    cout << \"C++ Sandboxed Compiler Online.\" << endl;\n    vector<int> stream = {10, 20, 30};\n    cout << \"Stream buffer size parsed: \" << stream.size() << endl;\n    return 0;\n}" },
+      java: { version: "15.0.2", file: "Main.java", code: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Java Sandbox Stream Initialized successfully.\");\n        System.out.println(\"System Architecture: OpenJDK Engine\");\n    }\n}" },
+      go: { version: "1.16.2", file: "main.go", code: "package main\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Go Language Core active inside compiler cluster.\")\n}" }
     };
 
     window.onload = () => {
@@ -160,20 +160,20 @@
         return;
       }
 
-      // Loader Toggle Nodes
       loader.classList.remove('hidden');
       loader.classList.add('flex');
       idle.classList.add('hidden');
       outputBox.innerHTML = "<span class='text-amber-400 animate-pulse'>[CONNECTING]: Packaging source matrix and routing to sandbox API clusters...</span>";
 
       try {
-        // Piston Global Execution API System
         const response = await fetch("https://emkc.org/api/v2/piston/execute", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { 
+            "Content-Type": "application/json"
+          },
           body: JSON.stringify({
             language: currentLang,
-            version: runtimeConfig[currentLang].version, // Using wildcards lets the server auto-pick the latest stable version
+            version: runtimeConfig[currentLang].version, 
             files: [{ name: runtimeConfig[currentLang].file, content: codeValue }]
           })
         });
@@ -192,7 +192,6 @@
           const stdout = data.run.stdout;
           const stderr = data.run.stderr;
 
-          // Checking code runtime logs errors cleanly
           if (stderr) {
             outputBox.innerHTML = `<span class='text-red-500 font-bold'>[RUNTIME EXCEPTION REGISTERED]:</span>\n<span class='text-red-400'>${escapeHTML(stderr)}</span>`;
           } else if (stdout) {
@@ -201,14 +200,14 @@
             outputBox.innerHTML = "<span class='text-gray-400 font-mono'>[SUCCESS]: Code block executed with no stdout stream returned.</span>";
           }
         } else {
-          outputBox.innerHTML = "<span class='text-red-400 font-mono'>[BUILD FAILURE]: Could not extract structural properties from compilation packet payload.</span>";
+          outputBox.innerHTML = "<span class='text-red-400 font-mono'>[BUILD FAILURE]: Could not extract execution data from payload.</span>";
         }
 
       } catch (error) {
         loader.classList.remove('flex');
         loader.classList.add('hidden');
         idle.classList.remove('hidden');
-        outputBox.innerHTML = `<span class='text-red-500 font-bold'>[API PIPELINE BREAKDOWN]:</span>\n<span class='text-red-400'>${error.message}\nEnsure connection endpoints are completely open and accessible.</span>`;
+        outputBox.innerHTML = `<span class='text-red-500 font-bold'>[API PIPELINE BREAKDOWN]:</span>\n<span class='text-red-400'>${error.message}\nEnsure server endpoints are accessible.</span>`;
       }
     }
 
