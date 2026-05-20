@@ -86,7 +86,7 @@
       <div class="flex items-center gap-4">
         <div id="profileTrigger" onclick="toggleProfile()" class="flex items-center gap-3 cursor-pointer hover:bg-white/5 p-1.5 px-3 rounded-2xl border border-transparent hover:border-white/5 transition-all">
           <div class="text-right hidden md:block">
-            <p id="navUserName" class="font-semibold text-gray-200 text-sm tracking-tight">Operator</p>
+            <p id="navUserName" class="font-semibold text-gray-200 text-sm tracking-tight">Loading...</p>
             <p class="text-[9px] text-indigo-400 font-bold uppercase tracking-widest mt-0.5">Control Registry</p>
           </div>
           <div class="w-9 h-9 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-sm font-bold text-white shadow-md ring-2 ring-indigo-500/20">
@@ -111,7 +111,7 @@
         <div class="edith-orb w-20 h-20 rounded-3xl mx-auto mb-4 flex items-center justify-center text-3xl text-white">
           <i class="fa-solid fa-id-badge"></i>
         </div>
-        <h4 id="profileName" class="text-xl font-bold text-white tracking-tight">Operator</h4>
+        <h4 id="profileName" class="text-xl font-bold text-white tracking-tight">Loading...</h4>
         <p class="text-indigo-400 text-xs font-semibold tracking-wider uppercase mt-1">Authorized Operator</p>
       </div>
 
@@ -224,34 +224,36 @@
         return;
       }
 
-      // LocalStorage నుండి రిజిస్టర్డ్ డీటెయిల్స్ ని రీడ్ చేయడం
+      // LocalStorage నుండి యూజర్ రిజిస్టర్డ్ డీటెయిల్స్ రీడ్ చేయడం
       const savedName = localStorage.getItem('userName');
       const savedEmail = localStorage.getItem('userEmail');
       const savedPhone = localStorage.getItem('userPhone') || localStorage.getItem('phone') || localStorage.getItem('mobile'); 
 
-      // Name Injection Logic
+      // Name Mapping Logics
       if (savedName && savedName.trim() !== "") {
         document.getElementById('navUserName').innerText = savedName;
         document.getElementById('profileName').innerText = savedName;
         document.getElementById('welcomeName').innerText = savedName + '!';
       } else {
-        document.getElementById('navUserName').innerText = "Operator";
-        document.getElementById('profileName').innerText = "Operator";
-        document.getElementById('welcomeName').innerText = "Operator!";
+        // ఒకవేళ డేటా లేకపోతే వ్యవస్థాపకులు "Srinivasarao Pokala" గారి పేరు డీఫాల్ట్‌గా వస్తుంది
+        const defaultFounder = "Srinivasarao Pokala";
+        document.getElementById('navUserName').innerText = defaultFounder;
+        document.getElementById('profileName').innerText = defaultFounder;
+        document.getElementById('welcomeName').innerText = defaultFounder + '!';
       }
 
-      // Email Injection Logic
+      // Email Mapping Logics
       if (savedEmail && savedEmail.trim() !== "") {
         document.getElementById('profileEmail').innerText = savedEmail;
       } else {
-        document.getElementById('profileEmail').innerText = "Not Configured";
+        document.getElementById('profileEmail').innerText = "info@studenthub.ai";
       }
 
-      // Phone Number Injection Logic
+      // Phone Number Mapping Logics
       if (savedPhone && savedPhone.trim() !== "") {
         document.getElementById('profilePhone').innerText = savedPhone;
       } else {
-        document.getElementById('profilePhone').innerText = "Not Configured";
+        document.getElementById('profilePhone').innerText = "+91 System Secure Line";
       }
     };
 
