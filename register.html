@@ -7,7 +7,6 @@
   <title>Register - EDITH AI</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700&display=swap');
@@ -40,7 +39,7 @@
       100% { opacity: 0.35; }
     }
 
-    /* Luxury Cyber Glass Card */
+    /* Luxury Cyber Glass Card - 3D Tilt parameters completely stripped */
     .glass-card {
       background: rgba(10, 15, 30, 0.7);
       backdrop-filter: blur(30px) saturate(200%);
@@ -71,7 +70,7 @@
 
     .btn-gradient:hover:not(:disabled) {
       box-shadow: 0 0 25px rgba(124, 58, 237, 0.4);
-      transform: translateY(-1px);
+      transform: scale(1.01);
       filter: brightness(1.1);
     }
 
@@ -113,8 +112,8 @@
   <div class="blob w-96 h-96 bottom-1/4 right-1/4" style="background: #3b82f6; animation-delay: -3s;"></div>
 
   <div class="w-full max-w-lg">
-    <!-- Perfectly Contained Premium Card with Soft Tilt -->
-    <div class="glass-card rounded-[32px] p-8 md:p-10" data-tilt data-tilt-max="3" data-tilt-glare data-tilt-max-glare="0.03">
+    <!-- Static UI Card Container (No Tilt Bindings) -->
+    <div class="glass-card rounded-[32px] p-8 md:p-10">
       
       <div>
         <!-- App Identity Logo Header -->
@@ -192,7 +191,7 @@
           </button>
         </form>
 
-        <p class="text-center mt-6 text-slate-400 text-xs font-light">
+          <p class="text-center mt-6 text-slate-400 text-xs font-light">
           Already a certified member? <a href="login.html" class="text-cyan-400 font-medium hover:text-purple-400 hover:underline ml-1">Sign In</a>
         </p>
       </div>
@@ -201,15 +200,6 @@
 
   <script>
     const API_BASE = "https://student-hub-edith-backend.onrender.com";
-    
-    // Balanced Tilt Configuration for flawless appearance
-    VanillaTilt.init(document.querySelectorAll(".glass-card"), { 
-      max: 3, 
-      speed: 800, 
-      glare: true, 
-      "max-glare": 0.05,
-      scale: 1.01
-    });
 
     // Custom System Notifications
     function showNotification(message, isSuccess = false) {
@@ -268,7 +258,6 @@
       btn.disabled = true;
 
       try {
-        // ఇక్కడ బ్యాకెండ్ కి అన్ని ఫీల్డ్స్ పంపుతున్నాము
         const response = await fetch(`${API_BASE}/api/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -278,7 +267,6 @@
         const data = await response.json();
 
         if (response.ok) {
-          // డాష్‌బోర్డ్ కోసం లోకల్ స్టోరేజ్ లో డేటా ని స్టోర్ చేస్తున్నాము
           localStorage.setItem('userName', username);
           localStorage.setItem('userEmail', email);
           localStorage.setItem('userPhone', phone);
