@@ -678,7 +678,7 @@ function escapeHtml(text) {
     return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-// --- FIXED ULTRA-LOW LATENCY STREAMING ENGINE ---
+// --- ULTRA LOW LATENCY STREAM READER (DEACTIVATED INTERNAL BUFFER DELAYS) ---
 async function sendMsg() {
     const input = document.getElementById("msg");
     const fileInput = document.getElementById("fileInput");
@@ -710,13 +710,10 @@ async function sendMsg() {
     showTypingIndicator();
 
     try {
-        // Explicitly set cache instructions to stop browser-side chunk buffering
         const res = await fetch(`${API_BASE}/api/chat`, {
             method: "POST",
             headers: { 
-                "Authorization": `Bearer ${token}`,
-                "Cache-Control": "no-cache",
-                "Pragma": "no-cache"
+                "Authorization": `Bearer ${token}`
             },
             body: formData
         });
@@ -745,18 +742,16 @@ async function sendMsg() {
         const aiBubble = appendMessageToUI("", false);
         let aiText = "";
 
-        // Ultra-fast rendering mechanism
+        // Ultra high-speed bypass stream reader loops
         while (true) {
             const { done, value } = await reader.read();
-            if (done) {
-                // Run final markdown parsing once the entire text stream completes
-                aiBubble.innerHTML = cleanAndParseMarkdown(aiText);
-                break;
-            }
+            if (done) break;
 
-            // Immediately display raw text fragments without waiting for complete DOM parsing cycles
-            aiText += decoder.decode(value, { stream: true });
-            aiBubble.innerText = aiText;
+            const newChunk = decoder.decode(value, { stream: true });
+            aiText += newChunk;
+            
+            // Bypass micro-rendering loops using direct structural text assignments
+            aiBubble.innerHTML = cleanAndParseMarkdown(aiText);
             chatArea.scrollTop = chatArea.scrollHeight;
         }
 
