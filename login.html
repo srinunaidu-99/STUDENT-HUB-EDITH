@@ -7,13 +7,12 @@
   <title>Login - EDITH</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;600&display=swap');
 
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-family: 'Poppins', sans-serif;
       overflow: hidden;
       background-color: #020617;
     }
@@ -25,7 +24,7 @@
       height: 100vh;
     }
 
-    /* Ambient Premium Blobs - Constant positions, no structural movement, only smooth transparency pulse */
+    /* Fixed premium glow spheres - purely pulsing opacity, no translation movement */
     .glow-sphere {
       position: absolute;
       width: 400px;
@@ -33,24 +32,19 @@
       background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
       border-radius: 50%;
       z-index: -1;
-      animation: pulseGlowEffect 6s ease-in-out infinite alternate;
-      will-change: opacity;
+      animation: pulse 6s infinite alternate;
     }
 
-    @keyframes pulseGlowEffect {
+    @keyframes pulse {
       0% { opacity: 0.4; }
       100% { opacity: 0.8; }
     }
 
+    /* Glassmorphism Card - 3D Tilt parameters completely stripped */
     .glass-card {
       background: rgba(15, 23, 42, 0.3);
       backdrop-filter: blur(25px) saturate(180%);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      transform-style: preserve-3d;
-    }
-
-    .inner-3d {
-      transform: translateZ(60px);
     }
 
     .neon-input {
@@ -89,13 +83,13 @@
     }
   </script>
 
-  <!-- Constant Positions Backdrops -->
   <div class="glow-sphere top-[-100px] right-[-100px]"></div>
   <div class="glow-sphere bottom-[-100px] left-[-100px]" style="background: radial-gradient(circle, rgba(6,182,212,0.1) 0%, rgba(0,0,0,0) 70%);"></div>
 
   <div class="w-full max-w-md">
-    <div class="glass-card rounded-[50px] p-10 text-center" data-tilt>
-      <div class="inner-3d">
+    <!-- Static UI Card container (No VanillaTilt bindings) -->
+    <div class="glass-card rounded-[50px] p-10 text-center">
+      <div>
         <!-- Brand Icon -->
         <div class="w-24 h-24 mx-auto bg-gradient-to-br from-purple-500 to-indigo-600 rounded-[30px] flex items-center justify-center text-5xl mb-6 shadow-[0_0_30px_rgba(168,85,247,0.4)]">
           ✨
@@ -120,7 +114,7 @@
 
           <div>
             <div class="relative">
-              <i class="fa-solid fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-slate-500"></i>
+              <i class="fa-solid fa-shield-halved absolute left-5 top-1/2 -translate-y-1/2 text-slate-500"></i>
               <input type="password" id="password" required placeholder="Password" class="neon-input w-full rounded-2xl pl-12 pr-14 py-4 text-white focus:outline-none" />
               <button type="button" onclick="togglePasswordVisibility('password', 'toggleEyeIcon')" class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-purple-400 transition-colors focus:outline-none">
                 <i id="toggleEyeIcon" class="fa-solid fa-eye"></i>
@@ -128,7 +122,7 @@
             </div>
           </div>
 
-          <!-- Forgot Password Trigger link -->
+          <!-- Forgot Password Link -->
           <div class="text-right">
             <button type="button" onclick="openForgotModal()" class="text-sm text-slate-400 hover:text-cyan-400 transition-colors">
               Forgot Password?
@@ -224,14 +218,7 @@
   <script>
     const API_BASE = "https://student-hub-edith-backend.onrender.com";
 
-    // VanillaTilt Configuration
-    VanillaTilt.init(document.querySelectorAll(".glass-card"), {
-      max: 6,
-      speed: 500,
-      glare: true,
-      "max-glare": 0.15,
-      reset: true
-    });
+    // Dynamic 3D script initializers completely stripped to ensure perfect card stability.
 
     function togglePasswordVisibility(inputId, iconId) {
       const passwordInput = document.getElementById(inputId);
@@ -265,6 +252,7 @@
       forgotModal.classList.add("opacity-100");
     }
 
+    // Modal closing transitions
     function closeForgotModal() {
       forgotModal.classList.remove("opacity-100");
       forgotModal.classList.add("pointer-events-none", "opacity-0");
@@ -337,7 +325,7 @@
       }
     });
 
-    // STEP 3: Reset Final
+    // STEP 3: Reset Final Password update
     document.getElementById("forgotResetForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const newPassword = document.getElementById("newPassword").value.trim();
@@ -392,11 +380,8 @@
         const data = await response.json();
 
         if (response.ok) {
-          // సేవ్ ఆల్ యూజర్ ప్రాపర్టీస్ ఫ్రమ్ రెస్పాన్స్ టు లోకల్ స్టోరేజ్
           localStorage.setItem("token", data.token);
           localStorage.setItem("userName", data.username || username);
-          localStorage.setItem("userEmail", data.email || ""); // ఈమెయిల్ ఇక్కడ క్యాప్చర్ అవుతుంది
-          localStorage.setItem("userPhone", data.phone || ""); // ఫోన్ నంబర్ ఇక్కడ క్యాప్చర్ అవుతుంది
           localStorage.setItem("isLoggedIn", "true");
 
           btn.innerText = "Access Granted...";
