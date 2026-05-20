@@ -46,7 +46,7 @@
           E
         </div>
         <h1 class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-indigo-300 bg-clip-text text-transparent">
-          EDITH <span class="text-xs font-semibold text-cyan-400 border border-cyan-500/30 px-1.5 py-0.5 rounded-md ml-1 bg-cyan-500/10">COMPILER CORE</span>
+          EDITH <span class="text-xs font-semibold text-cyan-400 border border-cyan-500/30 px-1.5 py-0.5 rounded-md ml-1 bg-cyan-500/10">LIVE COMPILER</span>
         </h1>
       </div>
       
@@ -60,64 +60,64 @@
     
     <div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
       <div class="text-center md:text-left">
-        <span class="text-[10px] uppercase tracking-widest font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-1 rounded-md inline-block mb-3">Universal Sandbox Array</span>
-        <h2 class="text-2xl sm:text-4xl font-bold text-white tracking-tight mb-2">Multi-Language Execution Kernel</h2>
-        <p class="text-gray-400 text-sm font-light">Compile code blocks across various architecture frameworks and isolate memory logs natively.</p>
+        <span class="text-[10px] uppercase tracking-widest font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-1 rounded-md inline-block mb-3">Cloud Sandbox Core</span>
+        <h2 class="text-2xl sm:text-4xl font-bold text-white tracking-tight mb-2">Live Multi-Language Compiler</h2>
+        <p class="text-gray-400 text-sm font-light">Write code natively, execute in safe remote sandboxes, and capture stdout/stderr instantly.</p>
       </div>
       
-      <!-- Language Selector Selection Box -->
+      <!-- Selection Hub -->
       <div class="flex justify-center">
         <div class="bg-gray-900/80 border border-white/10 rounded-xl px-3 py-2 flex items-center gap-2">
           <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Environment:</label>
           <select id="languageSelector" onchange="handleLanguageChange()" class="bg-transparent text-sm font-semibold text-white outline-none cursor-pointer pr-4">
-            <option value="python" class="bg-gray-950 text-gray-200">Python 3.x</option>
-            <option value="javascript" class="bg-gray-950 text-gray-200">JavaScript (Node)</option>
-            <option value="cpp" class="bg-gray-950 text-gray-200">C++ (GCC 14)</option>
-            <option value="c" class="bg-gray-950 text-gray-200">C (Clang v18)</option>
-            <option value="java" class="bg-gray-950 text-gray-200">Java 21 (OpenJDK)</option>
-            <option value="go" class="bg-gray-950 text-gray-200">Go Lang v1.24</option>
+            <option value="python" class="bg-gray-950 text-gray-200">Python 3</option>
+            <option value="javascript" class="bg-gray-950 text-gray-200">JavaScript (Node.js)</option>
+            <option value="c" class="bg-gray-950 text-gray-200">C (GCC)</option>
+            <option value="cpp" class="bg-gray-950 text-gray-200">C++ (G++)</option>
+            <option value="java" class="bg-gray-950 text-gray-200">Java (OpenJDK)</option>
+            <option value="go" class="bg-gray-950 text-gray-200">Go Lang</option>
           </select>
         </div>
       </div>
     </div>
 
-    <!-- Main Workspace Frame -->
+    <!-- Workspace Deck -->
     <div class="glass-panel rounded-3xl p-6 sm:p-8 shadow-xl relative">
-      
       <div class="space-y-6">
-        <!-- Editor Layout Node -->
+        
+        <!-- Editor Frame -->
         <div>
           <div class="flex justify-between items-center mb-2">
-            <label id="editorLabel" class="block text-[10px] uppercase font-bold tracking-wider text-gray-400">Target Code Matrix</label>
-            <span id="langIndicator" class="text-xs text-indigo-400 font-mono">script.py</span>
+            <label class="block text-[10px] uppercase font-bold tracking-wider text-gray-400">Source Code Input Terminal</label>
+            <span id="langIndicator" class="text-xs text-indigo-400 font-mono">main.py</span>
           </div>
-          <textarea id="sourceInput" placeholder="Initialize programming block script here..." 
-            class="w-full h-64 bg-gray-950/70 border border-white/10 focus:border-indigo-500/40 rounded-2xl p-5 text-sm font-mono outline-none transition-all placeholder-gray-700 shadow-inner resize-y text-gray-100"></textarea>
+          <textarea id="sourceInput" placeholder="Initialize source payload structure here..." 
+            class="w-full h-72 bg-gray-950/80 border border-white/10 focus:border-indigo-500/50 rounded-2xl p-5 text-sm font-mono outline-none transition-all placeholder-gray-700 shadow-inner resize-y text-gray-100"></textarea>
         </div>
 
-        <!-- System Controls Deck Hub -->
+        <!-- Engine Triggers -->
         <div class="flex items-center justify-between flex-wrap gap-4 border-t border-white/5 pt-4">
-          <div id="processingLoader" class="hidden items-center gap-2 text-xs font-medium text-indigo-400">
-            <i class="fa-solid fa-circle-notch animate-spin text-sm"></i> Syncing sandbox thread compiler arrays...
+          <div id="processingLoader" class="hidden items-center gap-2 text-xs font-medium text-amber-400">
+            <i class="fa-solid fa-circle-notch animate-spin text-sm"></i> Compiling matrix stream on secure server arrays...
           </div>
           <div id="idleStatus" class="text-xs text-gray-500 flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block"></span> Compiler Sandbox Online
+            <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block"></span> Remote Runtime System Online
           </div>
           
-          <button onclick="executeCodePayload()" class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 active:scale-95 text-white font-bold text-xs tracking-wider rounded-xl transition-all shadow-lg shadow-indigo-600/10 flex items-center gap-2">
-            <i class="fa-solid fa-play text-[10px]"></i> COMPILE & RUN CORE
+          <button onclick="executeCodeLive()" class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 active:scale-95 text-white font-bold text-xs tracking-wider rounded-xl transition-all shadow-lg shadow-indigo-600/10 flex items-center gap-2">
+            <i class="fa-solid fa-play text-[10px]"></i> EXECUTE LIVE PAYLOAD
           </button>
         </div>
 
-        <!-- Output Virtual Terminal Container -->
+        <!-- Terminal Terminal Logs -->
         <div class="relative pt-2">
           <div class="flex justify-between items-center mb-2">
-            <label class="block text-[10px] uppercase font-bold tracking-wider text-gray-400">Standard Terminal Log Output</label>
+            <label class="block text-[10px] uppercase font-bold tracking-wider text-gray-400">Live Terminal Logs (stdout)</label>
             <button onclick="copyTerminalOutput()" id="copyBtn" class="text-[11px] text-indigo-400 hover:text-indigo-300 font-semibold transition-all flex items-center gap-1.5 bg-indigo-500/5 hover:bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-1 rounded-lg">
               <i class="fa-regular fa-copy"></i> Copy Output
             </button>
           </div>
-          <div id="outputContainer" class="w-full h-48 bg-black/90 border border-white/5 rounded-2xl p-4 text-sm font-mono overflow-y-auto text-emerald-400 select-all shadow-2xl"></div>
+          <div id="outputContainer" style="white-space: pre-wrap;" class="w-full h-48 bg-black/95 border border-white/5 rounded-2xl p-4 text-sm font-mono overflow-y-auto text-emerald-400 select-all shadow-2xl"></div>
         </div>
 
       </div>
@@ -125,49 +125,30 @@
   </main>
 
   <script>
-    // Universal Code Language Matrix Storage Setup
-    const templates = {
-      python: {
-        file: "main.py",
-        code: "# EDITH Kernel Engine Integration\n# Founder cleared: SRINIVASARAO POKALA\n\ndef greet_system():\n    system_architecture = ['Core_Nodes', 'Matrix_Arrays', 'Encryption_Layers']\n    print(\"--- EDITH PIPELINE MATRIX SUCCESSFUL ---\")\n    \n    for idx, segment in enumerate(system_architecture, start=1):\n        print(f\"Initializing thread pipeline: [{idx}] -> {segment}\")\n\ngreet_system()"
-      },
-      javascript: {
-        file: "index.js",
-        code: "// EDITH Core V4.0 V8 Architecture Engine\n// Founder Target: SRINIVASARAO POKALA\n\nfunction processMatrix() {\n    const payloadNode = { status: 200, system: \"EDITH Core\" };\n    console.log(\"Compiling virtual thread context logs:\");\n    \n    Object.keys(payloadNode).forEach(key => {\n        console.log(`[Matrix Debug] ${key.toUpperCase()}: ${payloadNode[key]}`);\n    });\n    \n    return \"Compilation Process Complete.\";\n}\n\nconsole.log(processMatrix());"
-      },
-      cpp: {
-        file: "main.cpp",
-        code: "// EDITH C++ Virtual Runtime Compiler\n#include <iostream>\n#include <vector>\n#include <string>\n\nint main() {\n    std::cout << \"--- GCC COMPILATION STREAM INITIALIZED ---\" << std::endl;\n    std::vector<std::string> nodes = {\"Security_Layer\", \"Auth_Token_Validator\"};\n    \n    for(const auto& node : nodes) {\n        std::cout << \"Allocating memory segment pointer -> \" << node << std::endl;\n    }\n    return 0;\n}"
-      },
-      c: {
-        file: "main.c",
-        code: "/* EDITH Virtual C Compiler Sandbox System */\n#include <stdio.h>\n\nint main() {\n    printf(\"Initializing standard I/O streams...\\n\");\n    printf(\"Status 200: Memory addresses linked to SRINIVASARAO POKALA system matrix.\\n\");\n    return 0;\n}"
-      },
-      java: {
-        file: "Main.java",
-        code: "// EDITH Java Virtual Virtual Sandbox Engine\nimport java.util.Arrays;\n\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Java Thread Manager Pool Invoked.\");\n        String[] clearNodes = {\"Data_Parser_Vector\", \"Grammar_Optimizer\"};\n        System.out.println(\"Active Node Matrix Stack: \" + Arrays.toString(clearNodes));\n    }\n}"
-      },
-      go: {
-        file: "main.go",
-        code: "// EDITH Go Lang Runtime Engine Isolation\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Go routines channel cluster sync established.\")\n    fmt.Println(\"Processing cluster trace routes cleanly.\")\n}"
-      }
+    // System Configurations Array Matrix
+    const runtimeConfig = {
+      python: { version: "*", file: "main.py", code: "print(\"Hello, EDITH System Engine!\")\n\n# Quick Test Loop\nfor i in range(1, 4):\n    print(f\"Processing secure pipeline stack: {i}\")" },
+      javascript: { version: "*", file: "index.js", code: "console.log(\"Node.js Virtual Sandbox Active.\");\n\nconst items = ['Auth_Node', 'Database_Core', 'API_Gateway'];\nitems.forEach((item, index) => {\n    console.log(`[Matrix Key ${index + 1}]: ${item}`);\n});" },
+      c: { version: "*", file: "main.c", code: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello from Native C Runtime Environment!\\n\");\n    int val = 42;\n    printf(\"Allocated system constant core: %d\\n\", val);\n    return 0;\n}" },
+      cpp: { version: "*", file: "main.cpp", code: "#include <iostream>\n#include <vector>\nusing namespace std;\n\nint main() {\n    cout << \"C++ Sandboxed Compiler Online.\" << endl;\n    vector<int> stream = {10, 20, 30};\n    cout << \"Stream buffer size parsed: \" << stream.size() << endl;\n    return 0;\n}" },
+      java: { version: "*", file: "Main.java", code: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Java Sandbox Stream Initialized successfully.\");\n        System.out.println(\"System Architecture: OpenJDK Engine\");\n    }\n}" },
+      go: { version: "*", file: "main.go", code: "package main\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Go Language Core active inside compiler cluster.\")\n}" }
     };
 
     window.onload = () => {
-      // Load standard default payload
       handleLanguageChange();
     };
 
     function handleLanguageChange() {
       const selectedLang = document.getElementById('languageSelector').value;
-      const targetConfig = templates[selectedLang];
+      const target = runtimeConfig[selectedLang];
       
-      document.getElementById('langIndicator').innerText = targetConfig.file;
-      document.getElementById('sourceInput').value = targetConfig.code;
+      document.getElementById('langIndicator').innerText = target.file;
+      document.getElementById('sourceInput').value = target.code;
       document.getElementById('outputContainer').innerHTML = "";
     }
 
-    function executeCodePayload() {
+    async function executeCodeLive() {
       const currentLang = document.getElementById('languageSelector').value;
       const codeValue = document.getElementById('sourceInput').value.trim();
       const outputBox = document.getElementById('outputContainer');
@@ -175,67 +156,69 @@
       const idle = document.getElementById('idleStatus');
 
       if (!codeValue) {
-        alert("Please map or write functional scripts inside payload text window prior execution routing.");
+        alert("Execution halted: Source buffer stream cannot be blank.");
         return;
       }
 
+      // Loader Toggle Nodes
       loader.classList.remove('hidden');
       loader.classList.add('flex');
       idle.classList.add('hidden');
-      outputBox.innerHTML = "<span class='text-indigo-400 animate-pulse'>[SYSTEM ALERT]: Spawning container virtualization isolate threads & matching build clusters...</span>";
+      outputBox.innerHTML = "<span class='text-amber-400 animate-pulse'>[CONNECTING]: Packaging source matrix and routing to sandbox API clusters...</span>";
 
-      setTimeout(() => {
+      try {
+        // Piston Global Execution API System
+        const response = await fetch("https://emkc.org/api/v2/piston/execute", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            language: currentLang,
+            version: runtimeConfig[currentLang].version, // Using wildcards lets the server auto-pick the latest stable version
+            files: [{ name: runtimeConfig[currentLang].file, content: codeValue }]
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`Server returned network exception state code: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
         loader.classList.remove('flex');
         loader.classList.add('hidden');
         idle.classList.remove('hidden');
 
-        // Dynamic execution sim layer
-        if (currentLang === 'javascript') {
-          let customLogs = [];
-          const nativeLog = console.log;
-          console.log = function(...msg) {
-            customLogs.push(msg.map(m => typeof m === 'object' ? JSON.stringify(m) : m).join(' '));
-          };
+        if (data && data.run) {
+          const stdout = data.run.stdout;
+          const stderr = data.run.stderr;
 
-          try {
-            let evalResult = eval(codeValue);
-            console.log = nativeLog; // Recover standard logging layout
-            let standardOutput = customLogs.join('\n');
-            if(evalResult !== undefined) {
-              standardOutput += `\n\n<span class='text-yellow-300 font-bold'>[Runtime Return Vector]:</span> ${evalResult}`;
-            }
-            outputBox.innerHTML = standardOutput ? standardOutput.replace(/\n/g, '<br>') : "Process finished with 0 log vectors tracked.";
-          } catch(err) {
-            console.log = nativeLog; // Ensure execution buffer safety restoration
-            outputBox.innerHTML = `<span class='text-red-500 font-bold'>[V8 ENGINE SYSTEM ARCHITECTURE EXCEPTION]:</span><br><span class='text-red-400'>${err.message}</span>`;
+          // Checking code runtime logs errors cleanly
+          if (stderr) {
+            outputBox.innerHTML = `<span class='text-red-500 font-bold'>[RUNTIME EXCEPTION REGISTERED]:</span>\n<span class='text-red-400'>${escapeHTML(stderr)}</span>`;
+          } else if (stdout) {
+            outputBox.innerHTML = escapeHTML(stdout);
+          } else {
+            outputBox.innerHTML = "<span class='text-gray-400 font-mono'>[SUCCESS]: Code block executed with no stdout stream returned.</span>";
           }
         } else {
-          // Virtual compiler sim matrix for native configurations (Python, C, C++, Java, Go)
-          let simulatedTerminalStream = "";
-          
-          if(currentLang === 'python') {
-            if(codeValue.includes('print')) {
-              // Extract basic prints or execute static simulation mapping neatly
-              simulatedTerminalStream = "--- EDITH PIPELINE MATRIX SUCCESSFUL ---\nInitializing thread pipeline: [1] -> Core_Nodes\nInitializing thread pipeline: [2] -> Matrix_Arrays\nInitializing thread pipeline: [3] -> Encryption_Layers\n\n<span class='text-gray-500'>Process terminated with exit code 0</span>";
-            } else {
-              simulatedTerminalStream = "<span class='text-red-400'>[Traceback Error]: IndentationError: unexpected indent in program execution line loop structure.</span>";
-            }
-          } else if(currentLang === 'cpp' || currentLang === 'c') {
-            simulatedTerminalStream = "Compiling target binaries using toolchain pipeline cluster node...\nLinking objects dependencies matrix architecture cleanly...\n\n--- GCC COMPILATION STREAM INITIALIZED ---\nAllocating memory segment pointer -> Security_Layer\nAllocating memory segment pointer -> Auth_Token_Validator\n\n<span class='text-gray-500'>Process execution time delta: 0.042s | Exit code 0</span>";
-          } else if(currentLang === 'java') {
-            simulatedTerminalStream = "Parsing class token bytes arrays...\nJava Thread Manager Pool Invoked.\nActive Node Matrix Stack: [Data_Parser_Vector, Grammar_Optimizer]\n\n<span class='text-gray-500'>JVM state execution completed safely.</span>";
-          } else if(currentLang === 'go') {
-            simulatedTerminalStream = "Go routines channel cluster sync established.\nProcessing cluster trace routes cleanly.\n\n<span class='text-gray-500'>Go environment isolated sandbox trace closed successfully.</span>";
-          }
-
-          outputBox.innerHTML = simulatedTerminalStream.replace(/\n/g, '<br>');
+          outputBox.innerHTML = "<span class='text-red-400 font-mono'>[BUILD FAILURE]: Could not extract structural properties from compilation packet payload.</span>";
         }
-      }, 950);
+
+      } catch (error) {
+        loader.classList.remove('flex');
+        loader.classList.add('hidden');
+        idle.classList.remove('hidden');
+        outputBox.innerHTML = `<span class='text-red-500 font-bold'>[API PIPELINE BREAKDOWN]:</span>\n<span class='text-red-400'>${error.message}\nEnsure connection endpoints are completely open and accessible.</span>`;
+      }
+    }
+
+    function escapeHTML(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
 
     function copyTerminalOutput() {
       const outputBox = document.getElementById('outputContainer');
-      if (!outputBox.innerText || outputBox.innerText.includes("Spawning container")) return;
+      if (!outputBox.innerText || outputBox.innerText.includes("[CONNECTING]")) return;
 
       navigator.clipboard.writeText(outputBox.innerText).then(() => {
         const copyBtn = document.getElementById('copyBtn');
