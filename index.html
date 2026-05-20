@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap');
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -19,22 +19,23 @@
             overflow: hidden;
         }
 
-        /* Custom Scrollbar */
-        .chat-container::-webkit-scrollbar {
-            width: 6px;
+        /* --- PREMIUM SCROLLBAR STYLES --- */
+        .chat-container::-webkit-scrollbar, .sidebar-scroll::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
         }
-        .chat-container::-webkit-scrollbar-track {
+        .chat-container::-webkit-scrollbar-track, .sidebar-scroll::-webkit-scrollbar-track {
             background: transparent;
         }
-        .chat-container::-webkit-scrollbar-thumb {
-            background: rgba(99, 102, 241, 0.2);
+        .chat-container::-webkit-scrollbar-thumb, .sidebar-scroll::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.15);
             border-radius: 10px;
         }
-        .chat-container::-webkit-scrollbar-thumb:hover {
-            background: rgba(99, 102, 241, 0.4);
+        .chat-container::-webkit-scrollbar-thumb:hover, .sidebar-scroll::-webkit-scrollbar-thumb:hover {
+            background: rgba(99, 102, 241, 0.35);
         }
 
-        /* Core Orb Animations */
+        /* --- EDITH ORB ANIMATION --- */
         @keyframes pulseGlow {
             0%, 100% {
                 transform: scale(1);
@@ -50,7 +51,7 @@
             background: linear-gradient(135deg, #6366f1, #a855f7);
         }
 
-        /* Smooth slide in for incoming messages */
+        /* --- MESSAGE SLIDE IN ANIMATION --- */
         @keyframes slideIn {
             from {
                 opacity: 0;
@@ -65,7 +66,7 @@
             animation: slideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* Mic Pulsing Effect when recording */
+        /* Mic Pulsing Effect */
         @keyframes micPulse {
             0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
             70% { box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
@@ -78,7 +79,7 @@
             border-color: #f87171 !important;
         }
 
-        /* Glassmorphism Classes */
+        /* --- GLASSMORPHISM DESIGN BUBBLES --- */
         .glass-panel {
             background: rgba(10, 11, 23, 0.75);
             backdrop-filter: blur(16px);
@@ -97,7 +98,16 @@
             box-shadow: 0 4px 16px rgba(79, 70, 229, 0.25);
         }
 
-        /* Code Block Copy Enhancement Wrapper */
+        /* --- ACTIVE RECENTS SELECTION STATE --- */
+        .history-active {
+            background: rgba(255, 255, 255, 0.12) !important;
+            color: #ffffff !important;
+            font-weight: 600 !important;
+            border-left: 3px solid #6366f1 !important;
+            border-radius: 8px !important;
+        }
+
+        /* Code Block Wrapper */
         .code-block-wrapper {
             position: relative;
             margin: 12px 0;
@@ -135,7 +145,7 @@
             color: #fff;
         }
 
-        /* Typing Dots Animation */
+        /* --- TYPING DOTS ANIMATION --- */
         .typing-dot {
             animation: typingBounce 1.4s infinite ease-in-out both;
             width: 6px;
@@ -150,111 +160,142 @@
             0%, 80%, 100% { transform: scale(0); }
             40% { transform: scale(1); }
         }
+
+        .history-item-wrapper:hover .delete-chat-btn {
+            opacity: 1;
+        }
     </style>
 </head>
 
 <body class="text-gray-100 min-h-screen flex items-center justify-center p-0 sm:p-4">
 
-<div class="w-full max-w-5xl h-screen sm:h-[92vh] flex flex-col glass-panel sm:rounded-3xl shadow-2xl relative overflow-hidden">
+<div class="w-full max-w-6xl h-screen sm:h-[92vh] flex glass-panel sm:rounded-3xl shadow-2xl relative overflow-hidden">
     
-    <!-- Top Navbar (Cleaned & High-Tech Upgraded) -->
-    <div class="p-4 border-b border-white/5 flex justify-between items-center bg-gray-950/20 px-6">
-        <div class="flex items-center gap-3.5">
-            <div class="edith-orb w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold tracking-wider text-sm shadow-lg shadow-indigo-500/30">
-                E
-            </div>
-            <div>
-                <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-indigo-300 bg-clip-text text-transparent">
-                    EDITH <span class="text-xs font-semibold text-indigo-400 border border-indigo-500/30 px-1.5 py-0.5 rounded-md ml-1.5 bg-indigo-500/10">V3.2</span>
-                </h1>
-                <p class="text-[10px] uppercase tracking-widest text-indigo-400 font-bold flex items-center gap-1.5 mt-0.5">
-                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block animate-pulse"></span>
-                    Operator: <span id="displayUserName">Student</span>
-                </p>
-            </div>
-        </div>
+    <aside id="sidebarPanel" class="w-64 bg-black/20 flex flex-col h-full hidden lg:flex border-r border-white/5 transition-all z-30">
         
-        <!-- Live Infrastructure Monitoring Metrics -->
-        <div class="hidden sm:flex items-center gap-4 text-right">
-            <div class="text-[11px] font-medium text-gray-400">
-                <span class="text-gray-500 uppercase block text-[9px] tracking-wider font-bold">Latency</span>
-                <span class="text-emerald-400 font-mono">14ms</span>
-            </div>
-            <div class="w-px h-6 bg-white/10"></div>
-            <div class="text-[11px] font-medium text-gray-400">
-                <span class="text-gray-500 uppercase block text-[9px] tracking-wider font-bold">Core Load</span>
-                <span class="text-indigo-400 font-mono">2.4%</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Chat Space -->
-    <div id="chatArea" class="flex-1 overflow-y-auto p-6 space-y-6 chat-container">
-        <!-- Rebranded Welcome Screen -->
-        <div id="welcomeScreen" class="flex flex-col justify-center items-center mt-24 text-center px-4">
-            <div class="edith-orb w-20 h-20 rounded-3xl flex items-center justify-center text-3xl text-white mb-6">
-                <i class="fa-solid fa-brain"></i>
-            </div>
-            <h2 class="text-2xl sm:text-3xl font-bold mb-2 tracking-tight text-white">
-                How can I assist you today?
-            </h2>
-            <p class="text-gray-400 text-sm max-w-sm font-light leading-relaxed">
-                I can process documents, parse voice input, analyze complex media datasets, or just run brainstorm sessions.
-            </p>
-        </div>
-    </div>
-
-    <!-- Input Dashboard -->
-    <div class="p-4 sm:p-6 bg-gray-950/40 border-t border-white/5 backdrop-blur-md">
-        <div class="flex flex-wrap gap-2 mb-3.5 px-1">
-            <!-- Mode Selector Toggles -->
-            <button onclick="toggleSummarize()" id="sumBtn" class="px-4 py-1.5 rounded-full border border-white/10 hover:border-indigo-500/40 bg-white/5 text-[11px] font-medium transition-all flex items-center gap-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-gray-400" id="sumDot"></span>
-                Summarize Notes: <span id="sumStatus" class="font-bold text-gray-400">OFF</span>
+        <div class="p-4 flex flex-col gap-2">
+            <button onclick="createNewChatSession()" class="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-gray-200 hover:bg-white/5 rounded-xl transition-all font-medium bg-white/5 border border-white/10">
+                <i class="fa-regular fa-pen-to-square text-base text-indigo-400"></i> New chat
             </button>
-
-            <label class="px-4 py-1.5 rounded-full border border-white/10 hover:border-indigo-500/40 bg-white/5 text-[11px] font-medium cursor-pointer transition-all flex items-center gap-1.5">
-                <i class="fa-solid fa-paperclip text-indigo-400"></i> Attach Files
-                <input type="file" id="fileInput" multiple class="hidden" onchange="updateFileStatus()" />
-            </label>
-            <span id="fileCount" class="text-[11px] text-indigo-300 self-center font-medium"></span>
-        </div>
-
-        <!-- System Control Interaction Line -->
-        <div class="flex gap-3 items-center relative">
-            <input type="text" id="msg" placeholder="Ask EDITH anything..." 
-                class="w-full bg-gray-900/80 border border-white/10 focus:border-indigo-500/50 rounded-2xl pl-5 pr-28 py-4 outline-none transition-all text-sm placeholder-gray-500 text-gray-100 shadow-inner"
-                onkeypress="if(event.key==='Enter')sendMsg()" />
-
-            <div class="absolute right-2 flex items-center gap-1.5">
-                <!-- Microphone System Input Button -->
-                <button onclick="toggleVoiceInput()" id="micBtn" title="Voice Input"
-                    class="w-10 h-10 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 rounded-xl flex items-center justify-center transition-all">
-                    <i class="fa-solid fa-microphone text-sm"></i>
-                </button>
-                
-                <!-- Action Send Button -->
-                <button onclick="sendMsg()" class="w-10 h-10 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white rounded-xl flex items-center justify-center transition-all shadow-lg shadow-indigo-600/20">
-                    <i class="fa-solid fa-paper-plane text-xs"></i>
-                </button>
+            <div class="w-full relative mt-2">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                <input type="text" id="searchChatsInput" oninput="filterSidebarChats()" placeholder="Search chats" class="w-full bg-white/5 border border-white/5 text-xs rounded-xl pl-9 pr-3 py-2.5 outline-none text-gray-200 placeholder-gray-500">
             </div>
         </div>
+
+        <div class="px-4 pt-4 pb-2">
+            <span class="text-xs font-semibold text-gray-400 tracking-wider block uppercase">Recents</span>
+        </div>
+
+        <div id="historyLogContainer" class="flex-1 overflow-y-auto px-2 pb-4 space-y-1 sidebar-scroll">
+            <div class="text-center py-8 text-xs text-gray-500 font-light">Loading chat registry trees...</div>
+        </div>
+
+        <div class="p-4 border-t border-white/5 bg-gray-950/40 flex items-center justify-between px-5">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-xs font-bold text-white uppercase tracking-wider shadow-inner" id="profileBadge">
+                    SH
+                </div>
+                <div>
+                    <span class="block text-xs font-semibold text-gray-200" id="displayUserFooterName">Student</span>
+                    <span class="block text-[10px] text-emerald-400 font-medium">Free Tier</span>
+                </div>
+            </div>
+            <button onclick="localStorage.clear(); window.location.href='login.html';" title="Logout Stream" class="text-gray-400 hover:text-red-400 transition-all text-sm p-1.5">
+                <i class="fa-solid fa-power-off"></i>
+            </button>
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col h-full relative overflow-hidden bg-transparent">
+        
+        <div class="p-4 border-b border-white/5 flex justify-between items-center bg-gray-950/20 px-6">
+            <div class="flex items-center gap-3.5">
+                <button onclick="toggleMobileSidebar()" class="lg:hidden w-9 h-9 border border-white/10 bg-white/5 rounded-xl flex items-center justify-center text-gray-300">
+                    <i class="fa-solid fa-bars text-sm"></i>
+                </button>
+
+                <div class="edith-orb w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold tracking-wider text-sm shadow-lg shadow-indigo-500/30">
+                    E
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-indigo-300 bg-clip-text text-transparent">
+                        EDITH <span class="text-xs font-semibold text-indigo-400 border border-indigo-500/30 px-1.5 py-0.5 rounded-md ml-1.5 bg-indigo-500/10">V3.2</span>
+                    </h1>
+                    <p class="text-[10px] uppercase tracking-widest text-indigo-400 font-bold flex items-center gap-1.5 mt-0.5">
+                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block animate-pulse"></span>
+                        Operator: <span id="displayUserName">Student</span>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="hidden sm:flex items-center gap-4 text-right">
+                <div class="text-[11px] font-medium text-gray-400">
+                    <span class="text-gray-500 uppercase block text-[9px] tracking-wider font-bold">Latency</span>
+                    <span class="text-emerald-400 font-mono">14ms</span>
+                </div>
+                <div class="w-px h-6 bg-white/10"></div>
+                <div class="text-[11px] font-medium text-gray-400">
+                    <span class="text-gray-500 uppercase block text-[9px] tracking-wider font-bold">Core Load</span>
+                    <span class="text-indigo-400 font-mono">2.4%</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="chatArea" class="flex-1 overflow-y-auto p-6 space-y-6 chat-container">
+            </div>
+
+        <div class="p-4 sm:p-6 bg-gray-950/40 border-t border-white/5 backdrop-blur-md">
+            <div class="flex flex-wrap gap-2 mb-3.5 px-1">
+                <button onclick="toggleSummarize()" id="sumBtn" class="px-4 py-1.5 rounded-full border border-white/10 hover:border-indigo-500/40 bg-white/5 text-[11px] font-medium transition-all flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-gray-400" id="sumDot"></span>
+                    Summarize Notes: <span id="sumStatus" class="font-bold text-gray-400">OFF</span>
+                </button>
+
+                <label class="px-4 py-1.5 rounded-full border border-white/10 hover:border-indigo-500/40 bg-white/5 text-[11px] font-medium cursor-pointer transition-all flex items-center gap-1.5">
+                    <i class="fa-solid fa-paperclip text-indigo-400"></i> Attach Files
+                    <input type="file" id="fileInput" multiple class="hidden" onchange="updateFileStatus()" />
+                </label>
+                <span id="fileCount" class="text-[11px] text-indigo-300 self-center font-medium"></span>
+            </div>
+
+            <div class="flex gap-3 items-center relative">
+                <input type="text" id="msg" placeholder="Ask EDITH anything..." 
+                    class="w-full bg-gray-900/80 border border-white/10 focus:border-indigo-500/50 rounded-2xl pl-5 pr-28 py-4 outline-none transition-all text-sm placeholder-gray-500 text-gray-100 shadow-inner"
+                    onkeypress="if(event.key==='Enter')sendMsg()" />
+
+                <div class="absolute right-2 flex items-center gap-1.5">
+                    <button onclick="toggleVoiceInput()" id="micBtn" title="Voice Input"
+                        class="w-10 h-10 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 rounded-xl flex items-center justify-center transition-all">
+                        <i class="fa-solid fa-microphone text-sm"></i>
+                    </button>
+                    
+                    <button onclick="sendMsg()" class="w-10 h-10 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white rounded-xl flex items-center justify-center transition-all shadow-lg shadow-indigo-600/20">
+                        <i class="fa-solid fa-paper-plane text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
 <script>
-const API_BASE = window.location.hostname === "127.0.0.1"
+// Backend clusters dynamically synced with localhost/render environments
+const API_BASE = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"
     ? "http://localhost:5000"
     : "https://student-hub-edith-backend.onrender.com";
 
 const chatArea = document.getElementById("chatArea");
-const welcomeScreen = document.getElementById("welcomeScreen");
+const historyLogContainer = document.getElementById("historyLogContainer");
 let isSummarize = false;
+let currentActiveSessionId = null; 
+let globallyCachedHistoryTree = []; 
 
-// Audio Configuration (Web Speech API Integration)
 let recognition;
 let isRecording = false;
 
+// --- INITIALIZE WEB SPEECH KIT ---
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     recognition = new SpeechRecognition();
@@ -275,110 +316,246 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     };
 
     recognition.onresult = (event) => {
-        const speechToText = event.results[0][0].transcript;
-        document.getElementById("msg").value = speechToText;
-    };
-
-    recognition.onerror = (err) => {
-        console.error("Speech Architecture Fault:", err);
-        isRecording = false;
-        document.getElementById("micBtn").classList.remove("mic-active");
+        document.getElementById("msg").value = event.results[0][0].transcript;
     };
 }
 
 function toggleVoiceInput() {
     if (!recognition) {
-        alert("Voice recognition is not supported natively in this browser window configuration.");
+        alert("Voice engine unsupported in this node browser browser profile.");
         return;
     }
-    if (isRecording) {
-        recognition.stop();
-    } else {
-        try {
-            recognition.start();
-        } catch(e) {
-            console.warn("Recognition structure is already active contextually.", e);
-        }
-    }
+    if (isRecording) recognition.stop();
+    else recognition.start();
 }
 
 window.onload = () => {
     const token = localStorage.getItem("token");
-    const name = localStorage.getItem("userName");
+    const name = localStorage.getItem("userName") || "Operator";
 
     if (!token) {
         window.location.href = "login.html";
         return;
     }
-    if (name) {
-        document.getElementById("displayUserName").innerText = name;
-    }
+    
+    document.getElementById("displayUserName").innerText = name;
+    document.getElementById("displayUserFooterName").innerText = name;
+    document.getElementById("profileBadge").innerText = name.substring(0, 2).toUpperCase();
+    
+    renderBlankWelcomeInterface();
+    loadChatHistory(true); 
 };
 
-function toggleSummarize() {
-    isSummarize = !isSummarize;
-    const statusText = document.getElementById("sumStatus");
-    const dotElement = document.getElementById("sumDot");
-    const btn = document.getElementById("sumBtn");
+function renderBlankWelcomeInterface() {
+    chatArea.innerHTML = `
+        <div id="welcomeScreen" class="flex flex-col justify-center items-center mt-24 text-center px-4 animate-msg">
+            <div class="edith-orb w-20 h-20 rounded-3xl flex items-center justify-center text-3xl text-white mb-6">
+                <i class="fa-solid fa-brain"></i>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-bold mb-2 tracking-tight text-white">How can I assist you today?</h2>
+            <p class="text-gray-400 text-sm max-w-sm font-light leading-relaxed">Attach files, process structured code streams, or run rapid data summaries instantly.</p>
+        </div>
+    `;
+}
 
-    if (isSummarize) {
-        statusText.innerText = "ON";
-        statusText.className = "font-bold text-indigo-400";
-        dotElement.className = "w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse";
-        btn.classList.add("border-indigo-500/40", "bg-indigo-500/5");
-    } else {
-        statusText.innerText = "OFF";
-        statusText.className = "font-bold text-gray-400";
-        dotElement.className = "w-1.5 h-1.5 rounded-full bg-gray-400";
-        btn.classList.remove("border-indigo-500/40", "bg-indigo-500/5");
+// --- HISTORICAL MATRIX ENGINE SYNC ---
+async function loadChatHistory(autoLoadFirstSession = false) {
+    const token = localStorage.getItem("token");
+    try {
+        const response = await fetch(`${API_BASE}/api/history`, {
+            method: "GET",
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+
+        if (response.ok) {
+            globallyCachedHistoryTree = await response.json();
+            renderSidebarHistoryList(globallyCachedHistoryTree);
+            
+            if (autoLoadFirstSession && globallyCachedHistoryTree.length > 0) {
+                loadSelectedSessionStream(globallyCachedHistoryTree[0]._id);
+            }
+        }
+    } catch (err) {
+        historyLogContainer.innerHTML = `<div class="text-center py-6 text-xs text-red-400/60">Server Sync Interrupted</div>`;
     }
 }
 
-function updateFileStatus() {
-    const files = document.getElementById("fileInput").files;
-    document.getElementById("fileCount").innerText = files.length > 0 
-        ? `•  ${files.length} ready` 
-        : "";
-}
-
-// Intercepts custom formatting hooks to enrich code blocks with clear actions
-function cleanAndParseMarkdown(text) {
-    let rawHtml = marked.parse(text);
-    const container = document.createElement('div');
-    container.innerHTML = rawHtml;
-
-    // Process code segments to add inline copy utilities
-    const preBlocks = container.querySelectorAll('pre');
-    preBlocks.forEach((pre) => {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'code-block-wrapper';
+function renderSidebarHistoryList(historyArray) {
+    if (!historyArray || historyArray.length === 0) {
+        historyLogContainer.innerHTML = `<div class="text-center py-8 text-[11px] text-gray-500 font-light">No core sessions found.</div>`;
+        return;
+    }
+    historyLogContainer.innerHTML = "";
+    
+    historyArray.forEach((session) => {
+        const id = session._id;
+        let displayTitle = "Active Synthesis Thread";
         
-        const copyBtn = document.createElement('button');
-        copyBtn.className = 'copy-code-btn';
-        copyBtn.innerHTML = '<i class="fa-regular fa-copy mr-1"></i> Copy';
-        
-        copyBtn.onclick = () => {
-            const codeText = pre.querySelector('code')?.innerText || pre.innerText;
-            navigator.clipboard.writeText(codeText).then(() => {
-                copyBtn.innerHTML = '<i class="fa-solid fa-check text-emerald-400 mr-1"></i> Copied';
-                setTimeout(() => {
-                    copyBtn.innerHTML = '<i class="fa-regular fa-copy mr-1"></i> Copy';
-                }, 2000);
-            });
-        };
+        if (session.messages && session.messages.length > 0) {
+            displayTitle = session.messages[0].content;
+        }
+        if (displayTitle.length > 22) displayTitle = displayTitle.substring(0, 22) + "...";
 
-        pre.parentNode.insertBefore(wrapper, pre);
-        wrapper.appendChild(pre);
-        wrapper.appendChild(copyBtn);
+        const itemWrapper = document.createElement("div");
+        itemWrapper.className = "flex items-center justify-between w-full relative group history-item-wrapper rounded-xl transition-all";
+
+        const btn = document.createElement("button");
+        btn.id = `sidebar-session-${id}`;
+        btn.onclick = () => loadSelectedSessionStream(id);
+        
+        const activeClass = (String(id) === String(currentActiveSessionId)) ? 'history-active' : '';
+        btn.className = `flex-1 text-left px-3 py-2.5 text-xs tracking-wide transition-all overflow-hidden text-ellipsis whitespace-nowrap block truncate text-gray-300 hover:bg-white/5 rounded-xl ${activeClass}`;
+        btn.innerText = displayTitle;
+
+        itemWrapper.appendChild(btn);
+        historyLogContainer.appendChild(itemWrapper);
     });
-
-    return container.innerHTML;
 }
 
-function addMessage(text, isUser) {
-    if (welcomeScreen && welcomeScreen.style.display !== "none") {
-        welcomeScreen.style.display = "none";
+function loadSelectedSessionStream(sessionId) {
+    if (!sessionId) return;
+    currentActiveSessionId = sessionId;
+    
+    const blocks = historyLogContainer.querySelectorAll("button");
+    blocks.forEach(b => b.classList.remove("history-active"));
+    
+    const targetedActiveBtn = document.getElementById(`sidebar-session-${sessionId}`);
+    if (targetedActiveBtn) targetedActiveBtn.classList.add("history-active");
+
+    const targetedSession = globallyCachedHistoryTree.find(s => String(s._id) === String(sessionId));
+    chatArea.innerHTML = "";
+
+    if (targetedSession && Array.isArray(targetedSession.messages)) {
+        if (targetedSession.messages.length === 0) {
+            renderBlankWelcomeInterface();
+            return;
+        }
+        targetedSession.messages.forEach(msg => {
+            appendMessageToUI(msg.content, msg.role === "user");
+        });
+        chatArea.scrollTop = chatArea.scrollHeight;
     }
+}
+
+function createNewChatSession() {
+    currentActiveSessionId = null; 
+    const blocks = historyLogContainer.querySelectorAll("button");
+    blocks.forEach(b => b.classList.remove("history-active"));
+    renderBlankWelcomeInterface();
+    document.getElementById("msg").focus();
+}
+
+function filterSidebarChats() {
+    const query = document.getElementById("searchChatsInput").value.toLowerCase();
+    const filtered = globallyCachedHistoryTree.filter(s => {
+        const title = s.messages?.[0]?.content || "";
+        return title.toLowerCase().includes(query);
+    });
+    renderSidebarHistoryList(filtered);
+}
+
+// --- ULTRA LOW LATENCY STREAM READ ENGINE ---
+async function sendMsg() {
+    const input = document.getElementById("msg");
+    const fileInput = document.getElementById("fileInput");
+    const message = input.value.trim();
+    const token = localStorage.getItem("token");
+
+    if (!message && fileInput.files.length === 0) return;
+
+    appendMessageToUI(message || "Ingesting active stream layers...", true);
+    input.value = "";
+
+    const formData = new FormData();
+    formData.append("message", message);
+    formData.append("isSummarize", isSummarize);
+    if (currentActiveSessionId) formData.append("sessionId", currentActiveSessionId);
+
+    for (let file of fileInput.files) {
+        formData.append("files", file);
+    }
+
+    showTypingIndicator();
+
+    try {
+        const res = await fetch(`${API_BASE}/api/chat`, {
+            method: "POST",
+            headers: { "Authorization": `Bearer ${token}` },
+            body: formData
+        });
+
+        removeTypingIndicator();
+
+        if (!res.ok) {
+            appendMessageToUI("❌ Command execution stream failure.", false);
+            return;
+        }
+
+        // Catch response session mappings immediately from customized cross-origin headers
+        const incomingSessionId = res.headers.get("X-Session-Id");
+        if (incomingSessionId && !currentActiveSessionId) {
+            currentActiveSessionId = incomingSessionId;
+        }
+
+        // STREAM READER ACCELERATION ENGINE LOOP
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder("utf-8");
+        const aiBubble = appendMessageToUI("", false);
+        let accumulatedText = "";
+
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            const chunk = decoder.decode(value, { stream: true });
+            accumulatedText += chunk;
+            
+            // Bypass lag by rendering text fragments directly to marked compiler
+            aiBubble.innerHTML = cleanAndParseMarkdown(accumulatedText);
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        // Silent backend tree refresh to catch newly appended items smoothly
+        await silentRefreshHistoryTree();
+
+        if (isSummarize) {
+            isSummarize = false;
+            updateSummarizeUI();
+        }
+
+    } catch (err) {
+        removeTypingIndicator();
+        appendMessageToUI("❌ Core pipeline drop encountered.", false);
+    }
+
+    fileInput.value = "";
+    document.getElementById("fileCount").innerText = "";
+}
+
+async function silentRefreshHistoryTree() {
+    const token = localStorage.getItem("token");
+    try {
+        const response = await fetch(`${API_BASE}/api/history`, {
+            method: "GET",
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+        if (response.ok) {
+            globallyCachedHistoryTree = await response.json();
+            renderSidebarHistoryList(globallyCachedHistoryTree);
+            
+            // Keep selection highlight fixed during dynamic rewrites
+            if (currentActiveSessionId) {
+                const activeBtn = document.getElementById(`sidebar-session-${currentActiveSessionId}`);
+                if (activeBtn) activeBtn.classList.add("history-active");
+            }
+        }
+    } catch (e) {}
+}
+
+// --- RENDERING HELPERS & LAYOUT UTILS ---
+function appendMessageToUI(text, isUser) {
+    const internalWelcome = document.getElementById("welcomeScreen");
+    if (internalWelcome) internalWelcome.remove();
 
     const div = document.createElement("div");
     div.className = `flex ${isUser ? "justify-end" : "justify-start"} animate-msg w-full`;
@@ -388,94 +565,77 @@ function addMessage(text, isUser) {
             ${isUser ? escapeHtml(text) : cleanAndParseMarkdown(text)}
         </div>
     `;
-
     chatArea.appendChild(div);
     chatArea.scrollTop = chatArea.scrollHeight;
     return div.querySelector("div");
+}
+
+function cleanAndParseMarkdown(text) {
+    if (!text) return "";
+    let rawHtml = marked.parse(text);
+    const container = document.createElement('div');
+    container.innerHTML = rawHtml;
+
+    container.querySelectorAll('pre').forEach((pre) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'copy-code-btn';
+        copyBtn.innerHTML = '<i class="fa-regular fa-copy mr-1"></i> Copy';
+        
+        copyBtn.onclick = () => {
+            navigator.clipboard.writeText(pre.querySelector('code')?.innerText || pre.innerText).then(() => {
+                copyBtn.innerHTML = '<i class="fa-solid fa-check text-emerald-400 mr-1"></i> Copied';
+                setTimeout(() => { copyBtn.innerHTML = '<i class="fa-regular fa-copy mr-1"></i> Copy'; }, 2000);
+            });
+        };
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+        wrapper.appendChild(copyBtn);
+    });
+    return container.innerHTML;
 }
 
 function showTypingIndicator() {
     const div = document.createElement("div");
     div.id = "edithTypingIndicator";
     div.className = "flex justify-start animate-msg";
-    div.innerHTML = `
-        <div class="p-4 px-5 ai-bubble flex items-center gap-1.5 shadow-sm">
-            <span class="typing-dot"></span>
-            <span class="typing-dot"></span>
-            <span class="typing-dot"></span>
-        </div>
-    `;
+    div.innerHTML = `<div class="p-4 px-5 ai-bubble flex items-center gap-1.5 shadow-sm"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>`;
     chatArea.appendChild(div);
     chatArea.scrollTop = chatArea.scrollHeight;
 }
 
 function removeTypingIndicator() {
-    const indicator = document.getElementById("edithTypingIndicator");
-    if (indicator) indicator.remove();
+    const ind = document.getElementById("edithTypingIndicator");
+    if (ind) ind.remove();
+}
+
+function toggleSummarize() { isSummarize = !isSummarize; updateSummarizeUI(); }
+function updateSummarizeUI() {
+    const statusText = document.getElementById("sumStatus");
+    const dotElement = document.getElementById("sumDot");
+    const btn = document.getElementById("sumBtn");
+    statusText.innerText = isSummarize ? "ON" : "OFF";
+    statusText.className = isSummarize ? "font-bold text-indigo-400" : "font-bold text-gray-400";
+    dotElement.className = isSummarize ? "w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" : "w-1.5 h-1.5 rounded-full bg-gray-400";
+    if (isSummarize) btn.classList.add("border-indigo-500/40", "bg-indigo-500/5"); else btn.classList.remove("border-indigo-500/40", "bg-indigo-500/5");
+}
+
+function updateFileStatus() {
+    const files = document.getElementById("fileInput").files;
+    document.getElementById("fileCount").innerText = files.length > 0 ? `• ${files.length} loaded` : "";
+}
+
+function toggleMobileSidebar() {
+    const sidebar = document.getElementById("sidebarPanel");
+    sidebar.classList.toggle("hidden");
+    if (!sidebar.classList.contains("hidden")) {
+        sidebar.classList.add("fixed", "inset-y-0", "left-0", "w-64", "z-50", "bg-gray-950");
+    }
 }
 
 function escapeHtml(text) {
     return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-}
-
-async function sendMsg() {
-    const input = document.getElementById("msg");
-    const fileInput = document.getElementById("fileInput");
-    const message = input.value.trim();
-    const token = localStorage.getItem("token");
-
-    if (!message && fileInput.files.length === 0) return;
-
-    addMessage(message || "Analyzing documents...", true);
-    input.value = "";
-
-    const formData = new FormData();
-    formData.append("message", message);
-    formData.append("isSummarize", isSummarize);
-
-    for (let file of fileInput.files) {
-        formData.append("files", file);
-    }
-
-    // Initialize temporary display layout
-    showTypingIndicator();
-
-    try {
-        const res = await fetch(`${API_BASE}/api/chat`, {
-            method: "POST",
-            headers: { Authorization: `Bearer ${token}` },
-            body: formData
-        });
-
-        removeTypingIndicator();
-
-        if (!res.ok) {
-            const err = await res.text();
-            addMessage("❌ " + err, false);
-            return;
-        }
-
-        const reader = res.body.getReader();
-        const decoder = new TextDecoder();
-        const aiBubble = addMessage("", false);
-        let aiText = "";
-
-        while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-
-            aiText += decoder.decode(value, { stream: true });
-            aiBubble.innerHTML = cleanAndParseMarkdown(aiText);
-            chatArea.scrollTop = chatArea.scrollHeight;
-        }
-    } catch (err) {
-        console.error(err);
-        removeTypingIndicator();
-        addMessage("❌ Matrix Connection Interrupted (Server Failure)", false);
-    }
-
-    fileInput.value = "";
-    document.getElementById("fileCount").innerText = "";
 }
 </script>
 
