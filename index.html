@@ -161,7 +161,6 @@
             40% { transform: scale(1); }
         }
 
-        /* Dynamic history list items wrapper style */
         .history-item-wrapper:hover .delete-chat-btn {
             opacity: 1;
         }
@@ -442,7 +441,6 @@ function renderSidebarHistoryList(historyArray) {
             }
         }
 
-        // --- NEW WRAPPER BLOCK FOR DELETE OPERATION OPTION ---
         const itemWrapper = document.createElement("div");
         itemWrapper.className = "flex items-center justify-between w-full relative group history-item-wrapper rounded-xl transition-all";
 
@@ -454,13 +452,12 @@ function renderSidebarHistoryList(historyArray) {
         btn.className = `flex-1 text-left px-3 py-2.5 text-xs tracking-wide transition-all overflow-hidden text-ellipsis whitespace-nowrap block truncate text-gray-300 hover:bg-white/5 rounded-xl ${activeClass}`;
         btn.innerText = displayTitle;
         
-        // Dynamic Delete Action Core Option
         const delBtn = document.createElement("button");
         delBtn.className = "delete-chat-btn opacity-0 group-hover:opacity-100 p-2 text-gray-500 hover:text-red-400 text-xs transition-all absolute right-1.5 z-20";
         delBtn.innerHTML = `<i class="fa-regular fa-trash-can"></i>`;
         delBtn.title = "Delete Chat";
         delBtn.onclick = (e) => {
-            e.stopPropagation(); // Avoid triggering open active session mapping sequence
+            e.stopPropagation(); 
             deleteChatSessionStream(id);
         };
 
@@ -481,12 +478,10 @@ async function deleteChatSessionStream(sessionId) {
         });
 
         if (res.ok) {
-            // Check if deleted row is the currently open frame layout
             if (String(currentActiveSessionId) === String(sessionId)) {
                 currentActiveSessionId = null;
                 renderBlankWelcomeInterface();
             }
-            // Refresh history log metrics
             await loadChatHistory(currentActiveSessionId === null);
         } else {
             const errMsg = await res.text();
@@ -659,6 +654,34 @@ function escapeHtml(text) {
     return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+// --- OPTIMIZED LOCAL SIDEBAR UPDATE LOGIC (COMPLETELY LAGG-FREE) ---
+function updateSidebarTitleLocally(messageText) {
+    if (!currentActiveSessionId || currentActiveSessionId === "null") return;
+    
+    // Check if item already exists in local cached state array
+    let sessionObj = globallyCachedHistoryTree.find(s => String(s._id || s.id) === String(currentActiveSessionId));
+    
+    const formattedTitle = messageText.length > 20 ? messageText.substring(0, 20) + "..." : messageText;
+    
+    if (sessionObj) {
+        if (!sessionObj.messages || sessionObj.messages.length === 0) {
+            sessionObj.messages = [{ role: "user", content: messageText }];
+            const targetedBtn = document.getElementById(`sidebar-session-${currentActiveSessionId}`);
+            if (targetedBtn) targetedBtn.innerText = formattedTitle;
+        } else {
+            sessionObj.messages.push({ role: "user", content: messageText });
+        }
+    } else {
+        // Create an optimized mock object inside cache architecture
+        const mockSession = {
+            _id: currentActiveSessionId,
+            messages: [{ role: "user", content: messageText }]
+        };
+        globallyCachedHistoryTree.unshift(mockSession);
+        renderSidebarHistoryList(globallyCachedHistoryTree);
+    }
+}
+
 async function sendMsg() {
     const input = document.getElementById("msg");
     const fileInput = document.getElementById("fileInput");
@@ -705,8 +728,15 @@ async function sendMsg() {
         }
 
         const responseSessionIdHeader = res.headers.get("x-session-id") || res.headers.get("X-Session-Id");
-        if (responseSessionIdHeader && (!currentActiveSessionId || currentActiveSessionId === "null")) {
+        const isBrandNewSession = (!currentActiveSessionId || currentActiveSessionId === "null");
+        
+        if (responseSessionIdHeader && isBrandNewSession) {
             currentActiveSessionId = responseSessionIdHeader;
+        }
+
+        // Locally update sidebar right away to prevent network lags on next message inputs
+        if (message) {
+            updateSidebarTitleLocally(message);
         }
 
         const reader = res.body.getReader();
@@ -723,12 +753,22 @@ async function sendMsg() {
             chatArea.scrollTop = chatArea.scrollHeight;
         }
 
+        // Cache assistant response data structural setup locally
+        let currentSessionObj = globallyCachedHistoryTree.find(s => String(s._id || s.id) === String(currentActiveSessionId));
+        if (currentSessionObj) {
+            if (!currentSessionObj.messages) currentSessionObj.messages = [];
+            currentSessionObj.messages.push({ role: "assistant", content: aiText });
+        }
+
         if (isSummarize) {
             isSummarize = false;
             updateSummarizeUI();
         }
 
-        await silentRefreshHistoryTree();
+        // If it was a completely brand new chat row, fetch full list safely in background 
+        if (isBrandNewSession) {
+            await silentRefreshHistoryTree();
+        }
 
     } catch (err) {
         console.error(err);
