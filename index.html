@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap');
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -650,7 +650,6 @@ function removeTypingIndicator() {
     if (indicator) indicator.remove();
 }
 
-// --- COMPLETELY UNBLOCKED HIGH SPEED FLASH TEXT ENGINE ---
 function updateSidebarTitleLocally(messageText) {
     if (!currentActiveSessionId || currentActiveSessionId === "null") return;
     
@@ -679,6 +678,7 @@ function escapeHtml(text) {
     return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+// --- FIXED ULTRA-LOW LATENCY STREAMING ENGINE ---
 async function sendMsg() {
     const input = document.getElementById("msg");
     const fileInput = document.getElementById("fileInput");
@@ -710,9 +710,14 @@ async function sendMsg() {
     showTypingIndicator();
 
     try {
+        // Explicitly set cache instructions to stop browser-side chunk buffering
         const res = await fetch(`${API_BASE}/api/chat`, {
             method: "POST",
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { 
+                "Authorization": `Bearer ${token}`,
+                "Cache-Control": "no-cache",
+                "Pragma": "no-cache"
+            },
             body: formData
         });
 
@@ -735,19 +740,23 @@ async function sendMsg() {
             updateSidebarTitleLocally(message);
         }
 
-        // --- HIGH PERFORMANCE REFACTORED INSTANT STREAM READER BLOCK ---
         const reader = res.body.getReader();
         const decoder = new TextDecoder("utf-8");
         const aiBubble = appendMessageToUI("", false);
         let aiText = "";
 
+        // Ultra-fast rendering mechanism
         while (true) {
             const { done, value } = await reader.read();
-            if (done) break;
+            if (done) {
+                // Run final markdown parsing once the entire text stream completes
+                aiBubble.innerHTML = cleanAndParseMarkdown(aiText);
+                break;
+            }
 
-            // Instantly decode chunk arrays directly into interface view bounds 
+            // Immediately display raw text fragments without waiting for complete DOM parsing cycles
             aiText += decoder.decode(value, { stream: true });
-            aiBubble.innerHTML = cleanAndParseMarkdown(aiText);
+            aiBubble.innerText = aiText;
             chatArea.scrollTop = chatArea.scrollHeight;
         }
 
