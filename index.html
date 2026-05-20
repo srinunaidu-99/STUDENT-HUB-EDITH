@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap');
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -98,7 +98,7 @@
             box-shadow: 0 4px 16px rgba(79, 70, 229, 0.25);
         }
 
-        /* --- IMMACULATE RECENT DESIGN SELECTION STATE --- */
+        /* --- RECENT DESIGN SELECTION STATE --- */
         .history-active {
             background: #f3f4f6 !important;
             color: #111827 !important;
@@ -202,7 +202,7 @@
                         SH
                     </div>
                     <div>
-                        <span class="block text-xs font-semibold text-gray-200" id="displayUserFooterName">Srinu Naidu</span>
+                        <span class="block text-xs font-semibold text-gray-200" id="displayUserFooterName">Student</span>
                         <span class="block text-[10px] text-gray-400 font-light">Free</span>
                     </div>
                 </div>
@@ -375,7 +375,6 @@ window.onload = () => {
         document.getElementById("displayUserName").innerText = name;
         document.getElementById("displayUserFooterName").innerText = name;
         
-        // Generate Two Letter Initials for Sidebar Badge
         const initials = name.split(" ").map(n => n[0]).join("").substring(0, 2).toUpperCase();
         document.getElementById("profileBadge").innerText = initials || "SH";
     }
@@ -408,7 +407,6 @@ async function loadChatHistory() {
     }
 }
 
-// --- RENDERS THE SPECIFIC IMMACULATE LAYOUT LIST FROM SCREENSHOT ---
 function renderSidebarHistoryList(historyArray) {
     if (!historyArray || historyArray.length === 0) {
         historyLogContainer.innerHTML = `<div class="text-center py-8 text-[11px] text-gray-500 font-light">No logs found.</div>`;
@@ -434,7 +432,6 @@ function renderSidebarHistoryList(historyArray) {
         btn.id = `sidebar-session-${id}`;
         btn.onclick = () => loadSelectedSessionStream(id);
         
-        // Exact styling replication from the user's provided UI design state mapping
         btn.className = `w-full text-left px-3 py-2.5 text-xs tracking-wide transition-all overflow-hidden text-ellipsis whitespace-nowrap block truncate text-gray-300 hover:bg-white/5 rounded-xl ${id === currentActiveSessionId ? 'history-active' : ''}`;
         btn.innerText = displayTitle;
         
@@ -517,6 +514,14 @@ function appendHistoryMessageToUI(text, isUser) {
 
 function toggleSummarize() {
     isSummarize = !isSummarize;
+    const statusText = document.getElementById("sumStatus");
+    const dotElement = document.getElementById("sumDot");
+    const btn = document.getElementById("sumBtn");
+
+    updateSummarizeUI();
+}
+
+function updateSummarizeUI() {
     const statusText = document.getElementById("sumStatus");
     const dotElement = document.getElementById("sumDot");
     const btn = document.getElementById("sumBtn");
@@ -625,6 +630,12 @@ async function sendMsg() {
 
     if (!message && fileInput.files.length === 0) return;
 
+    // --- AUTOMATIC "NOTES" KEYWORD CHECK ---
+    if (message.toLowerCase().includes("notes")) {
+        isSummarize = true;
+        updateSummarizeUI();
+    }
+
     addMessage(message || "Analyzing documents...", true);
     input.value = "";
 
@@ -632,6 +643,7 @@ async function sendMsg() {
     formData.append("message", message);
     formData.append("isSummarize", isSummarize);
     
+    // SECURE CONTINUOUS SESSION LOCK:
     if (currentActiveSessionId && currentActiveSessionId !== "null" && currentActiveSessionId !== "") {
         formData.append("sessionId", currentActiveSessionId); 
     }
@@ -657,6 +669,7 @@ async function sendMsg() {
             return;
         }
 
+        // Catch response transaction keys dynamically to keep the stream inside ONE single session
         const responseSessionIdHeader = res.headers.get("x-session-id") || res.headers.get("X-Session-Id");
         if (responseSessionIdHeader && (!currentActiveSessionId || currentActiveSessionId === "null")) {
             currentActiveSessionId = responseSessionIdHeader;
@@ -674,6 +687,12 @@ async function sendMsg() {
             aiText += decoder.decode(value, { stream: true });
             aiBubble.innerHTML = cleanAndParseMarkdown(aiText);
             chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        // Turn off notes summary state after completion of the request sequence
+        if (isSummarize) {
+            isSummarize = false;
+            updateSummarizeUI();
         }
 
         await silentReloadChatHistory();
