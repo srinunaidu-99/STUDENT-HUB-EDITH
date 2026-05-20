@@ -242,8 +242,7 @@
             </div>
         </div>
 
-        <div id="chatArea" class="flex-1 overflow-y-auto p-6 space-y-6 chat-container">
-            </div>
+        <div id="chatArea" class="flex-1 overflow-y-auto p-6 space-y-6 chat-container"></div>
 
         <div class="p-4 sm:p-6 bg-gray-950/40 border-t border-white/5 backdrop-blur-md">
             <div class="flex flex-wrap gap-2 mb-3.5 px-1">
@@ -281,7 +280,6 @@
 </div>
 
 <script>
-// Backend clusters dynamically synced with localhost/render environments
 const API_BASE = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"
     ? "http://localhost:5000"
     : "https://student-hub-edith-backend.onrender.com";
@@ -391,8 +389,10 @@ function renderSidebarHistoryList(historyArray) {
         const id = session._id;
         let displayTitle = "Active Synthesis Thread";
         
+        // పాత మెసేజ్ లలో మొదటి యూజర్ క్వశ్చన్ ని టైటిల్ గా తీసుకుంటుంది
         if (session.messages && session.messages.length > 0) {
-            displayTitle = session.messages[0].content;
+            const firstUserMsg = session.messages.find(m => m.role === "user");
+            if (firstUserMsg) displayTitle = firstUserMsg.content;
         }
         if (displayTitle.length > 22) displayTitle = displayTitle.substring(0, 22) + "...";
 
@@ -430,6 +430,7 @@ function loadSelectedSessionStream(sessionId) {
             renderBlankWelcomeInterface();
             return;
         }
+        // పాత మెసేజ్ లన్నిటిని లూప్ లో స్క్రీన్ పై డిస్ప్లే చేస్తుంది
         targetedSession.messages.forEach(msg => {
             appendMessageToUI(msg.content, msg.role === "user");
         });
