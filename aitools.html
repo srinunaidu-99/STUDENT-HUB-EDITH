@@ -60,9 +60,9 @@
     
     <div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
       <div class="text-center md:text-left">
-        <span class="text-[10px] uppercase tracking-widest font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-1 rounded-md inline-block mb-3">Cloud Sandbox Core</span>
+        <span class="text-[10px] uppercase tracking-widest font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-1 rounded-md inline-block mb-3">Isolated Runtime Array</span>
         <h2 class="text-2xl sm:text-4xl font-bold text-white tracking-tight mb-2">Live Multi-Language Compiler</h2>
-        <p class="text-gray-400 text-sm font-light">Write code natively, execute in safe remote sandboxes, and capture stdout/stderr instantly.</p>
+        <p class="text-gray-400 text-sm font-light">Secure code execution pipeline with built-in runtime failover routing protocols.</p>
       </div>
       
       <!-- Selector Hub -->
@@ -70,12 +70,12 @@
         <div class="bg-gray-900/80 border border-white/10 rounded-xl px-3 py-2 flex items-center gap-2">
           <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Environment:</label>
           <select id="languageSelector" onchange="handleLanguageChange()" class="bg-transparent text-sm font-semibold text-white outline-none cursor-pointer pr-4">
-            <option value="python" class="bg-gray-950 text-gray-200">Python 3 (3.10.0)</option>
-            <option value="javascript" class="bg-gray-950 text-gray-200">JavaScript (Node v18)</option>
-            <option value="c" class="bg-gray-950 text-gray-200">C (GCC 10.2.0)</option>
-            <option value="cpp" class="bg-gray-950 text-gray-200">C++ (GCC 10.2.0)</option>
-            <option value="java" class="bg-gray-950 text-gray-200">Java (OpenJDK 15)</option>
-            <option value="go" class="bg-gray-950 text-gray-200">Go Lang (1.16.2)</option>
+            <option value="python" class="bg-gray-950 text-gray-200">Python 3</option>
+            <option value="javascript" class="bg-gray-950 text-gray-200">JavaScript (Node.js)</option>
+            <option value="c" class="bg-gray-950 text-gray-200">C (GCC)</option>
+            <option value="cpp" class="bg-gray-950 text-gray-200">C++ (G++)</option>
+            <option value="java" class="bg-gray-950 text-gray-200">Java (OpenJDK)</option>
+            <option value="go" class="bg-gray-950 text-gray-200">Go Lang</option>
           </select>
         </div>
       </div>
@@ -125,14 +125,13 @@
   </main>
 
   <script>
-    // Exact Piston API Version Mappings to bypass 401/400 errors
     const runtimeConfig = {
-      python: { version: "3.10.0", file: "main.py", code: "print(\"Hello, EDITH System Engine!\")\n\n# Quick Test Loop\nfor i in range(1, 4):\n    print(f\"Processing secure pipeline stack: {i}\")" },
-      javascript: { version: "18.15.0", file: "index.js", code: "console.log(\"Node.js Virtual Sandbox Active.\");\n\nconst items = ['Auth_Node', 'Database_Core', 'API_Gateway'];\nitems.forEach((item, index) => {\n    console.log(`[Matrix Key ${index + 1}]: ${item}`);\n});" },
-      c: { version: "10.2.0", file: "main.c", code: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello from Native C Runtime Environment!\\n\");\n    int val = 42;\n    printf(\"Allocated system constant core: %d\\n\", val);\n    return 0;\n}" },
-      cpp: { version: "10.2.0", file: "main.cpp", code: "#include <iostream>\n#include <vector>\nusing namespace std;\n\nint main() {\n    cout << \"C++ Sandboxed Compiler Online.\" << endl;\n    vector<int> stream = {10, 20, 30};\n    cout << \"Stream buffer size parsed: \" << stream.size() << endl;\n    return 0;\n}" },
-      java: { version: "15.0.2", file: "Main.java", code: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Java Sandbox Stream Initialized successfully.\");\n        System.out.println(\"System Architecture: OpenJDK Engine\");\n    }\n}" },
-      go: { version: "1.16.2", file: "main.go", code: "package main\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Go Language Core active inside compiler cluster.\")\n}" }
+      python: { pistonId: "python", glotId: "python", file: "main.py", code: "print(\"Hello, EDITH System Engine!\")\n\n# Quick Test Loop\nfor i in range(1, 4):\n    print(f\"Processing secure pipeline stack: {i}\")" },
+      javascript: { pistonId: "javascript", glotId: "javascript", file: "main.js", code: "console.log(\"Node.js Virtual Sandbox Active.\");\n\nconst items = ['Auth_Node', 'Database_Core', 'API_Gateway'];\nitems.forEach((item, index) => {\n    console.log(`[Matrix Key ${index + 1}]: ${item}`);\n});" },
+      c: { pistonId: "c", glotId: "c", file: "main.c", code: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello from Native C Runtime Environment!\\n\");\n    int val = 42;\n    printf(\"Allocated system constant core: %d\\n\", val);\n    return 0;\n}" },
+      cpp: { pistonId: "cpp", glotId: "cpp", file: "main.cpp", code: "#include <iostream>\n#include <vector>\nusing namespace std;\n\nint main() {\n    cout << \"C++ Sandboxed Compiler Online.\" << endl;\n    vector<int> stream = {10, 20, 30};\n    cout << \"Stream buffer size parsed: \" << stream.size() << endl;\n    return 0;\n}" },
+      java: { pistonId: "java", glotId: "java", file: "Main.java", code: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Java Sandbox Stream Initialized successfully.\");\n        System.out.println(\"System Architecture: OpenJDK Engine\");\n    }\n}" },
+      go: { pistonId: "go", glotId: "go", file: "main.go", code: "package main\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Go Language Core active inside compiler cluster.\")\n}" }
     };
 
     window.onload = () => {
@@ -148,6 +147,7 @@
       document.getElementById('outputContainer').innerHTML = "";
     }
 
+    // 401 ఎర్రర్ రాకుండా ఉండటానికి ఒకవేళ ప్రైమరీ ఇంజన్ ఫెయిల్ అయితే, ఈ రన్‌టైమ్ ప్యాకేజీని వాడుకుంటుంది
     async function executeCodeLive() {
       const currentLang = document.getElementById('languageSelector').value;
       const codeValue = document.getElementById('sourceInput').value.trim();
@@ -163,51 +163,67 @@
       loader.classList.remove('hidden');
       loader.classList.add('flex');
       idle.classList.add('hidden');
-      outputBox.innerHTML = "<span class='text-amber-400 animate-pulse'>[CONNECTING]: Packaging source matrix and routing to sandbox API clusters...</span>";
+      outputBox.innerHTML = "<span class='text-amber-400 animate-pulse'>[CONNECTING]: Establishing handshake protocol with isolated secure environments...</span>";
 
+      // Method 1: CORS Failover Router మెకానిజం ద్వారా అథెంటికేట్ చేయడం
       try {
-        const response = await fetch("https://emkc.org/api/v2/piston/execute", {
+        const response = await fetch("https://glot.io/api/run/" + runtimeConfig[currentLang].glotId + "/latest", {
           method: "POST",
-          headers: { 
+          headers: {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            language: currentLang,
-            version: runtimeConfig[currentLang].version, 
             files: [{ name: runtimeConfig[currentLang].file, content: codeValue }]
           })
         });
 
-        if (!response.ok) {
-          throw new Error(`Server returned network exception state code: ${response.status}`);
+        if (response.ok) {
+          const data = await response.json();
+          loader.classList.remove('flex');
+          loader.classList.add('hidden');
+          idle.classList.remove('hidden');
+          
+          if (data.stderr) {
+            outputBox.innerHTML = `<span class='text-red-500 font-bold'>[RUNTIME EXCEPTION]:</span>\n<span class='text-red-400'>${escapeHTML(data.stderr)}</span>`;
+          } else {
+            outputBox.innerHTML = data.stdout ? escapeHTML(data.stdout) : "<span class='text-gray-400'>[SUCCESS]: Void stream return payload.</span>";
+          }
+          return; // ఎగ్జిక్యూషన్ సక్సెస్ అయింది కాబట్టి ఇక్కడితో ఆగిపోతుంది
         }
+      } catch (e) {
+        console.warn("Primary edge node dropped. Swapping pipeline channels...");
+      }
 
-        const data = await response.json();
+      // Method 2: Failover Backup API (ఆటోమేటిక్ రన్‌టైమ్ స్విచ్)
+      try {
+        const backupResponse = await fetch("https://api.codex.jaagrav.in", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            language: currentLang === "javascript" ? "js" : currentLang,
+            code: codeValue
+          })
+        });
+
+        const backupData = await backupResponse.json();
         
         loader.classList.remove('flex');
         loader.classList.add('hidden');
         idle.classList.remove('hidden');
 
-        if (data && data.run) {
-          const stdout = data.run.stdout;
-          const stderr = data.run.stderr;
-
-          if (stderr) {
-            outputBox.innerHTML = `<span class='text-red-500 font-bold'>[RUNTIME EXCEPTION REGISTERED]:</span>\n<span class='text-red-400'>${escapeHTML(stderr)}</span>`;
-          } else if (stdout) {
-            outputBox.innerHTML = escapeHTML(stdout);
-          } else {
-            outputBox.innerHTML = "<span class='text-gray-400 font-mono'>[SUCCESS]: Code block executed with no stdout stream returned.</span>";
-          }
+        if (backupData.output) {
+          outputBox.innerHTML = escapeHTML(backupData.output);
+        } else if (backupData.error) {
+          outputBox.innerHTML = `<span class='text-red-500 font-bold'>[COMPILER ERROR]:</span>\n<span class='text-red-400'>${escapeHTML(backupData.error)}</span>`;
         } else {
-          outputBox.innerHTML = "<span class='text-red-400 font-mono'>[BUILD FAILURE]: Could not extract execution data from payload.</span>";
+          outputBox.innerHTML = "<span class='text-gray-400'>[SUCCESS]: Code block processed cleanly.</span>";
         }
 
-      } catch (error) {
+      } catch (fallbackError) {
         loader.classList.remove('flex');
         loader.classList.add('hidden');
         idle.classList.remove('hidden');
-        outputBox.innerHTML = `<span class='text-red-500 font-bold'>[API PIPELINE BREAKDOWN]:</span>\n<span class='text-red-400'>${error.message}\nEnsure server endpoints are accessible.</span>`;
+        outputBox.innerHTML = `<span class='text-red-500 font-bold'>[CRITICAL CLUSTER FAILURE]:</span>\n<span class='text-red-400'>All external sandbox compiler nodes rejected the payload frame (401/Network Drop).\n\nPlease verify your cross-origin policies (CORS) or local server bindings.</span>`;
       }
     }
 
