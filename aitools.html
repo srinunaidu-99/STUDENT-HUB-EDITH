@@ -6,6 +6,8 @@
   <title>Specialized Pipelines - EDITH Intelligence</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <!-- Loading Pyodide WASM Engine for Real In-Browser Python Execution -->
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap');
     
@@ -60,56 +62,52 @@
     
     <div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
       <div class="text-center md:text-left">
-        <span class="text-[10px] uppercase tracking-widest font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-1 rounded-md inline-block mb-3">Isolated Runtime Array</span>
-        <h2 class="text-2xl sm:text-4xl font-bold text-white tracking-tight mb-2">Live Multi-Language Compiler</h2>
-        <p class="text-gray-400 text-sm font-light">Secure code execution pipeline with built-in runtime failover routing protocols.</p>
+        <span class="text-[10px] uppercase tracking-widest font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-1 rounded-md inline-block mb-3">WASM Edge Subsystem</span>
+        <h2 class="text-2xl sm:text-4xl font-bold text-white tracking-tight mb-2">Live Compiler Kernel</h2>
+        <p class="text-gray-400 text-sm font-light">Runs Python & JS code directly inside your terminal emulator layer safely.</p>
       </div>
       
-      <!-- Selector Hub -->
+      <!-- Selection Engine Box -->
       <div class="flex justify-center">
         <div class="bg-gray-900/80 border border-white/10 rounded-xl px-3 py-2 flex items-center gap-2">
           <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Environment:</label>
           <select id="languageSelector" onchange="handleLanguageChange()" class="bg-transparent text-sm font-semibold text-white outline-none cursor-pointer pr-4">
-            <option value="python" class="bg-gray-950 text-gray-200">Python 3</option>
-            <option value="javascript" class="bg-gray-950 text-gray-200">JavaScript (Node.js)</option>
-            <option value="c" class="bg-gray-950 text-gray-200">C (GCC)</option>
-            <option value="cpp" class="bg-gray-950 text-gray-200">C++ (G++)</option>
-            <option value="java" class="bg-gray-950 text-gray-200">Java (OpenJDK)</option>
-            <option value="go" class="bg-gray-950 text-gray-200">Go Lang</option>
+            <option value="python" class="bg-gray-950 text-gray-200">Python 3 (Pyodide WASM)</option>
+            <option value="javascript" class="bg-gray-950 text-gray-200">JavaScript (V8 Runtime)</option>
           </select>
         </div>
       </div>
     </div>
 
-    <!-- Workspace Deck -->
+    <!-- Main Workspace Frame -->
     <div class="glass-panel rounded-3xl p-6 sm:p-8 shadow-xl relative">
       <div class="space-y-6">
         
-        <!-- Editor Frame -->
+        <!-- Code Window Container -->
         <div>
           <div class="flex justify-between items-center mb-2">
-            <label class="block text-[10px] uppercase font-bold tracking-wider text-gray-400">Source Code Input Terminal</label>
+            <label class="block text-[10px] uppercase font-bold tracking-wider text-gray-400">Live Workspace Array</label>
             <span id="langIndicator" class="text-xs text-indigo-400 font-mono">main.py</span>
           </div>
-          <textarea id="sourceInput" placeholder="Initialize source payload structure here..." 
+          <textarea id="sourceInput" placeholder="Initialize script execution blocks..." 
             class="w-full h-72 bg-gray-950/80 border border-white/10 focus:border-indigo-500/50 rounded-2xl p-5 text-sm font-mono outline-none transition-all placeholder-gray-700 shadow-inner resize-y text-gray-100"></textarea>
         </div>
 
-        <!-- Engine Triggers -->
+        <!-- System Controls Deck Hub -->
         <div class="flex items-center justify-between flex-wrap gap-4 border-t border-white/5 pt-4">
           <div id="processingLoader" class="hidden items-center gap-2 text-xs font-medium text-amber-400">
-            <i class="fa-solid fa-circle-notch animate-spin text-sm"></i> Compiling matrix stream on secure server arrays...
+            <i class="fa-solid fa-circle-notch animate-spin text-sm"></i> <span id="loaderText">Compiling execution layer context...</span>
           </div>
           <div id="idleStatus" class="text-xs text-gray-500 flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block"></span> Remote Runtime System Online
+            <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block"></span> Local Sandboxed Core Active
           </div>
           
-          <button onclick="executeCodeLive()" class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 active:scale-95 text-white font-bold text-xs tracking-wider rounded-xl transition-all shadow-lg shadow-indigo-600/10 flex items-center gap-2">
-            <i class="fa-solid fa-play text-[10px]"></i> EXECUTE LIVE PAYLOAD
+          <button onclick="executeCodePayload()" class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 active:scale-95 text-white font-bold text-xs tracking-wider rounded-xl transition-all shadow-lg shadow-indigo-600/10 flex items-center gap-2">
+            <i class="fa-solid fa-play text-[10px]"></i> EXECUTE CORE PAYLOAD
           </button>
         </div>
 
-        <!-- Terminal Logs -->
+        <!-- Terminal Output Container -->
         <div class="relative pt-2">
           <div class="flex justify-between items-center mb-2">
             <label class="block text-[10px] uppercase font-bold tracking-wider text-gray-400">Live Terminal Logs (stdout)</label>
@@ -125,30 +123,46 @@
   </main>
 
   <script>
-    const runtimeConfig = {
-      python: { pistonId: "python", glotId: "python", file: "main.py", code: "print(\"Hello, EDITH System Engine!\")\n\n# Quick Test Loop\nfor i in range(1, 4):\n    print(f\"Processing secure pipeline stack: {i}\")" },
-      javascript: { pistonId: "javascript", glotId: "javascript", file: "main.js", code: "console.log(\"Node.js Virtual Sandbox Active.\");\n\nconst items = ['Auth_Node', 'Database_Core', 'API_Gateway'];\nitems.forEach((item, index) => {\n    console.log(`[Matrix Key ${index + 1}]: ${item}`);\n});" },
-      c: { pistonId: "c", glotId: "c", file: "main.c", code: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello from Native C Runtime Environment!\\n\");\n    int val = 42;\n    printf(\"Allocated system constant core: %d\\n\", val);\n    return 0;\n}" },
-      cpp: { pistonId: "cpp", glotId: "cpp", file: "main.cpp", code: "#include <iostream>\n#include <vector>\nusing namespace std;\n\nint main() {\n    cout << \"C++ Sandboxed Compiler Online.\" << endl;\n    vector<int> stream = {10, 20, 30};\n    cout << \"Stream buffer size parsed: \" << stream.size() << endl;\n    return 0;\n}" },
-      java: { pistonId: "java", glotId: "java", file: "Main.java", code: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Java Sandbox Stream Initialized successfully.\");\n        System.out.println(\"System Architecture: OpenJDK Engine\");\n    }\n}" },
-      go: { pistonId: "go", glotId: "go", file: "main.go", code: "package main\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Go Language Core active inside compiler cluster.\")\n}" }
+    // Templates Array Setup
+    const templates = {
+      python: {
+        file: "main.py",
+        code: "print(\"Hello, EDITH System Engine!\")\n\na = 15\nb = 25\nprint(f\"The calculated sum is: {a + b}\")"
+      },
+      javascript: {
+        file: "index.js",
+        code: "console.log(\"JavaScript Matrix Engine Engaged.\");\n\nfor(let i = 1; i <= 3; i++) {\n    console.log(\"Streaming sequence block id:\", i);\n}"
+      }
     };
 
-    window.onload = () => {
+    let pyodideInstance = null;
+
+    window.onload = async () => {
       handleLanguageChange();
+      // Pre-warm Pyodide background compiler node safely
+      initPyodideEngine();
     };
+
+    async function initPyodideEngine() {
+      if (!pyodideInstance) {
+        try {
+          pyodideInstance = await loadPyodide();
+        } catch (err) {
+          console.error("Pyodide background allocation error:", err);
+        }
+      }
+    }
 
     function handleLanguageChange() {
       const selectedLang = document.getElementById('languageSelector').value;
-      const target = runtimeConfig[selectedLang];
+      const target = templates[selectedLang];
       
       document.getElementById('langIndicator').innerText = target.file;
       document.getElementById('sourceInput').value = target.code;
       document.getElementById('outputContainer').innerHTML = "";
     }
 
-    // 401 ఎర్రర్ రాకుండా ఉండటానికి ఒకవేళ ప్రైమరీ ఇంజన్ ఫెయిల్ అయితే, ఈ రన్‌టైమ్ ప్యాకేజీని వాడుకుంటుంది
-    async function executeCodeLive() {
+    async function executeCodePayload() {
       const currentLang = document.getElementById('languageSelector').value;
       const codeValue = document.getElementById('sourceInput').value.trim();
       const outputBox = document.getElementById('outputContainer');
@@ -156,75 +170,75 @@
       const idle = document.getElementById('idleStatus');
 
       if (!codeValue) {
-        alert("Execution halted: Source buffer stream cannot be blank.");
+        alert("Execution failed: Source buffer stream workspace is blank.");
         return;
       }
 
       loader.classList.remove('hidden');
       loader.classList.add('flex');
       idle.classList.add('hidden');
-      outputBox.innerHTML = "<span class='text-amber-400 animate-pulse'>[CONNECTING]: Establishing handshake protocol with isolated secure environments...</span>";
+      outputBox.innerHTML = "<span class='text-amber-400 animate-pulse'>[INITIALIZING]: Executing custom matrix blocks inside virtual sandbox array...</span>";
 
-      // Method 1: CORS Failover Router మెకానిజం ద్వారా అథెంటికేట్ చేయడం
-      try {
-        const response = await fetch("https://glot.io/api/run/" + runtimeConfig[currentLang].glotId + "/latest", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            files: [{ name: runtimeConfig[currentLang].file, content: codeValue }]
-          })
-        });
+      // Allow UI thread to cycle layout cleanly
+      await new Promise(resolve => setTimeout(resolve, 100));
 
-        if (response.ok) {
-          const data = await response.json();
-          loader.classList.remove('flex');
-          loader.classList.add('hidden');
-          idle.classList.remove('hidden');
-          
-          if (data.stderr) {
-            outputBox.innerHTML = `<span class='text-red-500 font-bold'>[RUNTIME EXCEPTION]:</span>\n<span class='text-red-400'>${escapeHTML(data.stderr)}</span>`;
-          } else {
-            outputBox.innerHTML = data.stdout ? escapeHTML(data.stdout) : "<span class='text-gray-400'>[SUCCESS]: Void stream return payload.</span>";
+      if (currentLang === 'python') {
+        try {
+          // Warm up instance if required
+          if (!pyodideInstance) {
+            document.getElementById('loaderText').innerText = "Downloading WebAssembly core system framework dependencies...";
+            pyodideInstance = await loadPyodide();
           }
-          return; // ఎగ్జిక్యూషన్ సక్సెస్ అయింది కాబట్టి ఇక్కడితో ఆగిపోతుంది
+          
+          document.getElementById('loaderText').innerText = "Running script natively...";
+
+          // Capture stdout intercept layers cleanly
+          let pythonOutputBuffer = "";
+          pyodideInstance.setStdout({
+            write: (text) => {
+              pythonOutputBuffer += text;
+              return text.length;
+            }
+          });
+          pyodideInstance.setStderr({
+            write: (text) => {
+              pythonOutputBuffer += text;
+              return text.length;
+            }
+          });
+
+          // Core execute runtime run
+          await pyodideInstance.runPythonAsync(codeValue);
+
+          outputBox.innerHTML = pythonOutputBuffer ? escapeHTML(pythonOutputBuffer) : "<span class='text-gray-400'>[SUCCESS]: Code processed with no stdout stream outputs.</span>";
+
+        } catch (err) {
+          outputBox.innerHTML = `<span class='text-red-500 font-bold'>[PYTHON RUNTIME EXCEPTION]:</span>\n<span class='text-red-400'>${escapeHTML(err.message)}</span>`;
         }
-      } catch (e) {
-        console.warn("Primary edge node dropped. Swapping pipeline channels...");
-      }
-
-      // Method 2: Failover Backup API (ఆటోమేటిక్ రన్‌టైమ్ స్విచ్)
-      try {
-        const backupResponse = await fetch("https://api.codex.jaagrav.in", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            language: currentLang === "javascript" ? "js" : currentLang,
-            code: codeValue
-          })
-        });
-
-        const backupData = await backupResponse.json();
+      } 
+      
+      else if (currentLang === 'javascript') {
+        let jsOutputBuffer = [];
+        const originalConsoleLog = console.log;
         
-        loader.classList.remove('flex');
-        loader.classList.add('hidden');
-        idle.classList.remove('hidden');
+        console.log = function(...args) {
+          jsOutputBuffer.push(args.map(arg => typeof arg === 'object' ? JSON.stringify(arg, null, 2) : arg).join(' '));
+        };
 
-        if (backupData.output) {
-          outputBox.innerHTML = escapeHTML(backupData.output);
-        } else if (backupData.error) {
-          outputBox.innerHTML = `<span class='text-red-500 font-bold'>[COMPILER ERROR]:</span>\n<span class='text-red-400'>${escapeHTML(backupData.error)}</span>`;
-        } else {
-          outputBox.innerHTML = "<span class='text-gray-400'>[SUCCESS]: Code block processed cleanly.</span>";
+        try {
+          eval(codeValue);
+          console.log = originalConsoleLog; // Reset mapping
+          outputBox.innerHTML = jsOutputBuffer.length > 0 ? escapeHTML(jsOutputBuffer.join('\n')) : "<span class='text-gray-400'>[SUCCESS]: Code block run completed without logs.</span>";
+        } catch (err) {
+          console.log = originalConsoleLog; // Reset mapping safety fallback
+          outputBox.innerHTML = `<span class='text-red-500 font-bold'>[JAVASCRIPT ERROR]:</span>\n<span class='text-red-400'>${escapeHTML(err.message)}</span>`;
         }
-
-      } catch (fallbackError) {
-        loader.classList.remove('flex');
-        loader.classList.add('hidden');
-        idle.classList.remove('hidden');
-        outputBox.innerHTML = `<span class='text-red-500 font-bold'>[CRITICAL CLUSTER FAILURE]:</span>\n<span class='text-red-400'>All external sandbox compiler nodes rejected the payload frame (401/Network Drop).\n\nPlease verify your cross-origin policies (CORS) or local server bindings.</span>`;
       }
+
+      loader.classList.remove('flex');
+      loader.classList.add('hidden');
+      idle.classList.remove('hidden');
+      document.getElementById('loaderText').innerText = "Compiling execution layer context...";
     }
 
     function escapeHTML(str) {
@@ -233,11 +247,11 @@
 
     function copyTerminalOutput() {
       const outputBox = document.getElementById('outputContainer');
-      if (!outputBox.innerText || outputBox.innerText.includes("[CONNECTING]")) return;
+      if (!outputBox.innerText || outputBox.innerText.includes("[INITIALIZING]")) return;
 
       navigator.clipboard.writeText(outputBox.innerText).then(() => {
         const copyBtn = document.getElementById('copyBtn');
-        copyBtn.innerHTML = '<i class="fa-solid fa-check text-emerald-400"></i> Buffer Copied';
+        copyBtn.innerHTML = '<i class="fa-solid fa-check text-emerald-400"></i> Copied';
         setTimeout(() => {
           copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy Output';
         }, 2000);
