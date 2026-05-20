@@ -10,7 +10,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700&display=swap');
 
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
@@ -24,19 +24,20 @@
       min-height: 100vh;
     }
 
-    /* Ambient Premium Blobs - Pulsing but stationary (No structural movement) */
+    /* Ambient Premium Blobs - Constant positions, no structural movement, only smooth transparency pulse */
     .blob {
       position: absolute;
       border-radius: 50%;
       background: linear-gradient(135deg, #6366f1, #a855f7);
       filter: blur(120px);
       z-index: -1;
-      animation: pulseGlowEffect 8s ease-in-out infinite alternate;
+      animation: pulseGlowEffect 6s ease-in-out infinite alternate;
+      will-change: opacity;
     }
 
     @keyframes pulseGlowEffect {
-      0% { opacity: 0.15; transform: scale(1); }
-      100% { opacity: 0.3; transform: scale(1.1); }
+      0% { opacity: 0.15; }
+      100% { opacity: 0.35; }
     }
 
     /* Luxury Cyber Glass Card */
@@ -55,7 +56,7 @@
     }
 
     .neon-input:focus {
-      border-color: #38bdf8 !important; /* Premium Cyan-Purple Transition */
+      border-color: #38bdf8 !important; 
       box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
       background: rgba(3, 7, 18, 0.8) !important;
     }
@@ -107,7 +108,7 @@
     </div>
   </div>
 
-  <!-- Ambient Backdrop Lights (Constant positions) -->
+  <!-- Ambient Backdrop Lights (Fixed Positions with Glow Pulse) -->
   <div class="blob w-80 h-80 top-1/4 left-1/4"></div>
   <div class="blob w-96 h-96 bottom-1/4 right-1/4" style="background: #3b82f6; animation-delay: -3s;"></div>
 
@@ -254,6 +255,7 @@
       
       const username = document.getElementById('username').value.trim();
       const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
       const password = document.getElementById('pass').value;
       const confirmPass = document.getElementById('confirmPass').value;
       const btn = document.getElementById('reg-btn');
@@ -266,16 +268,21 @@
       btn.disabled = true;
 
       try {
+        // ఇక్కడ బ్యాకెండ్ కి అన్ని ఫీల్డ్స్ పంపుతున్నాము
         const response = await fetch(`${API_BASE}/api/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password }) 
+          body: JSON.stringify({ username, email, phone, password }) 
         });
 
         const data = await response.json();
 
         if (response.ok) {
+          // డాష్‌బోర్డ్ కోసం లోకల్ స్టోరేజ్ లో డేటా ని స్టోర్ చేస్తున్నాము
+          localStorage.setItem('userName', username);
           localStorage.setItem('userEmail', email);
+          localStorage.setItem('userPhone', phone);
+          
           showNotification("Registration successful! Route switching to login window...", true);
           
           setTimeout(() => {
