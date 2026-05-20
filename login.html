@@ -10,10 +10,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700&display=swap');
 
     body {
-      font-family: 'Poppins', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       overflow: hidden;
       background-color: #020617;
     }
@@ -25,6 +25,7 @@
       height: 100vh;
     }
 
+    /* Ambient Premium Blobs - Constant positions, no structural movement, only smooth transparency pulse */
     .glow-sphere {
       position: absolute;
       width: 400px;
@@ -32,12 +33,13 @@
       background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
       border-radius: 50%;
       z-index: -1;
-      animation: pulse 8s infinite alternate;
+      animation: pulseGlowEffect 6s ease-in-out infinite alternate;
+      will-change: opacity;
     }
 
-    @keyframes pulse {
-      0% { transform: scale(1); opacity: 0.5; }
-      100% { transform: scale(1.2); opacity: 0.8; }
+    @keyframes pulseGlowEffect {
+      0% { opacity: 0.4; }
+      100% { opacity: 0.8; }
     }
 
     .glass-card {
@@ -87,11 +89,11 @@
     }
   </script>
 
+  <!-- Constant Positions Backdrops -->
   <div class="glow-sphere top-[-100px] right-[-100px]"></div>
   <div class="glow-sphere bottom-[-100px] left-[-100px]" style="background: radial-gradient(circle, rgba(6,182,212,0.1) 0%, rgba(0,0,0,0) 70%);"></div>
 
   <div class="w-full max-w-md">
-    <!-- గమనిక: స్థిరంగా ఉండడం కోసం ఇక్కడ data-tilt ఆట్రిబ్యూట్స్ మార్చబడ్డాయి -->
     <div class="glass-card rounded-[50px] p-10 text-center" data-tilt>
       <div class="inner-3d">
         <!-- Brand Icon -->
@@ -118,7 +120,7 @@
 
           <div>
             <div class="relative">
-              <i class="fa-solid fa-shield-halved absolute left-5 top-1/2 -translate-y-1/2 text-slate-500"></i>
+              <i class="fa-solid fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-slate-500"></i>
               <input type="password" id="password" required placeholder="Password" class="neon-input w-full rounded-2xl pl-12 pr-14 py-4 text-white focus:outline-none" />
               <button type="button" onclick="togglePasswordVisibility('password', 'toggleEyeIcon')" class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-purple-400 transition-colors focus:outline-none">
                 <i id="toggleEyeIcon" class="fa-solid fa-eye"></i>
@@ -222,13 +224,13 @@
   <script>
     const API_BASE = "https://student-hub-edith-backend.onrender.com";
 
-    // VanillaTilt కాన్ఫిగరేషన్ మార్చబడింది
+    // VanillaTilt Configuration
     VanillaTilt.init(document.querySelectorAll(".glass-card"), {
-      max: 10,
-      speed: 400,
+      max: 6,
+      speed: 500,
       glare: true,
-      "max-glare": 0.2,
-      reset: false // మౌస్ పక్కకు జరిపినా కార్డ్ పాత పొజిషన్‌కి రీసెట్ అవ్వకుండా అలాగే స్థిరంగా ఉంటుంది.
+      "max-glare": 0.15,
+      reset: true
     });
 
     function togglePasswordVisibility(inputId, iconId) {
@@ -390,8 +392,11 @@
         const data = await response.json();
 
         if (response.ok) {
+          // సేవ్ ఆల్ యూజర్ ప్రాపర్టీస్ ఫ్రమ్ రెస్పాన్స్ టు లోకల్ స్టోరేజ్
           localStorage.setItem("token", data.token);
           localStorage.setItem("userName", data.username || username);
+          localStorage.setItem("userEmail", data.email || ""); // ఈమెయిల్ ఇక్కడ క్యాప్చర్ అవుతుంది
+          localStorage.setItem("userPhone", data.phone || ""); // ఫోన్ నంబర్ ఇక్కడ క్యాప్చర్ అవుతుంది
           localStorage.setItem("isLoggedIn", "true");
 
           btn.innerText = "Access Granted...";
