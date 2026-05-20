@@ -293,7 +293,6 @@ let globallyCachedHistoryTree = [];
 let recognition;
 let isRecording = false;
 
-// --- INITIALIZE WEB SPEECH KIT ---
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     recognition = new SpeechRecognition();
@@ -356,7 +355,6 @@ function renderBlankWelcomeInterface() {
     `;
 }
 
-// --- HISTORICAL MATRIX ENGINE SYNC ---
 async function loadChatHistory(autoLoadFirstSession = false) {
     const token = localStorage.getItem("token");
     try {
@@ -378,6 +376,7 @@ async function loadChatHistory(autoLoadFirstSession = false) {
     }
 }
 
+// --- TOPIC NAME RENDERING ENGINE ---
 function renderSidebarHistoryList(historyArray) {
     if (!historyArray || historyArray.length === 0) {
         historyLogContainer.innerHTML = `<div class="text-center py-8 text-[11px] text-gray-500 font-light">No core sessions found.</div>`;
@@ -387,14 +386,17 @@ function renderSidebarHistoryList(historyArray) {
     
     historyArray.forEach((session) => {
         const id = session._id;
-        let displayTitle = "Active Synthesis Thread";
+        let displayTitle = "New Chat Session";
         
-        // పాత మెసేజ్ లలో మొదటి యూజర్ క్వశ్చన్ ని టైటిల్ గా తీసుకుంటుంది
+        // రోల్ తో సంబంధం లేకుండా చాట్ లోపల యూజర్ అడిగిన ఫస్ట్ మెసేజ్ టెక్స్ట్ ని పట్టుకుంటుంది
         if (session.messages && session.messages.length > 0) {
-            const firstUserMsg = session.messages.find(m => m.role === "user");
-            if (firstUserMsg) displayTitle = firstUserMsg.content;
+            displayTitle = session.messages[0].content;
         }
-        if (displayTitle.length > 22) displayTitle = displayTitle.substring(0, 22) + "...";
+        
+        // 20 అక్షరాల కంటే ఎక్కువ ఉంటే టాపిక్ నేమ్ కట్ చేసి చివరన '...' యాడ్ చేస్తుంది
+        if (displayTitle.length > 20) {
+            displayTitle = displayTitle.substring(0, 20) + "...";
+        }
 
         const itemWrapper = document.createElement("div");
         itemWrapper.className = "flex items-center justify-between w-full relative group history-item-wrapper rounded-xl transition-all";
@@ -430,9 +432,8 @@ function loadSelectedSessionStream(sessionId) {
             renderBlankWelcomeInterface();
             return;
         }
-        // పాత మెసేజ్ లన్నిటిని లూప్ లో స్క్రీన్ పై డిస్ప్లే చేస్తుంది
         targetedSession.messages.forEach(msg => {
-            appendMessageToUI(msg.content, msg.role === "user");
+            appendMessageToUI(msg.content, msg.role.toLowerCase() === "user");
         });
         chatArea.scrollTop = chatArea.scrollHeight;
     }
@@ -455,7 +456,6 @@ function filterSidebarChats() {
     renderSidebarHistoryList(filtered);
 }
 
-// --- ULTRA LOW LATENCY STREAM READ ENGINE ---
 async function sendMsg() {
     const input = document.getElementById("msg");
     const fileInput = document.getElementById("fileInput");
@@ -492,13 +492,11 @@ async function sendMsg() {
             return;
         }
 
-        // Catch response session mappings immediately from customized cross-origin headers
         const incomingSessionId = res.headers.get("X-Session-Id");
         if (incomingSessionId && !currentActiveSessionId) {
             currentActiveSessionId = incomingSessionId;
         }
 
-        // STREAM READER ACCELERATION ENGINE LOOP
         const reader = res.body.getReader();
         const decoder = new TextDecoder("utf-8");
         const aiBubble = appendMessageToUI("", false);
@@ -511,12 +509,10 @@ async function sendMsg() {
             const chunk = decoder.decode(value, { stream: true });
             accumulatedText += chunk;
             
-            // Bypass lag by rendering text fragments directly to marked compiler
             aiBubble.innerHTML = cleanAndParseMarkdown(accumulatedText);
             chatArea.scrollTop = chatArea.scrollHeight;
         }
 
-        // Silent backend tree refresh to catch newly appended items smoothly
         await silentRefreshHistoryTree();
 
         if (isSummarize) {
@@ -544,7 +540,6 @@ async function silentRefreshHistoryTree() {
             globallyCachedHistoryTree = await response.json();
             renderSidebarHistoryList(globallyCachedHistoryTree);
             
-            // Keep selection highlight fixed during dynamic rewrites
             if (currentActiveSessionId) {
                 const activeBtn = document.getElementById(`sidebar-session-${currentActiveSessionId}`);
                 if (activeBtn) activeBtn.classList.add("history-active");
@@ -553,7 +548,6 @@ async function silentRefreshHistoryTree() {
     } catch (e) {}
 }
 
-// --- RENDERING HELPERS & LAYOUT UTILS ---
 function appendMessageToUI(text, isUser) {
     const internalWelcome = document.getElementById("welcomeScreen");
     if (internalWelcome) internalWelcome.remove();
