@@ -161,6 +161,11 @@
             40% { transform: scale(1); }
         }
 
+        /* Delete Button Hover Effect */
+        .delete-chat-btn {
+            opacity: 0;
+            transition: opacity 0.2s ease, color 0.2s ease;
+        }
         .history-item-wrapper:hover .delete-chat-btn {
             opacity: 1;
         }
@@ -384,7 +389,7 @@ async function loadChatHistory(autoLoadFirstSession = false) {
     }
 }
 
-// --- SECURE TOPIC NAME RENDERING ENGINE ---
+// --- SECURE AUTO TITLE GENERATION WITH DELETE ICON ---
 function renderSidebarHistoryList(historyArray) {
     if (!historyArray || historyArray.length === 0) {
         historyLogContainer.innerHTML = `<div class="text-center py-8 text-[11px] text-gray-500 font-light">No core sessions found.</div>`;
@@ -397,7 +402,7 @@ function renderSidebarHistoryList(historyArray) {
         const id = session._id;
         let displayTitle = "Untitled Chat Session";
         
-        // Anti-Crash Optional Chaining Logic
+        // Auto-Title Engine (User ఫస్ట్ మెసేజ్ నే టైటిల్ గా మారుస్తుంది)
         if (session.messages && session.messages.length > 0 && session.messages[0]) {
             displayTitle = session.messages[0].content || "Empty Prompt Layer";
         } else if (session.title) {
@@ -409,19 +414,56 @@ function renderSidebarHistoryList(historyArray) {
         }
 
         const itemWrapper = document.createElement("div");
-        itemWrapper.className = "flex items-center justify-between w-full relative group history-item-wrapper rounded-xl transition-all";
+        itemWrapper.className = "flex items-center justify-between w-full relative group history-item-wrapper rounded-xl transition-all pr-2 hover:bg-white/5";
 
         const btn = document.createElement("button");
         btn.id = `sidebar-session-${id}`;
         btn.onclick = () => loadSelectedSessionStream(id);
         
         const activeClass = (String(id) === String(currentActiveSessionId)) ? 'history-active' : '';
-        btn.className = `flex-1 text-left px-3 py-2.5 text-xs tracking-wide transition-all overflow-hidden text-ellipsis whitespace-nowrap block truncate text-gray-300 hover:bg-white/5 rounded-xl ${activeClass}`;
+        btn.className = `flex-1 text-left px-3 py-2.5 text-xs tracking-wide transition-all overflow-hidden text-ellipsis whitespace-nowrap block truncate text-gray-300 rounded-xl ${activeClass}`;
         btn.innerText = displayTitle;
 
+        // Delete (Trash) Button Setup
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "delete-chat-btn text-gray-500 hover:text-red-400 p-1.5 text-xs rounded-lg transition-all ml-1";
+        deleteBtn.innerHTML = `<i class="fa-regular fa-trash-can"></i>`;
+        deleteBtn.onclick = (e) => {
+            e.stopPropagation(); // బటన్ క్లిక్ చాట్ ఓపెన్ అవ్వకుండా ఆపుతుంది
+            deleteChatSessionFromServer(id);
+        };
+
         itemWrapper.appendChild(btn);
+        itemWrapper.appendChild(deleteBtn);
         historyLogContainer.appendChild(itemWrapper);
     });
+}
+
+// --- DELETE CHAT ENGINE ROUTE ---
+async function deleteChatSessionFromServer(sessionId) {
+    if (!confirm("Are you sure you want to purge this chat session stream?")) return;
+    
+    const token = localStorage.getItem("token");
+    try {
+        const res = await fetch(`${API_BASE}/api/chat/${sessionId}`, {
+            method: "DELETE",
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+
+        if (res.ok) {
+            // ఒకవేళ డిలీట్ చేసిన చాట్ ప్రెసెంట్ ఓపెన్ లో ఉంటే స్క్రీన్ క్లియర్ చేస్తుంది
+            if (String(currentActiveSessionId) === String(sessionId)) {
+                currentActiveSessionId = null;
+                renderBlankWelcomeInterface();
+            }
+            await silentRefreshHistoryTree();
+        } else {
+            alert("Failed to execute purge on backend structure.");
+        }
+    } catch (err) {
+        console.error("Purge failure:", err);
+        alert("Server network disconnect during chat deletion.");
+    }
 }
 
 function loadSelectedSessionStream(sessionId) {
@@ -577,6 +619,7 @@ function appendMessageToUI(text, isUser) {
     return div.querySelector("div");
 }
 
+// Markdown Parser Engine
 function cleanAndParseMarkdown(text) {
     if (!text) return "";
     let rawHtml = marked.parse(text);
