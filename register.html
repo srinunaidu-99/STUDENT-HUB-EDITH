@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
@@ -147,10 +147,10 @@
               </div>
             </div>
             <div>
-              <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Phone Number (Optional)</label>
+              <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Phone Number (Highly Recommended)</label>
               <div class="relative group">
                 <i class="fa-solid fa-phone absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-cyan-400 transition-colors"></i>
-                <input type="tel" id="phone" maxlength="15" placeholder="Enter contact number" 
+                <input type="tel" id="phone" placeholder="+91 98765 43210" 
                   class="neon-input w-full rounded-xl pl-12 pr-4 py-3.5 text-white text-sm focus:outline-none">
               </div>
             </div>
@@ -191,7 +191,7 @@
           </button>
         </form>
 
-          <p class="text-center mt-6 text-slate-400 text-xs font-light">
+        <p class="text-center mt-6 text-slate-400 text-xs font-light">
           Already a certified member? <a href="login.html" class="text-cyan-400 font-medium hover:text-purple-400 hover:underline ml-1">Sign In</a>
         </p>
       </div>
@@ -245,16 +245,32 @@
       
       const username = document.getElementById('username').value.trim();
       const email = document.getElementById('email').value.trim();
-      const phone = document.getElementById('phone').value.trim();
+      let phone = document.getElementById('phone').value.trim();
       const password = document.getElementById('pass').value;
       const confirmPass = document.getElementById('confirmPass').value;
       const btn = document.getElementById('reg-btn');
 
+      // 1. Password Uniformity Validation
       if(password !== confirmPass) {
         return showNotification("Validation error: Passwords do not match!");
       }
 
-      btn.innerText = "Registering...";
+      // 2. Phone Field Formatting Guard (Standardizing for Firebase Login Sync)
+      if (phone) {
+        // Spaces and hyphens clean clean up
+        phone = phone.replace(/[\s-]/g, '');
+        
+        // Auto-prefix Indian standard country code if missing
+        if (!phone.startsWith('+')) {
+          if (phone.length === 10) {
+            phone = '+91' + phone;
+          } else {
+            return showNotification("Validation error: Include proper country code (e.g., +91 for India)");
+          }
+        }
+      }
+
+      btn.innerText = "Registering Account...";
       btn.disabled = true;
 
       try {
