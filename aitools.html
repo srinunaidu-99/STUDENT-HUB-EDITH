@@ -29,7 +29,7 @@
     }
   </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen p-4 md:p-8 dark:bg-slate-900 dark:text-slate-100 light:bg-slate-50 light:text-slate-900">
+<body class="bg-slate-900 text-slate-100 min-h-screen p-4 md:p-8">
 
   <div class="max-w-6xl mx-auto bg-slate-950/40 p-6 rounded-2xl border border-slate-800 backdrop-blur-md shadow-2xl" id="compilerCard">
     
@@ -44,8 +44,7 @@
 
       <!-- Theme Switcher Header Action -->
       <button onclick="toggleTheme()" id="themeToggleBtn" class="px-4 py-2 flex items-center gap-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white transition-all text-xs font-semibold">
-        <i class="fa-solid fa-sun text-amber-400 hidden dark:block"></i>
-        <i class="fa-solid fa-moon text-indigo-400 block dark:hidden"></i>
+        <i id="themeIcon" class="fa-solid fa-sun text-amber-400"></i>
         <span id="themeText">Toggle Theme</span>
       </button>
     </header>
@@ -126,7 +125,6 @@
   </div>
 
   <script>
-    // System starter templates
     const templates = {
       python: `print("Hello Srinu 🔥")\n\n# Dynamic Input Example:\n# name = input()\n# print(f"Welcome {name}")`,
       js: `console.log("Hello Srinu 🔥");\n\n// Node Environment Execution Matrix`,
@@ -135,42 +133,47 @@
       java: `public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello Srinu 🔥");\n    }\n}`
     };
 
+    // Auto-sync theme when page boots up
     window.onload = () => {
       applySavedTheme();
     };
 
+    // Reads 'mode' key from dashboard localstorage and renders styles
     function applySavedTheme() {
       const savedMode = localStorage.getItem('mode');
       const body = document.body;
+      const themeIcon = document.getElementById('themeIcon');
       
       if (savedMode === 'light') {
         document.documentElement.classList.remove('dark');
         document.documentElement.classList.add('light');
+        
         body.classList.remove('bg-slate-900', 'text-slate-100');
-        body.classList.add('bg-slate-100', 'text-slate-900');
+        body.classList.add('bg-slate-50', 'text-slate-900');
+        
+        // Update Icon to show Moon when in Light mode
+        themeIcon.className = "fa-solid fa-moon text-indigo-600";
       } else {
         document.documentElement.classList.remove('light');
         document.documentElement.classList.add('dark');
-        body.classList.remove('bg-slate-100', 'text-slate-900');
+        
+        body.classList.remove('bg-slate-50', 'text-slate-900');
         body.classList.add('bg-slate-900', 'text-slate-100');
+        
+        // Update Icon to show Sun when in Dark mode
+        themeIcon.className = "fa-solid fa-sun text-amber-400";
       }
     }
 
+    // Toggles the theme style state and syncs back to dashboard 'mode' key
     function toggleTheme() {
-      const body = document.body;
-      if (document.documentElement.classList.contains('dark')) {
-        document.documentElement.classList.remove('dark');
-        document.documentElement.classList.add('light');
-        body.classList.remove('bg-slate-900', 'text-slate-100');
-        body.classList.add('bg-slate-100', 'text-slate-900');
-        localStorage.setItem('mode', 'light');
-      } else {
-        document.documentElement.classList.remove('light');
-        document.documentElement.classList.add('dark');
-        body.classList.remove('bg-slate-100', 'text-slate-900');
-        body.classList.add('bg-slate-900', 'text-slate-100');
+      const savedMode = localStorage.getItem('mode');
+      if (savedMode === 'light') {
         localStorage.setItem('mode', 'dark');
+      } else {
+        localStorage.setItem('mode', 'light');
       }
+      applySavedTheme(); // Re-apply classes instantly
     }
 
     function updateTemplate() {
@@ -192,7 +195,7 @@
       }
     }
 
-    // Core Code Execution Engine (Fixed URL-Encoded payload mapping)
+    // Core Code Execution Engine
     async function runCode() {
       const code = document.getElementById("code").value;
       const lang = document.getElementById("lang").value;
@@ -203,7 +206,6 @@
       output.style.color = "#22d3ee"; 
 
       try {
-        // Mapping body to URLSearchParams to force Content-Type compatibility alignment
         const payloadParams = new URLSearchParams();
         payloadParams.append('code', code);
         payloadParams.append('language', lang);
@@ -223,7 +225,6 @@
           output.innerText = "❌ Compile/Runtime Exception Fault Trace:\n" + data.error;
           output.style.color = "#f87171"; 
         } else {
-          // Fallback logic check if execution is clear but payload string remains blank
           output.innerText = data.output || "✅ Code executed cleanly with empty output buffer.";
           output.style.color = "#34d399"; 
         }
