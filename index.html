@@ -4,136 +4,137 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EDITH - Intelligence Hub</title>
+    <title>EDITH - Advanced Intelligence Hub</title>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #030712 70%);
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 50% 0%, #0f172a 0%, #020617 80%);
             overflow: hidden;
         }
 
         /* --- PREMIUM SCROLLBAR STYLES --- */
         .chat-container::-webkit-scrollbar, .sidebar-scroll::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
+            width: 4px;
+            height: 4px;
         }
         .chat-container::-webkit-scrollbar-track, .sidebar-scroll::-webkit-scrollbar-track {
             background: transparent;
         }
         .chat-container::-webkit-scrollbar-thumb, .sidebar-scroll::-webkit-scrollbar-thumb {
-            background: rgba(99, 102, 241, 0.15);
+            background: rgba(148, 163, 184, 0.1);
             border-radius: 10px;
         }
         .chat-container::-webkit-scrollbar-thumb:hover, .sidebar-scroll::-webkit-scrollbar-thumb:hover {
-            background: rgba(99, 102, 241, 0.35);
+            background: rgba(6, 182, 212, 0.3);
         }
 
-        /* --- EDITH ORB ANIMATION --- */
-        @keyframes pulseGlow {
+        /* --- PROFESSIONAL ORB GLOW --- */
+        @keyframes subtlePulse {
             0%, 100% {
                 transform: scale(1);
-                box-shadow: 0 0 25px 2px rgba(99, 102, 241, 0.4), 0 0 50px 10px rgba(168, 85, 247, 0.2);
+                box-shadow: 0 0 20px 1px rgba(6, 182, 212, 0.25), 0 0 40px 4px rgba(79, 70, 229, 0.15);
             }
             50% {
-                transform: scale(1.03);
-                box-shadow: 0 0 40px 8px rgba(99, 102, 241, 0.6), 0 0 70px 20px rgba(168, 85, 247, 0.4);
+                transform: scale(1.02);
+                box-shadow: 0 0 30px 4px rgba(6, 182, 212, 0.4), 0 0 50px 8px rgba(79, 70, 229, 0.25);
             }
         }
         .edith-orb {
-            animation: pulseGlow 4s ease-in-out infinite;
-            background: linear-gradient(135deg, #6366f1, #a855f7);
+            animation: subtlePulse 5s ease-in-out infinite;
+            background: linear-gradient(135deg, #06b6d4, #4f46e5);
         }
 
-        /* --- MESSAGE SLIDE IN ANIMATION --- */
-        @keyframes slideIn {
+        /* --- SMOOTH TRANSITION SLIDE IN --- */
+        @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(16px) scale(0.99);
+                transform: translateY(8px);
             }
             to {
                 opacity: 1;
-                transform: translateY(0) scale(1);
+                transform: translateY(0);
             }
         }
         .animate-msg {
-            animation: slideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         /* Mic Pulsing Effect */
         @keyframes micPulse {
-            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
-            70% { box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            70% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
             100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
         }
         .mic-active {
             animation: micPulse 1.5s infinite;
             background-color: #ef4444 !important;
             color: white !important;
-            border-color: #f87171 !important;
+            border-color: #dc2626 !important;
         }
 
-        /* --- GLASSMORPHISM DESIGN BUBBLES --- */
+        /* --- PROFESSIONAL MODERN GLASSMORPHISM --- */
         .glass-panel {
-            background: rgba(10, 11, 23, 0.75);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(3, 7, 18, 0.6);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
         }
         .ai-bubble {
-            background: rgba(23, 24, 51, 0.6);
-            border: 1px solid rgba(99, 102, 241, 0.25);
-            color: #f3f4f6;
-            border-radius: 20px 20px 20px 4px;
+            background: rgba(15, 23, 42, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            color: #e2e8f0;
+            border-radius: 12px;
         }
         .user-bubble {
-            background: linear-gradient(135deg, #4f46e5, #3730a3);
-            color: white;
-            border-radius: 20px 20px 4px 20px;
-            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.25);
+            background: rgba(30, 41, 59, 0.7);
+            color: #f8fafc;
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 12px;
         }
 
-        /* --- ACTIVE RECENTS SELECTION STATE --- */
+        /* --- SIDEBAR ACTIVE STATES --- */
         .history-active {
-            background: rgba(255, 255, 255, 0.12) !important;
-            color: #ffffff !important;
-            font-weight: 600 !important;
-            border-left: 3px solid #6366f1 !important;
-            border-radius: 8px !important;
+            background: rgba(6, 182, 212, 0.08) !important;
+            color: #06b6d4 !important;
+            font-weight: 500 !important;
+            border-left: 2px solid #06b6d4 !important;
+            border-radius: 6px !important;
         }
 
-        /* Code Block Wrapper */
+        /* Code Block Wrapper styling */
         .code-block-wrapper {
             position: relative;
-            margin: 12px 0;
+            margin: 16px 0;
             width: 100%;
         }
         pre {
             background: #020617 !important;
-            padding: 18px 16px 16px 16px;
-            border-radius: 12px;
+            padding: 20px 16px 16px 16px;
+            border-radius: 8px;
             overflow-x: auto;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.03);
             max-width: 100%;
         }
         code {
-            color: #a5b4fc;
-            font-size: 0.875rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: #cbd5e1;
+            font-size: 0.85rem;
             white-space: pre;
         }
         .copy-code-btn {
             position: absolute;
             top: 8px;
             right: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 4px 8px;
-            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 4px 10px;
+            border-radius: 4px;
             font-size: 11px;
             color: #94a3b8;
             cursor: pointer;
@@ -141,30 +142,30 @@
             z-index: 10;
         }
         .copy-code-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-            color: #fff;
+            background: rgba(6, 182, 212, 0.1);
+            color: #06b6d4;
+            border-color: rgba(6, 182, 212, 0.3);
         }
 
-        /* --- TYPING DOTS ANIMATION --- */
+        /* --- TYPING INDICATOR --- */
         .typing-dot {
             animation: typingBounce 1.4s infinite ease-in-out both;
-            width: 6px;
-            height: 6px;
-            background-color: #a5b4fc;
+            width: 5px;
+            height: 5px;
+            background-color: #06b6d4;
             border-radius: 50%;
             display: inline-block;
         }
         .typing-dot:nth-child(2) { animation-delay: 0.2s; }
         .typing-dot:nth-child(3) { animation-delay: 0.4s; }
         @keyframes typingBounce {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1); }
+            0%, 80%, 100% { transform: scale(0.3); opacity: 0.4; }
+            40% { transform: scale(1); opacity: 1; }
         }
 
-        /* Delete Button Hover Effect */
         .delete-chat-btn {
             opacity: 0;
-            transition: opacity 0.2s ease, color 0.2s ease;
+            transition: all 0.15s ease;
         }
         .history-item-wrapper:hover .delete-chat-btn {
             opacity: 1;
@@ -172,41 +173,41 @@
     </style>
 </head>
 
-<body class="text-gray-100 min-h-screen flex items-center justify-center p-0 sm:p-4">
+<body class="text-slate-200 min-h-screen flex items-center justify-center p-0 sm:p-6">
 
-<div class="w-full max-w-6xl h-screen sm:h-[92vh] flex glass-panel sm:rounded-3xl shadow-2xl relative overflow-hidden">
+<div class="w-full max-w-7xl h-screen sm:h-[90vh] flex glass-panel sm:rounded-2xl shadow-2xl relative overflow-hidden">
     
-    <aside id="sidebarPanel" class="w-64 bg-black/20 flex flex-col h-full hidden lg:flex border-r border-white/5 transition-all z-30">
+    <aside id="sidebarPanel" class="w-64 bg-slate-950/40 flex flex-col h-full hidden lg:flex border-r border-white/5 transition-all z-30">
         
         <div class="p-4 flex flex-col gap-2">
-            <button onclick="createNewChatSession()" class="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-gray-200 hover:bg-white/5 rounded-xl transition-all font-medium bg-white/5 border border-white/10">
-                <i class="fa-regular fa-pen-to-square text-base text-indigo-400"></i> New chat
+            <button onclick="createNewChatSession()" class="w-full flex items-center gap-3 px-3 py-2 text-xs text-slate-200 hover:bg-white/5 rounded-lg transition-all font-medium bg-white/5 border border-white/5">
+                <i class="fa-regular fa-pen-to-square text-sm text-cyan-400"></i> Initialize Session
             </button>
-            <div class="w-full relative mt-2">
-                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-                <input type="text" id="searchChatsInput" oninput="filterSidebarChats()" placeholder="Search chats" class="w-full bg-white/5 border border-white/5 text-xs rounded-xl pl-9 pr-3 py-2.5 outline-none text-gray-200 placeholder-gray-500">
+            <div class="w-full relative mt-1">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+                <input type="text" id="searchChatsInput" oninput="filterSidebarChats()" placeholder="Filter chat history..." class="w-full bg-slate-900/60 border border-white/5 text-xs rounded-lg pl-9 pr-3 py-2 outline-none text-slate-200 placeholder-slate-600 focus:border-cyan-500/30">
             </div>
         </div>
 
-        <div class="px-4 pt-4 pb-2">
-            <span class="text-xs font-semibold text-gray-400 tracking-wider block uppercase">Recents</span>
+        <div class="px-4 pt-3 pb-1">
+            <span class="text-[10px] font-semibold text-slate-500 tracking-wider block uppercase">Recent Records</span>
         </div>
 
-        <div id="historyLogContainer" class="flex-1 overflow-y-auto px-2 pb-4 space-y-1 sidebar-scroll">
-            <div class="text-center py-8 text-xs text-gray-500 font-light">Loading chat registry trees...</div>
+        <div id="historyLogContainer" class="flex-1 overflow-y-auto px-2 pb-4 space-y-0.5 sidebar-scroll">
+            <div class="text-center py-8 text-xs text-slate-600 font-light">Parsing registry logs...</div>
         </div>
 
-        <div class="p-4 border-t border-white/5 bg-gray-950/40 flex items-center justify-between px-5">
+        <div class="p-4 border-t border-white/5 bg-slate-950/60 flex items-center justify-between px-4">
             <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-xs font-bold text-white uppercase tracking-wider shadow-inner" id="profileBadge">
-                    SH
+                <div class="w-7 h-7 rounded-md bg-slate-800 border border-white/5 flex items-center justify-center text-xs font-semibold text-slate-300 uppercase tracking-wider" id="profileBadge">
+                    OP
                 </div>
                 <div>
-                    <span class="block text-xs font-semibold text-gray-200" id="displayUserFooterName">Student</span>
-                    <span class="block text-[10px] text-emerald-400 font-medium">Free Tier</span>
+                    <span class="block text-xs font-medium text-slate-300" id="displayUserFooterName">Operator</span>
+                    <span class="block text-[9px] text-slate-500 uppercase tracking-tight">System Tier</span>
                 </div>
             </div>
-            <button onclick="localStorage.clear(); window.location.href='login.html';" title="Logout Stream" class="text-gray-400 hover:text-red-400 transition-all text-sm p-1.5">
+            <button onclick="localStorage.clear(); window.location.href='login.html';" title="Disconnect" class="text-slate-500 hover:text-red-400 transition-all text-xs p-1">
                 <i class="fa-solid fa-power-off"></i>
             </button>
         </div>
@@ -214,67 +215,67 @@
 
     <div class="flex-1 flex flex-col h-full relative overflow-hidden bg-transparent">
         
-        <div class="p-4 border-b border-white/5 flex justify-between items-center bg-gray-950/20 px-6">
-            <div class="flex items-center gap-3.5">
-                <button onclick="toggleMobileSidebar()" class="lg:hidden w-9 h-9 border border-white/10 bg-white/5 rounded-xl flex items-center justify-center text-gray-300">
-                    <i class="fa-solid fa-bars text-sm"></i>
+        <div class="p-4 border-b border-white/5 flex justify-between items-center bg-slate-950/20 px-6">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleMobileSidebar()" class="lg:hidden w-8 h-8 border border-white/5 bg-white/5 rounded-lg flex items-center justify-center text-slate-400">
+                    <i class="fa-solid fa-bars text-xs"></i>
                 </button>
 
-                <div class="edith-orb w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold tracking-wider text-sm shadow-lg shadow-indigo-500/30">
+                <div class="edith-orb w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold tracking-wider text-xs">
                     E
                 </div>
                 <div>
-                    <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-indigo-300 bg-clip-text text-transparent">
-                        EDITH <span class="text-xs font-semibold text-indigo-400 border border-indigo-500/30 px-1.5 py-0.5 rounded-md ml-1.5 bg-indigo-500/10">V3.2</span>
+                    <h1 class="text-sm font-semibold tracking-tight text-slate-100 flex items-center gap-2">
+                        EDITH <span class="text-[9px] font-medium text-cyan-400 border border-cyan-500/20 px-1.5 py-0.2 rounded bg-cyan-500/5">V3.2 Architecture</span>
                     </h1>
-                    <p class="text-[10px] uppercase tracking-widest text-indigo-400 font-bold flex items-center gap-1.5 mt-0.5">
-                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block animate-pulse"></span>
-                        Operator: <span id="displayUserName">Student</span>
+                    <p class="text-[9px] uppercase tracking-widest text-slate-500 font-medium flex items-center gap-1.5 mt-0.5">
+                        <span class="w-1 h-1 bg-cyan-400 rounded-full inline-block"></span>
+                        Active Instance Node: <span id="displayUserName" class="text-slate-300">Operator</span>
                     </p>
                 </div>
             </div>
             
             <div class="hidden sm:flex items-center gap-4 text-right">
-                <div class="text-[11px] font-medium text-gray-400">
-                    <span class="text-gray-500 uppercase block text-[9px] tracking-wider font-bold">Latency</span>
-                    <span class="text-emerald-400 font-mono">14ms</span>
+                <div class="text-[11px]">
+                    <span class="text-slate-600 uppercase block text-[8px] tracking-wider font-semibold">Latency ping</span>
+                    <span class="text-cyan-400 font-mono">14ms</span>
                 </div>
-                <div class="w-px h-6 bg-white/10"></div>
-                <div class="text-[11px] font-medium text-gray-400">
-                    <span class="text-gray-500 uppercase block text-[9px] tracking-wider font-bold">Core Load</span>
-                    <span class="text-indigo-400 font-mono">2.4%</span>
+                <div class="w-px h-5 bg-white/5"></div>
+                <div class="text-[11px]">
+                    <span class="text-slate-600 uppercase block text-[8px] tracking-wider font-semibold">Core processing load</span>
+                    <span class="text-slate-400 font-mono">2.4%</span>
                 </div>
             </div>
         </div>
 
-        <div id="chatArea" class="flex-1 overflow-y-auto p-6 space-y-6 chat-container"></div>
+        <div id="chatArea" class="flex-1 overflow-y-auto p-6 space-y-4 chat-container"></div>
 
-        <div class="p-4 sm:p-6 bg-gray-950/40 border-t border-white/5 backdrop-blur-md">
-            <div class="flex flex-wrap gap-2 mb-3.5 px-1">
-                <button onclick="toggleSummarize()" id="sumBtn" class="px-4 py-1.5 rounded-full border border-white/10 hover:border-indigo-500/40 bg-white/5 text-[11px] font-medium transition-all flex items-center gap-2">
-                    <span class="w-1.5 h-1.5 rounded-full bg-gray-400" id="sumDot"></span>
-                    Summarize Notes: <span id="sumStatus" class="font-bold text-gray-400">OFF</span>
+        <div class="p-4 sm:p-5 bg-slate-950/50 border-t border-white/5">
+            <div class="flex flex-wrap gap-2 mb-3 px-1">
+                <button onclick="toggleSummarize()" id="sumBtn" class="px-3 py-1 rounded-md border border-white/5 hover:border-cyan-500/20 bg-white/5 text-[10px] font-medium transition-all flex items-center gap-2 text-slate-400">
+                    <span class="w-1 h-1 rounded-full bg-slate-500" id="sumDot"></span>
+                    Compress Execution Notes: <span id="sumStatus" class="font-semibold text-slate-500">OFF</span>
                 </button>
 
-                <label class="px-4 py-1.5 rounded-full border border-white/10 hover:border-indigo-500/40 bg-white/5 text-[11px] font-medium cursor-pointer transition-all flex items-center gap-1.5">
-                    <i class="fa-solid fa-paperclip text-indigo-400"></i> Attach Files
+                <label class="px-3 py-1 rounded-md border border-white/5 hover:border-cyan-500/20 bg-white/5 text-[10px] font-medium cursor-pointer transition-all flex items-center gap-1.5 text-slate-400">
+                    <i class="fa-solid fa-paperclip text-cyan-500"></i> Attach Assets
                     <input type="file" id="fileInput" multiple class="hidden" onchange="updateFileStatus()" />
                 </label>
-                <span id="fileCount" class="text-[11px] text-indigo-300 self-center font-medium"></span>
+                <span id="fileCount" class="text-[10px] text-cyan-400 self-center font-medium font-mono"></span>
             </div>
 
-            <div class="flex gap-3 items-center relative">
-                <input type="text" id="msg" placeholder="Ask EDITH anything..." 
-                    class="w-full bg-gray-900/80 border border-white/10 focus:border-indigo-500/50 rounded-2xl pl-5 pr-28 py-4 outline-none transition-all text-sm placeholder-gray-500 text-gray-100 shadow-inner"
+            <div class="flex gap-2 items-center relative">
+                <input type="text" id="msg" placeholder="Awaiting computational sequence instructions..." 
+                    class="w-full bg-slate-900/40 border border-white/5 focus:border-cyan-500/30 rounded-xl pl-4 pr-24 py-3 outline-none transition-all text-xs placeholder-slate-600 text-slate-200 shadow-inner"
                     onkeypress="if(event.key==='Enter')sendMsg()" />
 
-                <div class="absolute right-2 flex items-center gap-1.5">
-                    <button onclick="toggleVoiceInput()" id="micBtn" title="Voice Input"
-                        class="w-10 h-10 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 rounded-xl flex items-center justify-center transition-all">
-                        <i class="fa-solid fa-microphone text-sm"></i>
+                <div class="absolute right-1.5 flex items-center gap-1">
+                    <button onclick="toggleVoiceInput()" id="micBtn" title="Voice Processing"
+                        class="w-8 h-8 bg-white/5 hover:bg-white/10 border border-white/5 text-slate-400 rounded-lg flex items-center justify-center transition-all">
+                        <i class="fa-solid fa-microphone text-xs"></i>
                     </button>
                     
-                    <button onclick="sendMsg()" class="w-10 h-10 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white rounded-xl flex items-center justify-center transition-all shadow-lg shadow-indigo-600/20">
+                    <button onclick="sendMsg()" class="w-8 h-8 bg-cyan-600 hover:bg-cyan-500 active:scale-95 text-slate-950 rounded-lg flex items-center justify-center transition-all shadow-md shadow-cyan-600/10">
                         <i class="fa-solid fa-paper-plane text-xs"></i>
                     </button>
                 </div>
@@ -314,7 +315,7 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     recognition.onend = () => {
         isRecording = false;
         document.getElementById("micBtn").classList.remove("mic-active");
-        document.getElementById("msg").placeholder = "Ask EDITH anything...";
+        document.getElementById("msg").placeholder = "Awaiting computational sequence instructions...";
     };
 
     recognition.onresult = (event) => {
@@ -350,12 +351,12 @@ window.onload = () => {
 
 function renderBlankWelcomeInterface() {
     chatArea.innerHTML = `
-        <div id="welcomeScreen" class="flex flex-col justify-center items-center mt-24 text-center px-4 animate-msg">
-            <div class="edith-orb w-20 h-20 rounded-3xl flex items-center justify-center text-3xl text-white mb-6">
+        <div id="welcomeScreen" class="flex flex-col justify-center items-center mt-20 text-center px-4 animate-msg">
+            <div class="edith-orb w-14 h-14 rounded-xl flex items-center justify-center text-xl text-slate-950 mb-4 shadow-xl">
                 <i class="fa-solid fa-brain"></i>
             </div>
-            <h2 class="text-2xl sm:text-3xl font-bold mb-2 tracking-tight text-white">How can I assist you today?</h2>
-            <p class="text-gray-400 text-sm max-w-sm font-light leading-relaxed">Attach files, process structured code streams, or run rapid data summaries instantly.</p>
+            <h2 class="text-lg font-medium mb-1 tracking-tight text-slate-100">Intelligent Hub Matrix Operational</h2>
+            <p class="text-slate-500 text-xs max-w-sm font-normal leading-relaxed">System ready to ingest files, compile data schemas, or process standalone core infrastructure streams.</p>
         </div>
     `;
 }
@@ -381,18 +382,17 @@ async function loadChatHistory(autoLoadFirstSession = false) {
                 loadSelectedSessionStream(globallyCachedHistoryTree[0]._id);
             }
         } else {
-            historyLogContainer.innerHTML = `<div class="text-center py-8 text-[11px] text-gray-500 font-light">No core sessions found.</div>`;
+            historyLogContainer.innerHTML = `<div class="text-center py-8 text-[11px] text-slate-600 font-light">No core sessions found.</div>`;
         }
     } catch (err) {
         console.error("History sync error:", err);
-        historyLogContainer.innerHTML = `<div class="text-center py-6 text-xs text-red-400/60">Server Sync Interrupted</div>`;
+        historyLogContainer.innerHTML = `<div class="text-center py-6 text-xs text-red-400/40">Server Sync Interrupted</div>`;
     }
 }
 
-// --- SECURE AUTO TITLE GENERATION WITH DELETE ICON ---
 function renderSidebarHistoryList(historyArray) {
     if (!historyArray || historyArray.length === 0) {
-        historyLogContainer.innerHTML = `<div class="text-center py-8 text-[11px] text-gray-500 font-light">No core sessions found.</div>`;
+        historyLogContainer.innerHTML = `<div class="text-center py-8 text-[11px] text-slate-600 font-light">No core sessions found.</div>`;
         return;
     }
     historyLogContainer.innerHTML = "";
@@ -402,34 +402,32 @@ function renderSidebarHistoryList(historyArray) {
         const id = session._id;
         let displayTitle = "Untitled Chat Session";
         
-        // Auto-Title Engine (User ఫస్ట్ మెసేజ్ నే టైటిల్ గా మారుస్తుంది)
         if (session.messages && session.messages.length > 0 && session.messages[0]) {
             displayTitle = session.messages[0].content || "Empty Prompt Layer";
         } else if (session.title) {
             displayTitle = session.title;
         }
         
-        if (displayTitle.length > 20) {
-            displayTitle = displayTitle.substring(0, 20) + "...";
+        if (displayTitle.length > 22) {
+            displayTitle = displayTitle.substring(0, 22) + "...";
         }
 
         const itemWrapper = document.createElement("div");
-        itemWrapper.className = "flex items-center justify-between w-full relative group history-item-wrapper rounded-xl transition-all pr-2 hover:bg-white/5";
+        itemWrapper.className = "flex items-center justify-between w-full relative group history-item-wrapper rounded-lg transition-all pr-1 hover:bg-white/5";
 
         const btn = document.createElement("button");
         btn.id = `sidebar-session-${id}`;
         btn.onclick = () => loadSelectedSessionStream(id);
         
         const activeClass = (String(id) === String(currentActiveSessionId)) ? 'history-active' : '';
-        btn.className = `flex-1 text-left px-3 py-2.5 text-xs tracking-wide transition-all overflow-hidden text-ellipsis whitespace-nowrap block truncate text-gray-300 rounded-xl ${activeClass}`;
+        btn.className = `flex-1 text-left px-3 py-2 text-[11px] tracking-wide transition-all overflow-hidden text-ellipsis whitespace-nowrap block truncate text-slate-400 rounded-lg ${activeClass}`;
         btn.innerText = displayTitle;
 
-        // Delete (Trash) Button Setup
         const deleteBtn = document.createElement("button");
-        deleteBtn.className = "delete-chat-btn text-gray-500 hover:text-red-400 p-1.5 text-xs rounded-lg transition-all ml-1";
+        deleteBtn.className = "delete-chat-btn text-slate-600 hover:text-red-400 p-1 text-[11px] rounded transition-all ml-1";
         deleteBtn.innerHTML = `<i class="fa-regular fa-trash-can"></i>`;
         deleteBtn.onclick = (e) => {
-            e.stopPropagation(); // బటన్ క్లిక్ చాట్ ఓపెన్ అవ్వకుండా ఆపుతుంది
+            e.stopPropagation(); 
             deleteChatSessionFromServer(id);
         };
 
@@ -439,7 +437,6 @@ function renderSidebarHistoryList(historyArray) {
     });
 }
 
-// --- DELETE CHAT ENGINE ROUTE ---
 async function deleteChatSessionFromServer(sessionId) {
     if (!confirm("Are you sure you want to purge this chat session stream?")) return;
     
@@ -451,7 +448,6 @@ async function deleteChatSessionFromServer(sessionId) {
         });
 
         if (res.ok) {
-            // ఒకవేళ డిలీట్ చేసిన చాట్ ప్రెసెంట్ ఓపెన్ లో ఉంటే స్క్రీన్ క్లియర్ చేస్తుంది
             if (String(currentActiveSessionId) === String(sessionId)) {
                 currentActiveSessionId = null;
                 renderBlankWelcomeInterface();
@@ -610,7 +606,7 @@ function appendMessageToUI(text, isUser) {
     div.className = `flex ${isUser ? "justify-end" : "justify-start"} animate-msg w-full`;
 
     div.innerHTML = `
-        <div class="p-4 px-5 max-w-[85%] text-sm leading-relaxed shadow-sm ${isUser ? "user-bubble" : "ai-bubble break-words overflow-hidden"}">
+        <div class="p-3.5 px-4 max-w-[85%] text-xs leading-relaxed shadow-sm ${isUser ? "user-bubble" : "ai-bubble break-words overflow-hidden"}">
             ${isUser ? escapeHtml(text) : cleanAndParseMarkdown(text)}
         </div>
     `;
@@ -619,7 +615,6 @@ function appendMessageToUI(text, isUser) {
     return div.querySelector("div");
 }
 
-// Markdown Parser Engine
 function cleanAndParseMarkdown(text) {
     if (!text) return "";
     let rawHtml = marked.parse(text);
@@ -650,7 +645,7 @@ function showTypingIndicator() {
     const div = document.createElement("div");
     div.id = "edithTypingIndicator";
     div.className = "flex justify-start animate-msg";
-    div.innerHTML = `<div class="p-4 px-5 ai-bubble flex items-center gap-1.5 shadow-sm"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>`;
+    div.innerHTML = `<div class="p-3 px-4 ai-bubble flex items-center gap-1 shadow-sm"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>`;
     chatArea.appendChild(div);
     chatArea.scrollTop = chatArea.scrollHeight;
 }
@@ -666,9 +661,9 @@ function updateSummarizeUI() {
     const dotElement = document.getElementById("sumDot");
     const btn = document.getElementById("sumBtn");
     statusText.innerText = isSummarize ? "ON" : "OFF";
-    statusText.className = isSummarize ? "font-bold text-indigo-400" : "font-bold text-gray-400";
-    dotElement.className = isSummarize ? "w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" : "w-1.5 h-1.5 rounded-full bg-gray-400";
-    if (isSummarize) btn.classList.add("border-indigo-500/40", "bg-indigo-500/5"); else btn.classList.remove("border-indigo-500/40", "bg-indigo-500/5");
+    statusText.className = isSummarize ? "font-semibold text-cyan-400" : "font-semibold text-slate-500";
+    dotElement.className = isSummarize ? "w-1 h-1 rounded-full bg-cyan-400" : "w-1 h-1 rounded-full bg-slate-500";
+    if (isSummarize) btn.classList.add("border-cyan-500/20", "bg-cyan-500/5"); else btn.classList.remove("border-cyan-500/20", "bg-cyan-500/5");
 }
 
 function updateFileStatus() {
@@ -680,7 +675,7 @@ function toggleMobileSidebar() {
     const sidebar = document.getElementById("sidebarPanel");
     sidebar.classList.toggle("hidden");
     if (!sidebar.classList.contains("hidden")) {
-        sidebar.classList.add("fixed", "inset-y-0", "left-0", "w-64", "z-50", "bg-gray-950");
+        sidebar.classList.add("fixed", "inset-y-0", "left-0", "w-64", "z-50", "bg-slate-950");
     }
 }
 
