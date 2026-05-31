@@ -118,15 +118,9 @@
   </main>
 
   <script>
+    // System Theme Auto Synchronization Engine
     window.onload = () => {
-      // Setup Theme Preferences
-      if (localStorage.getItem('theme') === 'light') {
-        document.documentElement.classList.remove('dark');
-        document.documentElement.classList.add('light');
-      } else {
-        document.documentElement.classList.remove('light');
-        document.documentElement.classList.add('dark');
-      }
+      applySavedTheme();
 
       // Token Check Security Verification
       if (!localStorage.getItem('token')) {
@@ -136,15 +130,28 @@
       renderNotes();
     };
 
+    // Reads the precise theme state configured by dashboard.html
+    function applySavedTheme() {
+      const savedTheme = localStorage.getItem('theme'); // Assumes your dashboard uses 'theme' key
+      if (savedTheme === 'light') {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+      } else {
+        // Defaults to dark mode if no system key exists or matches dark
+        document.documentElement.classList.remove('light');
+        document.documentElement.classList.add('dark');
+      }
+    }
+
     function toggleTheme() {
       if (document.documentElement.classList.contains('dark')) {
         document.documentElement.classList.remove('dark');
         document.documentElement.classList.add('light');
-        localStorage.setItem('theme', 'light');
+        localStorage.setItem('theme', 'light'); // Keep updated for Dashboard too
       } else {
         document.documentElement.classList.remove('light');
         document.documentElement.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
+        localStorage.setItem('theme', 'dark'); // Keep updated for Dashboard too
       }
     }
 
@@ -216,7 +223,7 @@
 
       const printWrapper = document.createElement('div');
       printWrapper.style.padding = '50px 40px';
-      printWrapper.style.color = '#0f172a'; // Dark blue-grey ink look
+      printWrapper.style.color = '#0f172a'; 
       
       // Creating Handwriting notebook Ruled Lines effect
       printWrapper.style.backgroundColor = '#faf8f5'; 
@@ -248,7 +255,6 @@
         </div>
       `;
 
-      // Apply styling adjustments over standard elements to preserve notebook look
       printWrapper.querySelectorAll('pre').forEach(p => {
         p.style.backgroundColor = 'rgba(0,0,0,0.03)';
         p.style.fontFamily = 'monospace';
