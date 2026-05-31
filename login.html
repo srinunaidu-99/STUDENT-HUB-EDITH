@@ -4,70 +4,96 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login - EDITH</title>
+  <title>Login - EDITH AI</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 
-  <!-- FIREBASE CDN SCRIPTS ADDED HERE -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
     body {
-      font-family: 'Poppins', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       overflow: hidden;
-      background-color: #020617;
+      background-color: #030014;
     }
 
+    /* Ultimate Premium Cyberpunk BG */
     .bg-animate {
-      background:
-        radial-gradient(circle at top right, #1e1b4b, #020617),
-        radial-gradient(circle at bottom left, #1e1b4b, #020617);
+      background: 
+        radial-gradient(circle at 10% 20%, rgba(124, 58, 237, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.12) 0%, transparent 40%),
+        #030014;
       height: 100vh;
+      position: relative;
     }
 
-    .glow-sphere {
+    /* Dynamic Grid Overlay for Tech Look */
+    .bg-grid {
       position: absolute;
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+      inset: 0;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: 0;
+    }
+
+    /* Floating Futuristic Orbs */
+    .glow-orb {
+      position: absolute;
       border-radius: 50%;
-      z-index: -1;
-      animation: pulse 6s infinite alternate;
+      filter: blur(100px);
+      z-index: 0;
+      opacity: 0.6;
+      animation: float 10s infinite alternate ease-in-out;
     }
 
-    @keyframes pulse {
-      0% { opacity: 0.4; }
-      100% { opacity: 0.8; }
+    @keyframes float {
+      0% { transform: translateY(0px) scale(1); }
+      100% { transform: translateY(-30px) scale(1.1); }
     }
 
+    /* Glassmorphism Premium Card Card */
     .glass-card {
-      background: rgba(15, 23, 42, 0.3);
-      backdrop-filter: blur(25px) saturate(180%);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(10, 7, 26, 0.6);
+      backdrop-filter: blur(30px) saturate(200%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7),
+                  0 0 50px 0 rgba(124, 58, 237, 0.05);
     }
 
+    /* Modern Neon Inputs */
     .neon-input {
-      background: rgba(15, 23, 42, 0.6) !important;
-      border: 1px solid rgba(168, 85, 247, 0.2) !important;
-      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.03) !important;
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .neon-input:focus {
       border-color: #a855f7 !important;
-      box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+      background: rgba(124, 58, 237, 0.05) !important;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.25), 
+                  inset 0 0 10px rgba(168, 85, 247, 0.1);
+      color: #ffffff;
     }
 
-    .btn-gradient {
-      background: linear-gradient(90deg, #a855f7, #6366f1);
-      transition: all 0.3s ease;
+    /* Fluid Animated Gradient Buttons */
+    .btn-premium {
+      background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #06b6d4 100%);
+      background-size: 200% auto;
+      transition: all 0.4s ease;
     }
 
-    .btn-gradient:hover:not(:disabled) {
-      box-shadow: 0 0 25px rgba(168, 85, 247, 0.5);
-      transform: scale(1.02);
+    .btn-premium:hover:not(:disabled) {
+      background-position: right center;
+      box-shadow: 0 0 30px rgba(168, 85, 247, 0.40);
+      transform: translateY(-2px);
+    }
+
+    .btn-premium:active:not(:disabled) {
+      transform: translateY(0px);
     }
     
     .hidden-step {
@@ -78,66 +104,65 @@
 
 <body class="bg-animate flex items-center justify-center relative px-4">
 
-  <!-- SESSION CHECKER -->
   <script>
     if (localStorage.getItem("isLoggedIn") === "true") {
       window.location.href = "dashboard.html";
     }
   </script>
 
-  <div class="glow-sphere top-[-100px] right-[-100px]"></div>
-  <div class="glow-sphere bottom-[-100px] left-[-100px]" style="background: radial-gradient(circle, rgba(6,182,212,0.1) 0%, rgba(0,0,0,0) 70%);"></div>
+  <div class="bg-grid"></div>
+  <div class="glow-orb top-[-100px] right-[-50px] w-[500px] h-[500px]" style="background: radial-gradient(circle, rgba(168,85,247,0.2) 0%, transparent 70%);"></div>
+  <div class="glow-orb bottom-[-150px] left-[-100px] w-[600px] h-[600px]" style="background: radial-gradient(circle, rgba(6,182,212,0.15) 0%, transparent 70%); animation-delay: -3s;"></div>
 
-  <div class="w-full max-w-md">
-    <div class="glass-card rounded-[50px] p-10 text-center">
+  <div class="w-full max-w-md relative z-10">
+    <div class="glass-card rounded-[40px] p-8 md:p-10 text-center relative overflow-hidden">
+      
+      <div class="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-purple-500 to-transparent"></div>
+
       <div>
-        <!-- Brand Icon -->
-        <div class="w-24 h-24 mx-auto bg-gradient-to-br from-purple-500 to-indigo-600 rounded-[30px] flex items-center justify-center text-5xl mb-6 shadow-[0_0_30px_rgba(168,85,247,0.4)]">
+        <div class="w-20 h-20 mx-auto bg-gradient-to-tr from-purple-600 via-indigo-600 to-cyan-500 rounded-2xl flex items-center justify-center text-4xl mb-6 shadow-[0_0_40px_rgba(124,58,237,0.3)] border border-white/10">
           ✨
         </div>
 
-        <!-- Brand Name -->
-        <h1 class="text-4xl font-bold text-white mb-2 tracking-tight">
-          EDITH <span class="text-cyan-400">AI</span>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-2 tracking-tight">
+          EDITH <span class="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">AI</span>
         </h1>
-        <p class="text-slate-400 text-sm mb-10 tracking-wide">
-          Enter the future of learning
+        <p class="text-slate-400 text-xs md:text-sm font-medium mb-8 tracking-wider">
+          ENTER THE FUTURE OF LEARNING
         </p>
 
-        <!-- Login Form -->
-        <form id="loginForm" class="space-y-6 text-left">
+        <form id="loginForm" class="space-y-5 text-left">
           <div>
-            <div class="relative">
-              <i class="fa-solid fa-user absolute left-5 top-1/2 -translate-y-1/2 text-slate-500"></i>
-              <input type="text" id="username" required placeholder="Username" class="neon-input w-full rounded-2xl pl-12 pr-6 py-4 text-white focus:outline-none" />
+            <div class="relative group">
+              <i class="fa-solid fa-user absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-purple-400 transition-colors"></i>
+              <input type="text" id="username" required placeholder="Username" class="neon-input w-full rounded-2xl pl-12 pr-6 py-4 text-slate-200 placeholder-slate-500 text-sm focus:outline-none" />
             </div>
           </div>
 
           <div>
-            <div class="relative">
-              <i class="fa-solid fa-shield-halved absolute left-5 top-1/2 -translate-y-1/2 text-slate-500"></i>
-              <input type="password" id="password" required placeholder="Password" class="neon-input w-full rounded-2xl pl-12 pr-14 py-4 text-white focus:outline-none" />
-              <button type="button" onclick="togglePasswordVisibility('password', 'toggleEyeIcon')" class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-purple-400 transition-colors focus:outline-none">
-                <i id="toggleEyeIcon" class="fa-solid fa-eye"></i>
+            <div class="relative group">
+              <i class="fa-solid fa-shield-halved absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-purple-400 transition-colors"></i>
+              <input type="password" id="password" required placeholder="Password" class="neon-input w-full rounded-2xl pl-12 pr-14 py-4 text-slate-200 placeholder-slate-500 text-sm focus:outline-none" />
+              <button type="button" onclick="togglePasswordVisibility('password', 'toggleEyeIcon')" class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-purple-400 transition-colors focus:outline-none">
+                <i id="toggleEyeIcon" class="fa-solid fa-eye text-sm"></i>
               </button>
             </div>
           </div>
 
-          <!-- Forgot Password Link -->
           <div class="text-right">
-            <button type="button" onclick="openForgotModal()" class="text-sm text-slate-400 hover:text-cyan-400 transition-colors">
+            <button type="button" onclick="openForgotModal()" class="text-xs font-semibold text-purple-400 hover:text-cyan-400 transition-colors tracking-wide">
               Forgot Password?
             </button>
           </div>
 
-          <button type="submit" id="login-btn" class="btn-gradient w-full text-white font-bold py-4 rounded-2xl shadow-lg mt-2 disabled:opacity-50 disabled:cursor-not-allowed">
-            Sign In
+          <button type="submit" id="login-btn" class="btn-premium w-full text-white font-bold py-4 rounded-2xl shadow-lg mt-2 tracking-wider text-sm disabled:opacity-50 disabled:cursor-not-allowed">
+            SIGN IN
           </button>
         </form>
 
-        <div class="mt-10 space-y-2">
-          <p class="text-slate-500 text-sm">Don't have an account?</p>
-          <a href="register.html" class="inline-block text-cyan-400 font-semibold hover:text-white transition-colors underline-offset-4 hover:underline">
+        <div class="mt-8 pt-6 border-t border-white/5 space-y-1.5">
+          <p class="text-slate-500 text-xs font-medium">Don't have an account?</p>
+          <a href="register.html" class="inline-block text-cyan-400 text-sm font-bold hover:text-purple-400 transition-colors tracking-wide">
             Register for account
           </a>
         </div>
@@ -145,74 +170,69 @@
     </div>
   </div>
 
-  <!-- --- FORGOT PASSWORD MODAL --- -->
-  <div id="forgotModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300 px-4">
-    <div class="glass-card w-full max-w-md rounded-[40px] p-8 text-center relative max-h-[90vh] overflow-y-auto">
+  <div id="forgotModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300 px-4">
+    <div class="glass-card w-full max-w-md rounded-[35px] p-8 text-center relative max-h-[90vh] overflow-y-auto border border-white/10">
       
-      <button onclick="closeForgotModal()" class="absolute right-6 top-6 text-slate-400 hover:text-white transition-colors">
-        <i class="fa-solid fa-xmark text-xl"></i>
+      <button onclick="closeForgotModal()" class="absolute right-6 top-6 text-slate-400 hover:text-white transition-colors focus:outline-none">
+        <i class="fa-solid fa-xmark text-lg"></i>
       </button>
 
-      <!-- STEP 1: Input Destination -->
-      <div id="step-request" class="">
-        <h3 class="text-2xl font-bold text-white mb-2">Reset Password</h3>
-        <p class="text-slate-400 text-sm mb-6">Enter your registered Phone Number (+91 format) to receive a verification code.</p>
+      <div id="step-request" class="py-2">
+        <h3 class="text-xl md:text-2xl font-bold text-white mb-2 tracking-tight">Reset Password</h3>
+        <p class="text-slate-400 text-xs md:text-sm mb-6 leading-relaxed">Enter your registered Phone Number (+91 format) to receive a verification code.</p>
         
         <form id="forgotRequestForm" class="space-y-4 text-left">
-          <div class="relative">
-            <i class="fa-solid fa-phone absolute left-5 top-1/2 -translate-y-1/2 text-slate-500"></i>
-            <input type="text" id="resetContact" required placeholder="+91 9876543210" class="neon-input w-full rounded-2xl pl-12 pr-6 py-4 text-white focus:outline-none" />
+          <div class="relative group">
+            <i class="fa-solid fa-phone absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-purple-400 transition-colors"></i>
+            <input type="text" id="resetContact" required placeholder="+91 9876543210" class="neon-input w-full rounded-2xl pl-12 pr-6 py-4 text-slate-200 placeholder-slate-500 text-sm focus:outline-none" />
           </div>
 
-          <!-- RECAPTCHA ANCHOR DIV (CRITICAL FOR FIREBASE PHONE AUTH) -->
-          <div id="recaptcha-container" class="flex justify-center my-2"></div>
+          <div id="recaptcha-container" class="flex justify-center my-3 rounded-xl overflow-hidden shadow-inner"></div>
 
-          <button type="submit" id="request-btn" class="btn-gradient w-full text-white font-bold py-4 rounded-2xl shadow-lg">
-            Send Code
+          <button type="submit" id="request-btn" class="btn-premium w-full text-white font-bold py-4 rounded-2xl shadow-lg text-sm tracking-wider">
+            SEND CODE
           </button>
         </form>
       </div>
 
-      <!-- STEP 2: Verify OTP Token -->
-      <div id="step-verify" class="hidden-step">
-        <h3 class="text-2xl font-bold text-white mb-2">Verify Code</h3>
-        <p class="text-slate-400 text-sm mb-6">We've sent a 6-digit security token to your device.</p>
+      <div id="step-verify" class="hidden-step py-2">
+        <h3 class="text-xl md:text-2xl font-bold text-white mb-2 tracking-tight">Verify Code</h3>
+        <p class="text-slate-400 text-xs md:text-sm mb-6 leading-relaxed">We've sent a 6-digit security token to your device.</p>
         
         <form id="forgotVerifyForm" class="space-y-4 text-left">
-          <div class="relative">
-            <i class="fa-solid fa-key absolute left-5 top-1/2 -translate-y-1/2 text-slate-500"></i>
-            <input type="text" id="verificationCode" maxlength="6" required placeholder="Enter 6-Digit Code" class="neon-input w-full rounded-2xl pl-12 pr-6 py-4 text-white tracking-widest text-center font-bold focus:outline-none" />
+          <div class="relative group">
+            <i class="fa-solid fa-key absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-purple-400 transition-colors"></i>
+            <input type="text" id="verificationCode" maxlength="6" required placeholder="Enter 6-Digit Code" class="neon-input w-full rounded-2xl pl-12 pr-6 py-4 text-purple-400 tracking-[0.4em] text-center font-extrabold text-lg focus:outline-none" />
           </div>
-          <button type="submit" id="verify-btn" class="btn-gradient w-full text-white font-bold py-4 rounded-2xl shadow-lg">
-            Verify Code
+          <button type="submit" id="verify-btn" class="btn-premium w-full text-white font-bold py-4 rounded-2xl shadow-lg text-sm tracking-wider">
+            VERIFY CODE
           </button>
         </form>
       </div>
 
-      <!-- STEP 3: Setup New Password -->
-      <div id="step-reset" class="hidden-step">
-        <h3 class="text-2xl font-bold text-white mb-2">New Password</h3>
-        <p class="text-slate-400 text-sm mb-6">Create your complex new master access security password.</p>
+      <div id="step-reset" class="hidden-step py-2">
+        <h3 class="text-xl md:text-2xl font-bold text-white mb-2 tracking-tight">New Password</h3>
+        <p class="text-slate-400 text-xs md:text-sm mb-6 leading-relaxed">Create your complex new master access security password.</p>
         
         <form id="forgotResetForm" class="space-y-4 text-left">
-          <div class="relative">
-            <i class="fa-solid fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-slate-500"></i>
-            <input type="password" id="newPassword" required placeholder="New Password" class="neon-input w-full rounded-2xl pl-12 pr-14 py-4 text-white focus:outline-none" />
-            <button type="button" onclick="togglePasswordVisibility('newPassword', 'toggleEyeNew')" class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-purple-400 transition-colors focus:outline-none">
-              <i id="toggleEyeNew" class="fa-solid fa-eye"></i>
+          <div class="relative group">
+            <i class="fa-solid fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-purple-400 transition-colors"></i>
+            <input type="password" id="newPassword" required placeholder="New Password" class="neon-input w-full rounded-2xl pl-12 pr-14 py-4 text-slate-200 placeholder-slate-500 text-sm focus:outline-none" />
+            <button type="button" onclick="togglePasswordVisibility('newPassword', 'toggleEyeNew')" class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-purple-400 transition-colors focus:outline-none">
+              <i id="toggleEyeNew" class="fa-solid fa-eye text-sm"></i>
             </button>
           </div>
 
-          <div class="relative">
-            <i class="fa-solid fa-circle-check absolute left-5 top-1/2 -translate-y-1/2 text-slate-500"></i>
-            <input type="password" id="confirmPassword" required placeholder="Confirm New Password" class="neon-input w-full rounded-2xl pl-12 pr-14 py-4 text-white focus:outline-none" />
-            <button type="button" onclick="togglePasswordVisibility('confirmPassword', 'toggleEyeConfirm')" class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-purple-400 transition-colors focus:outline-none">
-              <i id="toggleEyeConfirm" class="fa-solid fa-eye"></i>
+          <div class="relative group">
+            <i class="fa-solid fa-circle-check absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-purple-400 transition-colors"></i>
+            <input type="password" id="confirmPassword" required placeholder="Confirm New Password" class="neon-input w-full rounded-2xl pl-12 pr-14 py-4 text-slate-200 placeholder-slate-500 text-sm focus:outline-none" />
+            <button type="button" onclick="togglePasswordVisibility('confirmPassword', 'toggleEyeConfirm')" class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-purple-400 transition-colors focus:outline-none">
+              <i id="toggleEyeConfirm" class="fa-solid fa-eye text-sm"></i>
             </button>
           </div>
 
-          <button type="submit" id="reset-final-btn" class="btn-gradient w-full text-white font-bold py-4 rounded-2xl shadow-lg">
-            Update Password
+          <button type="submit" id="reset-final-btn" class="btn-premium w-full text-white font-bold py-4 rounded-2xl shadow-lg text-sm tracking-wider">
+            UPDATE PASSWORD
           </button>
         </form>
       </div>
@@ -223,7 +243,7 @@
   <script>
     const API_BASE = "https://student-hub-edith-backend.onrender.com";
 
-    // 🌟 INITIALIZE FIREBASE DIRECTLY INSIDE THE WEB CONTEXT
+    // INITIALIZE FIREBASE CONFIG
     const firebaseConfig = {
       apiKey: "AIzaSyBli6nmiuSafvlUkk1gPZcartadQZcB3sM",
       authDomain: "srinu-f1101.firebaseapp.com",
@@ -236,7 +256,7 @@
     
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
-    let confirmationResult = null; // Global variable to hold OTP verification session context
+    let confirmationResult = null;
 
     function togglePasswordVisibility(inputId, iconId) {
       const passwordInput = document.getElementById(inputId);
@@ -253,7 +273,7 @@
       }
     }
 
-    // --- FORGOT PASSWORD MODAL MANAGEMENT ---
+    // --- FORGOT PASSWORD MODAL COMPONENT ENGINE ---
     const forgotModal = document.getElementById("forgotModal");
     let temporaryContact = "";
 
@@ -269,7 +289,6 @@
       forgotModal.classList.remove("pointer-events-none", "opacity-0");
       forgotModal.classList.add("opacity-100");
 
-      // Initialize reCAPTCHA when user opens the modal layout context
       window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
         'size': 'normal',
         'callback': (response) => { console.log("reCAPTCHA solved successfully."); }
@@ -281,11 +300,11 @@
       forgotModal.classList.remove("opacity-100");
       forgotModal.classList.add("pointer-events-none", "opacity-0");
       if (window.recaptchaVerifier) {
-         document.getElementById("recaptcha-container").innerHTML = ""; // Clear instance safely
+         document.getElementById("recaptcha-container").innerHTML = "";
       }
     }
 
-    // STEP 1: Request Code (Sending Real OTP via Firebase SMS gateway)
+    // STEP 1: Request OTP Pipeline Routines
     document.getElementById("forgotRequestForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       temporaryContact = document.getElementById("resetContact").value.trim();
@@ -294,10 +313,9 @@
       reqBtn.innerText = "Sending OTP...";
       reqBtn.disabled = true;
 
-      // Ensure dynamic formatting matches global telecommunication standard (+91...)
       if(!temporaryContact.startsWith("+")) {
          alert("Please enter country code also. Example: +919876543210");
-         reqBtn.innerText = "Send Code";
+         reqBtn.innerText = "SEND CODE";
          reqBtn.disabled = false;
          return;
       }
@@ -314,12 +332,12 @@
         .catch((error) => {
           console.error("Firebase Auth Error:", error);
           alert("Failed to send OTP: " + error.message);
-          reqBtn.innerText = "Send Code";
+          reqBtn.innerText = "SEND CODE";
           reqBtn.disabled = false;
         });
     });
 
-    // STEP 2: Verify Code (Matching User Token with Firebase Authenticator Session)
+    // STEP 2: Verify Target Code Tokens
     document.getElementById("forgotVerifyForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const code = document.getElementById("verificationCode").value.trim();
@@ -330,7 +348,7 @@
 
       if(!confirmationResult) {
          alert("Session expired. Please try requesting OTP again.");
-         verifyBtn.innerText = "Verify Code";
+         verifyBtn.innerText = "VERIFY CODE";
          verifyBtn.disabled = false;
          return;
       }
@@ -344,12 +362,12 @@
         .catch((error) => {
           console.error("OTP Verification Failure:", error);
           alert("Invalid 6-Digit Code. Please check and re-enter.");
-          verifyBtn.innerText = "Verify Code";
+          verifyBtn.innerText = "VERIFY CODE";
           verifyBtn.disabled = false;
         });
     });
 
-    // STEP 3: Reset Final Password update (Syncing with Render Backend Application)
+    // STEP 3: Database Synchronization Routing Pipeline
     document.getElementById("forgotResetForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const newPassword = document.getElementById("newPassword").value.trim();
@@ -381,12 +399,12 @@
         console.log(err);
         alert("❌ Error connecting to database backend cluster.");
       } finally {
-        resetFinalBtn.innerText = "Update Password";
+        resetFinalBtn.innerText = "UPDATE PASSWORD";
         resetFinalBtn.disabled = false;
       }
     });
 
-    // --- LOGIN FORM HANDLER ---
+    // --- MAIN ACTION LOGIN SUBMIT EVENT TRIGGER ---
     document.getElementById("loginForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -394,7 +412,7 @@
       const password = document.getElementById("password").value.trim();
       const btn = document.getElementById("login-btn");
 
-      btn.innerText = "Authenticating...";
+      btn.innerText = "AUTHENTICATING...";
       btn.disabled = true;
 
       try {
@@ -411,19 +429,19 @@
           localStorage.setItem("userName", data.username || username);
           localStorage.setItem("isLoggedIn", "true");
 
-          btn.innerText = "Access Granted...";
+          btn.innerText = "ACCESS GRANTED...";
           setTimeout(() => {
             window.location.href = "dashboard.html";
           }, 800);
         } else {
           alert(data.error || "Login failed");
-          btn.innerText = "Sign In";
+          btn.innerText = "SIGN IN";
           btn.disabled = false;
         }
       } catch (err) {
         console.log(err);
         alert("❌ Server connection failed");
-        btn.innerText = "Sign In";
+        btn.innerText = "SIGN IN";
         btn.disabled = false;
       }
     });
