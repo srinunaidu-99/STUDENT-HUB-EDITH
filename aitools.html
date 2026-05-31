@@ -110,7 +110,7 @@
         <div class="flex flex-col flex-2">
           <div class="bg-slate-100 dark:bg-slate-900 text-slate-500 dark:text-slate-400 text-xs px-4 py-2 border border-b-0 border-slate-200 dark:border-slate-800 rounded-t-xl font-bold tracking-wider flex justify-between items-center">
             <span>CONSOLE EXECUTION MONITOR</span>
-            <button onclick="document.getElementById('output').innerText = '💡 Idle terminal ready.'" class="text-[10px] text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 underline font-normal">Clear Console</button>
+            <button onclick="document.getElementById('output').innerText = '💡 Idle terminal ready.';" class="text-[10px] text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 underline font-normal">Clear Console</button>
           </div>
           <pre id="output" class="w-full h-44 p-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-b-xl overflow-auto font-mono text-xs text-cyan-700 dark:text-cyan-400 leading-relaxed whitespace-pre-wrap">💡 Idle terminal ready.</pre>
         </div>
@@ -129,12 +129,11 @@
       java: `public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello Srinu 🔥");\n    }\n}`
     };
 
-    // Synchronize execution environment state instantly on boot
+    // Synchronize theme choice using dashboard setup straight on boot
     window.onload = () => {
       applySavedTheme();
     };
 
-    // Tracks and processes the exact key variable defined by your dashboard
     function applySavedTheme() {
       const savedMode = localStorage.getItem('mode');
       const htmlEl = document.documentElement;
@@ -151,7 +150,6 @@
       }
     }
 
-    // Toggle local interface and map updating logic back to the master storage layer
     function toggleTheme() {
       const savedMode = localStorage.getItem('mode');
       if (savedMode === 'light') {
@@ -168,11 +166,12 @@
       document.getElementById("editorLangLabel").innerText = lang;
     }
 
+    // Utility code functions
     function copyCode() {
       const code = document.getElementById("code");
       code.select();
       document.execCommand("copy");
-      alert("Code copied to buffer storage pipeline!");
+      alert("Code copied to clipboard storage matrix!");
     }
 
     function clearEditor() {
@@ -181,15 +180,15 @@
       }
     }
 
-    // Process source code execution loops over structured URL form parameters
+    // Core Code Execution Engine (Configured to map output directly)
     async function runCode() {
       const code = document.getElementById("code").value;
       const lang = document.getElementById("lang").value;
       const input = document.getElementById("input").value;
       const output = document.getElementById("output");
 
-      output.innerText = "⏳ Compiling and initializing scripts on processing matrix...";
-      output.style.color = ""; // Inherits baseline theme tracking rules
+      output.innerText = "⏳ Compiling and initializing script execution pipeline...";
+      output.style.color = ""; // Resets colors to match tracking standard values
 
       try {
         const payloadParams = new URLSearchParams();
@@ -208,14 +207,20 @@
         const data = await res.json();
 
         if (data.error) {
-          output.innerText = "❌ Compile/Runtime Exception Fault Trace:\n" + data.error;
+          // If compilation throws an error stack trace string
+          output.innerText = "❌ Runtime Exception Fault:\n" + data.error;
           output.style.color = "#f87171"; 
+        } else if (data.output && data.output.trim() !== "") {
+          // Display the real text output directly from the compiler execution
+          output.innerText = data.output;
+          output.style.color = "#34d399"; // Success green text glow style
         } else {
-          output.innerText = data.output || "✅ Code executed cleanly with empty output buffer.";
-          output.style.color = "#34d399"; 
+          // If code finishes but produced no display string printouts
+          output.innerText = "✅ Execution Finished Status: 0\n[No character stream printed to stdout]";
+          output.style.color = "#a7f3d0"; 
         }
       } catch (err) {
-        output.innerText = "⚠ Network Execution Failure. Check cloud endpoint route pipeline.";
+        output.innerText = "⚠ Network Error. Unable to contact compiler server hub.";
         output.style.color = "#f87171";
       }
     }
