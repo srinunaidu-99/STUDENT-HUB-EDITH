@@ -22,120 +22,124 @@
       transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s ease;
     }
 
-    /* --- ENTERPRISE DYNAMIC ROOT THEMES --- */
+    /* --- RICH ULTRA-PREMIUM GRADIENTS --- */
     .dark body {
-      background: radial-gradient(circle at 50% 0%, #121034 0%, #030712 80%); 
+      background: radial-gradient(circle at 50% 0%, #0d0b26 0%, #05050c 50%, #020205 100%); 
     }
     html:not(.dark) body {
-      background: radial-gradient(circle at 50% 0%, #eff6ff 0%, #f9fafb 80%); 
+      background: radial-gradient(circle at 50% 0%, #f0f3ff 0%, #f8fafc 60%, #f1f5f9 100%); 
     }
     
-    /* Premium Glassmorphism Engineering */
+    /* Executive Glassmorphism Panels */
     .glass-card {
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
     
     .dark .glass-card {
-      background: rgba(13, 15, 30, 0.45);
-      backdrop-filter: blur(20px) saturate(140%);
+      background: linear-gradient(135deg, rgba(15, 17, 34, 0.65) 0%, rgba(10, 11, 22, 0.45) 100%);
+      backdrop-filter: blur(24px) saturate(140%);
       border: 1px solid rgba(255, 255, 255, 0.04);
     }
     html:not(.dark) .glass-card {
-      background: rgba(255, 255, 255, 0.65);
-      backdrop-filter: blur(20px) saturate(140%);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(248, 250, 252, 0.6) 100%);
+      backdrop-filter: blur(24px) saturate(130%);
       border: 1px solid rgba(99, 102, 241, 0.08);
-      box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.03);
+      box-shadow: 0 10px 40px -15px rgba(0, 0, 0, 0.02);
     }
     
+    /* Micro-Interactive Hover Physics */
     .dark .glass-card:hover { 
-      transform: translateY(-5px); 
-      background: rgba(18, 20, 41, 0.7);
-      border-color: rgba(99, 102, 241, 0.35);
-      box-shadow: 0 30px 60px -20px rgba(99, 102, 241, 0.25), 0 0 40px 2px rgba(168, 85, 247, 0.1); 
+      transform: translateY(-6px); 
+      background: linear-gradient(135deg, rgba(20, 24, 48, 0.8) 0%, rgba(13, 15, 30, 0.6) 100%);
+      border-color: rgba(99, 102, 241, 0.45);
+      box-shadow: 0 40px 80px -25px rgba(8, 7, 24, 0.8), 0 0 50px 2px rgba(99, 102, 241, 0.15); 
     }
     html:not(.dark) .glass-card:hover {
-      transform: translateY(-5px); 
-      background: rgba(255, 255, 255, 0.95);
-      border-color: rgba(99, 102, 241, 0.2);
-      box-shadow: 0 30px 50px -15px rgba(99, 102, 241, 0.1);
+      transform: translateY(-6px); 
+      background: #ffffff;
+      border-color: rgba(99, 102, 241, 0.3);
+      box-shadow: 0 40px 60px -20px rgba(99, 102, 241, 0.14);
     }
 
-    /* --- ORIGINAL GLOW VECTOR MATRIX --- */
+    /* --- CINEMATIC PULSE GLOW VECTOR LOGO --- */
     @keyframes pulseGlow {
       0%, 100% {
         transform: scale(1);
-        filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.55)) drop-shadow(0 0 25px rgba(168, 85, 247, 0.25));
+        filter: drop-shadow(0 0 12px rgba(79, 70, 229, 0.65)) drop-shadow(0 0 30px rgba(147, 51, 234, 0.3));
       }
       50% {
         transform: scale(1.03);
-        filter: drop-shadow(0 0 18px rgba(99, 102, 241, 0.85)) drop-shadow(0 0 40px rgba(168, 85, 247, 0.45));
+        filter: drop-shadow(0 0 22px rgba(99, 102, 241, 0.95)) drop-shadow(0 0 50px rgba(168, 85, 247, 0.55));
       }
     }
     .edith-orb-logo {
-      animation: pulseGlow 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      animation: pulseGlow 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
     }
 
     .dark #profilePanel {
-      backdrop-filter: blur(30px);
-      background: rgba(5, 6, 14, 0.93);
+      backdrop-filter: blur(40px);
+      background: rgba(3, 4, 10, 0.94);
+      border-left: 1px solid rgba(255, 255, 255, 0.03);
     }
     html:not(.dark) #profilePanel {
-      backdrop-filter: blur(30px);
-      background: rgba(255, 255, 255, 0.96);
-      box-shadow: -15px 0 50px rgba(0, 0, 0, 0.04);
+      backdrop-filter: blur(40px);
+      background: rgba(255, 255, 255, 0.97);
+      border-left: 1px solid rgba(99, 102, 241, 0.08);
+      box-shadow: -20px 0 60px rgba(0, 0, 0, 0.05);
     }
 
     .fade-in-up {
-      animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
     @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(16px); }
+      from { opacity: 0; transform: translateY(24px); }
       to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
-<body class="min-h-screen dark:text-gray-200 text-gray-800 transition-colors duration-300">
+<body class="min-h-screen dark:text-slate-200 text-slate-800 transition-colors duration-300">
 
-  <header class="sticky top-0 z-40 bg-transparent border-b dark:border-white/5 border-gray-200/60 w-full backdrop-blur-md">
+  <header class="sticky top-0 z-40 bg-transparent border-b dark:border-white/5 border-slate-200/80 w-full backdrop-blur-md">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3.5">
         
-        <div class="edith-orb-logo w-10 h-10 flex items-center justify-center cursor-pointer select-none">
+        <div class="edith-orb-logo w-10 h-10 flex items-center justify-center select-none">
           <svg viewBox="0 0 100 100" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <linearGradient id="opGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#6366f1" />
-                <stop offset="100%" stop-color="#a855f7" />
+              <linearGradient id="premiumGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#4f46e5" />
+                <stop offset="50%" stop-color="#6366f1" />
+                <stop offset="100%" stop-color="#9333ea" />
               </linearGradient>
             </defs>
-            <circle cx="50" cy="50" r="44" stroke="url(#opGradient)" stroke-width="4.5" stroke-dasharray="14 6 4 6" fill="none" opacity="0.95"/>
-            <polygon points="50,21 76,36 76,65 50,80 24,65 24,36" fill="none" stroke="url(#opGradient)" stroke-width="5" stroke-linejoin="round"/>
-            <circle cx="50" cy="50" r="8.5" fill="url(#opGradient)"/>
-            <line x1="50" y1="21" x2="50" y2="41" stroke="url(#opGradient)" stroke-width="3.5" stroke-linecap="round" />
-            <line x1="24" y1="65" x2="42" y2="55" stroke="url(#opGradient)" stroke-width="3.5" stroke-linecap="round" />
-            <line x1="76" y1="65" x2="58" y2="55" stroke="url(#opGradient)" stroke-width="3.5" stroke-linecap="round" />
+            <circle cx="50" cy="50" r="44" stroke="url(#premiumGrad)" stroke-width="4.5" stroke-dasharray="16 6 4 6" fill="none" opacity="0.95"/>
+            <polygon points="50,20 76,35 76,65 50,80 24,65 24,35" fill="none" stroke="url(#premiumGrad)" stroke-width="5" stroke-linejoin="round"/>
+            <circle cx="50" cy="50" r="9" fill="url(#premiumGrad)"/>
+            <line x1="50" y1="20" x2="50" y2="41" stroke="url(#premiumGrad)" stroke-width="3.5" stroke-linecap="round" />
+            <line x1="24" y1="65" x2="42" y2="55" stroke="url(#premiumGrad)" stroke-width="3.5" stroke-linecap="round" />
+            <line x1="76" y1="65" x2="58" y2="55" stroke="url(#premiumGrad)" stroke-width="3.5" stroke-linecap="round" />
           </svg>
         </div>
 
-        <h1 class="text-xl font-bold tracking-tight dark:bg-gradient-to-r dark:from-white dark:via-gray-200 dark:to-indigo-200 bg-gradient-to-r from-gray-900 to-indigo-950 bg-clip-text text-transparent">
-          EDITH <span class="text-xs font-semibold text-indigo-500 dark:text-indigo-400 border border-indigo-500/20 dark:border-indigo-500/30 px-2 py-0.5 rounded-md ml-1 bg-indigo-500/10">V3.2</span>
+        <h1 class="text-xl font-bold tracking-tight dark:bg-gradient-to-r dark:from-white dark:via-slate-200 dark:to-slate-400 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 bg-clip-text text-transparent">
+          EDITH <span class="text-[10px] font-bold tracking-wider text-indigo-500 dark:text-indigo-400 border border-indigo-500/20 dark:border-indigo-500/30 px-2 py-0.5 rounded-md ml-1.5 bg-indigo-500/5 uppercase">V3.2</span>
         </h1>
       </div>
 
       <div class="flex items-center gap-3">
         
-        <button onclick="toggleThemePipeline()" id="themeTogglerBtn" title="Toggle UI Environment" class="w-9 h-9 border dark:border-white/10 border-gray-200/80 hover:bg-gray-500/5 dark:hover:bg-white/5 rounded-xl flex items-center justify-center transition-all dark:text-gray-400 text-gray-600">
+        <button onclick="toggleThemePipeline()" id="themeTogglerBtn" title="Shift Environment Workspace" class="w-9 h-9 border dark:border-white/10 border-slate-200 hover:bg-slate-500/5 dark:hover:bg-white/5 rounded-xl flex items-center justify-center transition-all dark:text-slate-400 text-slate-600 shadow-sm">
           <i class="fa-solid fa-sun text-sm hidden dark:block"></i>
           <i class="fa-solid fa-moon text-sm dark:hidden"></i>
         </button>
 
-        <div id="profileTrigger" onclick="toggleProfile()" class="flex items-center gap-3 cursor-pointer hover:bg-gray-500/5 dark:hover:bg-white/5 p-1.5 px-3 rounded-xl border border-transparent hover:border-gray-200 dark:hover:border-white/5 transition-all">
+        <div id="profileTrigger" onclick="toggleProfile()" class="flex items-center gap-3 cursor-pointer hover:bg-slate-500/5 dark:hover:bg-white/5 p-1.5 px-3 rounded-xl border border-transparent hover:border-slate-200 dark:hover:border-white/5 transition-all">
           <div class="text-right hidden md:block">
-            <p id="navUserName" class="font-medium dark:text-gray-200 text-gray-800 text-sm tracking-tight">Loading...</p>
-            <p class="text-[9px] text-indigo-500 dark:text-indigo-400 font-bold uppercase tracking-widest mt-0.5">Control Registry</p>
+            <p id="navUserName" class="font-semibold dark:text-slate-200 text-slate-800 text-sm tracking-tight">Loading...</p>
+            <p class="text-[9px] text-indigo-600 dark:text-indigo-400 font-bold uppercase tracking-widest mt-0.5">Control Registry</p>
           </div>
-          <div class="w-9 h-9 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-sm font-bold text-white shadow-md ring-2 ring-indigo-500/20">
+          <div class="w-9 h-9 bg-gradient-to-br from-indigo-600 via-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-sm font-bold text-white shadow-lg shadow-indigo-500/10 ring-2 ring-indigo-500/20">
             <i class="fa-solid fa-user-gear"></i>
           </div>
         </div>
@@ -143,11 +147,11 @@
     </div>
   </header>
 
-  <div id="profilePanel" class="fixed top-0 right-0 h-full w-72 sm:w-80 border-l dark:border-white/5 border-gray-200 z-50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out">
+  <div id="profilePanel" class="fixed top-0 right-0 h-full w-72 sm:w-80 z-50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out">
     <div class="p-6 flex flex-col h-full">
       <div class="flex justify-between items-center mb-8">
-        <h3 class="text-lg font-bold dark:text-white text-gray-900 tracking-tight">System Core Profile</h3>
-        <button onclick="toggleProfile()" class="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors p-2">
+        <h3 class="text-sm font-bold dark:text-white text-slate-900 uppercase tracking-widest opacity-80">System Core Profile</h3>
+        <button onclick="toggleProfile()" class="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors p-2">
           <i class="fas fa-times"></i>
         </button>
       </div>
@@ -155,106 +159,106 @@
       <div class="text-center mb-8">
         <div class="edith-orb-logo w-20 h-20 mx-auto mb-4 flex items-center justify-center">
           <svg viewBox="0 0 100 100" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="50" r="44" stroke="url(#opGradient)" stroke-width="4.5" stroke-dasharray="14 6 4 6" fill="none" opacity="0.95"/>
-            <polygon points="50,21 76,36 76,65 50,80 24,65 24,36" fill="none" stroke="url(#opGradient)" stroke-width="5" stroke-linejoin="round"/>
-            <circle cx="50" cy="50" r="8.5" fill="url(#opGradient)"/>
-            <line x1="50" y1="21" x2="50" y2="41" stroke="url(#opGradient)" stroke-width="3.5" stroke-linecap="round" />
-            <line x1="24" y1="65" x2="42" y2="55" stroke="url(#opGradient)" stroke-width="3.5" stroke-linecap="round" />
-            <line x1="76" y1="65" x2="58" y2="55" stroke="url(#opGradient)" stroke-width="3.5" stroke-linecap="round" />
+            <circle cx="50" cy="50" r="44" stroke="url(#premiumGrad)" stroke-width="4.5" stroke-dasharray="16 6 4 6" fill="none" opacity="0.95"/>
+            <polygon points="50,20 76,35 76,65 50,80 24,65 24,35" fill="none" stroke="url(#premiumGrad)" stroke-width="5" stroke-linejoin="round"/>
+            <circle cx="50" cy="50" r="9" fill="url(#premiumGrad)"/>
+            <line x1="50" y1="20" x2="50" y2="41" stroke="url(#premiumGrad)" stroke-width="3.5" stroke-linecap="round" />
+            <line x1="24" y1="65" x2="42" y2="55" stroke="url(#premiumGrad)" stroke-width="3.5" stroke-linecap="round" />
+            <line x1="76" y1="65" x2="58" y2="55" stroke="url(#premiumGrad)" stroke-width="3.5" stroke-linecap="round" />
           </svg>
         </div>
-        <h4 id="profileName" class="text-xl font-bold dark:text-white text-gray-900 tracking-tight">Loading...</h4>
-        <p class="text-indigo-500 dark:text-indigo-400 text-xs font-semibold tracking-wider uppercase mt-1">Authorized Operator</p>
+        <h4 id="profileName" class="text-xl font-bold dark:text-white text-slate-900 tracking-tight">Loading...</h4>
+        <p class="text-indigo-600 dark:text-indigo-400 text-xs font-bold tracking-wider uppercase mt-1">Authorized Operator</p>
       </div>
 
       <div class="space-y-3 flex-1 overflow-y-auto pr-1">
-        <div class="dark:bg-gray-950/40 bg-gray-50 p-4 rounded-xl border dark:border-white/5 border-gray-200">
-          <p class="text-[10px] text-gray-400 dark:text-gray-500 uppercase font-bold tracking-wider mb-1">Email Interface Vector</p>
-          <p id="profileEmail" class="text-sm dark:text-gray-300 text-gray-700 truncate font-medium">Loading...</p>
+        <div class="dark:bg-slate-950/40 bg-slate-100 p-4 rounded-xl border dark:border-white/5 border-slate-200">
+          <p class="text-[9px] text-slate-400 dark:text-slate-500 uppercase font-bold tracking-widest mb-1.5">Email Interface Vector</p>
+          <p id="profileEmail" class="text-sm dark:text-slate-300 text-slate-700 truncate font-medium">Loading...</p>
         </div>
-        <div class="dark:bg-gray-950/40 bg-gray-50 p-4 rounded-xl border dark:border-white/5 border-gray-200">
-          <p class="text-[10px] text-gray-400 dark:text-gray-500 uppercase font-bold tracking-wider mb-1">Secure Line Contact</p>
-          <p id="profilePhone" class="text-sm dark:text-gray-300 text-gray-700 font-mono">Loading...</p>
+        <div class="dark:bg-slate-950/40 bg-slate-100 p-4 rounded-xl border dark:border-white/5 border-slate-200">
+          <p class="text-[9px] text-slate-400 dark:text-slate-500 uppercase font-bold tracking-widest mb-1.5">Secure Line Contact</p>
+          <p id="profilePhone" class="text-sm dark:text-slate-300 text-slate-700 font-mono">Loading...</p>
         </div>
-        <div class="dark:bg-gray-950/40 bg-gray-50 p-4 rounded-xl border dark:border-white/5 border-gray-200">
-          <p class="text-[10px] text-gray-400 dark:text-gray-500 uppercase font-bold tracking-wider mb-1">Authorization Clearance</p>
-          <p class="text-sm dark:text-gray-300 text-gray-700 font-medium flex items-center gap-1.5">
+        <div class="dark:bg-slate-950/40 bg-slate-100 p-4 rounded-xl border dark:border-white/5 border-slate-200">
+          <p class="text-[9px] text-slate-400 dark:text-slate-500 uppercase font-bold tracking-widest mb-1.5">Authorization Clearance</p>
+          <p class="text-sm dark:text-slate-300 text-slate-700 font-medium flex items-center gap-1.5">
             <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block animate-pulse"></span> Active Session
           </p>
         </div>
       </div>
 
-      <button id="logoutBtn" class="w-full mt-6 py-3.5 bg-gray-500/5 hover:bg-red-500/10 dark:text-gray-400 text-gray-600 hover:text-red-500 border dark:border-white/10 border-gray-200 hover:border-red-500/20 rounded-2xl font-semibold text-sm transition-all flex items-center justify-center gap-2">
+      <button id="logoutBtn" class="w-full mt-6 py-3.5 bg-slate-500/5 hover:bg-red-500/10 dark:text-slate-400 text-slate-600 hover:text-red-500 border dark:border-white/10 border-slate-200 hover:border-red-500/20 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2">
         <i class="fas fa-sign-out-alt"></i> Kill Active Session
       </button>
     </div>
   </div>
 
-  <main class="max-w-7xl mx-auto px-6 py-12 sm:py-16 w-full fade-in-up">
-    <div class="mb-14">
-      <h2 class="text-3xl sm:text-5xl font-bold mb-3 tracking-tight dark:text-white text-gray-900">
-        Welcome Back, <span id="welcomeName" class="bg-gradient-to-r from-indigo-500 to-purple-500 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">Operator!</span>
+  <main class="max-w-7xl mx-auto px-6 py-12 sm:py-20 w-full fade-in-up">
+    <div class="mb-16">
+      <h2 class="text-3xl sm:text-5xl font-bold mb-3 tracking-tight dark:text-white text-slate-900">
+        Welcome Back, <span id="welcomeName" class="bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-500 dark:from-indigo-400 dark:via-indigo-300 dark:to-purple-400 bg-clip-text text-transparent">Operator!</span>
       </h2>
-      <p class="dark:text-gray-400 text-gray-600 text-sm sm:text-base font-light tracking-wide">
+      <p class="dark:text-slate-400 text-slate-600 text-sm sm:text-base font-light tracking-wide">
         System interfaces operational. Choose a tool matrix module to begin task execution.
       </p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
       
-      <div onclick="window.location.href='index.html'" class="glass-card rounded-[28px] p-8 cursor-pointer group flex flex-col justify-between">
+      <div onclick="window.location.href='index.html'" class="glass-card rounded-[24px] p-8 cursor-pointer group flex flex-col justify-between">
         <div>
-          <div class="w-14 h-14 dark:bg-indigo-600/15 bg-indigo-50 border border-indigo-500/20 dark:border-indigo-500/30 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-sm dark:shadow-indigo-500/5 group-hover:bg-indigo-600 group-hover:text-white text-indigo-500 dark:text-indigo-400 transition-all duration-300">
+          <div class="w-12 h-12 dark:bg-indigo-600/10 bg-indigo-50 border border-indigo-500/20 dark:border-indigo-500/30 rounded-xl flex items-center justify-center text-xl mb-6 shadow-sm group-hover:bg-indigo-600 group-hover:text-white text-indigo-600 dark:text-indigo-400 transition-all duration-300">
             <i class="fa-solid fa-brain"></i>
           </div>
-          <h3 class="text-xl font-bold mb-2 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 dark:text-white text-gray-900 tracking-tight transition-colors">AI Intelligence Lab</h3>
-          <p class="dark:text-gray-400 text-gray-600 text-sm font-light leading-relaxed mb-6">
+          <h3 class="text-lg font-bold mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 dark:text-white text-slate-900 tracking-tight transition-colors">AI Intelligence Lab</h3>
+          <p class="dark:text-slate-400 text-slate-600 text-sm font-light leading-relaxed mb-6">
             Engage EDITH core nodes to solve engineering puzzles, compose code, or synthesize data records.
           </p>
         </div>
-        <span class="text-indigo-500 dark:text-indigo-400 text-sm font-semibold flex items-center gap-2 tracking-wide mt-auto">
+        <span class="text-indigo-600 dark:text-indigo-400 text-sm font-semibold flex items-center gap-2 tracking-wide mt-auto">
           Connect Terminal <i class="fas fa-arrow-right text-xs group-hover:translate-x-1.5 transition-transform"></i>
         </span>
       </div>
 
-      <div onclick="window.location.href='notes.html'" class="glass-card rounded-[28px] p-8 cursor-pointer group flex flex-col justify-between">
+      <div onclick="window.location.href='notes.html'" class="glass-card rounded-[24px] p-8 cursor-pointer group flex flex-col justify-between">
         <div>
-          <div class="w-14 h-14 dark:bg-purple-600/15 bg-purple-50 border border-purple-500/20 dark:border-purple-500/30 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-md dark:shadow-purple-500/5 group-hover:bg-purple-600 group-hover:text-white text-purple-500 dark:text-purple-400 transition-all duration-300">
+          <div class="w-12 h-12 dark:bg-purple-600/10 bg-purple-50 border border-purple-500/20 dark:border-purple-500/30 rounded-xl flex items-center justify-center text-xl mb-6 shadow-md group-hover:bg-purple-600 group-hover:text-white text-purple-600 dark:text-purple-400 transition-all duration-300">
             <i class="fa-solid fa-folder-closed"></i>
           </div>
-          <h3 class="text-xl font-bold mb-2 group-hover:text-purple-500 dark:group-hover:text-purple-400 dark:text-white text-gray-900 tracking-tight transition-colors">Digital Vault Storage</h3>
-          <p class="dark:text-gray-400 text-gray-600 text-sm font-light leading-relaxed mb-6">
+          <h3 class="text-lg font-bold mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 dark:text-white text-slate-900 tracking-tight transition-colors">Digital Vault Storage</h3>
+          <p class="dark:text-slate-400 text-slate-600 text-sm font-light leading-relaxed mb-6">
             Review generated analytical transcripts, study parameters, and curated structured system memories.
           </p>
         </div>
-        <span class="text-purple-500 dark:text-purple-400 text-sm font-semibold flex items-center gap-2 tracking-wide mt-auto">
+        <span class="text-purple-600 dark:text-purple-400 text-sm font-semibold flex items-center gap-2 tracking-wide mt-auto">
           Unlock Records <i class="fas fa-arrow-right text-xs group-hover:translate-x-1.5 transition-transform"></i>
         </span>
       </div>
 
-      <div onclick="window.location.href='aitools.html'" class="glass-card rounded-[28px] p-8 cursor-pointer group flex flex-col justify-between">
+      <div onclick="window.location.href='aitools.html'" class="glass-card rounded-[24px] p-8 cursor-pointer group flex flex-col justify-between">
         <div>
-          <div class="w-14 h-14 dark:bg-cyan-600/15 bg-cyan-50 border border-cyan-500/20 dark:border-cyan-500/30 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-md dark:shadow-cyan-500/5 group-hover:bg-cyan-600 group-hover:text-white text-cyan-500 dark:text-cyan-400 transition-all duration-300">
+          <div class="w-12 h-12 dark:bg-cyan-600/10 bg-cyan-50 border border-cyan-500/20 dark:border-cyan-500/30 rounded-xl flex items-center justify-center text-xl mb-6 shadow-md group-hover:bg-cyan-600 group-hover:text-white text-cyan-600 dark:text-cyan-400 transition-all duration-300">
             <i class="fa-solid fa-bolt"></i>
           </div>
-          <h3 class="text-xl font-bold mb-2 group-hover:text-cyan-500 dark:group-hover:text-cyan-400 dark:text-white text-gray-900 tracking-tight transition-colors">Specialized Pipelines</h3>
-          <p class="dark:text-gray-400 text-gray-600 text-sm font-light leading-relaxed mb-4">
+          <h3 class="text-lg font-bold mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 dark:text-white text-slate-900 tracking-tight transition-colors">Specialized Pipelines</h3>
+          <p class="dark:text-slate-400 text-slate-600 text-sm font-light leading-relaxed mb-4">
             Accelerated macro processors built for dynamic semantic building & complex asset manipulation.
           </p>
           
           <div class="space-y-2 mb-6 pointer-events-none">
-            <div class="flex items-center justify-between p-2 rounded-xl dark:bg-white/5 bg-gray-50 border dark:border-white/5 border-gray-200 text-[11px]">
-              <span class="dark:text-gray-300 text-gray-700 flex items-center gap-2"><i class="fa-solid fa-code text-cyan-500 dark:text-cyan-400"></i> Code Refactoring</span>
-              <span class="text-cyan-600 dark:text-cyan-400 font-mono text-[9px] bg-cyan-500/10 px-1.5 py-0.5 rounded-md border border-cyan-500/20">READY</span>
+            <div class="flex items-center justify-between p-2 rounded-xl dark:bg-slate-900/50 bg-slate-50 border dark:border-white/5 border-slate-200 text-[11px]">
+              <span class="dark:text-slate-300 text-slate-700 flex items-center gap-2"><i class="fa-solid fa-code text-cyan-600 dark:text-cyan-400"></i> Code Refactoring</span>
+              <span class="text-cyan-600 dark:text-cyan-400 font-mono text-[9px] bg-cyan-500/10 px-1.5 py-0.5 rounded border border-cyan-500/20">READY</span>
             </div>
-            <div class="flex items-center justify-between p-2 rounded-xl dark:bg-white/5 bg-gray-50 border dark:border-white/5 border-gray-200 text-[11px]">
-              <span class="dark:text-gray-300 text-gray-700 flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles text-purple-500 dark:text-purple-400"></i> Grammar AI Optimizer</span>
-              <span class="text-purple-600 dark:text-purple-400 font-mono text-[9px] bg-purple-500/10 px-1.5 py-0.5 rounded-md border border-purple-500/20">READY</span>
+            <div class="flex items-center justify-between p-2 rounded-xl dark:bg-slate-900/50 bg-slate-50 border dark:border-white/5 border-slate-200 text-[11px]">
+              <span class="dark:text-slate-300 text-slate-700 flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles text-purple-600 dark:text-purple-400"></i> Grammar AI Optimizer</span>
+              <span class="text-purple-600 dark:text-purple-400 font-mono text-[9px] bg-purple-500/10 px-1.5 py-0.5 rounded border border-purple-500/20">READY</span>
             </div>
           </div>
         </div>
         
-        <span class="text-cyan-500 dark:text-cyan-400 text-sm font-semibold flex items-center gap-2 tracking-wide mt-auto">
+        <span class="text-cyan-600 dark:text-cyan-400 text-sm font-semibold flex items-center gap-2 tracking-wide mt-auto">
           Initialize Suite <i class="fas fa-arrow-right text-xs group-hover:translate-x-1.5 transition-transform"></i>
         </span>
       </div>
@@ -263,7 +267,7 @@
   </main>
 
   <script>
-    // --- HIGHLY INTUITIVE THEME CONTROL MANAGEMENT ---
+    // --- SAFE CORE ENVIRONMENT MANAGEMENT ENGINE ---
     function initThemePipeline() {
       const savedTheme = localStorage.getItem('edith-theme') || 'dark';
       if (savedTheme === 'dark') {
@@ -284,7 +288,6 @@
       }
     }
 
-    // Initialize immediate state before DOM render sets up completely
     initThemePipeline();
 
     window.onload = () => {
