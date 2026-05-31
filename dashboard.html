@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -7,7 +7,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <script>
-    // Tailwind Config Customization for Dark Mode Class Control
     tailwind.config = {
       darkMode: 'class',
     }
@@ -20,89 +19,89 @@
       overflow-x: hidden !important;
       position: relative;
       width: 100%;
-      transition: background 0.4s ease, color 0.4s ease;
+      transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s ease;
     }
 
-    /* --- DYNAMIC PROTOCOL THEME BACKGROUNDS --- */
-    body.dark {
-      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #030712 75%); 
+    /* --- ENTERPRISE DYNAMIC ROOT THEMES --- */
+    .dark body {
+      background: radial-gradient(circle at 50% 0%, #121034 0%, #030712 80%); 
     }
-    body:not(.dark) {
-      background: radial-gradient(circle at 50% 0%, #e0e7ff 0%, #f9fafb 75%); 
+    html:not(.dark) body {
+      background: radial-gradient(circle at 50% 0%, #eff6ff 0%, #f9fafb 80%); 
     }
     
-    /* Advanced Glassmorphism Panel with smooth 3D transitions */
+    /* Premium Glassmorphism Engineering */
     .glass-card {
-      transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
     
     .dark .glass-card {
-      background: rgba(10, 11, 23, 0.55);
-      backdrop-filter: blur(16px) saturate(120%);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(13, 15, 30, 0.45);
+      backdrop-filter: blur(20px) saturate(140%);
+      border: 1px solid rgba(255, 255, 255, 0.04);
     }
-    body:not(.dark) .glass-card {
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(16px) saturate(120%);
+    html:not(.dark) .glass-card {
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(20px) saturate(140%);
       border: 1px solid rgba(99, 102, 241, 0.08);
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
+      box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.03);
     }
     
     .dark .glass-card:hover { 
-      transform: translateY(-6px) scale(1.015); 
-      background: rgba(15, 17, 36, 0.75);
-      border-color: rgba(99, 102, 241, 0.4);
-      box-shadow: 0 30px 60px -15px rgba(99, 102, 241, 0.3), 0 0 30px 2px rgba(168, 85, 247, 0.15); 
+      transform: translateY(-5px); 
+      background: rgba(18, 20, 41, 0.7);
+      border-color: rgba(99, 102, 241, 0.35);
+      box-shadow: 0 30px 60px -20px rgba(99, 102, 241, 0.25), 0 0 40px 2px rgba(168, 85, 247, 0.1); 
     }
-    body:not(.dark) .glass-card:hover {
-      transform: translateY(-6px) scale(1.015); 
+    html:not(.dark) .glass-card:hover {
+      transform: translateY(-5px); 
       background: rgba(255, 255, 255, 0.95);
-      border-color: rgba(99, 102, 241, 0.25);
-      box-shadow: 0 30px 50px -10px rgba(99, 102, 241, 0.12);
+      border-color: rgba(99, 102, 241, 0.2);
+      box-shadow: 0 30px 50px -15px rgba(99, 102, 241, 0.1);
     }
 
-    /* --- ORIGINAL INDIGO PURPLE VECTOR GLOW MATRIX --- */
+    /* --- ORIGINAL GLOW VECTOR MATRIX --- */
     @keyframes pulseGlow {
       0%, 100% {
         transform: scale(1);
-        filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.6)) drop-shadow(0 0 20px rgba(168, 85, 247, 0.3));
+        filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.55)) drop-shadow(0 0 25px rgba(168, 85, 247, 0.25));
       }
       50% {
-        transform: scale(1.04);
-        filter: drop-shadow(0 0 16px rgba(99, 102, 241, 0.9)) drop-shadow(0 0 35px rgba(168, 85, 247, 0.6));
+        transform: scale(1.03);
+        filter: drop-shadow(0 0 18px rgba(99, 102, 241, 0.85)) drop-shadow(0 0 40px rgba(168, 85, 247, 0.45));
       }
     }
     .edith-orb-logo {
-      animation: pulseGlow 4s ease-in-out infinite;
+      animation: pulseGlow 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
     }
 
     .dark #profilePanel {
-      backdrop-filter: blur(24px);
-      background: rgba(7, 8, 18, 0.95);
+      backdrop-filter: blur(30px);
+      background: rgba(5, 6, 14, 0.93);
     }
-    body:not(.dark) #profilePanel {
-      backdrop-filter: blur(24px);
-      background: rgba(255, 255, 255, 0.98);
-      box-shadow: -10px 0 40px rgba(0, 0, 0, 0.05);
+    html:not(.dark) #profilePanel {
+      backdrop-filter: blur(30px);
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: -15px 0 50px rgba(0, 0, 0, 0.04);
     }
 
     .fade-in-up {
-      animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
     @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(16px); }
       to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
-<body class="dark text-gray-200 min-h-screen dark:text-gray-200 text-gray-800">
+<body class="min-h-screen dark:text-gray-200 text-gray-800 transition-colors duration-300">
 
-  <header class="sticky top-0 z-40 bg-transparent border-b dark:border-white/5 border-gray-200/50 w-full backdrop-blur-md">
+  <header class="sticky top-0 z-40 bg-transparent border-b dark:border-white/5 border-gray-200/60 w-full backdrop-blur-md">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3.5">
         
-        <div class="edith-orb-logo w-10 h-10 flex items-center justify-center">
+        <div class="edith-orb-logo w-10 h-10 flex items-center justify-center cursor-pointer select-none">
           <svg viewBox="0 0 100 100" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="opGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -110,30 +109,30 @@
                 <stop offset="100%" stop-color="#a855f7" />
               </linearGradient>
             </defs>
-            <circle cx="50" cy="50" r="44" stroke="url(#opGradient)" stroke-width="4" stroke-dasharray="12 6 4 6" fill="none" opacity="0.95"/>
-            <polygon points="50,22 75,37 75,65 50,80 25,65 25,37" fill="none" stroke="url(#opGradient)" stroke-width="5" stroke-linejoin="round"/>
-            <circle cx="50" cy="50" r="8" fill="url(#opGradient)"/>
-            <line x1="50" y1="22" x2="50" y2="42" stroke="url(#opGradient)" stroke-width="3" stroke-linecap="round" />
-            <line x1="25" y1="65" x2="42" y2="55" stroke="url(#opGradient)" stroke-width="3" stroke-linecap="round" />
-            <line x1="75" y1="65" x2="58" y2="55" stroke="url(#opGradient)" stroke-width="3" stroke-linecap="round" />
+            <circle cx="50" cy="50" r="44" stroke="url(#opGradient)" stroke-width="4.5" stroke-dasharray="14 6 4 6" fill="none" opacity="0.95"/>
+            <polygon points="50,21 76,36 76,65 50,80 24,65 24,36" fill="none" stroke="url(#opGradient)" stroke-width="5" stroke-linejoin="round"/>
+            <circle cx="50" cy="50" r="8.5" fill="url(#opGradient)"/>
+            <line x1="50" y1="21" x2="50" y2="41" stroke="url(#opGradient)" stroke-width="3.5" stroke-linecap="round" />
+            <line x1="24" y1="65" x2="42" y2="55" stroke="url(#opGradient)" stroke-width="3.5" stroke-linecap="round" />
+            <line x1="76" y1="65" x2="58" y2="55" stroke="url(#opGradient)" stroke-width="3.5" stroke-linecap="round" />
           </svg>
         </div>
 
-        <h1 class="text-xl font-bold tracking-tight dark:bg-gradient-to-r dark:from-white dark:via-gray-200 dark:to-indigo-300 bg-gradient-to-r from-gray-900 to-indigo-950 bg-clip-text text-transparent">
-          EDITH <span class="text-xs font-semibold text-indigo-500 dark:text-indigo-400 border border-indigo-500/20 dark:border-indigo-500/30 px-1.5 py-0.5 rounded-md ml-1 bg-indigo-500/10">V3.2</span>
+        <h1 class="text-xl font-bold tracking-tight dark:bg-gradient-to-r dark:from-white dark:via-gray-200 dark:to-indigo-200 bg-gradient-to-r from-gray-900 to-indigo-950 bg-clip-text text-transparent">
+          EDITH <span class="text-xs font-semibold text-indigo-500 dark:text-indigo-400 border border-indigo-500/20 dark:border-indigo-500/30 px-2 py-0.5 rounded-md ml-1 bg-indigo-500/10">V3.2</span>
         </h1>
       </div>
 
-      <div class="flex items-center gap-2 sm:gap-4">
+      <div class="flex items-center gap-3">
         
-        <button onclick="toggleThemePipeline()" id="themeTogglerBtn" title="Change Theme Workspace" class="w-9 h-9 border dark:border-white/10 border-gray-200 hover:bg-gray-500/10 rounded-xl flex items-center justify-center transition-all dark:text-gray-400 text-gray-600">
+        <button onclick="toggleThemePipeline()" id="themeTogglerBtn" title="Toggle UI Environment" class="w-9 h-9 border dark:border-white/10 border-gray-200/80 hover:bg-gray-500/5 dark:hover:bg-white/5 rounded-xl flex items-center justify-center transition-all dark:text-gray-400 text-gray-600">
           <i class="fa-solid fa-sun text-sm hidden dark:block"></i>
           <i class="fa-solid fa-moon text-sm dark:hidden"></i>
         </button>
 
-        <div id="profileTrigger" onclick="toggleProfile()" class="flex items-center gap-3 cursor-pointer hover:bg-gray-500/5 p-1.5 px-3 rounded-2xl border border-transparent hover:border-gray-200/50 dark:hover:border-white/5 transition-all">
+        <div id="profileTrigger" onclick="toggleProfile()" class="flex items-center gap-3 cursor-pointer hover:bg-gray-500/5 dark:hover:bg-white/5 p-1.5 px-3 rounded-xl border border-transparent hover:border-gray-200 dark:hover:border-white/5 transition-all">
           <div class="text-right hidden md:block">
-            <p id="navUserName" class="font-semibold dark:text-gray-200 text-gray-800 text-sm tracking-tight">Loading...</p>
+            <p id="navUserName" class="font-medium dark:text-gray-200 text-gray-800 text-sm tracking-tight">Loading...</p>
             <p class="text-[9px] text-indigo-500 dark:text-indigo-400 font-bold uppercase tracking-widest mt-0.5">Control Registry</p>
           </div>
           <div class="w-9 h-9 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-sm font-bold text-white shadow-md ring-2 ring-indigo-500/20">
@@ -148,7 +147,7 @@
     <div class="p-6 flex flex-col h-full">
       <div class="flex justify-between items-center mb-8">
         <h3 class="text-lg font-bold dark:text-white text-gray-900 tracking-tight">System Core Profile</h3>
-        <button onclick="toggleProfile()" class="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors text-base p-2">
+        <button onclick="toggleProfile()" class="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors p-2">
           <i class="fas fa-times"></i>
         </button>
       </div>
@@ -156,12 +155,12 @@
       <div class="text-center mb-8">
         <div class="edith-orb-logo w-20 h-20 mx-auto mb-4 flex items-center justify-center">
           <svg viewBox="0 0 100 100" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="50" r="44" stroke="url(#opGradient)" stroke-width="4" stroke-dasharray="12 6 4 6" fill="none" opacity="0.95"/>
-            <polygon points="50,22 75,37 75,65 50,80 25,65 25,37" fill="none" stroke="url(#opGradient)" stroke-width="5" stroke-linejoin="round"/>
-            <circle cx="50" cy="50" r="8" fill="url(#opGradient)"/>
-            <line x1="50" y1="22" x2="50" y2="42" stroke="url(#opGradient)" stroke-width="3" stroke-linecap="round" />
-            <line x1="25" y1="65" x2="42" y2="55" stroke="url(#opGradient)" stroke-width="3" stroke-linecap="round" />
-            <line x1="75" y1="65" x2="58" y2="55" stroke="url(#opGradient)" stroke-width="3" stroke-linecap="round" />
+            <circle cx="50" cy="50" r="44" stroke="url(#opGradient)" stroke-width="4.5" stroke-dasharray="14 6 4 6" fill="none" opacity="0.95"/>
+            <polygon points="50,21 76,36 76,65 50,80 24,65 24,36" fill="none" stroke="url(#opGradient)" stroke-width="5" stroke-linejoin="round"/>
+            <circle cx="50" cy="50" r="8.5" fill="url(#opGradient)"/>
+            <line x1="50" y1="21" x2="50" y2="41" stroke="url(#opGradient)" stroke-width="3.5" stroke-linecap="round" />
+            <line x1="24" y1="65" x2="42" y2="55" stroke="url(#opGradient)" stroke-width="3.5" stroke-linecap="round" />
+            <line x1="76" y1="65" x2="58" y2="55" stroke="url(#opGradient)" stroke-width="3.5" stroke-linecap="round" />
           </svg>
         </div>
         <h4 id="profileName" class="text-xl font-bold dark:text-white text-gray-900 tracking-tight">Loading...</h4>
@@ -169,15 +168,15 @@
       </div>
 
       <div class="space-y-3 flex-1 overflow-y-auto pr-1">
-        <div class="dark:bg-gray-950/50 bg-gray-100 p-4 rounded-2xl border dark:border-white/5 border-gray-200">
+        <div class="dark:bg-gray-950/40 bg-gray-50 p-4 rounded-xl border dark:border-white/5 border-gray-200">
           <p class="text-[10px] text-gray-400 dark:text-gray-500 uppercase font-bold tracking-wider mb-1">Email Interface Vector</p>
           <p id="profileEmail" class="text-sm dark:text-gray-300 text-gray-700 truncate font-medium">Loading...</p>
         </div>
-        <div class="dark:bg-gray-950/50 bg-gray-100 p-4 rounded-2xl border dark:border-white/5 border-gray-200">
+        <div class="dark:bg-gray-950/40 bg-gray-50 p-4 rounded-xl border dark:border-white/5 border-gray-200">
           <p class="text-[10px] text-gray-400 dark:text-gray-500 uppercase font-bold tracking-wider mb-1">Secure Line Contact</p>
           <p id="profilePhone" class="text-sm dark:text-gray-300 text-gray-700 font-mono">Loading...</p>
         </div>
-        <div class="dark:bg-gray-950/50 bg-gray-100 p-4 rounded-2xl border dark:border-white/5 border-gray-200">
+        <div class="dark:bg-gray-950/40 bg-gray-50 p-4 rounded-xl border dark:border-white/5 border-gray-200">
           <p class="text-[10px] text-gray-400 dark:text-gray-500 uppercase font-bold tracking-wider mb-1">Authorization Clearance</p>
           <p class="text-sm dark:text-gray-300 text-gray-700 font-medium flex items-center gap-1.5">
             <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block animate-pulse"></span> Active Session
@@ -185,7 +184,7 @@
         </div>
       </div>
 
-      <button id="logoutBtn" class="w-full mt-6 py-3.5 bg-gray-500/5 hover:bg-red-500/20 dark:text-gray-400 text-gray-600 hover:text-red-500 border dark:border-white/10 border-gray-200 hover:border-red-500/30 rounded-2xl font-semibold text-sm transition-all flex items-center justify-center gap-2">
+      <button id="logoutBtn" class="w-full mt-6 py-3.5 bg-gray-500/5 hover:bg-red-500/10 dark:text-gray-400 text-gray-600 hover:text-red-500 border dark:border-white/10 border-gray-200 hover:border-red-500/20 rounded-2xl font-semibold text-sm transition-all flex items-center justify-center gap-2">
         <i class="fas fa-sign-out-alt"></i> Kill Active Session
       </button>
     </div>
@@ -203,9 +202,9 @@
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
       
-      <div onclick="window.location.href='index.html'" class="glass-card rounded-[32px] p-8 cursor-pointer group flex flex-col justify-between">
+      <div onclick="window.location.href='index.html'" class="glass-card rounded-[28px] p-8 cursor-pointer group flex flex-col justify-between">
         <div>
-          <div class="w-14 h-14 dark:bg-indigo-600/20 bg-indigo-50 border border-indigo-500/20 dark:border-indigo-500/30 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-sm dark:shadow-indigo-500/10 group-hover:bg-indigo-600 group-hover:text-white text-indigo-500 dark:text-indigo-400 transition-all duration-300">
+          <div class="w-14 h-14 dark:bg-indigo-600/15 bg-indigo-50 border border-indigo-500/20 dark:border-indigo-500/30 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-sm dark:shadow-indigo-500/5 group-hover:bg-indigo-600 group-hover:text-white text-indigo-500 dark:text-indigo-400 transition-all duration-300">
             <i class="fa-solid fa-brain"></i>
           </div>
           <h3 class="text-xl font-bold mb-2 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 dark:text-white text-gray-900 tracking-tight transition-colors">AI Intelligence Lab</h3>
@@ -218,9 +217,9 @@
         </span>
       </div>
 
-      <div onclick="window.location.href='notes.html'" class="glass-card rounded-[32px] p-8 cursor-pointer group flex flex-col justify-between">
+      <div onclick="window.location.href='notes.html'" class="glass-card rounded-[28px] p-8 cursor-pointer group flex flex-col justify-between">
         <div>
-          <div class="w-14 h-14 dark:bg-purple-600/20 bg-purple-50 border border-purple-500/20 dark:border-purple-500/30 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-md dark:shadow-purple-500/10 group-hover:bg-purple-600 group-hover:text-white text-purple-500 dark:text-purple-400 transition-all duration-300">
+          <div class="w-14 h-14 dark:bg-purple-600/15 bg-purple-50 border border-purple-500/20 dark:border-purple-500/30 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-md dark:shadow-purple-500/5 group-hover:bg-purple-600 group-hover:text-white text-purple-500 dark:text-purple-400 transition-all duration-300">
             <i class="fa-solid fa-folder-closed"></i>
           </div>
           <h3 class="text-xl font-bold mb-2 group-hover:text-purple-500 dark:group-hover:text-purple-400 dark:text-white text-gray-900 tracking-tight transition-colors">Digital Vault Storage</h3>
@@ -233,9 +232,9 @@
         </span>
       </div>
 
-      <div onclick="window.location.href='aitools.html'" class="glass-card rounded-[32px] p-8 cursor-pointer group flex flex-col justify-between">
+      <div onclick="window.location.href='aitools.html'" class="glass-card rounded-[28px] p-8 cursor-pointer group flex flex-col justify-between">
         <div>
-          <div class="w-14 h-14 dark:bg-cyan-600/20 bg-cyan-50 border border-cyan-500/20 dark:border-cyan-500/30 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-md dark:shadow-cyan-500/10 group-hover:bg-cyan-600 group-hover:text-white text-cyan-500 dark:text-cyan-400 transition-all duration-300">
+          <div class="w-14 h-14 dark:bg-cyan-600/15 bg-cyan-50 border border-cyan-500/20 dark:border-cyan-500/30 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-md dark:shadow-cyan-500/5 group-hover:bg-cyan-600 group-hover:text-white text-cyan-500 dark:text-cyan-400 transition-all duration-300">
             <i class="fa-solid fa-bolt"></i>
           </div>
           <h3 class="text-xl font-bold mb-2 group-hover:text-cyan-500 dark:group-hover:text-cyan-400 dark:text-white text-gray-900 tracking-tight transition-colors">Specialized Pipelines</h3>
@@ -264,33 +263,31 @@
   </main>
 
   <script>
-    // --- THEME ROTATION STORAGE LAYER LOGICS ---
-    function applySavedThemePipeline() {
-      const currentConfig = localStorage.getItem('edith-theme') || 'dark';
-      if (currentConfig === 'dark') {
-        document.body.classList.add('dark');
+    // --- HIGHLY INTUITIVE THEME CONTROL MANAGEMENT ---
+    function initThemePipeline() {
+      const savedTheme = localStorage.getItem('edith-theme') || 'dark';
+      if (savedTheme === 'dark') {
         document.documentElement.classList.add('dark');
       } else {
-        document.body.classList.remove('dark');
         document.documentElement.classList.remove('dark');
       }
     }
 
     function toggleThemePipeline() {
-      if (document.body.classList.contains('dark')) {
-        document.body.classList.remove('dark');
+      const isDark = document.documentElement.classList.contains('dark');
+      if (isDark) {
         document.documentElement.classList.remove('dark');
         localStorage.setItem('edith-theme', 'light');
       } else {
-        document.body.classList.add('dark');
         document.documentElement.classList.add('dark');
         localStorage.setItem('edith-theme', 'dark');
       }
     }
 
-    window.onload = () => {
-      applySavedThemePipeline(); // Ensure context loads with exact cached theme state
+    // Initialize immediate state before DOM render sets up completely
+    initThemePipeline();
 
+    window.onload = () => {
       const token = localStorage.getItem('token');
       if (!token) {
         window.location.href = 'login.html';
