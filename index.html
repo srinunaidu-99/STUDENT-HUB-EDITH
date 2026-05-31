@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 
 <head>
     <meta charset="UTF-8" />
@@ -10,14 +10,26 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap');
 
-        body {
+        html, body {
             font-family: 'Geist', sans-serif;
-            background-color: #09090b;
             overflow: hidden;
+            width: 100%;
+            height: 100%;
+            transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease;
         }
+
+        /* --- THEME SPECIFIC BACKGROUNDS --- */
+        .dark body { background-color: #09090b; }
+        html:not(.dark) body { background-color: #f1f5f9; }
 
         /* --- PRECISE MINIMALIST SCROLLBAR --- */
         .chat-container::-webkit-scrollbar, .sidebar-scroll::-webkit-scrollbar {
@@ -27,12 +39,18 @@
         .chat-container::-webkit-scrollbar-track, .sidebar-scroll::-webkit-scrollbar-track {
             background: transparent;
         }
-        .chat-container::-webkit-scrollbar-thumb, .sidebar-scroll::-webkit-scrollbar-thumb {
+        
+        .dark .chat-container::-webkit-scrollbar-thumb, .dark .sidebar-scroll::-webkit-scrollbar-thumb {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 2px;
         }
+        html:not(.dark) .chat-container::-webkit-scrollbar-thumb, html:not(.dark) .sidebar-scroll::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 2px;
+        }
+        
         .chat-container::-webkit-scrollbar-thumb:hover, .sidebar-scroll::-webkit-scrollbar-thumb:hover {
-            background: rgba(16, 185, 129, 0.4);
+            background: rgba(16, 185, 129, 0.4) !important;
         }
 
         /* --- QUANTUM EMERALD ORB EFFECT --- */
@@ -72,31 +90,55 @@
             border-color: #ef4444 !important;
         }
 
-        /* --- EXTREMELY CLEAN FLAT MONOCHROME INTERFACE --- */
+        /* --- PREMIUM MONOCHROME INTERFACE STYLING --- */
         .main-board {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .dark .main-board {
             background: #09090b;
             border: 1px solid rgba(255, 255, 255, 0.04);
         }
-        .ai-bubble {
+        html:not(.dark) .main-board {
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Bubbles Adaptive Engines */
+        .dark .ai-bubble {
             background: #18181b;
             border: 1px solid rgba(255, 255, 255, 0.03);
             color: #e4e4e7;
-            border-radius: 8px;
         }
-        .user-bubble {
+        html:not(.dark) .ai-bubble {
+            background: #f1f5f9;
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            color: #334155;
+        }
+
+        .dark .user-bubble {
             background: #27272a;
             color: #fafafa;
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 8px;
+        }
+        html:not(.dark) .user-bubble {
+            background: #e2e8f0;
+            color: #0f172a;
+            border: 1px solid rgba(0, 0, 0, 0.01);
         }
 
         /* --- SIDEBAR REFINEMENTS --- */
-        .history-active {
+        .dark .history-active {
             background: rgba(255, 255, 255, 0.03) !important;
             color: #10b981 !important;
             font-weight: 500 !important;
             border-right: 2px solid #10b981 !important;
-            border-radius: 4px 0px 0px 4px !important;
+        }
+        html:not(.dark) .history-active {
+            background: rgba(16, 185, 129, 0.06) !important;
+            color: #059669 !important;
+            font-weight: 600 !important;
+            border-right: 2px solid #10b981 !important;
         }
 
         /* Standalone Code Blocks styling */
@@ -113,11 +155,17 @@
             border: 1px solid rgba(255, 255, 255, 0.02);
             max-width: 100%;
         }
+        html:not(.dark) pre {
+            background: #0f172a !important;
+        }
         code {
             font-family: 'Geist Mono', monospace;
             color: #a1a1aa;
             font-size: 0.8rem;
             white-space: pre;
+        }
+        html:not(.dark) code {
+            color: #cbd5e1;
         }
         .copy-code-btn {
             position: absolute;
@@ -169,70 +217,69 @@
     </style>
 </head>
 
-<body class="text-zinc-400 min-h-screen flex items-center justify-center p-0 sm:p-4">
+<body class="dark:text-zinc-400 text-slate-600 min-h-screen flex items-center justify-center p-0 sm:p-4">
 
 <div class="w-full max-w-[1400px] h-screen sm:h-[94vh] flex main-board sm:rounded-xl shadow-2xl relative overflow-hidden">
     
-    <!-- LEFT NAVIGATION DESK -->
-    <aside id="sidebarPanel" class="w-60 bg-[#0c0c0e] flex flex-col h-full hidden lg:flex border-r border-zinc-900 transition-all z-30">
+    <aside id="sidebarPanel" class="w-60 dark:bg-[#0c0c0e] bg-slate-50 flex flex-col h-full hidden lg:flex dark:border-r dark:border-zinc-900 border-r border-slate-200 transition-all z-30">
         
         <div class="p-3 flex flex-col gap-1.5">
-            <button onclick="createNewChatSession()" class="w-full flex items-center justify-between px-3 py-2 text-xs text-zinc-200 hover:bg-zinc-900 rounded-md transition-all font-medium bg-zinc-900/40 border border-zinc-800">
+            <button onclick="createNewChatSession()" class="w-full flex items-center justify-between px-3 py-2 text-xs dark:text-zinc-200 text-slate-800 dark:hover:bg-zinc-900 hover:bg-slate-200/60 rounded-md transition-all font-medium dark:bg-zinc-900/40 bg-white border dark:border-zinc-800 border-slate-200 shadow-sm">
                 <span class="flex items-center gap-2">
-                    <i class="fa-regular fa-square-plus text-zinc-400 text-sm"></i> New Stream
+                    <i class="fa-regular fa-square-plus dark:text-zinc-400 text-slate-500 stroke-[1.5] text-sm"></i> New Stream
                 </span>
-                <kbd class="text-[9px] bg-zinc-800 text-zinc-500 px-1 rounded border border-zinc-700 font-mono">N</kbd>
+                <kbd class="text-[9px] dark:bg-zinc-800 bg-slate-100 dark:text-zinc-500 text-slate-400 px-1 rounded border dark:border-zinc-700 border-slate-200 font-mono">N</kbd>
             </button>
             <div class="w-full relative mt-0.5">
-                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-zinc-600 text-xs"></i>
-                <input type="text" id="searchChatsInput" oninput="filterSidebarChats()" placeholder="Search node indexes..." class="w-full bg-transparent border border-zinc-900 focus:border-zinc-800 text-xs rounded-md pl-8 pr-3 py-1.5 outline-none text-zinc-300 placeholder-zinc-700">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 dark:text-zinc-600 text-slate-400 text-xs"></i>
+                <input type="text" id="searchChatsInput" oninput="filterSidebarChats()" placeholder="Search node indexes..." class="w-full bg-transparent border dark:border-zinc-900 border-slate-200 focus:border-zinc-800 focus:border-slate-300 text-xs rounded-md pl-8 pr-3 py-1.5 outline-none dark:text-zinc-300 text-slate-800 dark:placeholder-zinc-700 placeholder-slate-400">
             </div>
         </div>
 
         <div class="px-3 pt-2 pb-1 flex justify-between items-center">
-            <span class="text-[9px] font-medium text-zinc-600 tracking-widest block uppercase">Registry Entries</span>
-            <span class="text-[9px] font-mono text-zinc-700" id="sessionCounter">0/0</span>
+            <span class="text-[9px] font-medium dark:text-zinc-600 text-slate-400 tracking-widest block uppercase">Registry Entries</span>
+            <span class="text-[9px] font-mono dark:text-zinc-700 text-slate-400" id="sessionCounter">0/0</span>
         </div>
 
         <div id="historyLogContainer" class="flex-1 overflow-y-auto pl-2 pr-0 pb-4 space-y-0.5 sidebar-scroll">
-            <div class="text-center py-8 text-[11px] text-zinc-700 font-mono tracking-tight">Syncing system tree...</div>
+            <div class="text-center py-8 text-[11px] dark:text-zinc-700 text-slate-400 font-mono tracking-tight">Syncing system tree...</div>
         </div>
 
-        <!-- AUTHENTICATION FOOTER NODE -->
-        <div class="p-3 border-t border-zinc-900 bg-[#09090b] flex items-center justify-between px-4">
+        <div class="p-3 dark:border-t dark:border-zinc-900 border-t border-slate-200 dark:bg-[#09090b] bg-slate-100/80 flex items-center justify-between px-4">
             <div class="flex items-center gap-2.5">
-                <div class="w-6 h-6 rounded bg-zinc-900 border border-zinc-800 flex items-center justify-center text-[10px] font-medium text-zinc-400 font-mono" id="profileBadge">
+                <div class="w-6 h-6 rounded dark:bg-zinc-900 bg-white border dark:border-zinc-800 border-slate-200 flex items-center justify-center text-[10px] font-medium dark:text-zinc-400 text-slate-700 font-mono" id="profileBadge">
                     OP
                 </div>
                 <div>
-                    <span class="block text-xs font-normal text-zinc-300 truncate max-w-[100px]" id="displayUserFooterName">Root</span>
-                    <span class="block text-[8px] text-zinc-600 uppercase font-mono tracking-tighter">Secure Link</span>
+                    <span class="block text-xs font-normal dark:text-zinc-300 text-slate-800 truncate max-w-[100px]" id="displayUserFooterName">Root</span>
+                    <span class="block text-[8px] dark:text-zinc-600 text-slate-400 uppercase font-mono tracking-tighter">Secure Line</span>
                 </div>
             </div>
-            <button onclick="localStorage.clear(); window.location.href='login.html';" title="Terminate Session" class="text-zinc-600 hover:text-zinc-400 transition-all text-xs p-1">
-                <i class="fa-solid fa-power-off"></i>
-            </button>
+            
+            <div class="flex items-center gap-1">
+                <button onclick="toggleThemePipeline()" title="Toggle Interface Mode" class="dark:text-zinc-600 dark:hover:text-zinc-400 text-slate-400 hover:text-slate-600 transition-all text-xs p-1 mr-1">
+                    <i class="fa-solid fa-sun hidden dark:block"></i>
+                    <i class="fa-solid fa-moon dark:hidden"></i>
+                </button>
+                <button onclick="localStorage.clear(); window.location.href='login.html';" title="Terminate Session" class="dark:text-zinc-600 dark:hover:text-zinc-400 text-slate-400 hover:text-slate-600 transition-all text-xs p-1">
+                    <i class="fa-solid fa-power-off"></i>
+                </button>
+            </div>
         </div>
     </aside>
 
-    <!-- RIGHT CORE INTERFACE LAYER -->
     <div class="flex-1 flex flex-col h-full relative overflow-hidden bg-transparent">
         
-        <!-- STATUS MATRIX CONTROLLER -->
-        <div class="p-3 border-b border-zinc-900 flex justify-between items-center bg-[#0c0c0e] px-6">
+        <div class="p-3 border-b dark:border-zinc-900 border-slate-200 flex justify-between items-center dark:bg-[#0c0c0e] bg-slate-50 px-6">
             <div class="flex items-center gap-3">
-                <button onclick="toggleMobileSidebar()" class="lg:hidden w-7 h-7 border border-zinc-800 bg-transparent rounded-md flex items-center justify-center text-zinc-400">
+                <button onclick="toggleMobileSidebar()" class="lg:hidden w-7 h-7 dark:border-zinc-800 border-slate-200 bg-transparent rounded-md flex items-center justify-center dark:text-zinc-400 text-slate-600">
                     <i class="fa-solid fa-bars text-xs"></i>
                 </button>
 
-                <!-- HIGH-END VECTOR MATRIX LOGO CONSTRUCT -->
                 <div class="edith-logo-wrapper w-6 h-6 flex items-center justify-center">
                     <svg viewBox="0 0 100 100" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Outer Frame Ring -->
                         <circle cx="50" cy="50" r="44" stroke="#10b981" stroke-width="4" stroke-dasharray="12 6 4 6" fill="none" opacity="0.85"/>
-                        <!-- Inner Cyber Polygon Core -->
                         <polygon points="50,22 75,37 75,65 50,80 25,65 25,37" fill="none" stroke="#10b981" stroke-width="5" stroke-linejoin="round"/>
-                        <!-- Quantum Data Pipeline Vector -->
                         <circle cx="50" cy="50" r="8" fill="#10b981"/>
                         <line x1="50" y1="22" x2="50" y2="42" stroke="#10b981" stroke-width="3" stroke-linecap="round" />
                         <line x1="25" y1="65" x2="42" y2="55" stroke="#10b981" stroke-width="3" stroke-linecap="round" />
@@ -241,38 +288,36 @@
                 </div>
                 
                 <div>
-                    <h1 class="text-xs font-medium tracking-tight text-zinc-200 flex items-center gap-2">
-                        EDITH CORE <span class="text-[8px] font-mono text-zinc-500 border border-zinc-800 px-1 py-0.2 rounded bg-zinc-900">v3.2.0-STABLE</span>
+                    <h1 class="text-xs font-medium tracking-tight dark:text-zinc-200 text-slate-800 flex items-center gap-2">
+                        EDITH CORE <span class="text-[8px] font-mono dark:text-zinc-500 text-slate-400 border dark:border-zinc-800 border-slate-200 px-1 py-0.2 rounded dark:bg-zinc-900 bg-slate-100">v3.2.0-STABLE</span>
                     </h1>
                 </div>
             </div>
             
             <div class="flex items-center gap-4 text-right font-mono text-[10px]">
                 <div>
-                    <span class="text-zinc-600 block text-[8px] uppercase tracking-wider">Net Latency</span>
-                    <span class="text-emerald-500">14ms</span>
+                    <span class="dark:text-zinc-600 text-slate-400 block text-[8px] uppercase tracking-wider">Net Latency</span>
+                    <span class="text-emerald-500 font-medium">14ms</span>
                 </div>
-                <div class="w-px h-4 bg-zinc-800"></div>
+                <div class="w-px h-4 dark:bg-zinc-800 bg-slate-200"></div>
                 <div>
-                    <span class="text-zinc-600 block text-[8px] uppercase tracking-wider">Cluster IO</span>
-                    <span class="text-zinc-400">2.4%</span>
+                    <span class="dark:text-zinc-600 text-slate-400 block text-[8px] uppercase tracking-wider">Cluster IO</span>
+                    <span class="dark:text-zinc-400 text-slate-600">2.4%</span>
                 </div>
             </div>
         </div>
 
-        <!-- STREAM DISCHARGE CONTAINER -->
-        <div id="chatArea" class="flex-1 overflow-y-auto p-6 space-y-4 bg-[#09090b] chat-container"></div>
+        <div id="chatArea" class="flex-1 overflow-y-auto p-6 space-y-4 dark:bg-[#09090b] bg-slate-50/30 chat-container"></div>
 
-        <!-- INPUT SEQUENCE PANEL -->
-        <div class="p-4 bg-[#0c0c0e] border-t border-zinc-900">
+        <div class="p-4 dark:bg-[#0c0c0e] bg-slate-50 border-t dark:border-zinc-900 border-slate-200">
             <div class="flex flex-wrap gap-1.5 mb-2.5 px-0.5">
-                <button onclick="toggleSummarize()" id="sumBtn" class="px-2.5 py-1 rounded border border-zinc-900 hover:border-zinc-800 bg-transparent text-[9px] font-mono transition-all flex items-center gap-2 text-zinc-500">
-                    <span class="w-1 h-1 rounded-full bg-zinc-700" id="sumDot"></span>
-                    COMPRESS LOG DATA: <span id="sumStatus" class="font-medium text-zinc-600">OFF</span>
+                <button onclick="toggleSummarize()" id="sumBtn" class="px-2.5 py-1 rounded border dark:border-zinc-900 border-slate-200 dark:hover:border-zinc-800 hover:border-slate-300 bg-transparent text-[9px] font-mono transition-all flex items-center gap-2 dark:text-zinc-500 text-slate-400">
+                    <span class="w-1 h-1 rounded-full dark:bg-zinc-700 bg-slate-300" id="sumDot"></span>
+                    COMPRESS LOG DATA: <span id="sumStatus" class="font-medium dark:text-zinc-600 text-slate-400">OFF</span>
                 </button>
 
-                <label class="px-2.5 py-1 rounded border border-zinc-900 hover:border-zinc-800 bg-transparent text-[9px] font-mono cursor-pointer transition-all flex items-center gap-1.5 text-zinc-500">
-                    <i class="fa-solid fa-paperclip text-zinc-600"></i> ATTACH MATRIX
+                <label class="px-2.5 py-1 rounded border dark:border-zinc-900 border-slate-200 dark:hover:border-zinc-800 hover:border-slate-300 bg-transparent text-[9px] font-mono cursor-pointer transition-all flex items-center gap-1.5 dark:text-zinc-500 text-slate-400">
+                    <i class="fa-solid fa-paperclip dark:text-zinc-600 text-slate-400"></i> ATTACH MATRIX
                     <input type="file" id="fileInput" multiple class="hidden" onchange="updateFileStatus()" />
                 </label>
                 <span id="fileCount" class="text-[9px] text-emerald-500 self-center font-mono"></span>
@@ -280,16 +325,16 @@
 
             <div class="flex gap-2 items-center relative">
                 <input type="text" id="msg" placeholder="Execute terminal command prompt sequencers..." 
-                    class="w-full bg-[#141416] border border-zinc-900 focus:border-zinc-800 rounded-md pl-4 pr-20 py-2.5 outline-none transition-all text-xs font-mono placeholder-zinc-700 text-zinc-200"
+                    class="w-full dark:bg-[#141416] bg-white border dark:border-zinc-900 border-slate-200 focus:border-zinc-800 focus:border-slate-300 rounded-md pl-4 pr-20 py-2.5 outline-none transition-all text-xs font-mono dark:placeholder-zinc-700 placeholder-slate-400 dark:text-zinc-200 text-slate-800 shadow-sm"
                     onkeypress="if(event.key==='Enter')sendMsg()" />
 
                 <div class="absolute right-1 flex items-center gap-0.5">
                     <button onclick="toggleVoiceInput()" id="micBtn" title="Voice Decryptor"
-                        class="w-7 h-7 bg-transparent hover:bg-zinc-900 border border-zinc-900 text-zinc-500 rounded flex items-center justify-center transition-all">
+                        class="w-7 h-7 bg-transparent hover:bg-zinc-900/10 dark:hover:bg-zinc-900 border dark:border-zinc-900 border-slate-200 dark:text-zinc-500 text-slate-400 rounded flex items-center justify-center transition-all">
                         <i class="fa-solid fa-microphone text-[10px]"></i>
                     </button>
                     
-                    <button onclick="sendMsg()" class="w-7 h-7 bg-zinc-200 hover:bg-white active:scale-95 text-zinc-950 rounded flex items-center justify-center transition-all">
+                    <button onclick="sendMsg()" class="w-7 h-7 dark:bg-zinc-200 bg-slate-800 hover:dark:bg-white hover:bg-slate-900 active:scale-95 dark:text-zinc-950 text-white rounded flex items-center justify-center transition-all shadow-sm">
                         <i class="fa-solid fa-arrow-up text-xs"></i>
                     </button>
                 </div>
@@ -312,6 +357,30 @@ let globallyCachedHistoryTree = [];
 
 let recognition;
 let isRecording = false;
+
+// --- DYNAMIC ENVIRONMENT SWITCHER ---
+function initThemePipeline() {
+    const savedTheme = localStorage.getItem('edith-theme') || 'dark';
+    if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+}
+
+function toggleThemePipeline() {
+    const isDark = document.documentElement.classList.contains('dark');
+    if (isDark) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('edith-theme', 'light');
+    } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('edith-theme', 'dark');
+    }
+}
+
+// Pre-render configuration activation
+initThemePipeline();
 
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -365,11 +434,11 @@ window.onload = () => {
 function renderBlankWelcomeInterface() {
     chatArea.innerHTML = `
         <div id="welcomeScreen" class="flex flex-col justify-center items-center mt-24 text-center px-4 animate-msg">
-            <div class="w-8 h-8 rounded bg-zinc-900 border border-zinc-800 flex items-center justify-center text-xs text-emerald-500 mb-3 font-mono">
+            <div class="w-8 h-8 rounded dark:bg-zinc-900 bg-slate-100 border dark:border-zinc-800 border-slate-200 flex items-center justify-center text-xs text-emerald-500 mb-3 font-mono shadow-sm">
                 &gt;_
             </div>
-            <h2 class="text-xs font-mono font-medium mb-1 text-zinc-200">Awaiting Pipeline Instructions</h2>
-            <p class="text-zinc-600 text-[11px] max-w-xs font-normal leading-relaxed">System terminal calibrated. Ready to process multi-tenant raw data assets and standalone logic execution.</p>
+            <h2 class="text-xs font-mono font-medium mb-1 dark:text-zinc-200 text-slate-800">Awaiting Pipeline Instructions</h2>
+            <p class="dark:text-zinc-600 text-slate-400 text-[11px] max-w-xs font-normal leading-relaxed">System terminal calibrated. Ready to process multi-tenant raw data assets and standalone logic execution.</p>
         </div>
     `;
 }
@@ -395,7 +464,7 @@ async function loadChatHistory(autoLoadFirstSession = false) {
                 loadSelectedSessionStream(globallyCachedHistoryTree[0]._id);
             }
         } else {
-            historyLogContainer.innerHTML = `<div class="text-center py-8 text-[10px] font-mono text-zinc-700">Log entries empty</div>`;
+            historyLogContainer.innerHTML = `<div class="text-center py-8 text-[10px] font-mono dark:text-zinc-700 text-slate-400">Log entries empty</div>`;
         }
     } catch (err) {
         console.error("History sync error:", err);
@@ -406,7 +475,7 @@ async function loadChatHistory(autoLoadFirstSession = false) {
 function renderSidebarHistoryList(historyArray) {
     const counter = document.getElementById("sessionCounter");
     if (!historyArray || historyArray.length === 0) {
-        historyLogContainer.innerHTML = `<div class="text-center py-8 text-[10px] font-mono text-zinc-700">Log entries empty</div>`;
+        historyLogContainer.innerHTML = `<div class="text-center py-8 text-[10px] font-mono dark:text-zinc-700 text-slate-400">Log entries empty</div>`;
         if(counter) counter.innerText = "0/0";
         return;
     }
@@ -429,18 +498,18 @@ function renderSidebarHistoryList(historyArray) {
         }
 
         const itemWrapper = document.createElement("div");
-        itemWrapper.className = "flex items-center justify-between w-full relative group history-item-wrapper rounded-l-md transition-all pr-1 hover:bg-zinc-900/40";
+        itemWrapper.className = "flex items-center justify-between w-full relative group history-item-wrapper rounded-l-md transition-all pr-1 dark:hover:bg-zinc-900/40 hover:bg-slate-200/50";
 
         const btn = document.createElement("button");
         btn.id = `sidebar-session-${id}`;
         btn.onclick = () => loadSelectedSessionStream(id);
         
         const activeClass = (String(id) === String(currentActiveSessionId)) ? 'history-active' : '';
-        btn.className = `flex-1 text-left px-3 py-1.5 text-[11px] tracking-tight font-normal transition-all overflow-hidden text-ellipsis whitespace-nowrap block truncate text-zinc-500 rounded-l-md ${activeClass}`;
+        btn.className = `flex-1 text-left px-3 py-1.5 text-[11px] tracking-tight font-normal transition-all overflow-hidden text-ellipsis whitespace-nowrap block truncate dark:text-zinc-500 text-slate-500 rounded-l-md ${activeClass}`;
         btn.innerText = displayTitle;
 
         const deleteBtn = document.createElement("button");
-        deleteBtn.className = "delete-chat-btn text-zinc-700 p-1 text-[10px] rounded transition-all ml-1";
+        deleteBtn.className = "delete-chat-btn dark:text-zinc-700 text-slate-400 p-1 text-[10px] rounded transition-all ml-1";
         deleteBtn.innerHTML = `<i class="fa-regular fa-trash-can"></i>`;
         deleteBtn.onclick = (e) => {
             e.stopPropagation(); 
@@ -622,7 +691,7 @@ function appendMessageToUI(text, isUser) {
     div.className = `flex ${isUser ? "justify-end" : "justify-start"} animate-msg w-full`;
 
     div.innerHTML = `
-        <div class="p-3 px-3.5 max-w-[85%] text-xs leading-relaxed ${isUser ? "user-bubble" : "ai-bubble break-words overflow-hidden"}">
+        <div class="p-3 px-3.5 max-w-[85%] text-xs leading-relaxed ${isUser ? "user-bubble shadow-sm" : "ai-bubble break-words overflow-hidden shadow-sm"}">
             ${isUser ? escapeHtml(text) : cleanAndParseMarkdown(text)}
         </div>
     `;
@@ -661,7 +730,7 @@ function showTypingIndicator() {
     const div = document.createElement("div");
     div.id = "edithTypingIndicator";
     div.className = "flex justify-start animate-msg";
-    div.innerHTML = `<div class="p-2.5 px-3.5 ai-bubble flex items-center gap-1"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>`;
+    div.innerHTML = `<div class="p-2.5 px-3.5 ai-bubble flex items-center gap-1 shadow-sm"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>`;
     chatArea.appendChild(div);
     chatArea.scrollTop = chatArea.scrollHeight;
 }
@@ -677,9 +746,13 @@ function updateSummarizeUI() {
     const dotElement = document.getElementById("sumDot");
     const btn = document.getElementById("sumBtn");
     statusText.innerText = isSummarize ? "ON" : "OFF";
-    statusText.className = isSummarize ? "font-medium text-emerald-500" : "font-medium text-zinc-600";
-    dotElement.className = isSummarize ? "w-1 h-1 rounded-full bg-emerald-500" : "w-1 h-1 rounded-full bg-zinc-700";
-    if (isSummarize) btn.classList.add("border-zinc-800", "bg-zinc-900/30"); else btn.classList.remove("border-zinc-800", "bg-zinc-900/30");
+    statusText.className = isSummarize ? "font-medium text-emerald-500" : "font-medium dark:text-zinc-600 text-slate-400";
+    dotElement.className = isSummarize ? "w-1 h-1 rounded-full bg-emerald-500" : "w-1 h-1 rounded-full dark:bg-zinc-700 bg-slate-300";
+    if (isSummarize) {
+        btn.classList.add("dark:border-zinc-800", "border-slate-300", "dark:bg-zinc-900/30", "bg-slate-100"); 
+    } else {
+        btn.classList.remove("dark:border-zinc-800", "border-slate-300", "dark:bg-zinc-900/30", "bg-slate-100");
+    }
 }
 
 function updateFileStatus() {
@@ -691,7 +764,7 @@ function toggleMobileSidebar() {
     const sidebar = document.getElementById("sidebarPanel");
     sidebar.classList.toggle("hidden");
     if (!sidebar.classList.contains("hidden")) {
-        sidebar.classList.add("fixed", "inset-y-0", "left-0", "w-60", "z-50", "bg-[#0c0c0e]");
+        sidebar.classList.add("fixed", "inset-y-0", "left-0", "w-60", "z-50", "dark:bg-[#0c0c0e]", "bg-slate-50");
     }
 }
 
