@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Online Compiler 🔥</title>
+  <title>Real Online Compiler ⚡</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   
@@ -36,16 +36,16 @@
 </head>
 <body class="bg-slate-100 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen p-2 sm:p-4">
 
-  <!-- Main Container full width for proper coding workspace -->
+  <!-- Main Grid Workspace Box -->
   <div class="w-full max-w-7xl mx-auto bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xl p-4">
     
-    <!-- Top Bar: Clean Action Row -->
+    <!-- Action Bar Grid Header -->
     <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 mb-4">
       <div class="flex items-center gap-4">
-        <!-- Language Selector -->
+        <!-- Language Engine Selector Elements -->
         <select id="lang" onchange="updateTemplate()" class="bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm font-bold rounded-lg px-3 py-1.5 outline-none text-emerald-600 dark:text-emerald-400 cursor-pointer focus:border-emerald-500 transition-colors">
-          <option value="py">Python 3</option>
-          <option value="js">JavaScript (Node)</option>
+          <option value="python">Python 3</option>
+          <option value="javascript">JavaScript (Node)</option>
           <option value="c">C (GCC)</option>
           <option value="cpp">C++ (G++)</option>
           <option value="java">Java 17</option>
@@ -54,7 +54,7 @@
         <span id="editorLangLabel" class="text-xs font-bold uppercase tracking-wider text-slate-400">python</span>
       </div>
 
-      <!-- Control Actions and Simple Mode Toggle Icon -->
+      <!-- Theme Controls Frame Stack -->
       <div class="flex items-center gap-3">
         <button onclick="copyCode()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors text-sm" title="Copy Code">
           <i class="fa-solid fa-copy"></i>
@@ -63,49 +63,43 @@
           <i class="fa-solid fa-trash-can"></i>
         </button>
         
-        <!-- Only The Theme Toggle Icon as Requested -->
+        <!-- Only Pure Minimal Theme Change Icon Toggle -->
         <button onclick="toggleTheme()" class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:scale-105 transition-all" title="Toggle Mode">
           <i id="themeIcon" class="fa-solid fa-sun text-amber-500 text-base"></i>
         </button>
       </div>
     </div>
 
-    <!-- Workspace Layout Grid -->
+    <!-- Live Split Workspace View Layout Matrix -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
       
-      <!-- Source Code Input Block (Takes 2/3 space) -->
+      <!-- Source Area Frame Element Panel -->
       <div class="lg:col-span-2 flex flex-col">
-        <textarea id="code" class="w-full h-[500px] p-4 bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800/80 rounded-xl outline-none font-mono text-base md:text-lg font-medium leading-relaxed text-slate-900 dark:text-emerald-400 focus:border-emerald-500/50 transition-colors">print("Hello Srinu 🔥")</textarea>
+        <textarea id="code" class="w-full h-[520px] p-4 bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800/80 rounded-xl outline-none font-mono text-base md:text-lg font-medium leading-relaxed text-slate-900 dark:text-emerald-400 focus:border-emerald-500/50 transition-colors">print("Hello Srinu 🔥")</textarea>
         
-        <!-- Run & AI Assistant CTA Grid -->
-        <div class="grid grid-cols-3 gap-2 mt-3">
-          <button onclick="runCode()" class="col-span-1 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm rounded-xl shadow-md active:scale-95 transition-all flex items-center justify-center gap-2">
-            <i class="fa-solid fa-play"></i> Run
-          </button>
-          <button onclick="askAI('explain')" class="py-3 bg-slate-100 dark:bg-slate-800 hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-600 transition-all font-semibold text-xs text-slate-600 dark:text-slate-300 rounded-xl">
-            AI Explain
-          </button>
-          <button onclick="askAI('debug')" class="py-3 bg-slate-100 dark:bg-slate-800 hover:bg-amber-600 hover:text-white dark:hover:bg-amber-600 transition-all font-semibold text-xs text-slate-600 dark:text-slate-300 rounded-xl">
-            AI Debug
+        <!-- Run Control Console Trigger Grid row -->
+        <div class="mt-3">
+          <button onclick="runCode()" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm rounded-xl shadow-md active:scale-[0.99] transition-all flex items-center justify-center gap-2">
+            <i class="fa-solid fa-play"></i> RUN CODE (EXECUTE)
           </button>
         </div>
       </div>
 
-      <!-- Inputs & Execution Output Console (Takes 1/3 space) -->
+      <!-- System Terminal Stream Frame Block panel -->
       <div class="flex flex-col gap-3">
-        <!-- STDIN Section -->
+        <!-- Input Buffer Console Area -->
         <div class="flex flex-col h-40">
-          <div class="text-[11px] font-bold tracking-wider text-slate-400 dark:text-slate-500 mb-1">STDIN (INPUT)</div>
-          <textarea id="input" placeholder="Enter runtime inputs here..." class="w-full flex-1 p-3 bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 rounded-xl outline-none font-mono text-sm text-slate-800 dark:text-slate-300 focus:border-slate-400 dark:focus:border-slate-700 transition-colors"></textarea>
+          <div class="text-[11px] font-bold tracking-wider text-slate-400 dark:text-slate-500 mb-1">STDIN (INPUT PANELS)</div>
+          <textarea id="input" placeholder="Provide raw input values line by line here..." class="w-full flex-1 p-3 bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 rounded-xl outline-none font-mono text-sm text-slate-800 dark:text-slate-300 focus:border-slate-400 dark:focus:border-slate-700 transition-colors"></textarea>
         </div>
 
-        <!-- STDOUT Terminal Display Section -->
-        <div class="flex flex-col flex-1 min-h-[340px]">
+        <!-- Terminal Shell Monitor Box Display -->
+        <div class="flex flex-col flex-1 min-h-[360px]">
           <div class="flex items-center justify-between mb-1">
-            <div class="text-[11px] font-bold tracking-wider text-slate-400 dark:text-slate-500">STDOUT (CONSOLE MONITOR)</div>
-            <button onclick="document.getElementById('output').innerText = '💡 Console cleared. Ready.';" class="text-[10px] text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 underline font-normal">Clear</button>
+            <div class="text-[11px] font-bold tracking-wider text-slate-400 dark:text-slate-500">STDOUT (COMPILER TERMINAL MONITOR)</div>
+            <button onclick="clearConsole()" class="text-[10px] text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 underline font-normal">Clear</button>
           </div>
-          <pre id="output" class="w-full flex-1 p-4 bg-slate-950 border border-slate-800 rounded-xl overflow-auto font-mono text-base font-bold text-cyan-400 leading-relaxed whitespace-pre-wrap">💡 Console ready.</pre>
+          <pre id="output" class="w-full flex-1 p-4 bg-slate-950 border border-slate-800 rounded-xl overflow-auto font-mono text-base font-bold text-cyan-400 leading-relaxed whitespace-pre-wrap">✨ System Terminal Ready.</pre>
         </div>
       </div>
 
@@ -114,15 +108,23 @@
   </div>
 
   <script>
+    // Piston API Version Target Map Configuration
+    const runtimeConfig = {
+      python: { version: "3.10.0", ext: "py" },
+      javascript: { version: "18.15.0", ext: "js" },
+      c: { version: "10.2.0", ext: "c" },
+      cpp: { version: "10.2.0", ext: "cpp" },
+      java: { version: "15.0.2", ext: "java" }
+    };
+
     const templates = {
-      py: `print("Hello Srinu 🔥")\n\n# Input taking sample:\n# name = input()\n# print("Welcome", name)`,
-      js: `console.log("Hello Srinu 🔥");`,
+      python: `import sys\n\nprint("Hello Srinu 🔥")\n\n# Input Test Setup:\n# num = input("Enter a value: ")\n# print("You entered:", num)`,
+      javascript: `console.log("Hello Srinu 🔥");\n\n// Input setup via FS read streams inside node environment line parameters`,
       c: `#include <stdio.h>\n\nint main() {\n    printf("Hello Srinu 🔥\\n");\n    return 0;\n}`,
       cpp: `#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "Hello Srinu 🔥" << endl;\n    return 0;\n}`,
       java: `public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello Srinu 🔥");\n    }\n}`
     };
 
-    // Simple Live UI Theme Toggler
     function toggleTheme() {
       const htmlEl = document.documentElement;
       const themeIcon = document.getElementById('themeIcon');
@@ -138,7 +140,6 @@
       }
     }
 
-    // Set fallback mode instantly on view load
     window.onload = () => {
       const savedMode = localStorage.getItem('mode');
       const htmlEl = document.documentElement;
@@ -156,7 +157,7 @@
     function updateTemplate() {
       const lang = document.getElementById("lang").value;
       document.getElementById("code").value = templates[lang];
-      document.getElementById("editorLangLabel").innerText = lang === 'py' ? 'python' : lang;
+      document.getElementById("editorLangLabel").innerText = lang;
     }
 
     function copyCode() {
@@ -166,69 +167,67 @@
     }
 
     function clearEditor() {
-      if(confirm("Clear everything in the editor?")) {
+      if(confirm("Clear everything inside code engine workspace?")) {
         document.getElementById("code").value = "";
       }
     }
 
-    // High performance direct proxy pipeline trigger
+    function clearConsole() {
+      const output = document.getElementById('output');
+      output.innerText = "✨ System Terminal Ready.";
+      output.style.color = "";
+    }
+
+    // 100% Real Live Production Engine Execution Channel (Piston Engine Network)
     async function runCode() {
       const code = document.getElementById("code").value;
       const lang = document.getElementById("lang").value;
       const input = document.getElementById("input").value;
       const output = document.getElementById("output");
 
-      output.innerText = "⏳ Executing...";
-      output.style.color = ""; 
+      output.innerText = "⏳ Requesting secure sandbox environment container...\n⏳ Compiling logic vectors...";
+      output.style.color = "#a1a1aa"; 
 
       try {
-        const payloadParams = new URLSearchParams();
-        payloadParams.append('code', code);
-        payloadParams.append('language', lang); 
-        payloadParams.append('input', input);
+        const payload = {
+          language: lang,
+          version: runtimeConfig[lang].version,
+          files: [
+            {
+              name: `main.${runtimeConfig[lang].ext}`,
+              content: code
+            }
+          ],
+          stdin: input
+        };
 
-        const res = await fetch("https://api.codex.jaagrav.in", {
+        const res = await fetch("https://emkc.org/api/v2/piston/execute", {
           method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: payloadParams
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
         });
 
         const data = await res.json();
 
-        if (data.error) {
-          output.innerText = "❌ Error:\n" + data.error;
-          output.style.color = "#f87171"; 
-        } else if (data.output && data.output.trim() !== "") {
-          output.innerText = data.output;
-          output.style.color = "#10b981"; 
+        if (data.run) {
+          const runResult = data.run;
+          
+          if (runResult.stderr && runResult.stderr.trim() !== "") {
+            output.innerText = `❌ Terminal Runtime Error Matrix:\n\n${runResult.stderr}`;
+            output.style.color = "#f87171"; // Error Crimson red
+          } else {
+            // Direct pure standard output stream injection 
+            output.innerText = runResult.output || "✨ Code execution loop closed (Exit Code 0).";
+            output.style.color = "#34d399"; // Neon clear emerald green
+          }
         } else {
-          output.innerText = "✅ Program finished with exit code: 0\n[No dynamic text printed to stream]";
-          output.style.color = "#34d399"; 
+          output.innerText = "❌ Engine Error: Unable to process code block container stream pipeline layers.";
+          output.style.color = "#f87171";
         }
       } catch (err) {
-        output.innerText = "⚠ Server/Network Error. Try again.";
+        output.innerText = "⚠ Critical Network Exception: Connection to Piston nodes timed out. Verify your internet connection.";
         output.style.color = "#f87171";
       }
-    }
-
-    async function askAI(taskType) {
-      const code = document.getElementById("code").value;
-      const lang = document.getElementById("lang").value;
-      const output = document.getElementById("output");
-
-      if(!code.trim()) return;
-
-      output.innerText = `🤖 AI Agent analyzing...`;
-      output.style.color = "#818cf8"; 
-
-      setTimeout(() => {
-        if(taskType === 'explain') {
-          output.innerText = `🤖 [AI Insight]\nThis program targets the execution matrix for "${lang}". It runs commands line-by-line, allocates system memory configurations variables, and streams the finished result safely straight to the terminal frame output console window.`;
-        } else {
-          output.innerText = `🤖 [AI Debugger]\nReviewing syntax loops... No immediate compilation failures detected inside memory. Keep track of accurate function types and make sure all standard library files are correctly loaded.`;
-        }
-        output.style.color = "";
-      }, 1000);
     }
   </script>
 </body>
