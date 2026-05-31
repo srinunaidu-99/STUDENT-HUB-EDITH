@@ -4,279 +4,282 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EDITH - Advanced Intelligence Hub</title>
+    <title>EDITH - Intelligence Hub</title>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap');
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: radial-gradient(circle at 50% 0%, #0f172a 0%, #020617 80%);
+            font-family: 'Geist', sans-serif;
+            background-color: #09090b;
             overflow: hidden;
         }
 
-        /* --- PREMIUM SCROLLBAR STYLES --- */
+        /* --- PRECISE MINIMALIST SCROLLBAR --- */
         .chat-container::-webkit-scrollbar, .sidebar-scroll::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
+            width: 3px;
+            height: 3px;
         }
         .chat-container::-webkit-scrollbar-track, .sidebar-scroll::-webkit-scrollbar-track {
             background: transparent;
         }
         .chat-container::-webkit-scrollbar-thumb, .sidebar-scroll::-webkit-scrollbar-thumb {
-            background: rgba(148, 163, 184, 0.1);
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 2px;
         }
         .chat-container::-webkit-scrollbar-thumb:hover, .sidebar-scroll::-webkit-scrollbar-thumb:hover {
-            background: rgba(6, 182, 212, 0.3);
+            background: rgba(16, 185, 129, 0.4);
         }
 
-        /* --- PROFESSIONAL ORB GLOW --- */
-        @keyframes subtlePulse {
+        /* --- QUANTUM EMERALD ORB EFFECT --- */
+        @keyframes matrixPulse {
             0%, 100% {
                 transform: scale(1);
-                box-shadow: 0 0 20px 1px rgba(6, 182, 212, 0.25), 0 0 40px 4px rgba(79, 70, 229, 0.15);
+                filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.3));
             }
             50% {
                 transform: scale(1.02);
-                box-shadow: 0 0 30px 4px rgba(6, 182, 212, 0.4), 0 0 50px 8px rgba(79, 70, 229, 0.25);
+                filter: drop-shadow(0 0 15px rgba(16, 185, 129, 0.5));
             }
         }
         .edith-orb {
-            animation: subtlePulse 5s ease-in-out infinite;
-            background: linear-gradient(135deg, #06b6d4, #4f46e5);
+            animation: matrixPulse 4s ease-in-out infinite;
+            background: #10b981;
         }
 
-        /* --- SMOOTH TRANSITION SLIDE IN --- */
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* --- MICRO-TRANSITION SLIDE --- */
+        @keyframes microSlide {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .animate-msg {
-            animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: microSlide 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         /* Mic Pulsing Effect */
         @keyframes micPulse {
-            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
-            70% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.3); }
+            70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
             100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
         }
         .mic-active {
-            animation: micPulse 1.5s infinite;
+            animation: micPulse 1.2s infinite;
             background-color: #ef4444 !important;
-            color: white !important;
-            border-color: #dc2626 !important;
+            color: #ffffff !important;
+            border-color: #ef4444 !important;
         }
 
-        /* --- PROFESSIONAL MODERN GLASSMORPHISM --- */
-        .glass-panel {
-            background: rgba(3, 7, 18, 0.6);
-            backdrop-filter: blur(24px);
+        /* --- EXTREMELY CLEAN FLAT MONOCHROME INTERFACE --- */
+        .main-board {
+            background: #09090b;
             border: 1px solid rgba(255, 255, 255, 0.04);
         }
         .ai-bubble {
-            background: rgba(15, 23, 42, 0.45);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            color: #e2e8f0;
-            border-radius: 12px;
+            background: #18181b;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            color: #e4e4e7;
+            border-radius: 8px;
         }
         .user-bubble {
-            background: rgba(30, 41, 59, 0.7);
-            color: #f8fafc;
-            border: 1px solid rgba(6, 182, 212, 0.2);
-            border-radius: 12px;
+            background: #27272a;
+            color: #fafafa;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
         }
 
-        /* --- SIDEBAR ACTIVE STATES --- */
+        /* --- SIDEBAR REFINEMENTS --- */
         .history-active {
-            background: rgba(6, 182, 212, 0.08) !important;
-            color: #06b6d4 !important;
+            background: rgba(255, 255, 255, 0.03) !important;
+            color: #10b981 !important;
             font-weight: 500 !important;
-            border-left: 2px solid #06b6d4 !important;
-            border-radius: 6px !important;
+            border-right: 2px solid #10b981 !important;
+            border-radius: 4px 0px 0px 4px !important;
         }
 
-        /* Code Block Wrapper styling */
+        /* Standalone Code Blocks styling */
         .code-block-wrapper {
             position: relative;
-            margin: 16px 0;
+            margin: 14px 0;
             width: 100%;
         }
         pre {
-            background: #020617 !important;
-            padding: 20px 16px 16px 16px;
-            border-radius: 8px;
+            background: #040405 !important;
+            padding: 16px;
+            border-radius: 6px;
             overflow-x: auto;
-            border: 1px solid rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.02);
             max-width: 100%;
         }
         code {
-            font-family: 'JetBrains Mono', monospace;
-            color: #cbd5e1;
-            font-size: 0.85rem;
+            font-family: 'Geist Mono', monospace;
+            color: #a1a1aa;
+            font-size: 0.8rem;
             white-space: pre;
         }
         .copy-code-btn {
             position: absolute;
             top: 8px;
             right: 8px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 4px 10px;
+            background: #18181b;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2px 8px;
             border-radius: 4px;
-            font-size: 11px;
-            color: #94a3b8;
+            font-size: 10px;
+            color: #71717a;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.15s;
             z-index: 10;
         }
         .copy-code-btn:hover {
-            background: rgba(6, 182, 212, 0.1);
-            color: #06b6d4;
-            border-color: rgba(6, 182, 212, 0.3);
+            background: rgba(16, 185, 129, 0.08);
+            color: #10b981;
+            border-color: rgba(16, 185, 129, 0.2);
         }
 
-        /* --- TYPING INDICATOR --- */
+        /* --- TYPING MICRO INDICATOR --- */
         .typing-dot {
-            animation: typingBounce 1.4s infinite ease-in-out both;
-            width: 5px;
-            height: 5px;
-            background-color: #06b6d4;
+            animation: typingBounce 1.2s infinite ease-in-out both;
+            width: 4px;
+            height: 4px;
+            background-color: #10b981;
             border-radius: 50%;
             display: inline-block;
         }
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.15s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.3s; }
         @keyframes typingBounce {
-            0%, 80%, 100% { transform: scale(0.3); opacity: 0.4; }
-            40% { transform: scale(1); opacity: 1; }
+            0%, 80%, 100% { transform: scale(0.4); opacity: 0.3; }
+            40% { transform: scale(1.1); opacity: 1; }
         }
 
         .delete-chat-btn {
             opacity: 0;
-            transition: all 0.15s ease;
+            transition: all 0.1s ease;
         }
         .history-item-wrapper:hover .delete-chat-btn {
+            opacity: 0.6;
+        }
+        .history-item-wrapper:hover .delete-chat-btn:hover {
             opacity: 1;
+            color: #f43f5e;
         }
     </style>
 </head>
 
-<body class="text-slate-200 min-h-screen flex items-center justify-center p-0 sm:p-6">
+<body class="text-zinc-400 min-h-screen flex items-center justify-center p-0 sm:p-4">
 
-<div class="w-full max-w-7xl h-screen sm:h-[90vh] flex glass-panel sm:rounded-2xl shadow-2xl relative overflow-hidden">
+<div class="w-full max-w-[1400px] h-screen sm:h-[94vh] flex main-board sm:rounded-xl shadow-2xl relative overflow-hidden">
     
-    <aside id="sidebarPanel" class="w-64 bg-slate-950/40 flex flex-col h-full hidden lg:flex border-r border-white/5 transition-all z-30">
+    <!-- LEFT NAVIGATION DESK -->
+    <aside id="sidebarPanel" class="w-60 bg-[#0c0c0e] flex flex-col h-full hidden lg:flex border-r border-zinc-900 transition-all z-30">
         
-        <div class="p-4 flex flex-col gap-2">
-            <button onclick="createNewChatSession()" class="w-full flex items-center gap-3 px-3 py-2 text-xs text-slate-200 hover:bg-white/5 rounded-lg transition-all font-medium bg-white/5 border border-white/5">
-                <i class="fa-regular fa-pen-to-square text-sm text-cyan-400"></i> Initialize Session
+        <div class="p-3 flex flex-col gap-1.5">
+            <button onclick="createNewChatSession()" class="w-full flex items-center justify-between px-3 py-2 text-xs text-zinc-200 hover:bg-zinc-900 rounded-md transition-all font-medium bg-zinc-900/40 border border-zinc-800">
+                <span class="flex items-center gap-2">
+                    <i class="fa-regular fa-square-plus text-zinc-400 text-sm"></i> New Stream
+                </span>
+                <kbd class="text-[9px] bg-zinc-800 text-zinc-500 px-1 rounded border border-zinc-700 font-mono">N</kbd>
             </button>
-            <div class="w-full relative mt-1">
-                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
-                <input type="text" id="searchChatsInput" oninput="filterSidebarChats()" placeholder="Filter chat history..." class="w-full bg-slate-900/60 border border-white/5 text-xs rounded-lg pl-9 pr-3 py-2 outline-none text-slate-200 placeholder-slate-600 focus:border-cyan-500/30">
+            <div class="w-full relative mt-0.5">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-zinc-600 text-xs"></i>
+                <input type="text" id="searchChatsInput" oninput="filterSidebarChats()" placeholder="Search node indexes..." class="w-full bg-transparent border border-zinc-900 focus:border-zinc-800 text-xs rounded-md pl-8 pr-3 py-1.5 outline-none text-zinc-300 placeholder-zinc-700">
             </div>
         </div>
 
-        <div class="px-4 pt-3 pb-1">
-            <span class="text-[10px] font-semibold text-slate-500 tracking-wider block uppercase">Recent Records</span>
+        <div class="px-3 pt-2 pb-1 flex justify-between items-center">
+            <span class="text-[9px] font-medium text-zinc-600 tracking-widest block uppercase">Registry Entries</span>
+            <span class="text-[9px] font-mono text-zinc-700" id="sessionCounter">0/0</span>
         </div>
 
-        <div id="historyLogContainer" class="flex-1 overflow-y-auto px-2 pb-4 space-y-0.5 sidebar-scroll">
-            <div class="text-center py-8 text-xs text-slate-600 font-light">Parsing registry logs...</div>
+        <div id="historyLogContainer" class="flex-1 overflow-y-auto pl-2 pr-0 pb-4 space-y-0.5 sidebar-scroll">
+            <div class="text-center py-8 text-[11px] text-zinc-700 font-mono tracking-tight">Syncing system tree...</div>
         </div>
 
-        <div class="p-4 border-t border-white/5 bg-slate-950/60 flex items-center justify-between px-4">
-            <div class="flex items-center gap-3">
-                <div class="w-7 h-7 rounded-md bg-slate-800 border border-white/5 flex items-center justify-center text-xs font-semibold text-slate-300 uppercase tracking-wider" id="profileBadge">
+        <!-- AUTHENTICATION FOOTER NODE -->
+        <div class="p-3 border-t border-zinc-900 bg-[#09090b] flex items-center justify-between px-4">
+            <div class="flex items-center gap-2.5">
+                <div class="w-6 h-6 rounded bg-zinc-900 border border-zinc-800 flex items-center justify-center text-[10px] font-medium text-zinc-400 font-mono" id="profileBadge">
                     OP
                 </div>
                 <div>
-                    <span class="block text-xs font-medium text-slate-300" id="displayUserFooterName">Operator</span>
-                    <span class="block text-[9px] text-slate-500 uppercase tracking-tight">System Tier</span>
+                    <span class="block text-xs font-normal text-zinc-300 truncate max-w-[100px]" id="displayUserFooterName">Root</span>
+                    <span class="block text-[8px] text-zinc-600 uppercase font-mono tracking-tighter">Secure Link</span>
                 </div>
             </div>
-            <button onclick="localStorage.clear(); window.location.href='login.html';" title="Disconnect" class="text-slate-500 hover:text-red-400 transition-all text-xs p-1">
+            <button onclick="localStorage.clear(); window.location.href='login.html';" title="Terminate Session" class="text-zinc-600 hover:text-zinc-400 transition-all text-xs p-1">
                 <i class="fa-solid fa-power-off"></i>
             </button>
         </div>
     </aside>
 
+    <!-- RIGHT CORE INTERFACE LAYER -->
     <div class="flex-1 flex flex-col h-full relative overflow-hidden bg-transparent">
         
-        <div class="p-4 border-b border-white/5 flex justify-between items-center bg-slate-950/20 px-6">
-            <div class="flex items-center gap-4">
-                <button onclick="toggleMobileSidebar()" class="lg:hidden w-8 h-8 border border-white/5 bg-white/5 rounded-lg flex items-center justify-center text-slate-400">
+        <!-- STATUS MATRIX CONTROLLER -->
+        <div class="p-3 border-b border-zinc-900 flex justify-between items-center bg-[#0c0c0e] px-6">
+            <div class="flex items-center gap-3">
+                <button onclick="toggleMobileSidebar()" class="lg:hidden w-7 h-7 border border-zinc-800 bg-transparent rounded-md flex items-center justify-center text-zinc-400">
                     <i class="fa-solid fa-bars text-xs"></i>
                 </button>
 
-                <div class="edith-orb w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold tracking-wider text-xs">
-                    E
+                <div class="edith-orb w-5 h-5 rounded flex items-center justify-center text-slate-950 font-bold text-[10px]">
+                    
                 </div>
                 <div>
-                    <h1 class="text-sm font-semibold tracking-tight text-slate-100 flex items-center gap-2">
-                        EDITH <span class="text-[9px] font-medium text-cyan-400 border border-cyan-500/20 px-1.5 py-0.2 rounded bg-cyan-500/5">V3.2 Architecture</span>
+                    <h1 class="text-xs font-medium tracking-tight text-zinc-200 flex items-center gap-2">
+                        EDITH CORE <span class="text-[8px] font-mono text-zinc-500 border border-zinc-800 px-1 py-0.2 rounded bg-zinc-900">v3.2.0-STABLE</span>
                     </h1>
-                    <p class="text-[9px] uppercase tracking-widest text-slate-500 font-medium flex items-center gap-1.5 mt-0.5">
-                        <span class="w-1 h-1 bg-cyan-400 rounded-full inline-block"></span>
-                        Active Instance Node: <span id="displayUserName" class="text-slate-300">Operator</span>
-                    </p>
                 </div>
             </div>
             
-            <div class="hidden sm:flex items-center gap-4 text-right">
-                <div class="text-[11px]">
-                    <span class="text-slate-600 uppercase block text-[8px] tracking-wider font-semibold">Latency ping</span>
-                    <span class="text-cyan-400 font-mono">14ms</span>
+            <div class="flex items-center gap-4 text-right font-mono text-[10px]">
+                <div>
+                    <span class="text-zinc-600 block text-[8px] uppercase tracking-wider">Net Latency</span>
+                    <span class="text-emerald-500">14ms</span>
                 </div>
-                <div class="w-px h-5 bg-white/5"></div>
-                <div class="text-[11px]">
-                    <span class="text-slate-600 uppercase block text-[8px] tracking-wider font-semibold">Core processing load</span>
-                    <span class="text-slate-400 font-mono">2.4%</span>
+                <div class="w-px h-4 bg-zinc-800"></div>
+                <div>
+                    <span class="text-zinc-600 block text-[8px] uppercase tracking-wider">Cluster IO</span>
+                    <span class="text-zinc-400">2.4%</span>
                 </div>
             </div>
         </div>
 
-        <div id="chatArea" class="flex-1 overflow-y-auto p-6 space-y-4 chat-container"></div>
+        <!-- STREAM DISCHARGE CONTAINER -->
+        <div id="chatArea" class="flex-1 overflow-y-auto p-6 space-y-4 bg-[#09090b] chat-container"></div>
 
-        <div class="p-4 sm:p-5 bg-slate-950/50 border-t border-white/5">
-            <div class="flex flex-wrap gap-2 mb-3 px-1">
-                <button onclick="toggleSummarize()" id="sumBtn" class="px-3 py-1 rounded-md border border-white/5 hover:border-cyan-500/20 bg-white/5 text-[10px] font-medium transition-all flex items-center gap-2 text-slate-400">
-                    <span class="w-1 h-1 rounded-full bg-slate-500" id="sumDot"></span>
-                    Compress Execution Notes: <span id="sumStatus" class="font-semibold text-slate-500">OFF</span>
+        <!-- INPUT SEQUENCE PANEL -->
+        <div class="p-4 bg-[#0c0c0e] border-t border-zinc-900">
+            <div class="flex flex-wrap gap-1.5 mb-2.5 px-0.5">
+                <button onclick="toggleSummarize()" id="sumBtn" class="px-2.5 py-1 rounded border border-zinc-900 hover:border-zinc-800 bg-transparent text-[9px] font-mono transition-all flex items-center gap-2 text-zinc-500">
+                    <span class="w-1 h-1 rounded-full bg-zinc-700" id="sumDot"></span>
+                    COMPRESS LOG DATA: <span id="sumStatus" class="font-medium text-zinc-600">OFF</span>
                 </button>
 
-                <label class="px-3 py-1 rounded-md border border-white/5 hover:border-cyan-500/20 bg-white/5 text-[10px] font-medium cursor-pointer transition-all flex items-center gap-1.5 text-slate-400">
-                    <i class="fa-solid fa-paperclip text-cyan-500"></i> Attach Assets
+                <label class="px-2.5 py-1 rounded border border-zinc-900 hover:border-zinc-800 bg-transparent text-[9px] font-mono cursor-pointer transition-all flex items-center gap-1.5 text-zinc-500">
+                    <i class="fa-solid fa-paperclip text-zinc-600"></i> ATTACH MATRIX
                     <input type="file" id="fileInput" multiple class="hidden" onchange="updateFileStatus()" />
                 </label>
-                <span id="fileCount" class="text-[10px] text-cyan-400 self-center font-medium font-mono"></span>
+                <span id="fileCount" class="text-[9px] text-emerald-500 self-center font-mono"></span>
             </div>
 
             <div class="flex gap-2 items-center relative">
-                <input type="text" id="msg" placeholder="Awaiting computational sequence instructions..." 
-                    class="w-full bg-slate-900/40 border border-white/5 focus:border-cyan-500/30 rounded-xl pl-4 pr-24 py-3 outline-none transition-all text-xs placeholder-slate-600 text-slate-200 shadow-inner"
+                <input type="text" id="msg" placeholder="Execute terminal command prompt sequencers..." 
+                    class="w-full bg-[#141416] border border-zinc-900 focus:border-zinc-800 rounded-md pl-4 pr-20 py-2.5 outline-none transition-all text-xs font-mono placeholder-zinc-700 text-zinc-200"
                     onkeypress="if(event.key==='Enter')sendMsg()" />
 
-                <div class="absolute right-1.5 flex items-center gap-1">
-                    <button onclick="toggleVoiceInput()" id="micBtn" title="Voice Processing"
-                        class="w-8 h-8 bg-white/5 hover:bg-white/10 border border-white/5 text-slate-400 rounded-lg flex items-center justify-center transition-all">
-                        <i class="fa-solid fa-microphone text-xs"></i>
+                <div class="absolute right-1 flex items-center gap-0.5">
+                    <button onclick="toggleVoiceInput()" id="micBtn" title="Voice Decryptor"
+                        class="w-7 h-7 bg-transparent hover:bg-zinc-900 border border-zinc-900 text-zinc-500 rounded flex items-center justify-center transition-all">
+                        <i class="fa-solid fa-microphone text-[10px]"></i>
                     </button>
                     
-                    <button onclick="sendMsg()" class="w-8 h-8 bg-cyan-600 hover:bg-cyan-500 active:scale-95 text-slate-950 rounded-lg flex items-center justify-center transition-all shadow-md shadow-cyan-600/10">
-                        <i class="fa-solid fa-paper-plane text-xs"></i>
+                    <button onclick="sendMsg()" class="w-7 h-7 bg-zinc-200 hover:bg-white active:scale-95 text-zinc-950 rounded flex items-center justify-center transition-all">
+                        <i class="fa-solid fa-arrow-up text-xs"></i>
                     </button>
                 </div>
             </div>
@@ -309,13 +312,13 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     recognition.onstart = () => {
         isRecording = true;
         document.getElementById("micBtn").classList.add("mic-active");
-        document.getElementById("msg").placeholder = "Listening intelligently...";
+        document.getElementById("msg").placeholder = "Streaming audio input sequence...";
     };
 
     recognition.onend = () => {
         isRecording = false;
         document.getElementById("micBtn").classList.remove("mic-active");
-        document.getElementById("msg").placeholder = "Awaiting computational sequence instructions...";
+        document.getElementById("msg").placeholder = "Execute terminal command prompt sequencers...";
     };
 
     recognition.onresult = (event) => {
@@ -325,7 +328,7 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
 
 function toggleVoiceInput() {
     if (!recognition) {
-        alert("Voice engine unsupported in this node browser browser profile.");
+        alert("Audio matrix layer unsupported on this node browser config.");
         return;
     }
     if (isRecording) recognition.stop();
@@ -334,14 +337,13 @@ function toggleVoiceInput() {
 
 window.onload = () => {
     const token = localStorage.getItem("token");
-    const name = localStorage.getItem("userName") || "Operator";
+    const name = localStorage.getItem("userName") || "Root";
 
     if (!token) {
         window.location.href = "login.html";
         return;
     }
     
-    document.getElementById("displayUserName").innerText = name;
     document.getElementById("displayUserFooterName").innerText = name;
     document.getElementById("profileBadge").innerText = name.substring(0, 2).toUpperCase();
     
@@ -351,12 +353,12 @@ window.onload = () => {
 
 function renderBlankWelcomeInterface() {
     chatArea.innerHTML = `
-        <div id="welcomeScreen" class="flex flex-col justify-center items-center mt-20 text-center px-4 animate-msg">
-            <div class="edith-orb w-14 h-14 rounded-xl flex items-center justify-center text-xl text-slate-950 mb-4 shadow-xl">
-                <i class="fa-solid fa-brain"></i>
+        <div id="welcomeScreen" class="flex flex-col justify-center items-center mt-24 text-center px-4 animate-msg">
+            <div class="w-8 h-8 rounded bg-zinc-900 border border-zinc-800 flex items-center justify-center text-xs text-emerald-500 mb-3 font-mono">
+                &gt;_
             </div>
-            <h2 class="text-lg font-medium mb-1 tracking-tight text-slate-100">Intelligent Hub Matrix Operational</h2>
-            <p class="text-slate-500 text-xs max-w-sm font-normal leading-relaxed">System ready to ingest files, compile data schemas, or process standalone core infrastructure streams.</p>
+            <h2 class="text-xs font-mono font-medium mb-1 text-zinc-200">Awaiting Pipeline Instructions</h2>
+            <p class="text-zinc-600 text-[11px] max-w-xs font-normal leading-relaxed">System terminal calibrated. Ready to process multi-tenant raw data assets and standalone logic execution.</p>
         </div>
     `;
 }
@@ -382,49 +384,52 @@ async function loadChatHistory(autoLoadFirstSession = false) {
                 loadSelectedSessionStream(globallyCachedHistoryTree[0]._id);
             }
         } else {
-            historyLogContainer.innerHTML = `<div class="text-center py-8 text-[11px] text-slate-600 font-light">No core sessions found.</div>`;
+            historyLogContainer.innerHTML = `<div class="text-center py-8 text-[10px] font-mono text-zinc-700">Log entries empty</div>`;
         }
     } catch (err) {
         console.error("History sync error:", err);
-        historyLogContainer.innerHTML = `<div class="text-center py-6 text-xs text-red-400/40">Server Sync Interrupted</div>`;
+        historyLogContainer.innerHTML = `<div class="text-center py-6 text-[10px] font-mono text-red-900/60">Registry Sync Fault</div>`;
     }
 }
 
 function renderSidebarHistoryList(historyArray) {
+    const counter = document.getElementById("sessionCounter");
     if (!historyArray || historyArray.length === 0) {
-        historyLogContainer.innerHTML = `<div class="text-center py-8 text-[11px] text-slate-600 font-light">No core sessions found.</div>`;
+        historyLogContainer.innerHTML = `<div class="text-center py-8 text-[10px] font-mono text-zinc-700">Log entries empty</div>`;
+        if(counter) counter.innerText = "0/0";
         return;
     }
     historyLogContainer.innerHTML = "";
+    if(counter) counter.innerText = `${historyArray.length}/${historyArray.length}`;
     
     historyArray.forEach((session) => {
         if (!session) return;
         const id = session._id;
-        let displayTitle = "Untitled Chat Session";
+        let displayTitle = "Blank Layer Sequence";
         
         if (session.messages && session.messages.length > 0 && session.messages[0]) {
-            displayTitle = session.messages[0].content || "Empty Prompt Layer";
+            displayTitle = session.messages[0].content || "Empty Segment Object";
         } else if (session.title) {
             displayTitle = session.title;
         }
         
-        if (displayTitle.length > 22) {
-            displayTitle = displayTitle.substring(0, 22) + "...";
+        if (displayTitle.length > 24) {
+            displayTitle = displayTitle.substring(0, 24) + "...";
         }
 
         const itemWrapper = document.createElement("div");
-        itemWrapper.className = "flex items-center justify-between w-full relative group history-item-wrapper rounded-lg transition-all pr-1 hover:bg-white/5";
+        itemWrapper.className = "flex items-center justify-between w-full relative group history-item-wrapper rounded-l-md transition-all pr-1 hover:bg-zinc-900/40";
 
         const btn = document.createElement("button");
         btn.id = `sidebar-session-${id}`;
         btn.onclick = () => loadSelectedSessionStream(id);
         
         const activeClass = (String(id) === String(currentActiveSessionId)) ? 'history-active' : '';
-        btn.className = `flex-1 text-left px-3 py-2 text-[11px] tracking-wide transition-all overflow-hidden text-ellipsis whitespace-nowrap block truncate text-slate-400 rounded-lg ${activeClass}`;
+        btn.className = `flex-1 text-left px-3 py-1.5 text-[11px] tracking-tight font-normal transition-all overflow-hidden text-ellipsis whitespace-nowrap block truncate text-zinc-500 rounded-l-md ${activeClass}`;
         btn.innerText = displayTitle;
 
         const deleteBtn = document.createElement("button");
-        deleteBtn.className = "delete-chat-btn text-slate-600 hover:text-red-400 p-1 text-[11px] rounded transition-all ml-1";
+        deleteBtn.className = "delete-chat-btn text-zinc-700 p-1 text-[10px] rounded transition-all ml-1";
         deleteBtn.innerHTML = `<i class="fa-regular fa-trash-can"></i>`;
         deleteBtn.onclick = (e) => {
             e.stopPropagation(); 
@@ -438,7 +443,7 @@ function renderSidebarHistoryList(historyArray) {
 }
 
 async function deleteChatSessionFromServer(sessionId) {
-    if (!confirm("Are you sure you want to purge this chat session stream?")) return;
+    if (!confirm("Confirm hard purge on this memory segment?")) return;
     
     const token = localStorage.getItem("token");
     try {
@@ -454,11 +459,11 @@ async function deleteChatSessionFromServer(sessionId) {
             }
             await silentRefreshHistoryTree();
         } else {
-            alert("Failed to execute purge on backend structure.");
+            alert("Matrix layer deletion denied by core.");
         }
     } catch (err) {
         console.error("Purge failure:", err);
-        alert("Server network disconnect during chat deletion.");
+        alert("Pipeline network dropped during segment wipe.");
     }
 }
 
@@ -514,7 +519,7 @@ async function sendMsg() {
 
     if (!message && fileInput.files.length === 0) return;
 
-    appendMessageToUI(message || "Ingesting active stream layers...", true);
+    appendMessageToUI(message || "Processing stream vector...", true);
     input.value = "";
 
     const formData = new FormData();
@@ -538,7 +543,7 @@ async function sendMsg() {
         removeTypingIndicator();
 
         if (!res.ok) {
-            appendMessageToUI("❌ Command execution stream failure.", false);
+            appendMessageToUI("❌ Core interface logic failure response.", false);
             return;
         }
 
@@ -572,7 +577,7 @@ async function sendMsg() {
 
     } catch (err) {
         removeTypingIndicator();
-        appendMessageToUI("❌ Core pipeline drop encountered.", false);
+        appendMessageToUI("❌ Disconnect within pipeline stream routing.", false);
     }
 
     fileInput.value = "";
@@ -606,7 +611,7 @@ function appendMessageToUI(text, isUser) {
     div.className = `flex ${isUser ? "justify-end" : "justify-start"} animate-msg w-full`;
 
     div.innerHTML = `
-        <div class="p-3.5 px-4 max-w-[85%] text-xs leading-relaxed shadow-sm ${isUser ? "user-bubble" : "ai-bubble break-words overflow-hidden"}">
+        <div class="p-3 px-3.5 max-w-[85%] text-xs leading-relaxed ${isUser ? "user-bubble" : "ai-bubble break-words overflow-hidden"}">
             ${isUser ? escapeHtml(text) : cleanAndParseMarkdown(text)}
         </div>
     `;
@@ -626,12 +631,12 @@ function cleanAndParseMarkdown(text) {
         wrapper.className = 'code-block-wrapper';
         const copyBtn = document.createElement('button');
         copyBtn.className = 'copy-code-btn';
-        copyBtn.innerHTML = '<i class="fa-regular fa-copy mr-1"></i> Copy';
+        copyBtn.innerHTML = 'Copy';
         
         copyBtn.onclick = () => {
             navigator.clipboard.writeText(pre.querySelector('code')?.innerText || pre.innerText).then(() => {
-                copyBtn.innerHTML = '<i class="fa-solid fa-check text-emerald-400 mr-1"></i> Copied';
-                setTimeout(() => { copyBtn.innerHTML = '<i class="fa-regular fa-copy mr-1"></i> Copy'; }, 2000);
+                copyBtn.innerHTML = 'Copied';
+                setTimeout(() => { copyBtn.innerHTML = 'Copy'; }, 2000);
             });
         };
         pre.parentNode.insertBefore(wrapper, pre);
@@ -645,7 +650,7 @@ function showTypingIndicator() {
     const div = document.createElement("div");
     div.id = "edithTypingIndicator";
     div.className = "flex justify-start animate-msg";
-    div.innerHTML = `<div class="p-3 px-4 ai-bubble flex items-center gap-1 shadow-sm"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>`;
+    div.innerHTML = `<div class="p-2.5 px-3.5 ai-bubble flex items-center gap-1"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>`;
     chatArea.appendChild(div);
     chatArea.scrollTop = chatArea.scrollHeight;
 }
@@ -661,21 +666,21 @@ function updateSummarizeUI() {
     const dotElement = document.getElementById("sumDot");
     const btn = document.getElementById("sumBtn");
     statusText.innerText = isSummarize ? "ON" : "OFF";
-    statusText.className = isSummarize ? "font-semibold text-cyan-400" : "font-semibold text-slate-500";
-    dotElement.className = isSummarize ? "w-1 h-1 rounded-full bg-cyan-400" : "w-1 h-1 rounded-full bg-slate-500";
-    if (isSummarize) btn.classList.add("border-cyan-500/20", "bg-cyan-500/5"); else btn.classList.remove("border-cyan-500/20", "bg-cyan-500/5");
+    statusText.className = isSummarize ? "font-medium text-emerald-500" : "font-medium text-zinc-600";
+    dotElement.className = isSummarize ? "w-1 h-1 rounded-full bg-emerald-500" : "w-1 h-1 rounded-full bg-zinc-700";
+    if (isSummarize) btn.classList.add("border-zinc-800", "bg-zinc-900/30"); else btn.classList.remove("border-zinc-800", "bg-zinc-900/30");
 }
 
 function updateFileStatus() {
     const files = document.getElementById("fileInput").files;
-    document.getElementById("fileCount").innerText = files.length > 0 ? `• ${files.length} loaded` : "";
+    document.getElementById("fileCount").innerText = files.length > 0 ? `[+${files.length} ASSETS]` : "";
 }
 
 function toggleMobileSidebar() {
     const sidebar = document.getElementById("sidebarPanel");
     sidebar.classList.toggle("hidden");
     if (!sidebar.classList.contains("hidden")) {
-        sidebar.classList.add("fixed", "inset-y-0", "left-0", "w-64", "z-50", "bg-slate-950");
+        sidebar.classList.add("fixed", "inset-y-0", "left-0", "w-60", "z-50", "bg-[#0c0c0e]");
     }
 }
 
