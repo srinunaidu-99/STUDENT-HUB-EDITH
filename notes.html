@@ -53,7 +53,7 @@
       box-shadow: 0 20px 40px -15px rgba(79, 70, 229, 0.1); 
     }
     
-    /* Code block fixes inside dashboard cards */
+    /* Code block layout configurations */
     .note-content pre {
       padding: 12px;
       border-radius: 8px;
@@ -118,11 +118,11 @@
   </main>
 
   <script>
-    // System Theme Auto Synchronization Engine
+    // Lifecycle initialization engine
     window.onload = () => {
       applySavedTheme();
 
-      // Token Check Security Verification
+      // Security Token Verification Check
       if (!localStorage.getItem('token')) {
         window.location.href = 'login.html';
         return;
@@ -130,28 +130,29 @@
       renderNotes();
     };
 
-    // Reads the precise theme state configured by dashboard.html
+    // Synchronizes the application state using your custom 'mode' key
     function applySavedTheme() {
-      const savedTheme = localStorage.getItem('theme'); // Assumes your dashboard uses 'theme' key
-      if (savedTheme === 'light') {
+      const savedMode = localStorage.getItem('mode'); // Reads dashboard choice 'mode'
+      if (savedMode === 'light') {
         document.documentElement.classList.remove('dark');
         document.documentElement.classList.add('light');
       } else {
-        // Defaults to dark mode if no system key exists or matches dark
+        // Defaults to dark system UI layout if dark or unassigned
         document.documentElement.classList.remove('light');
         document.documentElement.classList.add('dark');
       }
     }
 
+    // Handles live user switching and logs state back to the dashboard context
     function toggleTheme() {
       if (document.documentElement.classList.contains('dark')) {
         document.documentElement.classList.remove('dark');
         document.documentElement.classList.add('light');
-        localStorage.setItem('theme', 'light'); // Keep updated for Dashboard too
+        localStorage.setItem('mode', 'light'); // Keeps state synced across pages
       } else {
         document.documentElement.classList.remove('light');
         document.documentElement.classList.add('dark');
-        localStorage.setItem('theme', 'dark'); // Keep updated for Dashboard too
+        localStorage.setItem('mode', 'dark');  // Keeps state synced across pages
       }
     }
 
@@ -211,7 +212,7 @@
       container.innerHTML = htmlContent;
     }
 
-    // PDF Handwriting Notebook Style Generator Core Action
+    // PDF Handwriting Notebook Style Layout Engine
     function downloadSingleNoteAsPDF(noteId) {
       const notes = JSON.parse(localStorage.getItem('edith_vault_notes')) || [];
       const note = notes.find(n => n.id === noteId);
@@ -225,7 +226,7 @@
       printWrapper.style.padding = '50px 40px';
       printWrapper.style.color = '#0f172a'; 
       
-      // Creating Handwriting notebook Ruled Lines effect
+      // Creating Handwriting notebook Ruled Lines layout matrix
       printWrapper.style.backgroundColor = '#faf8f5'; 
       printWrapper.style.backgroundImage = 'linear-gradient(#e2dcd5 1px, transparent 1px)';
       printWrapper.style.backgroundSize = '100% 28px';
