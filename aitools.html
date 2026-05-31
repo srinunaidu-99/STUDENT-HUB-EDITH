@@ -218,3 +218,16 @@
           }
         } else if (data.status && data.status.description === "Time Limit Exceeded") {
           output.innerText = "❌ Timeout Error: Process exceeded time execution boundaries.";
+          output.style.color = "#f87171";
+        } else {
+          output.innerText = "✅ Process finished successfully (Exit Code 0).";
+          output.style.color = "#34d399";
+        }
+      } catch (err) {
+        output.innerText = "⚠ API Node Network Exception. Check connection parameters.";
+        output.style.color = "#f87171";
+      }
+    }
+  </script>
+</body>
+</html>
