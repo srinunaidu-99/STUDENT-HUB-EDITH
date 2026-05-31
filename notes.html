@@ -1,97 +1,133 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Digital Vault - EDITH Intelligence</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <!-- Markdown Parsing Module inside Cards -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <!-- PDF Generation Engine -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap');
     
     body { 
       font-family: 'Plus Jakarta Sans', sans-serif; 
-      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #030712 75%); 
-      overflow-x: hidden; 
+      transition: background 0.3s ease, color 0.3s ease;
     }
     
+    /* Dark Mode Gradient */
+    .dark body {
+      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #030712 75%); 
+    }
+    
+    /* Light Mode Gradient */
+    .light body {
+      background: radial-gradient(circle at 50% 0%, #f0f2fe 0%, #e2e8f0 75%);
+    }
+
     .glass-card {
-      background: rgba(10, 11, 23, 0.65);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.05);
       transition: all 0.3s ease;
     }
     
-    .glass-card:hover { 
-      border-color: rgba(168, 85, 247, 0.3);
-      box-shadow: 0 20px 40px -15px rgba(168, 85, 247, 0.15); 
+    .dark .glass-card {
+      background: rgba(10, 11, 23, 0.65);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .light .glass-card {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    
+    .dark .glass-card:hover { 
+      border-color: rgba(168, 85, 247, 0.4);
+      box-shadow: 0 20px 40px -15px rgba(168, 85, 247, 0.2); 
+    }
+
+    .light .glass-card:hover { 
+      border-color: rgba(79, 70, 229, 0.3);
+      box-shadow: 0 20px 40px -15px rgba(79, 70, 229, 0.1); 
     }
     
     /* Code block fixes inside dashboard cards */
     .note-content pre {
-      background: #020617 !important;
       padding: 12px;
       border-radius: 8px;
       overflow-x: auto;
       margin: 8px 0;
+    }
+    .dark .note-content pre {
+      background: #020617 !important;
       border: 1px solid rgba(255, 255, 255, 0.05);
     }
-    .note-content code {
-      color: #a5b4fc;
-      font-family: monospace;
+    .light .note-content pre {
+      background: #f8fafc !important;
+      border: 1px solid rgba(0, 0, 0, 0.05);
     }
+
+    .dark .note-content code { color: #a5b4fc; font-family: monospace; }
+    .light .note-content code { color: #4f46e5; font-family: monospace; }
+    
     .note-content ul { list-style-type: disc; margin-left: 20px; }
     .note-content ol { list-style-type: decimal; margin-left: 20px; }
   </style>
 </head>
-<body class="text-gray-200 min-h-screen">
+<body class="text-gray-800 dark:text-gray-200 min-h-screen">
 
-  <!-- Header Layout -->
-  <header class="sticky top-0 z-40 bg-gray-950/20 backdrop-blur-md border-b border-white/5">
+  <header class="sticky top-0 z-40 bg-white/10 dark:bg-gray-950/20 backdrop-blur-md border-b border-black/5 dark:border-white/5">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3.5">
         <div onclick="window.location.href='dashboard.html'" class="cursor-pointer w-10 h-10 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-lg">
           <i class="fa-solid fa-arrow-left"></i>
         </div>
-        <h1 class="text-xl font-bold tracking-tight text-white">
-          Digital Vault <span class="text-xs font-semibold text-purple-400 border border-purple-500/30 px-1.5 py-0.5 rounded-md ml-1 bg-purple-500/10">Storage</span>
+        <h1 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+          Digital Vault <span class="text-xs font-semibold text-indigo-600 dark:text-purple-400 border border-indigo-500/30 dark:border-purple-500/30 px-1.5 py-0.5 rounded-md ml-1 bg-indigo-500/10 dark:bg-purple-500/10">Storage</span>
         </h1>
       </div>
+
+      <button onclick="toggleTheme()" id="themeToggleBtn" class="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-200/50 dark:bg-white/5 border border-black/5 dark:border-white/10 text-gray-700 dark:text-gray-300 hover:scale-105 transition-all">
+        <i class="fa-solid fa-sun hidden dark:block"></i>
+        <i class="fa-solid fa-moon block dark:hidden"></i>
+      </button>
     </div>
   </header>
 
-  <!-- Notes Grid Section -->
   <main class="max-w-7xl mx-auto px-6 py-12">
     <div class="mb-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
       <div>
-        <h2 class="text-3xl font-bold text-white tracking-tight">System Transcripts</h2>
-        <p class="text-gray-400 text-sm font-light mt-1">Review saved analytical records and custom compiled notes.</p>
+        <h2 class="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">System Transcripts</h2>
+        <p class="text-gray-500 dark:text-gray-400 text-sm font-light mt-1">Review saved analytical records and custom compiled notes.</p>
       </div>
-      <button onclick="clearAllNotes()" class="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 text-xs font-semibold rounded-xl transition-all">
+      <button onclick="clearAllNotes()" class="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-500 dark:text-red-400 text-xs font-semibold rounded-xl transition-all">
         <i class="fa-solid fa-dumpster-fire mr-1"></i> Clear All Vaults
       </button>
     </div>
 
-    <!-- Dynamic Cards Grid Container -->
     <div id="notesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <!-- Notes items will be auto-generated here via JS -->
-    </div>
+      </div>
 
-    <!-- Empty State Handle -->
     <div id="emptyState" class="hidden text-center py-20">
-      <div class="text-gray-600 text-5xl mb-4"><i class="fa-solid fa-folder-open"></i></div>
-      <p class="text-gray-400 font-medium">No notes synthesized yet.</p>
-      <p class="text-gray-500 text-sm mt-1">Ask EDITH to "prepare notes" in the Intelligence Lab terminal.</p>
+      <div class="text-gray-400 dark:text-gray-600 text-5xl mb-4"><i class="fa-solid fa-folder-open"></i></div>
+      <p class="text-gray-600 dark:text-gray-400 font-medium">No notes synthesized yet.</p>
+      <p class="text-gray-400 dark:text-gray-500 text-sm mt-1">Ask EDITH to "prepare notes" in the Intelligence Lab terminal.</p>
     </div>
   </main>
 
   <script>
     window.onload = () => {
+      // Setup Theme Preferences
+      if (localStorage.getItem('theme') === 'light') {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+      } else {
+        document.documentElement.classList.remove('light');
+        document.documentElement.classList.add('dark');
+      }
+
       // Token Check Security Verification
       if (!localStorage.getItem('token')) {
         window.location.href = 'login.html';
@@ -100,11 +136,22 @@
       renderNotes();
     };
 
+    function toggleTheme() {
+      if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        localStorage.setItem('theme', 'light');
+      } else {
+        document.documentElement.classList.remove('light');
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    }
+
     function renderNotes() {
       const container = document.getElementById('notesContainer');
       const emptyState = document.getElementById('emptyState');
       
-      // Fetch dynamic database key securely
       let notes = [];
       try {
         notes = JSON.parse(localStorage.getItem('edith_vault_notes')) || [];
@@ -123,7 +170,6 @@
       
       let htmlContent = "";
       notes.forEach(note => {
-        // Safe check for marked parser initialization rules
         let renderedMarkdown = "";
         try {
           renderedMarkdown = typeof marked.parse === 'function' ? marked.parse(note.content || "") : note.content;
@@ -135,22 +181,20 @@
           <div class="glass-card rounded-2xl p-6 relative flex flex-col justify-between" id="card_${note.id}">
             <div>
               <div class="flex justify-between items-start mb-4 pr-8">
-                <h3 class="text-lg font-bold text-purple-400 tracking-tight">${escapeHtml(note.title || "Synthesized Knowledge Unit")}</h3>
-                <button onclick="deleteNote('${note.id}')" title="Delete Note" class="text-gray-500 hover:text-red-400 transition-colors absolute top-6 right-6 text-sm">
+                <h3 class="text-lg font-bold text-indigo-600 dark:text-purple-400 tracking-tight">${escapeHtml(note.title || "Synthesized Knowledge Unit")}</h3>
+                <button onclick="deleteNote('${note.id}')" title="Delete Note" class="text-gray-400 dark:text-gray-500 hover:text-red-500 transition-colors absolute top-6 right-6 text-sm">
                   <i class="fa-solid fa-trash-can"></i>
                 </button>
               </div>
-              <!-- Content Area with clean formatting layout -->
-              <div class="note-content text-gray-300 text-sm font-light leading-relaxed break-words overflow-hidden space-y-2">
+              <div class="note-content text-gray-600 dark:text-gray-300 text-sm font-light leading-relaxed break-words overflow-hidden space-y-2">
                 ${renderedMarkdown}
               </div>
             </div>
             
-            <!-- Bottom Control Utilities bar Inside Cards -->
-            <div class="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-[11px] text-gray-500 font-mono">
+            <div class="mt-6 pt-4 border-t border-black/5 dark:border-white/5 flex items-center justify-between text-[11px] text-gray-400 dark:text-gray-500 font-mono">
               <span>${note.timestamp || "Recent Build"}</span>
-              <button onclick="downloadSingleNoteAsPDF('${note.id}')" class="px-2.5 py-1 bg-purple-600/20 hover:bg-purple-600 border border-purple-500/30 text-purple-300 hover:text-white rounded-md font-sans font-semibold transition-all flex items-center gap-1 text-[11px]">
-                <i class="fa-solid fa-file-pdf"></i> PDF
+              <button onclick="downloadSingleNoteAsPDF('${note.id}')" class="px-2.5 py-1 bg-indigo-600/10 dark:bg-purple-600/20 hover:bg-indigo-600 hover:dark:bg-purple-600 border border-indigo-500/30 dark:border-purple-500/30 text-indigo-600 dark:text-purple-300 hover:text-white rounded-md font-sans font-semibold transition-all flex items-center gap-1 text-[11px]">
+                <i class="fa-solid fa-file-pdf"></i> Handwriting PDF
               </button>
             </div>
           </div>
@@ -160,7 +204,7 @@
       container.innerHTML = htmlContent;
     }
 
-    // PDF Single File Download Core Action
+    // PDF Handwriting Notebook Style Generator Core Action
     function downloadSingleNoteAsPDF(noteId) {
       const notes = JSON.parse(localStorage.getItem('edith_vault_notes')) || [];
       const note = notes.find(n => n.id === noteId);
@@ -171,11 +215,16 @@
       }
 
       const printWrapper = document.createElement('div');
-      printWrapper.style.padding = '40px';
-      printWrapper.style.color = '#111827';
-      printWrapper.style.backgroundColor = '#ffffff';
-      printWrapper.style.fontFamily = 'Arial, sans-serif';
-      printWrapper.style.lineHeight = '1.6';
+      printWrapper.style.padding = '50px 40px';
+      printWrapper.style.color = '#0f172a'; // Dark blue-grey ink look
+      
+      // Creating Handwriting notebook Ruled Lines effect
+      printWrapper.style.backgroundColor = '#faf8f5'; 
+      printWrapper.style.backgroundImage = 'linear-gradient(#e2dcd5 1px, transparent 1px)';
+      printWrapper.style.backgroundSize = '100% 28px';
+      printWrapper.style.fontFamily = '"Caveat", cursive';
+      printWrapper.style.fontSize = '22px';
+      printWrapper.style.lineHeight = '28px';
 
       let parsedContent = "";
       try {
@@ -185,33 +234,39 @@
       }
 
       printWrapper.innerHTML = `
-        <div style="border-bottom: 2px solid #6b21a8; padding-bottom: 12px; margin-bottom: 24px;">
-          <h1 style="color: #6b21a8; margin: 0; font-size: 22px; font-weight: bold;">EDITH DIGITAL VAULT</h1>
-          <p style="color: #6b7280; margin: 4px 0 0 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">
-            Vault Security Item Reference: ${note.id} • Saved: ${note.timestamp}
+        <div style="border-bottom: 2px dashed #4f46e5; padding-bottom: 8px; margin-bottom: 28px; font-family: sans-serif; line-height: 1.4;">
+          <h1 style="color: #4f46e5; margin: 0; font-size: 16px; font-weight: bold; letter-spacing: 1px;">EDITH DIGITAL VAULT NOTEBOOK</h1>
+          <p style="color: #64748b; margin: 4px 0 0 0; font-size: 11px; text-transform: uppercase;">
+            Ref: ${note.id} • Created: ${note.timestamp}
           </p>
         </div>
-        <div style="margin-bottom: 20px;">
-          <h2 style="color: #111827; font-size: 18px; margin-top: 0; font-weight: 700;">${note.title}</h2>
+        <div style="margin-bottom: 15px;">
+          <h2 style="color: #1e1b4b; font-size: 26px; margin-top: 0; font-weight: 700; text-decoration: underline; decoration-color: #a78bfa;">${note.title}</h2>
         </div>
-        <div style="color: #374151; font-size: 13px; font-weight: normal;">
+        <div class="handwritten-body" style="font-weight: 500;">
           ${parsedContent}
         </div>
       `;
 
+      // Apply styling adjustments over standard elements to preserve notebook look
       printWrapper.querySelectorAll('pre').forEach(p => {
-        p.style.backgroundColor = '#f3f4f6';
-        p.style.color = '#1f2937';
-        p.style.padding = '12px';
+        p.style.backgroundColor = 'rgba(0,0,0,0.03)';
+        p.style.fontFamily = 'monospace';
+        p.style.fontSize = '14px';
+        p.style.padding = '10px';
+        p.style.margin = '10px 0';
         p.style.borderRadius = '6px';
-        p.style.border = '1px solid #e5e7eb';
-        p.style.overflowX = 'auto';
+        p.style.borderLeft = '3px solid #4f46e5';
+        p.style.lineHeight = '1.4';
       });
-      printWrapper.querySelectorAll('code').forEach(c => c.style.color = '#b91c1c');
+      
+      printWrapper.querySelectorAll('ul, ol').forEach(list => {
+        list.style.paddingLeft = '20px';
+      });
 
       const printOptions = {
         margin:       15,
-        filename:     `${note.title.replace(/[^a-z0-9]/gi, '_')}_Notes.pdf`,
+        filename:     `${note.title.replace(/[^a-z0-9]/gi, '_')}_Handwritten.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },
         html2canvas:  { scale: 2, useCORS: true, logging: false },
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
