@@ -97,7 +97,6 @@
   </div>
 
   <script>
-    // Exact package strings required by Piston Cloud System
     const runtimeConfig = {
       python: { version: "*", ext: "py" },
       node: { version: "*", ext: "js" },
@@ -114,6 +113,33 @@
       java: `public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello Srinu 🔥");\n    }\n}`
     };
 
+    // 1. PAGE LOAD SYNC: Reads mode from dashboard localstorage on boot
+    window.onload = () => {
+      applySavedTheme();
+    };
+
+    // 2. LIVE TRACKING: Listens to Dashboard tab's theme change instantly without reload
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'mode') {
+        applySavedTheme();
+      }
+    });
+
+    function applySavedTheme() {
+      const savedMode = localStorage.getItem('mode');
+      const htmlEl = document.documentElement;
+      const themeIcon = document.getElementById('themeIcon');
+      
+      if (savedMode === 'light') {
+        htmlEl.classList.remove('dark');
+        themeIcon.className = "fa-solid fa-moon text-indigo-600";
+      } else {
+        htmlEl.classList.add('dark');
+        themeIcon.className = "fa-solid fa-sun text-amber-500";
+      }
+    }
+
+    // Manual toggle option via icon
     function toggleTheme() {
       const htmlEl = document.documentElement;
       const themeIcon = document.getElementById('themeIcon');
@@ -128,20 +154,6 @@
         localStorage.setItem('mode', 'dark');
       }
     }
-
-    window.onload = () => {
-      const savedMode = localStorage.getItem('mode');
-      const htmlEl = document.documentElement;
-      const themeIcon = document.getElementById('themeIcon');
-      
-      if (savedMode === 'light') {
-        htmlEl.classList.remove('dark');
-        themeIcon.className = "fa-solid fa-moon text-indigo-600";
-      } else {
-        htmlEl.classList.add('dark');
-        themeIcon.className = "fa-solid fa-sun text-amber-500";
-      }
-    };
 
     function updateTemplate() {
       const lang = document.getElementById("lang").value;
@@ -167,7 +179,7 @@
       output.style.color = "";
     }
 
-    // 100% Secure & Tested Piston Execution Loop
+    // Piston Sandbox Execution Engine
     async function runCode() {
       const code = document.getElementById("code").value;
       const lang = document.getElementById("lang").value;
