@@ -17,12 +17,12 @@
       transition: background 0.3s ease, color 0.3s ease;
     }
     
-    /* Dark Mode Gradient */
+    /* Dark Mode Gradient Layout */
     .dark body {
       background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #030712 75%); 
     }
     
-    /* Light Mode Gradient */
+    /* Light Mode Gradient Layout */
     .light body {
       background: radial-gradient(circle at 50% 0%, #f0f2fe 0%, #e2e8f0 75%);
     }
@@ -53,7 +53,7 @@
       box-shadow: 0 20px 40px -15px rgba(79, 70, 229, 0.1); 
     }
     
-    /* Code block layout configurations */
+    /* Code block layout configurations inside cards */
     .note-content pre {
       padding: 12px;
       border-radius: 8px;
@@ -130,29 +130,34 @@
       renderNotes();
     };
 
-    // Synchronizes the application state using your custom 'mode' key
+    // Advanced Theme Scanner (Checks multiple possible key setups)
     function applySavedTheme() {
-      const savedMode = localStorage.getItem('mode'); // Reads dashboard choice 'mode'
-      if (savedMode === 'light') {
+      const dashboardMode = localStorage.getItem('mode');
+      const dashboardTheme = localStorage.getItem('theme');
+      
+      // If either 'mode' or 'theme' points to light state, apply light theme structure
+      if (dashboardMode === 'light' || dashboardTheme === 'light' || dashboardMode === 'false') {
         document.documentElement.classList.remove('dark');
         document.documentElement.classList.add('light');
       } else {
-        // Defaults to dark system UI layout if dark or unassigned
+        // Fallback or explicit dark setting
         document.documentElement.classList.remove('light');
         document.documentElement.classList.add('dark');
       }
     }
 
-    // Handles live user switching and logs state back to the dashboard context
+    // Toggles interface locally and syncs back data using common key targets
     function toggleTheme() {
       if (document.documentElement.classList.contains('dark')) {
         document.documentElement.classList.remove('dark');
         document.documentElement.classList.add('light');
-        localStorage.setItem('mode', 'light'); // Keeps state synced across pages
+        localStorage.setItem('mode', 'light'); 
+        localStorage.setItem('theme', 'light'); 
       } else {
         document.documentElement.classList.remove('light');
         document.documentElement.classList.add('dark');
-        localStorage.setItem('mode', 'dark');  // Keeps state synced across pages
+        localStorage.setItem('mode', 'dark');  
+        localStorage.setItem('theme', 'dark');  
       }
     }
 
@@ -212,7 +217,7 @@
       container.innerHTML = htmlContent;
     }
 
-    // PDF Handwriting Notebook Style Layout Engine
+    // PDF Handwriting Notebook Style Engine
     function downloadSingleNoteAsPDF(noteId) {
       const notes = JSON.parse(localStorage.getItem('edith_vault_notes')) || [];
       const note = notes.find(n => n.id === noteId);
@@ -226,7 +231,7 @@
       printWrapper.style.padding = '50px 40px';
       printWrapper.style.color = '#0f172a'; 
       
-      // Creating Handwriting notebook Ruled Lines layout matrix
+      // Generating a ruled notebook background style matrix
       printWrapper.style.backgroundColor = '#faf8f5'; 
       printWrapper.style.backgroundImage = 'linear-gradient(#e2dcd5 1px, transparent 1px)';
       printWrapper.style.backgroundSize = '100% 28px';
