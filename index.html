@@ -29,7 +29,7 @@
             transition: background 0.3s ease, color 0.3s ease;
         }
 
-        /* Master Dashboard State Bindings */
+        /* Master Dashboard Sync State Bindings */
         .dark body { background-color: #0d0d11; color: #cbd5e1; }
         html:not(.dark) body { background-color: #f8fafc; color: #334155; }
 
@@ -56,7 +56,7 @@
         }
         .edith-logo-wrapper { animation: alertPulse 3s ease-in-out infinite; }
 
-        /* Core Component Bubbles - Dashboard Color Synchronization */
+        /* UI Chat Bubbles - Dashboard Sync */
         .dark .ai-bubble { background: #14141a; border: 1px solid rgba(255,255,255,0.03); color: #e2e8f0; }
         html:not(.dark) .ai-bubble { background: #ffffff; border: 1px solid rgba(0,0,0,0.06); color: #1e293b; box-shadow: 0 2px 12px rgba(0,0,0,0.02); }
 
@@ -66,11 +66,11 @@
         .dark .history-active { background: rgba(245, 158, 11, 0.05) !important; color: #f59e0b !important; border-left: 3px solid #f59e0b; }
         html:not(.dark) .history-active { background: rgba(239, 68, 68, 0.06) !important; color: #ef4444 !important; border-left: 3px solid #ef4444; }
 
-        /* Unified Code Block Structure */
+        /* Code Blocks styling */
         .code-block-wrapper { position: relative; margin: 14px 0; width: 100%; }
         pre { background: #060608 !important; padding: 14px; border-radius: 8px; overflow-x: auto; max-width: 100%; border: 1px solid rgba(255,255,255,0.02); }
         html:not(.dark) pre { background: #0f172a !important; }
-        code { font-family: 'Geist Mono', monospace; color: #cbd5e1; font-size: 0.85rem; linear-height: 1.5; }
+        code { font-family: 'Geist Mono', monospace; color: #cbd5e1; font-size: 0.85rem; line-height: 1.5; }
         html:not(.dark) code { color: #e2e8f0; }
         
         .copy-code-btn {
@@ -80,7 +80,7 @@
         }
         .copy-code-btn:hover { color: #f59e0b; background: #1e1e24; }
 
-        /* Micro-typing Engine Indicators */
+        /* Typing indicators */
         .typing-dot { animation: typingBounce 1.4s infinite ease-in-out both; width: 5.5px; height: 5.5px; background-color: #f59e0b; border-radius: 50%; display: inline-block; }
         .typing-dot:nth-child(2) { animation-delay: 0.2s; }
         .typing-dot:nth-child(3) { animation-delay: 0.4s; }
@@ -99,6 +99,7 @@
     
     <div id="sidebarBackdrop" onclick="toggleSidebarMenu(false)" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"></div>
 
+    <!-- Navigation Drawer -->
     <aside id="sidebarPanel" class="fixed inset-y-0 left-0 w-[270px] mobile-sidebar-hide lg:transform-none lg:relative z-50 flex flex-col h-full dark:bg-[#111116] bg-slate-50 transition-transform duration-300 ease-in-out border-r dark:border-zinc-900 border-slate-200 shrink-0">
         
         <div class="p-4 flex flex-col gap-2.5">
@@ -143,6 +144,7 @@
         </div>
     </aside>
 
+    <!-- Chat Console Panel -->
     <div class="flex-1 flex flex-col h-full overflow-hidden relative w-full dark:bg-[#0d0d11] bg-white">
         
         <header class="h-14.5 border-b dark:border-zinc-900 border-slate-200 flex justify-between items-center px-4 dark:bg-[#111116] bg-slate-50 shrink-0">
@@ -174,8 +176,10 @@
             </div>
         </header>
 
+        <!-- Dynamic Output Stream (Upgraded Fonts) -->
         <main id="chatArea" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 dark:bg-[#0d0d11] bg-slate-50/30 custom-scroll text-sm sm:text-[15px] leading-relaxed"></main>
 
+        <!-- Footer Terminal Controls -->
         <footer class="p-3 sm:p-4 dark:bg-[#111116] bg-slate-50 border-t dark:border-zinc-900 border-slate-200 shrink-0">
             <div class="max-w-4xl mx-auto w-full">
                 <div class="flex flex-wrap gap-1.5 mb-2.5 px-0.5">
@@ -227,7 +231,6 @@ let globallyCachedHistoryTree = [];
 let recognition;
 let isRecording = false;
 
-// Dashboard State Binding Pipeline Engine
 function initThemePipeline() {
     const savedTheme = localStorage.getItem('edith-theme') || 'dark';
     document.documentElement.classList.toggle('dark', savedTheme === 'dark');
@@ -359,4 +362,173 @@ async function createNewChatSession() {
         loadActiveSessionLogs();
     } catch (err) { console.error(err); }
 }
-    
+
+async function switchSessionPipeline(sessionId) {
+    if (currentActiveSessionId === sessionId) return;
+    currentActiveSessionId = sessionId;
+    renderSidebarTree(globallyCachedHistoryTree);
+    loadActiveSessionLogs();
+    toggleSidebarMenu(false);
+}
+
+async function deleteSessionTrack(event, sessionId) {
+    event.stopPropagation();
+    if (!confirm("Purge selected pipeline frame track matrix?")) return;
+    try {
+        const res = await secureApiRequest(`/api/chat/sessions/${sessionId}`, { method: "DELETE" });
+        if (!res) return;
+        if (currentActiveSessionId === sessionId) { currentActiveSessionId = null; chatArea.innerHTML = ""; }
+        fetchChatRegistryTree();
+    } catch (err) { console.error(err); }
+}
+
+async function loadActiveSessionLogs() {
+    if (!currentActiveSessionId) return;
+    chatArea.innerHTML = `<div class="flex items-center justify-center h-full text-xs font-mono dark:text-zinc-700 text-slate-400">Loading tracking logs...</div>`;
+
+    try {
+        const res = await secureApiRequest(`/api/chat/sessions/${currentActiveSessionId}/messages`);
+        if (!res) return;
+        const messages = await res.json();
+        chatArea.innerHTML = "";
+        messages.forEach(msg => appendMessageBubble(msg.role, msg.content));
+        scrollToTerminalBottom();
+    } catch (err) { chatArea.innerHTML = `<div class="flex items-center justify-center h-full text-xs font-mono text-rose-500">Sync failure.</div>`; }
+}
+
+function appendMessageBubble(role, content) {
+    const container = document.createElement("div");
+    container.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'} w-full mb-1`;
+
+    const inner = document.createElement("div");
+    inner.className = `max-w-[88%] lg:max-w-2xl rounded-2xl px-4 py-3 shadow-sm ${role === 'user' ? 'user-bubble' : 'ai-bubble'}`;
+
+    if (role === 'user') {
+        inner.textContent = content;
+    } else {
+        inner.innerHTML = marked.parse(content);
+        processCodeBlockWrappers(inner);
+    }
+
+    container.appendChild(inner);
+    chatArea.appendChild(container);
+    scrollToTerminalBottom();
+}
+
+function processCodeBlockWrappers(container) {
+    container.querySelectorAll("pre").forEach(pre => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "code-block-wrapper";
+        const copyBtn = document.createElement("button");
+        copyBtn.className = "copy-code-btn font-mono";
+        copyBtn.innerHTML = `<i class="fa-regular fa-copy mr-1"></i> COPY`;
+        
+        copyBtn.onclick = () => {
+            navigator.clipboard.writeText(pre.querySelector("code")?.innerText || pre.innerText);
+            copyBtn.innerHTML = `<i class="fa-solid fa-check text-amber-500 mr-1"></i> SYNCED`;
+            setTimeout(() => { copyBtn.innerHTML = `<i class="fa-regular fa-copy mr-1"></i> COPY`; }, 2000);
+        };
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+        wrapper.appendChild(copyBtn);
+    });
+}
+
+async function sendMsg() {
+    const inputField = document.getElementById("msg");
+    const prompt = inputField.value.trim();
+    const fileInput = document.getElementById("fileInput");
+
+    if (!prompt && fileInput.files.length === 0) return;
+    if (!currentActiveSessionId) await createNewChatSession();
+
+    inputField.value = "";
+    if (prompt) appendMessageBubble('user', prompt);
+    showTypingIndicator();
+
+    try {
+        let res;
+        if (fileInput.files.length > 0) {
+            const formData = new FormData();
+            formData.append("prompt", prompt || "Analyze tracker structural data array.");
+            formData.append("compress", isSummarize);
+            for (let i = 0; i < fileInput.files.length; i++) formData.append("files", fileInput.files[i]);
+            res = await secureApiRequest(`/api/chat/sessions/${currentActiveSessionId}/upload`, { method: "POST", body: formData });
+        } else {
+            res = await secureApiRequest(`/api/chat/sessions/${currentActiveSessionId}/messages`, {
+                method: "POST",
+                body: JSON.stringify({ content: prompt, compress: isSummarize })
+            });
+        }
+
+        removeTypingIndicator();
+        clearFileMatrixPipeline();
+        if (!res) return;
+        const data = await res.json();
+        appendMessageBubble('assistant', data.reply);
+    } catch (err) {
+        removeTypingIndicator();
+        appendMessageBubble('assistant', "System core error uplink dropped. Verify cluster channels.");
+    }
+}
+
+function toggleSummarize() {
+    isSummarize = !isSummarize;
+    document.getElementById("sumDot").className = isSummarize ? "w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_6px_#f59e0b]" : "w-1.5 h-1.5 rounded-full dark:bg-zinc-700 bg-slate-300";
+    document.getElementById("sumStatus").className = isSummarize ? "font-bold text-amber-500" : "font-bold dark:text-zinc-500 text-slate-400";
+    document.getElementById("sumStatus").textContent = isSummarize ? "ON" : "OFF";
+}
+
+function updateFileStatus() {
+    const len = document.getElementById("fileInput").files.length;
+    document.getElementById("fileCount").textContent = len > 0 ? `[${len} DATA MATRIX STACKED]` : "";
+}
+
+function clearFileMatrixPipeline() {
+    document.getElementById("fileInput").value = "";
+    document.getElementById("fileCount").textContent = "";
+}
+
+// Fixed minor element ID matching bug here
+function showTypingIndicator() {
+    removeTypingIndicator();
+    const ind = document.createElement("div");
+    ind.id = "edithCoreTypingIndicator";
+    ind.className = "flex justify-start w-full mb-2";
+    ind.innerHTML = `<div class="ai-bubble rounded-2xl px-4 py-3 flex items-center gap-1.5"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>`;
+    chatArea.appendChild(ind);
+    scrollToTerminalBottom();
+}
+
+function removeTypingIndicator() {
+    const targetedIndicator = document.getElementById("edithCoreTypingIndicator");
+    if (targetedIndicator) targetedIndicator.remove();
+}
+
+function scrollToTerminalBottom() { chatArea.scrollTop = chatArea.scrollHeight; }
+
+function toggleSidebarMenu(open) {
+    const panel = document.getElementById("sidebarPanel");
+    const backdrop = document.getElementById("sidebarBackdrop");
+    if (open) {
+        panel.classList.remove("mobile-sidebar-hide");
+        panel.classList.add("mobile-sidebar-show");
+        backdrop.classList.remove("hidden");
+    } else {
+        panel.classList.remove("mobile-sidebar-show");
+        panel.classList.add("mobile-sidebar-hide");
+        backdrop.classList.add("hidden");
+    }
+}
+
+window.onkeydown = (e) => {
+    if ((e.altKey || e.metaKey) && e.key.toLowerCase() === 'n') {
+        e.preventDefault();
+        createNewChatSession();
+    }
+};
+</script>
+</body>
+
+</html>
+
