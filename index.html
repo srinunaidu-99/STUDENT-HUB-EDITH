@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chat Assistant</title>
+    <title>Edith AI Assistant</title>
 
+    <!-- Dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
@@ -17,130 +18,152 @@
     </script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
-        /* Custom Subtle Scrollbar */
+        /* Modern Subtle Scrollbar */
         .chat-scroll::-webkit-scrollbar {
-            width: 6px;
+            width: 5px;
         }
         .chat-scroll::-webkit-scrollbar-track {
             background: transparent;
         }
         .dark .chat-scroll::-webkit-scrollbar-thumb {
             background: #27272a;
-            border-radius: 4px;
+            border-radius: 99px;
         }
         html:not(.dark) .chat-scroll::-webkit-scrollbar-thumb {
             background: #e4e4e7;
-            border-radius: 4px;
+            border-radius: 99px;
         }
 
-        /* Code Block Wrapper Style */
+        /* Clean Code Block Structure */
         .code-block-container {
             position: relative;
-            margin: 12px 0;
+            margin: 14px 0;
         }
         pre {
-            background: #18181b !important;
-            padding: 12px;
-            border-radius: 8px;
+            background: #09090b !important;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid #27272a;
             overflow-x: auto;
         }
         html:not(.dark) pre {
-            background: #f4f4f5 !important;
+            background: #f8fafc !important;
+            border: 1px solid #e2e8f0;
         }
         code {
             color: #f4f4f5;
             font-size: 0.875rem;
+            font-family: monospace;
         }
         html:not(.dark) code {
-            color: #18181b;
+            color: #0f172a;
         }
 
-        /* Typing Dots Animation */
-        .dot { animation: wave 1.3s infinite ease-in-out; width: 6px; height: 6px; background-color: #a1a1aa; border-radius: 50%; display: inline-block; }
+        /* Smooth Bouncing Typing Indicators */
+        .dot { animation: bouncePoint 1.4s infinite ease-in-out; width: 6px; height: 6px; background-color: #6366f1; border-radius: 50%; display: inline-block; }
         .dot:nth-child(2) { animation-delay: 0.2s; }
         .dot:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes wave { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-4px); } }
+        @keyframes bouncePoint { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
     </style>
 </head>
 
-<body class="w-screen h-screen flex dark:bg-[#09090b] bg-slate-50 transition-colors duration-200">
+<body class="w-screen h-screen flex dark:bg-[#09090b] bg-slate-50 text-slate-900 dark:text-zinc-100 transition-colors duration-200">
 
-    <div id="sidebarOverlay" onclick="toggleSidebar(false)" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-40 lg:hidden"></div>
+    <!-- Mobile Screen Sidebar Dismiss Backdrop Overlay -->
+    <div id="sidebarOverlay" onclick="toggleSidebar(false)" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"></div>
 
-    <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 -translate-x-full lg:translate-x-0 lg:relative z-50 flex flex-col h-full dark:bg-[#121214] bg-white border-r dark:border-zinc-800 border-slate-200 transition-transform duration-300 ease-in-out">
-        <div class="p-4">
-            <button onclick="createNewChat()" class="w-full h-10 flex items-center justify-center gap-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 active:scale-[0.98] rounded-lg shadow transition-all">
+    <!-- Main Navigation Sidebar Panel -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 w-66 -translate-x-full lg:translate-x-0 lg:relative z-50 flex flex-col h-full dark:bg-[#121214] bg-white border-r dark:border-zinc-800 border-slate-200 transition-transform duration-300 ease-in-out">
+        
+        <!-- Application Branding & New Stream Actions -->
+        <div class="p-4 space-y-3 shrink-0">
+            <div class="flex items-center gap-2 px-1">
+                <div class="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-sm">E</div>
+                <span class="text-base font-bold tracking-tight dark:text-white text-slate-900">Edith <span class="text-indigo-500 font-medium">AI</span></span>
+            </div>
+            <button onclick="createNewChat()" class="w-full h-10 flex items-center justify-center gap-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] rounded-xl shadow-sm transition-all">
                 <i class="fa-solid fa-plus text-xs"></i> New Chat
             </button>
         </div>
 
-        <div class="px-4 py-2 border-b dark:border-zinc-800 border-slate-100 flex justify-between items-center text-xs font-medium dark:text-zinc-500 text-slate-400">
-            <span>Recent Chats</span>
-            <span id="chatCounter" class="font-mono">0</span>
+        <!-- Dynamic History Counter Metrics Header -->
+        <div class="px-5 py-2 border-b dark:border-zinc-800 border-slate-100 flex justify-between items-center text-xs font-semibold uppercase tracking-wider dark:text-zinc-500 text-slate-400 shrink-0">
+            <span>Conversations</span>
+            <span id="chatCounter" class="bg-slate-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded font-mono">0</span>
         </div>
 
+        <!-- Rendered Realtime History Streams Wrapper -->
         <div id="chatHistoryList" class="flex-1 overflow-y-auto p-2 space-y-1 chat-scroll">
-            <div class="text-center py-8 text-xs text-zinc-400">Loading history...</div>
+            <div class="text-center py-8 text-xs text-zinc-400">Loading your history...</div>
         </div>
 
-        <div class="p-4 border-t dark:border-zinc-800 border-slate-200 flex items-center justify-between dark:bg-zinc-900/40 bg-slate-50">
+        <!-- User Authentication Profiles Management Account Tray -->
+        <div class="p-4 border-t dark:border-zinc-800 border-slate-200 flex items-center justify-between dark:bg-zinc-900/30 bg-slate-50/80 shrink-0">
             <div class="flex items-center gap-3 overflow-hidden">
-                <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-semibold" id="userBadge">OP</div>
+                <div class="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-xs font-bold" id="userBadge">U</div>
                 <div class="overflow-hidden">
-                    <span class="block text-sm font-medium dark:text-zinc-200 text-slate-700 truncate" id="userNameFooter">Operator</span>
+                    <span class="block text-sm font-semibold dark:text-zinc-200 text-slate-700 truncate" id="userNameFooter">User</span>
                 </div>
             </div>
-            <button onclick="logoutSession()" class="text-zinc-400 hover:text-red-500 transition-colors text-sm p-1.5" title="Logout">
+            <button onclick="logoutSession()" class="text-zinc-400 hover:text-red-500 transition-colors text-sm p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-zinc-800" title="Sign Out">
                 <i class="fa-solid fa-right-from-bracket"></i>
             </button>
         </div>
     </aside>
 
+    <!-- Context Response Shell Stream Interface Container -->
     <div class="flex-1 flex flex-col h-full overflow-hidden w-full">
         
+        <!-- Navbar Controlling Layer Elements -->
         <header class="h-14 border-b dark:border-zinc-800 border-slate-200 flex justify-between items-center px-4 dark:bg-[#121214] bg-white shrink-0">
             <div class="flex items-center gap-3">
-                <button onclick="toggleSidebar(true)" class="lg:hidden w-9 h-9 border dark:border-zinc-800 border-slate-200 rounded-lg flex items-center justify-center dark:text-zinc-300 text-slate-600 bg-transparent shadow-sm">
+                <button onclick="toggleSidebar(true)" class="lg:hidden w-9 h-9 border dark:border-zinc-800 border-slate-200 rounded-lg flex items-center justify-center dark:text-zinc-300 text-slate-600 bg-transparent">
                     <i class="fa-solid fa-bars text-sm"></i>
                 </button>
-                <h1 class="text-sm font-semibold dark:text-white text-slate-800 flex items-center gap-2">
-                    <i class="fa-solid fa-comment-dots text-blue-500"></i> AI Assistant
-                </h1>
+                <div class="flex items-center gap-2 lg:hidden">
+                    <div class="w-6 h-6 rounded-md bg-indigo-600 flex items-center justify-center text-white font-bold text-xs">E</div>
+                    <span class="text-sm font-bold dark:text-white text-slate-900">Edith</span>
+                </div>
             </div>
-            <div class="text-xs font-medium text-emerald-500 flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Connected
+            <div class="text-xs font-semibold text-emerald-500 bg-emerald-500/10 px-2.5 py-1 rounded-full flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Cloud Active
             </div>
         </header>
 
-        <main id="chatWindow" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 chat-scroll dark:bg-[#09090b] bg-slate-50/50"></main>
+        <!-- Dynamic Live Bubble Output Stream Log Area -->
+        <main id="chatWindow" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 chat-scroll dark:bg-[#09090b] bg-slate-50/30"></main>
 
+        <!-- Command Form Box User Submissions Inputs Layer -->
         <footer class="p-3 md:p-4 dark:bg-[#121214] bg-white border-t dark:border-zinc-800 border-slate-200 shrink-0">
             <div class="max-w-3xl mx-auto w-full">
+                
+                <!-- File System Selected Indicators Metadata Status Row -->
                 <div class="flex items-center gap-2 mb-2 px-1">
-                    <label class="text-xs dark:text-zinc-400 text-slate-500 hover:dark:text-zinc-200 hover:text-slate-700 cursor-pointer flex items-center gap-1.5 font-medium transition-colors">
-                        <i class="fa-solid fa-paperclip text-xs"></i> Attach Files
+                    <label class="text-xs dark:text-zinc-400 text-slate-500 hover:dark:text-zinc-200 hover:text-slate-700 cursor-pointer flex items-center gap-1.5 font-semibold transition-colors">
+                        <i class="fa-solid fa-paperclip text-xs text-indigo-500"></i> Attach Files
                         <input type="file" id="fileAttachment" multiple class="hidden" onchange="handleFileSelect()" />
                     </label>
-                    <span id="fileBadgeLabel" class="text-xs text-blue-500 font-medium"></span>
+                    <span id="fileBadgeLabel" class="text-xs text-indigo-500 font-bold"></span>
                 </div>
 
-                <div class="flex items-center gap-2 relative bg-slate-100 dark:bg-zinc-900 border dark:border-zinc-800 border-slate-200 rounded-xl px-3 py-1.5 shadow-sm">
-                    <input type="text" id="userInputText" placeholder="Ask a question..." 
+                <!-- Structured Interactive Native Input Action Module -->
+                <div class="flex items-center gap-2 relative bg-slate-100 dark:bg-zinc-900 border dark:border-zinc-800 border-slate-200 rounded-xl px-3 py-1.5">
+                    <input type="text" id="userInputText" placeholder="Ask Edith anything..." 
                         class="w-full bg-transparent outline-none py-1.5 pr-20 text-sm dark:text-zinc-100 text-slate-900 placeholder-slate-400 dark:placeholder-zinc-600 font-normal"
                         onkeypress="if(event.key==='Enter')sendMessage()" />
 
                     <div class="absolute right-2 flex items-center gap-1">
                         <button onclick="toggleSpeech()" id="speechBtn" title="Voice Input"
-                            class="w-8 h-8 text-slate-400 dark:text-zinc-500 hover:text-slate-600 dark:hover:text-zinc-300 rounded-lg flex items-center justify-center transition-all">
+                            class="w-8 h-8 text-slate-400 dark:text-zinc-500 hover:text-indigo-500 dark:hover:text-indigo-400 rounded-lg flex items-center justify-center transition-all">
                             <i class="fa-solid fa-microphone text-sm"></i>
                         </button>
-                        <button onclick="sendMessage()" class="w-8 h-8 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center justify-center transition-all shadow-sm">
+                        <button onclick="sendMessage()" class="w-8 h-8 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg flex items-center justify-center transition-all shadow-sm">
                             <i class="fa-solid fa-paper-plane text-xs"></i>
                         </button>
                     </div>
@@ -149,7 +172,6 @@
         </footer>
 
     </div>
-</div>
 
 <script>
 const API_URL = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"
@@ -164,14 +186,14 @@ let cachedSessionsList = [];
 let voiceRecognitionInstance = null;
 let isVoiceRecording = false;
 
-// Dashboard Integrated Synchronous Initialization 
+// Theme Synchronization Handler
 function syncDashboardTheme() {
     const savedTheme = localStorage.getItem('edith-theme') || 'dark';
     document.documentElement.classList.toggle('dark', savedTheme === 'dark');
 }
 syncDashboardTheme();
 
-// Voice System Initialization
+// Native Voice Module Configuration
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     const SpeechLib = window.SpeechRecognition || window.webkitSpeechRecognition;
     voiceRecognitionInstance = new SpeechLib();
@@ -192,7 +214,7 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
 }
 
 function toggleSpeech() {
-    if (!voiceRecognitionInstance) return alert("Speech recognition not supported on this device browser profile.");
+    if (!voiceRecognitionInstance) return alert("Speech recognition features are disabled or unsupported on this browser agent.");
     if (isVoiceRecording) voiceRecognitionInstance.stop(); else voiceRecognitionInstance.start();
 }
 
@@ -240,7 +262,7 @@ async function loadChatSessions() {
         cachedSessionsList = await response.json();
         renderSidebarList(cachedSessionsList);
     } catch (err) {
-        chatHistoryList.innerHTML = `<div class="text-center py-4 text-xs text-red-500">Error loading recent tabs</div>`;
+        chatHistoryList.innerHTML = `<div class="text-center py-4 text-xs text-red-500 font-medium">Failed to populate logs.</div>`;
     }
 }
 
@@ -249,17 +271,17 @@ function renderSidebarList(sessions) {
     document.getElementById("chatCounter").textContent = sessions.length;
 
     if (sessions.length === 0) {
-        chatHistoryList.innerHTML = `<div class="text-center py-8 text-xs text-zinc-400">No active chats</div>`;
+        chatHistoryList.innerHTML = `<div class="text-center py-8 text-xs dark:text-zinc-500 text-slate-400 font-medium">No history found.</div>`;
         return;
     }
 
     sessions.forEach(session => {
         const isActiveSession = session._id === currentSessionId;
         const itemContainer = document.createElement("div");
-        itemContainer.className = `group w-full flex items-center justify-between px-3 py-2.5 my-0.5 text-sm rounded-lg cursor-pointer transition-all ${
+        itemContainer.className = `group w-full flex items-center justify-between px-3 py-2.5 my-0.5 text-sm rounded-xl cursor-pointer transition-all ${
             isActiveSession 
-            ? 'bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 font-medium' 
-            : 'text-slate-600 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-900'
+            ? 'bg-indigo-50 dark:bg-indigo-950/20 text-indigo-600 dark:text-indigo-400 font-semibold' 
+            : 'text-slate-600 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-900/60'
         }`;
         
         itemContainer.onclick = () => selectSession(session._id);
@@ -300,7 +322,7 @@ function selectSession(id) {
 
 async function deleteSession(event, id) {
     event.stopPropagation();
-    if (!confirm("Are you sure you want to delete this chat history?")) return;
+    if (!confirm("Permanently wipe this context session stream history?")) return;
     try {
         const response = await apiCall(`/api/chat/sessions/${id}`, { method: "DELETE" });
         if (!response) return;
@@ -311,7 +333,7 @@ async function deleteSession(event, id) {
 
 async function loadActiveMessages() {
     if (!currentSessionId) return;
-    chatWindow.innerHTML = `<div class="flex items-center justify-center h-full text-sm text-zinc-400">Loading messages...</div>`;
+    chatWindow.innerHTML = `<div class="flex items-center justify-center h-full text-sm dark:text-zinc-500 text-slate-400 font-medium">Syncing database stream logs...</div>`;
 
     try {
         const response = await apiCall(`/api/chat/sessions/${currentSessionId}/messages`);
@@ -320,7 +342,7 @@ async function loadActiveMessages() {
         chatWindow.innerHTML = "";
         messages.forEach(msg => insertMessageBubble(msg.role, msg.content));
         scrollToBottom();
-    } catch (err) { chatWindow.innerHTML = `<div class="flex items-center justify-center h-full text-sm text-red-500">Failed to sync message logs.</div>`; }
+    } catch (err) { chatWindow.innerHTML = `<div class="flex items-center justify-center h-full text-sm text-red-500">Failed to sync network data logs.</div>`; }
 }
 
 function insertMessageBubble(role, content) {
@@ -328,10 +350,10 @@ function insertMessageBubble(role, content) {
     outerFlexRow.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'} w-full`;
 
     const bubbleBox = document.createElement("div");
-    bubbleBox.className = `max-w-[85%] md:max-w-2xl rounded-2xl px-4 py-3 text-sm md:text-base shadow-sm leading-relaxed ${
+    bubbleBox.className = `max-w-[85%] md:max-w-2xl rounded-2xl px-4 py-3.5 text-sm md:text-base leading-relaxed ${
         role === 'user' 
-        ? 'bg-blue-600 text-white font-normal' 
-        : 'dark:bg-[#18181b] bg-white border dark:border-zinc-800 border-slate-200 dark:text-zinc-200 text-slate-800'
+        ? 'bg-indigo-600 text-white font-normal' 
+        : 'dark:bg-[#121214] bg-white border dark:border-zinc-800 border-slate-200 dark:text-zinc-200 text-slate-800'
     }`;
 
     if (role === 'user') {
@@ -351,12 +373,12 @@ function attachCodeBlockCopyLogic(container) {
         const wrapper = document.createElement("div");
         wrapper.className = "code-block-container";
         const btn = document.createElement("button");
-        btn.className = "absolute top-2 right-2 bg-zinc-800 border border-zinc-700 text-zinc-400 text-xs px-2.5 py-1 rounded hover:text-white transition-colors";
+        btn.className = "absolute top-2 right-2 bg-zinc-900 border border-zinc-800 text-zinc-400 text-xs px-2.5 py-1 rounded-lg hover:text-white transition-colors";
         btn.innerHTML = `<i class="fa-regular fa-copy mr-1"></i> Copy`;
         
         btn.onclick = () => {
             navigator.clipboard.writeText(pre.querySelector("code")?.innerText || pre.innerText);
-            btn.innerHTML = `<i class="fa-solid fa-check text-green-500 mr-1"></i> Copied`;
+            btn.innerHTML = `<i class="fa-solid fa-check text-emerald-500 mr-1"></i> Copied`;
             setTimeout(() => { btn.innerHTML = `<i class="fa-regular fa-copy mr-1"></i> Copy`; }, 2000);
         };
         pre.parentNode.insertBefore(wrapper, pre);
@@ -399,13 +421,13 @@ async function sendMessage() {
         insertMessageBubble('assistant', data.reply);
     } catch (err) {
         hideTypingIndicator();
-        insertMessageBubble('assistant', "An error occurred while connecting to the core chat servers.");
+        insertMessageBubble('assistant', "An execution error disrupted connection pipelines.");
     }
 }
 
 function handleFileSelect() {
     const totalFiles = document.getElementById("fileAttachment").files.length;
-    document.getElementById("fileBadgeLabel").textContent = totalFiles > 0 ? `(${totalFiles} files selected)` : "";
+    document.getElementById("fileBadgeLabel").textContent = totalFiles > 0 ? `(${totalFiles} file${totalFiles > 1 ? 's' : ''})` : "";
 }
 
 function clearFileSelector() {
@@ -415,36 +437,4 @@ function clearFileSelector() {
 
 function displayTypingIndicator() {
     hideTypingIndicator();
-    const ind = document.createElement("div");
-    ind.id = "typingIndicatorBox";
-    ind.className = "flex justify-start w-full";
-    ind.innerHTML = `
-        <div class="dark:bg-[#18181b] bg-white border dark:border-zinc-800 border-slate-200 rounded-2xl px-4 py-3.5 flex items-center gap-1">
-            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-        </div>`;
-    chatWindow.appendChild(ind);
-    scrollToBottom();
-}
-
-function hideTypingIndicator() {
-    const el = document.getElementById("typingIndicatorBox");
-    if (el) el.remove();
-}
-
-function scrollToBottom() { chatWindow.scrollTop = chatWindow.scrollHeight; }
-
-function toggleSidebar(open) {
-    const sidebar = document.getElementById("sidebar");
-    const overlay = document.getElementById("sidebarOverlay");
-    if (open) {
-        sidebar.classList.remove("-translate-x-full");
-        overlay.classList.remove("hidden");
-    } else {
-        sidebar.classList.add("-translate-x-full");
-        overlay.classList.add("hidden");
-    }
-}
-</script>
-</body>
-
-</html>
+    const ind = doc
