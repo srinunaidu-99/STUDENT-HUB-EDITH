@@ -379,7 +379,6 @@ function toggleThemePipeline() {
     }
 }
 
-// Pre-render configuration activation
 initThemePipeline();
 
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
@@ -424,17 +423,14 @@ window.onload = () => {
         return;
     }
 
-    // Set UI Identity profiles
     document.getElementById("displayUserFooterName").textContent = name;
     document.getElementById("profileBadge").textContent = name.substring(0, 2).toUpperCase();
 
-    // Configure marked options for code execution layouts
     marked.setOptions({
         breaks: true,
         gfm: true
     });
 
-    // Boot system pipelines
     fetchChatRegistryTree();
 };
 
@@ -446,7 +442,6 @@ async function secureApiRequest(endpoint, options = {}) {
         "Authorization": `Bearer ${token}`
     };
     
-    // Auto-inject content type if it's not a FormData construct
     if (!(options.body instanceof FormData) && !headers["Content-Type"]) {
         headers["Content-Type"] = "application/json";
     }
@@ -534,10 +529,9 @@ async function switchSessionPipeline(sessionId) {
     if (currentActiveSessionId === sessionId) return;
     currentActiveSessionId = sessionId;
     
-    // Visual switch response immediately
     renderSidebarTree(globallyCachedHistoryTree);
     loadActiveSessionLogs();
-    toggleMobileSidebar(true); // close sidebar if viewing on mobile layout
+    toggleMobileSidebar(true);
 }
 
 async function deleteSessionTrack(event, sessionId) {
@@ -586,7 +580,6 @@ function appendMessageBubble(role, content) {
     if (role === 'user') {
         inner.textContent = content;
     } else {
-        // Compute and transform Markdown elements natively
         const rawHtml = marked.parse(content);
         inner.innerHTML = rawHtml;
         processCodeBlockWrappers(inner);
@@ -631,7 +624,6 @@ async function sendMsg() {
         await createNewChatSession();
     }
 
-    // Capture states
     inputField.value = "";
     if (prompt) appendMessageBubble('user', prompt);
     
@@ -640,7 +632,6 @@ async function sendMsg() {
     try {
         let res;
         if (fileInput.files.length > 0) {
-            // Process Multipart/Matrix upload routing
             const formData = new FormData();
             formData.append("prompt", prompt || "Analyze matrix pipeline file structure payload.");
             formData.append("compress", isSummarize);
@@ -653,7 +644,6 @@ async function sendMsg() {
                 body: formData
             });
         } else {
-            // Process standard JSON instructions
             res = await secureApiRequest(`/api/chat/sessions/${currentActiveSessionId}/messages`, {
                 method: "POST",
                 body: JSON.stringify({ content: prompt, compress: isSummarize })
@@ -669,7 +659,7 @@ async function sendMsg() {
     } catch (err) {
         removeTypingIndicator();
         console.error("Pipeline failure:", err);
-        appendMessageBubble('assistant', "System Fault. Critical execution execution dropped. Please examine node stream integrity.");
+        appendMessageBubble('assistant', "System Fault. Critical execution dropped. Please examine node stream integrity.");
     }
 }
 
@@ -706,7 +696,7 @@ function clearFileMatrixPipeline() {
 }
 
 function showTypingIndicator() {
-    removeTypingIndicator(); // guard duplication
+    removeTypingIndicator(); 
     const indicator = document.createElement("div");
     indicator.id = "edithCoreTypingIndicator";
     indicator.className = "flex justify-start mb-4 animate-msg";
@@ -741,9 +731,7 @@ function toggleMobileSidebar(forceClose = false) {
     }
 }
 
-// Global hotkeys mapping configuration
 window.onkeydown = (e) => {
-    // Alt/Cmd + N initializes standard new clean architecture stream
     if ((e.altKey || e.metaKey) && e.key.toLowerCase() === 'n') {
         e.preventDefault();
         createNewChatSession();
@@ -751,4 +739,5 @@ window.onkeydown = (e) => {
 };
 </script>
 </body>
+
 </html>
