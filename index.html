@@ -2,223 +2,753 @@
 <html lang="en" class="dark">
 
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>EDITH - Intelligence Hub</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EDITH - Intelligence Hub</title>
 
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 
-<script>
-tailwind.config = { darkMode: 'class' }
-</script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap');
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Geist:wght=300;400;500;600&family=Geist+Mono:wght=400;500&display=swap');
 
-html,body{
-font-family:'Geist',sans-serif;
-height:100%;
-overflow:hidden;
-}
+        html, body {
+            font-family: 'Geist', sans-serif;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease;
+        }
 
-/* 🌌 Animated Gradient Background */
-body{
-background: radial-gradient(circle at 20% 20%, #0f172a, #020617);
-}
+        /* --- THEME SPECIFIC BACKGROUNDS --- */
+        .dark body { background-color: #09090b; }
+        html:not(.dark) body { background-color: #f1f5f9; }
 
-/* ✨ Glass UI */
-.glass{
-background: rgba(255,255,255,0.04);
-backdrop-filter: blur(20px);
-border:1px solid rgba(255,255,255,0.06);
-}
+        /* --- PRECISE MINIMALIST SCROLLBAR --- */
+        .chat-container::-webkit-scrollbar, .sidebar-scroll::-webkit-scrollbar {
+            width: 3px;
+            height: 3px;
+        }
+        .chat-container::-webkit-scrollbar-track, .sidebar-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .dark .chat-container::-webkit-scrollbar-thumb, .dark .sidebar-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 2px;
+        }
+        html:not(.dark) .chat-container::-webkit-scrollbar-thumb, html:not(.dark) .sidebar-scroll::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 2px;
+        }
+        
+        .chat-container::-webkit-scrollbar-thumb:hover, .sidebar-scroll::-webkit-scrollbar-thumb:hover {
+            background: rgba(16, 185, 129, 0.4) !important;
+        }
 
-/* 🧠 Glow Effect */
-.glow{
-box-shadow: 0 0 20px rgba(16,185,129,0.15);
-}
+        /* --- QUANTUM EMERALD ORB EFFECT --- */
+        @keyframes matrixPulse {
+            0%, 100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.4));
+            }
+            50% {
+                transform: scale(1.05);
+                filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.6));
+            }
+        }
+        .edith-logo-wrapper {
+            animation: matrixPulse 3s ease-in-out infinite;
+        }
 
-/* 💬 Messages */
-.ai-bubble{
-background: rgba(24,24,27,0.7);
-backdrop-filter: blur(10px);
-border:1px solid rgba(255,255,255,0.05);
-}
+        /* --- MICRO-TRANSITION SLIDE --- */
+        @keyframes microSlide {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-msg {
+            animation: microSlide 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
 
-.user-bubble{
-background: rgba(39,39,42,0.9);
-border:1px solid rgba(255,255,255,0.08);
-}
+        /* Mic Pulsing Effect */
+        @keyframes micPulse {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.3); }
+            70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .mic-active {
+            animation: micPulse 1.2s infinite;
+            background-color: #ef4444 !important;
+            color: #ffffff !important;
+            border-color: #ef4444 !important;
+        }
 
-/* 🚀 Hover Lift */
-.ai-bubble:hover,.user-bubble:hover{
-transform: translateY(-2px);
-transition:0.2s;
-}
+        /* --- PREMIUM MONOCHROME INTERFACE STYLING --- */
+        .main-board {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .dark .main-board {
+            background: #09090b;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        html:not(.dark) .main-board {
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.04);
+        }
 
-/* 🎤 Mic Pulse */
-@keyframes pulse{
-0%{box-shadow:0 0 0 0 rgba(239,68,68,.5)}
-70%{box-shadow:0 0 0 10px rgba(239,68,68,0)}
-}
-.mic-active{
-animation:pulse 1.2s infinite;
-background:#ef4444 !important;
-color:#fff !important;
-}
+        /* Bubbles Adaptive Engines */
+        .dark .ai-bubble {
+            background: #18181b;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            color: #e4e4e7;
+        }
+        html:not(.dark) .ai-bubble {
+            background: #f1f5f9;
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            color: #334155;
+        }
 
-/* 🌀 Smooth Fade */
-.fade{
-animation:fade .3s ease;
-}
-@keyframes fade{
-from{opacity:0;transform:translateY(5px)}
-to{opacity:1}
-}
+        .dark .user-bubble {
+            background: #27272a;
+            color: #fafafa;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        html:not(.dark) .user-bubble {
+            background: #e2e8f0;
+            color: #0f172a;
+            border: 1px solid rgba(0, 0, 0, 0.01);
+        }
 
-/* 📜 Scrollbar */
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-thumb{background:#10b98133;border-radius:10px}
+        /* --- SIDEBAR REFINEMENTS --- */
+        .dark .history-active {
+            background: rgba(255, 255, 255, 0.03) !important;
+            color: #10b981 !important;
+            font-weight: 500 !important;
+            border-right: 2px solid #10b981 !important;
+        }
+        html:not(.dark) .history-active {
+            background: rgba(16, 185, 129, 0.06) !important;
+            color: #059669 !important;
+            font-weight: 600 !important;
+            border-right: 2px solid #10b981 !important;
+        }
 
-</style>
+        /* Standalone Code Blocks styling */
+        .code-block-wrapper {
+            position: relative;
+            margin: 14px 0;
+            width: 100%;
+        }
+        pre {
+            background: #040405 !important;
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            max-width: 100%;
+        }
+        html:not(.dark) pre {
+            background: #0f172a !important;
+        }
+        code {
+            font-family: 'Geist Mono', monospace;
+            color: #a1a1aa;
+            font-size: 0.8rem;
+            white-space: pre;
+        }
+        html:not(.dark) code {
+            color: #cbd5e1;
+        }
+        .copy-code-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #18181b;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            color: #71717a;
+            cursor: pointer;
+            transition: all 0.15s;
+            z-index: 10;
+        }
+        .copy-code-btn:hover {
+            background: rgba(16, 185, 129, 0.08);
+            color: #10b981;
+            border-color: rgba(16, 185, 129, 0.2);
+        }
+
+        /* --- TYPING MICRO INDICATOR --- */
+        .typing-dot {
+            animation: typingBounce 1.2s infinite ease-in-out both;
+            width: 4px;
+            height: 4px;
+            background-color: #10b981;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .typing-dot:nth-child(2) { animation-delay: 0.15s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.3s; }
+        @keyframes typingBounce {
+            0%, 80%, 100% { transform: scale(0.4); opacity: 0.3; }
+            40% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .delete-chat-btn {
+            opacity: 0;
+            transition: all 0.1s ease;
+        }
+        .history-item-wrapper:hover .delete-chat-btn {
+            opacity: 0.6;
+        }
+        .history-item-wrapper:hover .delete-chat-btn:hover {
+            opacity: 1;
+            color: #f43f5e;
+        }
+    </style>
 </head>
 
-<body class="text-zinc-300 flex items-center justify-center p-2">
+<body class="dark:text-zinc-400 text-slate-600 min-h-screen flex items-center justify-center p-0 sm:p-4">
 
-<div class="w-full max-w-[1400px] h-[95vh] flex rounded-xl overflow-hidden glass glow">
+<div class="w-full max-w-[1400px] h-screen sm:h-[94vh] flex main-board sm:rounded-xl shadow-2xl relative overflow-hidden">
+    
+    <aside id="sidebarPanel" class="w-60 dark:bg-[#0c0c0e] bg-slate-50 flex flex-col h-full hidden lg:flex dark:border-r dark:border-zinc-900 border-r border-slate-200 transition-all z-30">
+        
+        <div class="p-3 flex flex-col gap-1.5">
+            <button onclick="createNewChatSession()" class="w-full flex items-center justify-between px-3 py-2 text-xs dark:text-zinc-200 text-slate-800 dark:hover:bg-zinc-900 hover:bg-slate-200/60 rounded-md transition-all font-medium dark:bg-zinc-900/40 bg-white border dark:border-zinc-800 border-slate-200 shadow-sm">
+                <span class="flex items-center gap-2">
+                    <i class="fa-regular fa-square-plus dark:text-zinc-400 text-slate-500 stroke-[1.5] text-sm"></i> New Stream
+                </span>
+                <kbd class="text-[9px] dark:bg-zinc-800 bg-slate-100 dark:text-zinc-500 text-slate-400 px-1 rounded border dark:border-zinc-700 border-slate-200 font-mono">N</kbd>
+            </button>
+            <div class="w-full relative mt-0.5">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 dark:text-zinc-600 text-slate-400 text-xs"></i>
+                <input type="text" id="searchChatsInput" oninput="filterSidebarChats()" placeholder="Search node indexes..." class="w-full bg-transparent border dark:border-zinc-900 border-slate-200 focus:border-zinc-800 focus:border-slate-300 text-xs rounded-md pl-8 pr-3 py-1.5 outline-none dark:text-zinc-300 text-slate-800 dark:placeholder-zinc-700 placeholder-slate-400">
+            </div>
+        </div>
 
-<!-- SIDEBAR -->
-<aside class="w-64 glass border-r border-zinc-800 hidden lg:flex flex-col">
+        <div class="px-3 pt-2 pb-1 flex justify-between items-center">
+            <span class="text-[9px] font-medium dark:text-zinc-600 text-slate-400 tracking-widest block uppercase">Registry Entries</span>
+            <span class="text-[9px] font-mono dark:text-zinc-700 text-slate-400" id="sessionCounter">0/0</span>
+        </div>
 
-<div class="p-4">
-<button onclick="createNewChatSession()" class="w-full py-2 text-xs bg-emerald-500/10 hover:bg-emerald-500/20 rounded">
-➕ New Chat
-</button>
-</div>
+        <div id="historyLogContainer" class="flex-1 overflow-y-auto pl-2 pr-0 pb-4 space-y-0.5 sidebar-scroll">
+            <div class="text-center py-8 text-[11px] dark:text-zinc-700 text-slate-400 font-mono tracking-tight">Syncing system tree...</div>
+        </div>
 
-<div id="historyLogContainer" class="flex-1 overflow-y-auto px-2"></div>
+        <div class="p-3 dark:border-t dark:border-zinc-900 border-t border-slate-200 dark:bg-[#09090b] bg-slate-100/80 flex items-center justify-between px-4">
+            <div class="flex items-center gap-2.5">
+                <div class="w-6 h-6 rounded dark:bg-zinc-900 bg-white border dark:border-zinc-800 border-slate-200 flex items-center justify-center text-[10px] font-medium dark:text-zinc-400 text-slate-700 font-mono" id="profileBadge">
+                    OP
+                </div>
+                <div>
+                    <span class="block text-xs font-normal dark:text-zinc-300 text-slate-800 truncate max-w-[100px]" id="displayUserFooterName">Root</span>
+                    <span class="block text-[8px] dark:text-zinc-600 text-slate-400 uppercase font-mono tracking-tighter">Secure Line</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-1">
+                <button onclick="toggleThemePipeline()" title="Toggle Interface Mode" class="dark:text-zinc-600 dark:hover:text-zinc-400 text-slate-400 hover:text-slate-600 transition-all text-xs p-1 mr-1">
+                    <i class="fa-solid fa-sun hidden dark:block"></i>
+                    <i class="fa-solid fa-moon dark:hidden"></i>
+                </button>
+                <button onclick="localStorage.clear(); window.location.href='login.html';" title="Terminate Session" class="dark:text-zinc-600 dark:hover:text-zinc-400 text-slate-400 hover:text-slate-600 transition-all text-xs p-1">
+                    <i class="fa-solid fa-power-off"></i>
+                </button>
+            </div>
+        </div>
+    </aside>
 
-</aside>
+    <div class="flex-1 flex flex-col h-full relative overflow-hidden bg-transparent">
+        
+        <div class="p-3 border-b dark:border-zinc-900 border-slate-200 flex justify-between items-center dark:bg-[#0c0c0e] bg-slate-50 px-6">
+            <div class="flex items-center gap-3">
+                <button onclick="toggleMobileSidebar()" class="lg:hidden w-7 h-7 dark:border-zinc-800 border-slate-200 bg-transparent rounded-md flex items-center justify-center dark:text-zinc-400 text-slate-600">
+                    <i class="fa-solid fa-bars text-xs"></i>
+                </button>
 
-<!-- MAIN -->
-<div class="flex-1 flex flex-col">
+                <div class="edith-logo-wrapper w-6 h-6 flex items-center justify-center">
+                    <svg viewBox="0 0 100 100" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="44" stroke="#10b981" stroke-width="4" stroke-dasharray="12 6 4 6" fill="none" opacity="0.85"/>
+                        <polygon points="50,22 75,37 75,65 50,80 25,65 25,37" fill="none" stroke="#10b981" stroke-width="5" stroke-linejoin="round"/>
+                        <circle cx="50" cy="50" r="8" fill="#10b981"/>
+                        <line x1="50" y1="22" x2="50" y2="42" stroke="#10b981" stroke-width="3" stroke-linecap="round" />
+                        <line x1="25" y1="65" x2="42" y2="55" stroke="#10b981" stroke-width="3" stroke-linecap="round" />
+                        <line x1="75" y1="65" x2="58" y2="55" stroke="#10b981" stroke-width="3" stroke-linecap="round" />
+                    </svg>
+                </div>
+                
+                <div>
+                    <h1 class="text-xs font-medium tracking-tight dark:text-zinc-200 text-slate-800 flex items-center gap-2">
+                        EDITH CORE <span class="text-[8px] font-mono dark:text-zinc-500 text-slate-400 border dark:border-zinc-800 border-slate-200 px-1 py-0.2 rounded dark:bg-zinc-900 bg-slate-100">v3.2.0-STABLE</span>
+                    </h1>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4 text-right font-mono text-[10px]">
+                <div>
+                    <span class="dark:text-zinc-600 text-slate-400 block text-[8px] uppercase tracking-wider">Net Latency</span>
+                    <span class="text-emerald-500 font-medium">14ms</span>
+                </div>
+                <div class="w-px h-4 dark:bg-zinc-800 bg-slate-200"></div>
+                <div>
+                    <span class="dark:text-zinc-600 text-slate-400 block text-[8px] uppercase tracking-wider">Cluster IO</span>
+                    <span class="dark:text-zinc-400 text-slate-600">2.4%</span>
+                </div>
+            </div>
+        </div>
 
-<!-- HEADER -->
-<div class="flex items-center justify-between p-4 border-b border-zinc-800 glass">
+        <div id="chatArea" class="flex-1 overflow-y-auto p-6 space-y-4 dark:bg-[#09090b] bg-slate-50/30 chat-container"></div>
 
-<div class="flex items-center gap-3">
+        <div class="p-4 dark:bg-[#0c0c0e] bg-slate-50 border-t dark:border-zinc-900 border-slate-200">
+            <div class="flex flex-wrap gap-1.5 mb-2.5 px-0.5">
+                <button onclick="toggleSummarize()" id="sumBtn" class="px-2.5 py-1 rounded border dark:border-zinc-900 border-slate-200 dark:hover:border-zinc-800 hover:border-slate-300 bg-transparent text-[9px] font-mono transition-all flex items-center gap-2 dark:text-zinc-500 text-slate-400">
+                    <span class="w-1 h-1 rounded-full dark:bg-zinc-700 bg-slate-300" id="sumDot"></span>
+                    COMPRESS LOG DATA: <span id="sumStatus" class="font-medium dark:text-zinc-600 text-slate-400">OFF</span>
+                </button>
 
-<!-- ⚠️ LOGO NOT CHANGED -->
-<div class="w-7 h-7">
-<svg viewBox="0 0 100 100">
-<circle cx="50" cy="50" r="44" stroke="#10b981" stroke-width="4" fill="none"/>
-<polygon points="50,22 75,37 75,65 50,80 25,65 25,37" fill="none" stroke="#10b981" stroke-width="5"/>
-</svg>
-</div>
+                <label class="px-2.5 py-1 rounded border dark:border-zinc-900 border-slate-200 dark:hover:border-zinc-800 hover:border-slate-300 bg-transparent text-[9px] font-mono cursor-pointer transition-all flex items-center gap-1.5 dark:text-zinc-500 text-slate-400">
+                    <i class="fa-solid fa-paperclip dark:text-zinc-600 text-slate-400"></i> ATTACH MATRIX
+                    <input type="file" id="fileInput" multiple class="hidden" onchange="updateFileStatus()" />
+                </label>
+                <span id="fileCount" class="text-[9px] text-emerald-500 self-center font-mono"></span>
+            </div>
 
-<h1 class="text-sm">EDITH CORE</h1>
-</div>
+            <div class="flex gap-2 items-center relative">
+                <input type="text" id="msg" placeholder="Execute terminal command prompt sequencers..." 
+                    class="w-full dark:bg-[#141416] bg-white border dark:border-zinc-900 border-slate-200 focus:border-zinc-800 focus:border-slate-300 rounded-md pl-4 pr-20 py-2.5 outline-none transition-all text-xs font-mono dark:placeholder-zinc-700 placeholder-slate-400 dark:text-zinc-200 text-slate-800 shadow-sm"
+                    onkeypress="if(event.key==='Enter')sendMsg()" />
 
-<button onclick="toggleTheme()" class="text-xs">🌗</button>
+                <div class="absolute right-1 flex items-center gap-0.5">
+                    <button onclick="toggleVoiceInput()" id="micBtn" title="Voice Decryptor"
+                        class="w-7 h-7 bg-transparent hover:bg-zinc-900/10 dark:hover:bg-zinc-900 border dark:border-zinc-900 border-slate-200 dark:text-zinc-500 text-slate-400 rounded flex items-center justify-center transition-all">
+                        <i class="fa-solid fa-microphone text-[10px]"></i>
+                    </button>
+                    
+                    <button onclick="sendMsg()" class="w-7 h-7 dark:bg-zinc-200 bg-slate-800 hover:dark:bg-white hover:bg-slate-900 active:scale-95 dark:text-zinc-950 text-white rounded flex items-center justify-center transition-all shadow-sm">
+                        <i class="fa-solid fa-arrow-up text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
 
-</div>
-
-<!-- CHAT -->
-<div id="chatArea" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
-
-<!-- INPUT -->
-<div class="p-4 glass border-t border-zinc-800">
-
-<div class="relative">
-
-<input id="msg" placeholder="Type command..."
-class="w-full bg-zinc-900/60 border border-zinc-800 rounded px-4 py-3 pr-24 outline-none"/>
-
-<div class="absolute right-2 top-2 flex gap-2">
-
-<button onclick="toggleVoice()" id="micBtn"
-class="w-8 h-8 rounded bg-zinc-800 flex items-center justify-center">
-🎤
-</button>
-
-<button onclick="sendMsg()"
-class="w-8 h-8 rounded bg-emerald-500 flex items-center justify-center">
-➤
-</button>
-
-</div>
-</div>
-</div>
-
-</div>
+    </div>
 </div>
 
 <script>
-const chatArea=document.getElementById("chatArea")
+const API_BASE = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"
+    ? "http://localhost:5000"
+    : "https://student-hub-edith-backend.onrender.com";
 
-function appendMessage(text,isUser){
-const div=document.createElement("div")
-div.className="flex "+(isUser?"justify-end":"justify-start")+" fade"
+const chatArea = document.getElementById("chatArea");
+const historyLogContainer = document.getElementById("historyLogContainer");
+let isSummarize = false;
+let currentActiveSessionId = null; 
+let globallyCachedHistoryTree = []; 
 
-div.innerHTML=`
-<div class="max-w-[70%] px-4 py-3 text-sm rounded-lg ${isUser?"user-bubble":"ai-bubble"}">
-${isUser?text:marked.parse(text)}
-</div>
-`
+let recognition;
+let isRecording = false;
 
-chatArea.appendChild(div)
-chatArea.scrollTop=chatArea.scrollHeight
+// --- DYNAMIC ENVIRONMENT SWITCHER ---
+function initThemePipeline() {
+    const savedTheme = localStorage.getItem('edith-theme') || 'dark';
+    if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
 }
 
-function sendMsg(){
-const input=document.getElementById("msg")
-const msg=input.value.trim()
-if(!msg)return
-
-appendMessage(msg,true)
-input.value=""
-
-setTimeout(()=>{
-appendMessage("✨ AI Response upgraded UI working bro!",false)
-},800)
+function toggleThemePipeline() {
+    const isDark = document.documentElement.classList.contains('dark');
+    if (isDark) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('edith-theme', 'light');
+    } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('edith-theme', 'dark');
+    }
 }
 
-/* 🎤 Voice */
-let rec
-let recording=false
+// Pre-render configuration activation
+initThemePipeline();
 
-if('webkitSpeechRecognition'in window){
-rec=new webkitSpeechRecognition()
-rec.onstart=()=>{
-recording=true
-micBtn.classList.add("mic-active")
-}
-rec.onend=()=>{
-recording=false
-micBtn.classList.remove("mic-active")
-}
-rec.onresult=(e)=>{
-msg.value=e.results[0][0].transcript
-}
-}
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = 'en-US';
 
-function toggleVoice(){
-if(!rec)return alert("No mic support")
-recording?rec.stop():rec.start()
-}
+    recognition.onstart = () => {
+        isRecording = true;
+        document.getElementById("micBtn").classList.add("mic-active");
+        document.getElementById("msg").placeholder = "Streaming audio input sequence...";
+    };
 
-/* 🌗 Theme */
-function toggleTheme(){
-document.documentElement.classList.toggle("dark")
+    recognition.onend = () => {
+        isRecording = false;
+        document.getElementById("micBtn").classList.remove("mic-active");
+        document.getElementById("msg").placeholder = "Execute terminal command prompt sequencers...";
+    };
+
+    recognition.onresult = (event) => {
+        document.getElementById("msg").value = event.results[0][0].transcript;
+    };
 }
 
-/* 🧠 New Chat */
-function createNewChatSession(){
-chatArea.innerHTML=""
+function toggleVoiceInput() {
+    if (!recognition) {
+        alert("Audio matrix layer unsupported on this node browser config.");
+        return;
+    }
+    if (isRecording) recognition.stop();
+    else recognition.start();
 }
+
+window.onload = () => {
+    const token = localStorage.getItem("token");
+    const name = localStorage.getItem("userName") || "Root";
+
+    if (!token) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    // Set UI Identity profiles
+    document.getElementById("displayUserFooterName").textContent = name;
+    document.getElementById("profileBadge").textContent = name.substring(0, 2).toUpperCase();
+
+    // Configure marked options for code execution layouts
+    marked.setOptions({
+        breaks: true,
+        gfm: true
+    });
+
+    // Boot system pipelines
+    fetchChatRegistryTree();
+};
+
+// --- AUTHENTICATED API REQUEST WRAPPER ---
+async function secureApiRequest(endpoint, options = {}) {
+    const token = localStorage.getItem("token");
+    const headers = {
+        ...(options.headers || {}),
+        "Authorization": `Bearer ${token}`
+    };
+    
+    // Auto-inject content type if it's not a FormData construct
+    if (!(options.body instanceof FormData) && !headers["Content-Type"]) {
+        headers["Content-Type"] = "application/json";
+    }
+
+    const response = await fetch(`${API_BASE}${endpoint}`, { ...options, headers });
+    
+    if (response.status === 401) {
+        localStorage.clear();
+        window.location.href = "login.html";
+        return null;
+    }
+    return response;
+}
+
+// --- FETCH & SYNC SIDEBAR SESSIONS ---
+async function fetchChatRegistryTree() {
+    try {
+        const res = await secureApiRequest("/api/chat/sessions");
+        if (!res) return;
+        
+        globallyCachedHistoryTree = await res.json();
+        renderSidebarTree(globallyCachedHistoryTree);
+    } catch (err) {
+        console.error("Failed to compile system tree registry:", err);
+        historyLogContainer.innerHTML = `<div class="text-center py-8 text-[11px] text-rose-500 font-mono">Registry Sync Failure</div>`;
+    }
+}
+
+function renderSidebarTree(sessions) {
+    historyLogContainer.innerHTML = "";
+    document.getElementById("sessionCounter").textContent = `${sessions.length}/50`;
+
+    if (sessions.length === 0) {
+        historyLogContainer.innerHTML = `<div class="text-center py-8 text-[11px] dark:text-zinc-700 text-slate-400 font-mono">No Active Streams</div>`;
+        return;
+    }
+
+    sessions.forEach(session => {
+        const isCurrent = session._id === currentActiveSessionId;
+        const wrapper = document.createElement("div");
+        wrapper.className = "history-item-wrapper relative group px-2 py-1";
+
+        wrapper.innerHTML = `
+            <div onclick="switchSessionPipeline('${session._id}')" class="w-full flex items-center justify-between text-left px-2.5 py-2 text-[11px] dark:text-zinc-400 text-slate-600 dark:hover:bg-zinc-900/60 hover:bg-slate-200/50 rounded cursor-pointer transition-all font-mono truncate ${isCurrent ? 'history-active' : ''}">
+                <span class="truncate flex items-center gap-2">
+                    <i class="fa-regular fa-comment text-[10px] opacity-40"></i>
+                    ${session.title || 'Terminal Stream Data'}
+                </span>
+                <button onclick="deleteSessionTrack(event, '${session._id}')" class="delete-chat-btn p-1 flex items-center justify-center rounded hover:bg-rose-500/10" title="Purge Track">
+                    <i class="fa-regular fa-trash-can text-[10px]"></i>
+                </button>
+            </div>
+        `;
+        historyLogContainer.appendChild(wrapper);
+    });
+}
+
+function filterSidebarChats() {
+    const query = document.getElementById("searchChatsInput").value.toLowerCase();
+    const filtered = globallyCachedHistoryTree.filter(s => 
+        (s.title || '').toLowerCase().includes(query)
+    );
+    renderSidebarTree(filtered);
+}
+
+// --- SESSION ENGINE LIFECYCLES ---
+async function createNewChatSession() {
+    try {
+        const res = await secureApiRequest("/api/chat/sessions", {
+            method: "POST",
+            body: JSON.stringify({ title: `Stream Pipeline ${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}` })
+        });
+        if (!res) return;
+        const newSession = await res.json();
+        
+        currentActiveSessionId = newSession._id;
+        await fetchChatRegistryTree();
+        loadActiveSessionLogs();
+    } catch (err) {
+        console.error("Initialization fault:", err);
+    }
+}
+
+async function switchSessionPipeline(sessionId) {
+    if (currentActiveSessionId === sessionId) return;
+    currentActiveSessionId = sessionId;
+    
+    // Visual switch response immediately
+    renderSidebarTree(globallyCachedHistoryTree);
+    loadActiveSessionLogs();
+    toggleMobileSidebar(true); // close sidebar if viewing on mobile layout
+}
+
+async function deleteSessionTrack(event, sessionId) {
+    event.stopPropagation();
+    if (!confirm("Confirm logical deletion sequence of this session register?")) return;
+
+    try {
+        const res = await secureApiRequest(`/api/chat/sessions/${sessionId}`, { method: "DELETE" });
+        if (!res) return;
+
+        if (currentActiveSessionId === sessionId) {
+            currentActiveSessionId = null;
+            chatArea.innerHTML = "";
+        }
+        fetchChatRegistryTree();
+    } catch (err) {
+        console.error("Purge failure:", err);
+    }
+}
+
+// --- STREAM CONSOLE RENDER ENGINES ---
+async function loadActiveSessionLogs() {
+    if (!currentActiveSessionId) return;
+    chatArea.innerHTML = `<div class="flex items-center justify-center h-full text-xs font-mono dark:text-zinc-700 text-slate-400">Restructuring chat stream matrices...</div>`;
+
+    try {
+        const res = await secureApiRequest(`/api/chat/sessions/${currentActiveSessionId}/messages`);
+        if (!res) return;
+        const messages = await res.json();
+
+        chatArea.innerHTML = "";
+        messages.forEach(msg => appendMessageBubble(msg.role, msg.content));
+        scrollToTerminalBottom();
+    } catch (err) {
+        chatArea.innerHTML = `<div class="flex items-center justify-center h-full text-xs font-mono text-rose-500">Log reconstruction fault.</div>`;
+    }
+}
+
+function appendMessageBubble(role, content) {
+    const container = document.createElement("div");
+    container.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'} mb-4 animate-msg`;
+
+    const inner = document.createElement("div");
+    inner.className = `max-w-[85%] sm:max-w-xl rounded-lg px-4 py-2.5 text-xs shadow-sm leading-relaxed ${role === 'user' ? 'user-bubble' : 'ai-bubble'}`;
+
+    if (role === 'user') {
+        inner.textContent = content;
+    } else {
+        // Compute and transform Markdown elements natively
+        const rawHtml = marked.parse(content);
+        inner.innerHTML = rawHtml;
+        processCodeBlockWrappers(inner);
+    }
+
+    container.appendChild(inner);
+    chatArea.appendChild(container);
+    scrollToTerminalBottom();
+}
+
+function processCodeBlockWrappers(containerElement) {
+    const preElements = containerElement.querySelectorAll("pre");
+    preElements.forEach(pre => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "code-block-wrapper";
+        
+        const copyBtn = document.createElement("button");
+        copyBtn.className = "copy-code-btn font-mono";
+        copyBtn.innerHTML = `<i class="fa-regular fa-copy mr-1"></i> COPY`;
+        
+        copyBtn.onclick = () => {
+            const codeText = pre.querySelector("code")?.innerText || pre.innerText;
+            navigator.clipboard.writeText(codeText);
+            copyBtn.innerHTML = `<i class="fa-solid fa-check text-emerald-500 mr-1"></i> SYNCED`;
+            setTimeout(() => { copyBtn.innerHTML = `<i class="fa-regular fa-copy mr-1"></i> COPY`; }, 2000);
+        };
+
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+        wrapper.appendChild(copyBtn);
+    });
+}
+
+// --- TERMINAL COMMAND TRANSMISSION ---
+async function sendMsg() {
+    const inputField = document.getElementById("msg");
+    const prompt = inputField.value.trim();
+    const fileInput = document.getElementById("fileInput");
+
+    if (!prompt && fileInput.files.length === 0) return;
+    if (!currentActiveSessionId) {
+        await createNewChatSession();
+    }
+
+    // Capture states
+    inputField.value = "";
+    if (prompt) appendMessageBubble('user', prompt);
+    
+    showTypingIndicator();
+
+    try {
+        let res;
+        if (fileInput.files.length > 0) {
+            // Process Multipart/Matrix upload routing
+            const formData = new FormData();
+            formData.append("prompt", prompt || "Analyze matrix pipeline file structure payload.");
+            formData.append("compress", isSummarize);
+            for (let i = 0; i < fileInput.files.length; i++) {
+                formData.append("files", fileInput.files[i]);
+            }
+
+            res = await secureApiRequest(`/api/chat/sessions/${currentActiveSessionId}/upload`, {
+                method: "POST",
+                body: formData
+            });
+        } else {
+            // Process standard JSON instructions
+            res = await secureApiRequest(`/api/chat/sessions/${currentActiveSessionId}/messages`, {
+                method: "POST",
+                body: JSON.stringify({ content: prompt, compress: isSummarize })
+            });
+        }
+
+        removeTypingIndicator();
+        clearFileMatrixPipeline();
+
+        if (!res) return;
+        const data = await res.json();
+        appendMessageBubble('assistant', data.reply);
+    } catch (err) {
+        removeTypingIndicator();
+        console.error("Pipeline failure:", err);
+        appendMessageBubble('assistant', "System Fault. Critical execution execution dropped. Please examine node stream integrity.");
+    }
+}
+
+// --- CONSOLE UTILITIES ---
+function toggleSummarize() {
+    isSummarize = !isSummarize;
+    const dot = document.getElementById("sumDot");
+    const status = document.getElementById("sumStatus");
+    
+    if (isSummarize) {
+        dot.className = "w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_#10b981]";
+        status.className = "font-medium text-emerald-500";
+        status.textContent = "ON";
+    } else {
+        dot.className = "w-1 h-1 rounded-full dark:bg-zinc-700 bg-slate-300";
+        status.className = "font-medium dark:text-zinc-600 text-slate-400";
+        status.textContent = "OFF";
+    }
+}
+
+function updateFileStatus() {
+    const files = document.getElementById("fileInput").files;
+    const display = document.getElementById("fileCount");
+    if (files.length > 0) {
+        display.textContent = `[${files.length} MATRIX STACKED]`;
+    } else {
+        display.textContent = "";
+    }
+}
+
+function clearFileMatrixPipeline() {
+    document.getElementById("fileInput").value = "";
+    document.getElementById("fileCount").textContent = "";
+}
+
+function showTypingIndicator() {
+    removeTypingIndicator(); // guard duplication
+    const indicator = document.createElement("div");
+    indicator.id = "edithCoreTypingIndicator";
+    indicator.className = "flex justify-start mb-4 animate-msg";
+    indicator.innerHTML = `
+        <div class="ai-bubble rounded-lg px-4 py-2.5 flex items-center gap-1">
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+        </div>
+    `;
+    chatArea.appendChild(indicator);
+    scrollToTerminalBottom();
+}
+
+function removeTypingIndicator() {
+    const target = document.getElementById("edithCoreTypingIndicator");
+    if (target) target.remove();
+}
+
+function scrollToTerminalBottom() {
+    chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+function toggleMobileSidebar(forceClose = false) {
+    const panel = document.getElementById("sidebarPanel");
+    if (forceClose || !panel.classList.contains("hidden")) {
+        panel.classList.add("hidden");
+        panel.classList.remove("absolute", "inset-y-0", "left-0", "shadow-2xl");
+    } else {
+        panel.classList.remove("hidden");
+        panel.classList.add("absolute", "inset-y-0", "left-0", "shadow-2xl");
+    }
+}
+
+// Global hotkeys mapping configuration
+window.onkeydown = (e) => {
+    // Alt/Cmd + N initializes standard new clean architecture stream
+    if ((e.altKey || e.metaKey) && e.key.toLowerCase() === 'n') {
+        e.preventDefault();
+        createNewChatSession();
+    }
+};
 </script>
-
 </body>
 </html>
