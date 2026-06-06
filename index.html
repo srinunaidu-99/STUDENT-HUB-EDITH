@@ -3,8 +3,8 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>EDITH - Intelligence Hub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat Assistant</title>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -17,197 +17,131 @@
     </script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Geist:wght=300;400;500;600&family=Geist+Mono:wght=400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 
-        html, body {
-            font-family: 'Geist', sans-serif;
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            transition: background 0.3s ease, color 0.3s ease;
+        body {
+            font-family: 'Inter', sans-serif;
         }
 
-        /* Master Dashboard Sync State Bindings */
-        .dark body { background-color: #0d0d11; color: #cbd5e1; }
-        html:not(.dark) body { background-color: #f8fafc; color: #334155; }
-
-        /* Smooth Custom Adaptive Scrollbars */
-        .custom-scroll::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
+        /* Custom Subtle Scrollbar */
+        .chat-scroll::-webkit-scrollbar {
+            width: 6px;
         }
-        .custom-scroll::-webkit-scrollbar-track {
+        .chat-scroll::-webkit-scrollbar-track {
             background: transparent;
         }
-        .dark .custom-scroll::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.06);
-            border-radius: 99px;
+        .dark .chat-scroll::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 4px;
         }
-        html:not(.dark) .custom-scroll::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.12);
-            border-radius: 99px;
+        html:not(.dark) .chat-scroll::-webkit-scrollbar-thumb {
+            background: #e4e4e7;
+            border-radius: 4px;
         }
 
-        @keyframes alertPulse {
-            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.4)); }
-            50% { transform: scale(1.04); filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.5)); }
+        /* Code Block Wrapper Style */
+        .code-block-container {
+            position: relative;
+            margin: 12px 0;
         }
-        .edith-logo-wrapper { animation: alertPulse 3s ease-in-out infinite; }
-
-        /* UI Chat Bubbles - Dashboard Sync */
-        .dark .ai-bubble { background: #14141a; border: 1px solid rgba(255,255,255,0.03); color: #e2e8f0; }
-        html:not(.dark) .ai-bubble { background: #ffffff; border: 1px solid rgba(0,0,0,0.06); color: #1e293b; box-shadow: 0 2px 12px rgba(0,0,0,0.02); }
-
-        .dark .user-bubble { background: #1e1e24; border: 1px solid rgba(255,255,255,0.02); color: #f8fafc; }
-        html:not(.dark) .user-bubble { background: #f1f5f9; border: 1px solid rgba(0,0,0,0.02); color: #0f172a; }
-
-        .dark .history-active { background: rgba(245, 158, 11, 0.05) !important; color: #f59e0b !important; border-left: 3px solid #f59e0b; }
-        html:not(.dark) .history-active { background: rgba(239, 68, 68, 0.06) !important; color: #ef4444 !important; border-left: 3px solid #ef4444; }
-
-        /* Code Blocks styling */
-        .code-block-wrapper { position: relative; margin: 14px 0; width: 100%; }
-        pre { background: #060608 !important; padding: 14px; border-radius: 8px; overflow-x: auto; max-width: 100%; border: 1px solid rgba(255,255,255,0.02); }
-        html:not(.dark) pre { background: #0f172a !important; }
-        code { font-family: 'Geist Mono', monospace; color: #cbd5e1; font-size: 0.85rem; line-height: 1.5; }
-        html:not(.dark) code { color: #e2e8f0; }
-        
-        .copy-code-btn {
-            position: absolute; top: 8px; right: 8px; background: #14141a;
-            border: 1px solid rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 5px;
-            font-size: 11px; color: #8492a6; cursor: pointer; transition: all 0.2s ease;
+        pre {
+            background: #18181b !important;
+            padding: 12px;
+            border-radius: 8px;
+            overflow-x: auto;
         }
-        .copy-code-btn:hover { color: #f59e0b; background: #1e1e24; }
-
-        /* Typing indicators */
-        .typing-dot { animation: typingBounce 1.4s infinite ease-in-out both; width: 5.5px; height: 5.5px; background-color: #f59e0b; border-radius: 50%; display: inline-block; }
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes typingBounce { 0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; } 40% { transform: scale(1.2); opacity: 1; } }
-
-        @media(max-width: 1023px) {
-            .mobile-sidebar-hide { transform: translateX(-100%); }
-            .mobile-sidebar-show { transform: translateX(0); }
+        html:not(.dark) pre {
+            background: #f4f4f5 !important;
         }
+        code {
+            color: #f4f4f5;
+            font-size: 0.875rem;
+        }
+        html:not(.dark) code {
+            color: #18181b;
+        }
+
+        /* Typing Dots Animation */
+        .dot { animation: wave 1.3s infinite ease-in-out; width: 6px; height: 6px; background-color: #a1a1aa; border-radius: 50%; display: inline-block; }
+        .dot:nth-child(2) { animation-delay: 0.2s; }
+        .dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes wave { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-4px); } }
     </style>
 </head>
 
-<body class="flex items-center justify-center">
+<body class="w-screen h-screen flex dark:bg-[#09090b] bg-slate-50 transition-colors duration-200">
 
-<div class="w-full h-full lg:h-[96vh] lg:max-w-[1440px] lg:border lg:rounded-xl dark:border-zinc-900 border-slate-200 flex relative overflow-hidden dark:bg-[#0d0d11] bg-slate-50/50 shadow-2xl">
-    
-    <div id="sidebarBackdrop" onclick="toggleSidebarMenu(false)" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"></div>
+    <div id="sidebarOverlay" onclick="toggleSidebar(false)" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-40 lg:hidden"></div>
 
-    <!-- Navigation Drawer -->
-    <aside id="sidebarPanel" class="fixed inset-y-0 left-0 w-[270px] mobile-sidebar-hide lg:transform-none lg:relative z-50 flex flex-col h-full dark:bg-[#111116] bg-slate-50 transition-transform duration-300 ease-in-out border-r dark:border-zinc-900 border-slate-200 shrink-0">
-        
-        <div class="p-4 flex flex-col gap-2.5">
-            <button onclick="createNewChatSession()" class="w-full h-11 flex items-center justify-between px-3.5 text-xs dark:text-zinc-200 text-slate-800 dark:bg-zinc-900 bg-white border dark:border-zinc-800 border-slate-200 rounded-xl font-medium shadow-sm active:scale-[0.98] transition-all">
-                <span class="flex items-center gap-2">
-                    <i class="fa-regular fa-square-plus text-sm text-amber-500"></i> New Conversation
-                </span>
-                <kbd class="hidden lg:inline-block text-[10px] dark:bg-zinc-800 bg-slate-100 px-1.5 py-0.5 rounded border dark:border-zinc-700 border-slate-200 font-mono">N</kbd>
+    <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 -translate-x-full lg:translate-x-0 lg:relative z-50 flex flex-col h-full dark:bg-[#121214] bg-white border-r dark:border-zinc-800 border-slate-200 transition-transform duration-300 ease-in-out">
+        <div class="p-4">
+            <button onclick="createNewChat()" class="w-full h-10 flex items-center justify-center gap-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 active:scale-[0.98] rounded-lg shadow transition-all">
+                <i class="fa-solid fa-plus text-xs"></i> New Chat
             </button>
-            <div class="w-full relative">
-                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 dark:text-zinc-600 text-slate-400 text-xs"></i>
-                <input type="text" id="searchChatsInput" oninput="filterSidebarChats()" placeholder="Filter terminal nodes..." class="w-full h-9.5 bg-transparent border dark:border-zinc-900 border-slate-200 focus:border-zinc-700 focus:border-slate-300 text-xs rounded-xl pl-8.5 pr-3 outline-none dark:text-zinc-300 text-slate-800 transition-colors">
-            </div>
         </div>
 
-        <div class="px-4 py-2.5 flex justify-between items-center border-b dark:border-zinc-900 border-slate-200">
-            <span class="text-[9px] font-bold dark:text-zinc-600 text-slate-400 tracking-wider uppercase">Active Index Registry</span>
-            <span class="text-[10px] font-mono dark:text-zinc-500 text-slate-400 px-2 py-0.5 dark:bg-zinc-900 bg-slate-200/60 rounded" id="sessionCounter">0/50</span>
+        <div class="px-4 py-2 border-b dark:border-zinc-800 border-slate-100 flex justify-between items-center text-xs font-medium dark:text-zinc-500 text-slate-400">
+            <span>Recent Chats</span>
+            <span id="chatCounter" class="font-mono">0</span>
         </div>
 
-        <div id="historyLogContainer" class="flex-1 overflow-y-auto p-2 space-y-1 custom-scroll">
-            <div class="text-center py-8 text-xs font-mono dark:text-zinc-700 text-slate-400">Syncing indexes...</div>
+        <div id="chatHistoryList" class="flex-1 overflow-y-auto p-2 space-y-1 chat-scroll">
+            <div class="text-center py-8 text-xs text-zinc-400">Loading history...</div>
         </div>
 
-        <div class="p-4 border-t dark:border-zinc-900 border-slate-200 dark:bg-[#0a0a0e] bg-slate-100/40 flex items-center justify-between">
+        <div class="p-4 border-t dark:border-zinc-800 border-slate-200 flex items-center justify-between dark:bg-zinc-900/40 bg-slate-50">
             <div class="flex items-center gap-3 overflow-hidden">
-                <div class="w-8.5 h-8.5 rounded-xl dark:bg-zinc-900 bg-white border dark:border-zinc-800 border-slate-200 flex items-center justify-center text-xs font-bold dark:text-zinc-300 text-slate-700 font-mono" id="profileBadge">RO</div>
+                <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-semibold" id="userBadge">OP</div>
                 <div class="overflow-hidden">
-                    <span class="block text-xs font-medium dark:text-zinc-200 text-slate-800 truncate" id="displayUserFooterName">Root</span>
-                    <span class="block text-[9px] text-emerald-500 font-mono uppercase tracking-widest">Secured Node</span>
+                    <span class="block text-sm font-medium dark:text-zinc-200 text-slate-700 truncate" id="userNameFooter">Operator</span>
                 </div>
             </div>
-            <div class="flex items-center gap-1.5">
-                <button onclick="toggleThemePipeline()" class="w-7.5 h-7.5 dark:text-zinc-500 dark:hover:text-zinc-300 text-slate-400 hover:text-slate-600 rounded-xl flex items-center justify-center transition-colors text-xs">
-                    <i class="fa-solid fa-sun hidden dark:block"></i>
-                    <i class="fa-solid fa-moon dark:hidden"></i>
-                </button>
-                <button onclick="localStorage.clear(); window.location.reload();" class="w-7.5 h-7.5 dark:text-zinc-500 dark:hover:text-rose-400 text-slate-400 hover:text-rose-600 rounded-xl flex items-center justify-center transition-colors text-xs">
-                    <i class="fa-solid fa-power-off"></i>
-                </button>
-            </div>
+            <button onclick="logoutSession()" class="text-zinc-400 hover:text-red-500 transition-colors text-sm p-1.5" title="Logout">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
         </div>
     </aside>
 
-    <!-- Chat Console Panel -->
-    <div class="flex-1 flex flex-col h-full overflow-hidden relative w-full dark:bg-[#0d0d11] bg-white">
+    <div class="flex-1 flex flex-col h-full overflow-hidden w-full">
         
-        <header class="h-14.5 border-b dark:border-zinc-900 border-slate-200 flex justify-between items-center px-4 dark:bg-[#111116] bg-slate-50 shrink-0">
+        <header class="h-14 border-b dark:border-zinc-800 border-slate-200 flex justify-between items-center px-4 dark:bg-[#121214] bg-white shrink-0">
             <div class="flex items-center gap-3">
-                <button onclick="toggleSidebarMenu(true)" class="lg:hidden w-10 h-10 border dark:border-zinc-800 border-slate-200 rounded-xl flex items-center justify-center dark:text-zinc-300 text-slate-700 active:scale-95 transition-transform bg-white dark:bg-zinc-900 shadow-sm">
-                    <i class="fa-solid fa-bars-staggered text-sm"></i>
+                <button onclick="toggleSidebar(true)" class="lg:hidden w-9 h-9 border dark:border-zinc-800 border-slate-200 rounded-lg flex items-center justify-center dark:text-zinc-300 text-slate-600 bg-transparent shadow-sm">
+                    <i class="fa-solid fa-bars text-sm"></i>
                 </button>
-
-                <div class="edith-logo-wrapper w-6.5 h-6.5">
-                    <svg viewBox="0 0 100 100" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="50" cy="50" r="44" stroke="#ef4444" stroke-width="4" stroke-dasharray="12 6 4 6" fill="none" opacity="0.85"/>
-                        <polygon points="50,22 75,37 75,65 50,80 25,65 25,37" fill="none" stroke="#f59e0b" stroke-width="5" stroke-linejoin="round"/>
-                        <circle cx="50" cy="50" r="8" fill="#ef4444"/>
-                    </svg>
-                </div>
-                
-                <div>
-                    <h1 class="text-xs sm:text-sm font-semibold tracking-tight dark:text-zinc-100 text-slate-800 flex items-center gap-1.5">
-                        EDITH CORE <span class="text-[9px] font-mono text-amber-500 border dark:border-amber-500/20 border-amber-200 px-1.5 py-0.2 rounded bg-amber-500/5">v3.2.0</span>
-                    </h1>
-                </div>
+                <h1 class="text-sm font-semibold dark:text-white text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-comment-dots text-blue-500"></i> AI Assistant
+                </h1>
             </div>
-            
-            <div class="flex items-center gap-3 font-mono text-[10px] sm:text-xs">
-                <div class="text-right">
-                    <span class="dark:text-zinc-600 text-slate-400 block text-[8px] uppercase tracking-wider">Dashboard Sync</span>
-                    <span class="text-emerald-500 font-medium tracking-tight">CONNECTED</span>
-                </div>
+            <div class="text-xs font-medium text-emerald-500 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Connected
             </div>
         </header>
 
-        <!-- Dynamic Output Stream (Upgraded Fonts) -->
-        <main id="chatArea" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 dark:bg-[#0d0d11] bg-slate-50/30 custom-scroll text-sm sm:text-[15px] leading-relaxed"></main>
+        <main id="chatWindow" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 chat-scroll dark:bg-[#09090b] bg-slate-50/50"></main>
 
-        <!-- Footer Terminal Controls -->
-        <footer class="p-3 sm:p-4 dark:bg-[#111116] bg-slate-50 border-t dark:border-zinc-900 border-slate-200 shrink-0">
-            <div class="max-w-4xl mx-auto w-full">
-                <div class="flex flex-wrap gap-1.5 mb-2.5 px-0.5">
-                    <button onclick="toggleSummarize()" id="sumBtn" class="h-6.5 px-2.5 rounded-lg border dark:border-zinc-800 border-slate-200 dark:hover:border-zinc-700 hover:border-slate-300 bg-transparent text-[10px] font-mono transition-all flex items-center gap-2 dark:text-zinc-400 text-slate-500">
-                        <span class="w-1.5 h-1.5 rounded-full dark:bg-zinc-700 bg-slate-300" id="sumDot"></span>
-                        COMPRESS PAYLOAD: <span id="sumStatus" class="font-bold dark:text-zinc-500 text-slate-400">OFF</span>
-                    </button>
-
-                    <label class="h-6.5 px-2.5 rounded-lg border dark:border-zinc-800 border-slate-200 dark:hover:border-zinc-700 hover:border-slate-300 bg-transparent text-[10px] font-mono cursor-pointer transition-all flex items-center gap-1.5 dark:text-zinc-400 text-slate-500">
-                        <i class="fa-solid fa-paperclip text-xs"></i> ATTACH MATRIX
-                        <input type="file" id="fileInput" multiple class="hidden" onchange="updateFileStatus()" />
+        <footer class="p-3 md:p-4 dark:bg-[#121214] bg-white border-t dark:border-zinc-800 border-slate-200 shrink-0">
+            <div class="max-w-3xl mx-auto w-full">
+                <div class="flex items-center gap-2 mb-2 px-1">
+                    <label class="text-xs dark:text-zinc-400 text-slate-500 hover:dark:text-zinc-200 hover:text-slate-700 cursor-pointer flex items-center gap-1.5 font-medium transition-colors">
+                        <i class="fa-solid fa-paperclip text-xs"></i> Attach Files
+                        <input type="file" id="fileAttachment" multiple class="hidden" onchange="handleFileSelect()" />
                     </label>
-                    <span id="fileCount" class="text-[10px] text-amber-500 self-center font-mono font-medium"></span>
+                    <span id="fileBadgeLabel" class="text-xs text-blue-500 font-medium"></span>
                 </div>
 
-                <div class="flex gap-2 items-center relative">
-                    <input type="text" id="msg" placeholder="Execute grid core command prompt sequence..." 
-                        class="w-full h-12 dark:bg-[#16161f] bg-white border dark:border-zinc-800 border-slate-200 focus:border-zinc-600 focus:border-slate-300 rounded-xl pl-4 pr-22 py-2 outline-none transition-all text-xs sm:text-sm font-mono dark:placeholder-zinc-700 placeholder-slate-400 dark:text-zinc-100 text-slate-900 shadow-sm"
-                        onkeypress="if(event.key==='Enter')sendMsg()" />
+                <div class="flex items-center gap-2 relative bg-slate-100 dark:bg-zinc-900 border dark:border-zinc-800 border-slate-200 rounded-xl px-3 py-1.5 shadow-sm">
+                    <input type="text" id="userInputText" placeholder="Ask a question..." 
+                        class="w-full bg-transparent outline-none py-1.5 pr-20 text-sm dark:text-zinc-100 text-slate-900 placeholder-slate-400 dark:placeholder-zinc-600 font-normal"
+                        onkeypress="if(event.key==='Enter')sendMessage()" />
 
-                    <div class="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
-                        <button onclick="toggleVoiceInput()" id="micBtn" title="Voice Input Pipeline"
-                            class="w-8.5 h-8.5 bg-transparent hover:bg-zinc-500/10 dark:text-zinc-400 text-slate-500 rounded-lg flex items-center justify-center transition-all">
+                    <div class="absolute right-2 flex items-center gap-1">
+                        <button onclick="toggleSpeech()" id="speechBtn" title="Voice Input"
+                            class="w-8 h-8 text-slate-400 dark:text-zinc-500 hover:text-slate-600 dark:hover:text-zinc-300 rounded-lg flex items-center justify-center transition-all">
                             <i class="fa-solid fa-microphone text-sm"></i>
                         </button>
-                        
-                        <button onclick="sendMsg()" class="w-8.5 h-8.5 dark:bg-zinc-100 bg-slate-900 hover:dark:bg-white hover:bg-black active:scale-95 dark:text-zinc-950 text-white rounded-lg flex items-center justify-center transition-all shadow-md">
-                            <i class="fa-solid fa-arrow-up text-sm"></i>
+                        <button onclick="sendMessage()" class="w-8 h-8 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center justify-center transition-all shadow-sm">
+                            <i class="fa-solid fa-paper-plane text-xs"></i>
                         </button>
                     </div>
                 </div>
@@ -218,317 +152,299 @@
 </div>
 
 <script>
-const API_BASE = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"
+const API_URL = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"
     ? "http://localhost:5000"
     : "https://student-hub-edith-backend.onrender.com";
 
-const chatArea = document.getElementById("chatArea");
-const historyLogContainer = document.getElementById("historyLogContainer");
-let isSummarize = false;
-let currentActiveSessionId = null; 
-let globallyCachedHistoryTree = []; 
+const chatWindow = document.getElementById("chatWindow");
+const chatHistoryList = document.getElementById("chatHistoryList");
 
-let recognition;
-let isRecording = false;
+let currentSessionId = null; 
+let cachedSessionsList = []; 
+let voiceRecognitionInstance = null;
+let isVoiceRecording = false;
 
-function initThemePipeline() {
+// Dashboard Integrated Synchronous Initialization 
+function syncDashboardTheme() {
     const savedTheme = localStorage.getItem('edith-theme') || 'dark';
     document.documentElement.classList.toggle('dark', savedTheme === 'dark');
 }
+syncDashboardTheme();
 
-function toggleThemePipeline() {
-    const isDark = document.documentElement.classList.contains('dark');
-    localStorage.setItem('edith-theme', isDark ? 'light' : 'dark');
-    document.documentElement.classList.toggle('dark', !isDark);
-}
-
-initThemePipeline();
-
+// Voice System Initialization
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    recognition = new SpeechRecognition();
-    recognition.continuous = false;
-    recognition.interimResults = false;
-    recognition.lang = 'en-US';
+    const SpeechLib = window.SpeechRecognition || window.webkitSpeechRecognition;
+    voiceRecognitionInstance = new SpeechLib();
+    voiceRecognitionInstance.continuous = false;
+    voiceRecognitionInstance.lang = 'en-US';
 
-    recognition.onstart = () => {
-        isRecording = true;
-        document.getElementById("micBtn").classList.add("bg-rose-500/20", "text-rose-500");
-        document.getElementById("msg").placeholder = "Listening live stream audio processing sequencer...";
+    voiceRecognitionInstance.onstart = () => {
+        isVoiceRecording = true;
+        document.getElementById("speechBtn").classList.add("text-red-500");
     };
-
-    recognition.onend = () => {
-        isRecording = false;
-        document.getElementById("micBtn").classList.remove("bg-rose-500/20", "text-rose-500");
-        document.getElementById("msg").placeholder = "Execute grid core command prompt sequence...";
+    voiceRecognitionInstance.onend = () => {
+        isVoiceRecording = false;
+        document.getElementById("speechBtn").classList.remove("text-red-500");
     };
-
-    recognition.onresult = (e) => { document.getElementById("msg").value = e.results[0][0].transcript; };
+    voiceRecognitionInstance.onresult = (e) => {
+        document.getElementById("userInputText").value = e.results[0][0].transcript;
+    };
 }
 
-function toggleVoiceInput() {
-    if (!recognition) return alert("System context voice module missing on this node dashboard instance.");
-    if (isRecording) recognition.stop(); else recognition.start();
+function toggleSpeech() {
+    if (!voiceRecognitionInstance) return alert("Speech recognition not supported on this device browser profile.");
+    if (isVoiceRecording) voiceRecognitionInstance.stop(); else voiceRecognitionInstance.start();
 }
 
 window.onload = () => {
-    const token = localStorage.getItem("token");
-    const name = localStorage.getItem("userName") || "Operator";
+    const userToken = localStorage.getItem("token");
+    const accountName = localStorage.getItem("userName") || "Operator User";
 
-    if (!token) {
+    if (!userToken) {
         window.location.href = "login.html";
         return;
     }
 
-    document.getElementById("displayUserFooterName").textContent = name;
-    document.getElementById("profileBadge").textContent = name.substring(0, 2).toUpperCase();
+    document.getElementById("userNameFooter").textContent = accountName;
+    document.getElementById("userBadge").textContent = accountName.substring(0, 2).toUpperCase();
 
     marked.setOptions({ breaks: true, gfm: true });
-    fetchChatRegistryTree();
+    loadChatSessions();
 };
 
-async function secureApiRequest(endpoint, options = {}) {
-    const token = localStorage.getItem("token");
-    const headers = { ...(options.headers || {}), "Authorization": `Bearer ${token}` };
+async function apiCall(endpoint, config = {}) {
+    const userToken = localStorage.getItem("token");
+    const headers = { ...(config.headers || {}), "Authorization": `Bearer ${userToken}` };
     
-    if (!(options.body instanceof FormData) && !headers["Content-Type"]) {
+    if (!(config.body instanceof FormData) && !headers["Content-Type"]) {
         headers["Content-Type"] = "application/json";
     }
 
-    const response = await fetch(`${API_BASE}${endpoint}`, { ...options, headers });
+    const response = await fetch(`${API_URL}${endpoint}`, { ...config, headers });
     if (response.status === 401) {
-        localStorage.clear();
-        window.location.href = "login.html";
+        logoutSession();
         return null;
     }
     return response;
 }
 
-async function fetchChatRegistryTree() {
+function logoutSession() {
+    localStorage.clear();
+    window.location.href = "login.html";
+}
+
+async function loadChatSessions() {
     try {
-        const res = await secureApiRequest("/api/chat/sessions");
-        if (!res) return;
-        globallyCachedHistoryTree = await res.json();
-        renderSidebarTree(globallyCachedHistoryTree);
+        const response = await apiCall("/api/chat/sessions");
+        if (!response) return;
+        cachedSessionsList = await response.json();
+        renderSidebarList(cachedSessionsList);
     } catch (err) {
-        historyLogContainer.innerHTML = `<div class="text-center py-4 text-xs font-mono text-rose-500">Registry Failure</div>`;
+        chatHistoryList.innerHTML = `<div class="text-center py-4 text-xs text-red-500">Error loading recent tabs</div>`;
     }
 }
 
-function renderSidebarTree(sessions) {
-    historyLogContainer.innerHTML = "";
-    document.getElementById("sessionCounter").textContent = `${sessions.length}/50`;
+function renderSidebarList(sessions) {
+    chatHistoryList.innerHTML = "";
+    document.getElementById("chatCounter").textContent = sessions.length;
 
     if (sessions.length === 0) {
-        historyLogContainer.innerHTML = `<div class="text-center py-8 text-xs font-mono dark:text-zinc-700 text-slate-400">Empty Register Stack</div>`;
+        chatHistoryList.innerHTML = `<div class="text-center py-8 text-xs text-zinc-400">No active chats</div>`;
         return;
     }
 
     sessions.forEach(session => {
-        const isCurrent = session._id === currentActiveSessionId;
-        const wrapper = document.createElement("div");
-        wrapper.className = "relative group w-full px-1";
-
-        wrapper.innerHTML = `
-            <div onclick="switchSessionPipeline('${session._id}')" class="w-full flex items-center justify-between text-left px-3 h-10 text-xs dark:text-zinc-400 text-slate-600 dark:hover:bg-zinc-900/60 hover:bg-slate-200/50 rounded-xl cursor-pointer transition-all font-mono truncate ${isCurrent ? 'history-active' : ''}">
-                <span class="truncate flex items-center gap-2">
-                    <i class="fa-regular fa-message opacity-40"></i>
-                    ${session.title || 'Terminal Data Log'}
-                </span>
-                <button onclick="deleteSessionTrack(event, '${session._id}')" class="p-1 rounded text-zinc-500 hover:text-rose-500 hover:bg-rose-500/10 lg:opacity-0 group-hover:opacity-100 transition-opacity">
-                    <i class="fa-regular fa-trash-can text-xs"></i>
-                </button>
-            </div>
+        const isActiveSession = session._id === currentSessionId;
+        const itemContainer = document.createElement("div");
+        itemContainer.className = `group w-full flex items-center justify-between px-3 py-2.5 my-0.5 text-sm rounded-lg cursor-pointer transition-all ${
+            isActiveSession 
+            ? 'bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 font-medium' 
+            : 'text-slate-600 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-900'
+        }`;
+        
+        itemContainer.onclick = () => selectSession(session._id);
+        itemContainer.innerHTML = `
+            <span class="truncate flex items-center gap-2">
+                <i class="fa-regular fa-message text-xs opacity-60"></i>
+                <span class="truncate">${session.title || 'Untitled Conversation'}</span>
+            </span>
+            <button onclick="deleteSession(event, '${session._id}')" class="p-1 rounded text-zinc-400 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100">
+                <i class="fa-regular fa-trash-can text-xs"></i>
+            </button>
         `;
-        historyLogContainer.appendChild(wrapper);
+        chatHistoryList.appendChild(itemContainer);
     });
 }
 
-function filterSidebarChats() {
-    const query = document.getElementById("searchChatsInput").value.toLowerCase();
-    renderSidebarTree(globallyCachedHistoryTree.filter(s => (s.title || '').toLowerCase().includes(query)));
-}
-
-async function createNewChatSession() {
+async function createNewChat() {
     try {
-        const res = await secureApiRequest("/api/chat/sessions", {
+        const response = await apiCall("/api/chat/sessions", {
             method: "POST",
-            body: JSON.stringify({ title: `Pipeline Node ${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}` })
+            body: JSON.stringify({ title: `Chat ${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}` })
         });
-        if (!res) return;
-        const newSession = await res.json();
-        currentActiveSessionId = newSession._id;
-        await fetchChatRegistryTree();
-        loadActiveSessionLogs();
+        if (!response) return;
+        const sessionData = await response.json();
+        currentSessionId = sessionData._id;
+        await loadChatSessions();
+        loadActiveMessages();
     } catch (err) { console.error(err); }
 }
 
-async function switchSessionPipeline(sessionId) {
-    if (currentActiveSessionId === sessionId) return;
-    currentActiveSessionId = sessionId;
-    renderSidebarTree(globallyCachedHistoryTree);
-    loadActiveSessionLogs();
-    toggleSidebarMenu(false);
+function selectSession(id) {
+    if (currentSessionId === id) return;
+    currentSessionId = id;
+    renderSidebarList(cachedSessionsList);
+    loadActiveMessages();
+    toggleSidebar(false);
 }
 
-async function deleteSessionTrack(event, sessionId) {
+async function deleteSession(event, id) {
     event.stopPropagation();
-    if (!confirm("Purge selected pipeline frame track matrix?")) return;
+    if (!confirm("Are you sure you want to delete this chat history?")) return;
     try {
-        const res = await secureApiRequest(`/api/chat/sessions/${sessionId}`, { method: "DELETE" });
-        if (!res) return;
-        if (currentActiveSessionId === sessionId) { currentActiveSessionId = null; chatArea.innerHTML = ""; }
-        fetchChatRegistryTree();
+        const response = await apiCall(`/api/chat/sessions/${id}`, { method: "DELETE" });
+        if (!response) return;
+        if (currentSessionId === id) { currentSessionId = null; chatWindow.innerHTML = ""; }
+        loadChatSessions();
     } catch (err) { console.error(err); }
 }
 
-async function loadActiveSessionLogs() {
-    if (!currentActiveSessionId) return;
-    chatArea.innerHTML = `<div class="flex items-center justify-center h-full text-xs font-mono dark:text-zinc-700 text-slate-400">Loading tracking logs...</div>`;
+async function loadActiveMessages() {
+    if (!currentSessionId) return;
+    chatWindow.innerHTML = `<div class="flex items-center justify-center h-full text-sm text-zinc-400">Loading messages...</div>`;
 
     try {
-        const res = await secureApiRequest(`/api/chat/sessions/${currentActiveSessionId}/messages`);
-        if (!res) return;
-        const messages = await res.json();
-        chatArea.innerHTML = "";
-        messages.forEach(msg => appendMessageBubble(msg.role, msg.content));
-        scrollToTerminalBottom();
-    } catch (err) { chatArea.innerHTML = `<div class="flex items-center justify-center h-full text-xs font-mono text-rose-500">Sync failure.</div>`; }
+        const response = await apiCall(`/api/chat/sessions/${currentSessionId}/messages`);
+        if (!response) return;
+        const messages = await response.json();
+        chatWindow.innerHTML = "";
+        messages.forEach(msg => insertMessageBubble(msg.role, msg.content));
+        scrollToBottom();
+    } catch (err) { chatWindow.innerHTML = `<div class="flex items-center justify-center h-full text-sm text-red-500">Failed to sync message logs.</div>`; }
 }
 
-function appendMessageBubble(role, content) {
-    const container = document.createElement("div");
-    container.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'} w-full mb-1`;
+function insertMessageBubble(role, content) {
+    const outerFlexRow = document.createElement("div");
+    outerFlexRow.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'} w-full`;
 
-    const inner = document.createElement("div");
-    inner.className = `max-w-[88%] lg:max-w-2xl rounded-2xl px-4 py-3 shadow-sm ${role === 'user' ? 'user-bubble' : 'ai-bubble'}`;
+    const bubbleBox = document.createElement("div");
+    bubbleBox.className = `max-w-[85%] md:max-w-2xl rounded-2xl px-4 py-3 text-sm md:text-base shadow-sm leading-relaxed ${
+        role === 'user' 
+        ? 'bg-blue-600 text-white font-normal' 
+        : 'dark:bg-[#18181b] bg-white border dark:border-zinc-800 border-slate-200 dark:text-zinc-200 text-slate-800'
+    }`;
 
     if (role === 'user') {
-        inner.textContent = content;
+        bubbleBox.textContent = content;
     } else {
-        inner.innerHTML = marked.parse(content);
-        processCodeBlockWrappers(inner);
+        bubbleBox.innerHTML = marked.parse(content);
+        attachCodeBlockCopyLogic(bubbleBox);
     }
 
-    container.appendChild(inner);
-    chatArea.appendChild(container);
-    scrollToTerminalBottom();
+    outerFlexRow.appendChild(bubbleBox);
+    chatWindow.appendChild(outerFlexRow);
+    scrollToBottom();
 }
 
-function processCodeBlockWrappers(container) {
+function attachCodeBlockCopyLogic(container) {
     container.querySelectorAll("pre").forEach(pre => {
         const wrapper = document.createElement("div");
-        wrapper.className = "code-block-wrapper";
-        const copyBtn = document.createElement("button");
-        copyBtn.className = "copy-code-btn font-mono";
-        copyBtn.innerHTML = `<i class="fa-regular fa-copy mr-1"></i> COPY`;
+        wrapper.className = "code-block-container";
+        const btn = document.createElement("button");
+        btn.className = "absolute top-2 right-2 bg-zinc-800 border border-zinc-700 text-zinc-400 text-xs px-2.5 py-1 rounded hover:text-white transition-colors";
+        btn.innerHTML = `<i class="fa-regular fa-copy mr-1"></i> Copy`;
         
-        copyBtn.onclick = () => {
+        btn.onclick = () => {
             navigator.clipboard.writeText(pre.querySelector("code")?.innerText || pre.innerText);
-            copyBtn.innerHTML = `<i class="fa-solid fa-check text-amber-500 mr-1"></i> SYNCED`;
-            setTimeout(() => { copyBtn.innerHTML = `<i class="fa-regular fa-copy mr-1"></i> COPY`; }, 2000);
+            btn.innerHTML = `<i class="fa-solid fa-check text-green-500 mr-1"></i> Copied`;
+            setTimeout(() => { btn.innerHTML = `<i class="fa-regular fa-copy mr-1"></i> Copy`; }, 2000);
         };
         pre.parentNode.insertBefore(wrapper, pre);
         wrapper.appendChild(pre);
-        wrapper.appendChild(copyBtn);
+        wrapper.appendChild(btn);
     });
 }
 
-async function sendMsg() {
-    const inputField = document.getElementById("msg");
-    const prompt = inputField.value.trim();
-    const fileInput = document.getElementById("fileInput");
+async function sendMessage() {
+    const input = document.getElementById("userInputText");
+    const textPrompt = input.value.trim();
+    const fileSelector = document.getElementById("fileAttachment");
 
-    if (!prompt && fileInput.files.length === 0) return;
-    if (!currentActiveSessionId) await createNewChatSession();
+    if (!textPrompt && fileSelector.files.length === 0) return;
+    if (!currentSessionId) await createNewChatSession();
 
-    inputField.value = "";
-    if (prompt) appendMessageBubble('user', prompt);
-    showTypingIndicator();
+    input.value = "";
+    if (textPrompt) insertMessageBubble('user', textPrompt);
+    displayTypingIndicator();
 
     try {
-        let res;
-        if (fileInput.files.length > 0) {
+        let response;
+        if (fileSelector.files.length > 0) {
             const formData = new FormData();
-            formData.append("prompt", prompt || "Analyze tracker structural data array.");
-            formData.append("compress", isSummarize);
-            for (let i = 0; i < fileInput.files.length; i++) formData.append("files", fileInput.files[i]);
-            res = await secureApiRequest(`/api/chat/sessions/${currentActiveSessionId}/upload`, { method: "POST", body: formData });
+            formData.append("prompt", textPrompt || "Analyze selected content attachments.");
+            formData.append("compress", false);
+            for (let i = 0; i < fileSelector.files.length; i++) formData.append("files", fileSelector.files[i]);
+            response = await apiCall(`/api/chat/sessions/${currentSessionId}/upload`, { method: "POST", body: formData });
         } else {
-            res = await secureApiRequest(`/api/chat/sessions/${currentActiveSessionId}/messages`, {
+            response = await apiCall(`/api/chat/sessions/${currentSessionId}/messages`, {
                 method: "POST",
-                body: JSON.stringify({ content: prompt, compress: isSummarize })
+                body: JSON.stringify({ content: textPrompt, compress: false })
             });
         }
 
-        removeTypingIndicator();
-        clearFileMatrixPipeline();
-        if (!res) return;
-        const data = await res.json();
-        appendMessageBubble('assistant', data.reply);
+        hideTypingIndicator();
+        clearFileSelector();
+        if (!response) return;
+        const data = await response.json();
+        insertMessageBubble('assistant', data.reply);
     } catch (err) {
-        removeTypingIndicator();
-        appendMessageBubble('assistant', "System core error uplink dropped. Verify cluster channels.");
+        hideTypingIndicator();
+        insertMessageBubble('assistant', "An error occurred while connecting to the core chat servers.");
     }
 }
 
-function toggleSummarize() {
-    isSummarize = !isSummarize;
-    document.getElementById("sumDot").className = isSummarize ? "w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_6px_#f59e0b]" : "w-1.5 h-1.5 rounded-full dark:bg-zinc-700 bg-slate-300";
-    document.getElementById("sumStatus").className = isSummarize ? "font-bold text-amber-500" : "font-bold dark:text-zinc-500 text-slate-400";
-    document.getElementById("sumStatus").textContent = isSummarize ? "ON" : "OFF";
+function handleFileSelect() {
+    const totalFiles = document.getElementById("fileAttachment").files.length;
+    document.getElementById("fileBadgeLabel").textContent = totalFiles > 0 ? `(${totalFiles} files selected)` : "";
 }
 
-function updateFileStatus() {
-    const len = document.getElementById("fileInput").files.length;
-    document.getElementById("fileCount").textContent = len > 0 ? `[${len} DATA MATRIX STACKED]` : "";
+function clearFileSelector() {
+    document.getElementById("fileAttachment").value = "";
+    document.getElementById("fileBadgeLabel").textContent = "";
 }
 
-function clearFileMatrixPipeline() {
-    document.getElementById("fileInput").value = "";
-    document.getElementById("fileCount").textContent = "";
-}
-
-// Fixed minor element ID matching bug here
-function showTypingIndicator() {
-    removeTypingIndicator();
+function displayTypingIndicator() {
+    hideTypingIndicator();
     const ind = document.createElement("div");
-    ind.id = "edithCoreTypingIndicator";
-    ind.className = "flex justify-start w-full mb-2";
-    ind.innerHTML = `<div class="ai-bubble rounded-2xl px-4 py-3 flex items-center gap-1.5"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>`;
-    chatArea.appendChild(ind);
-    scrollToTerminalBottom();
+    ind.id = "typingIndicatorBox";
+    ind.className = "flex justify-start w-full";
+    ind.innerHTML = `
+        <div class="dark:bg-[#18181b] bg-white border dark:border-zinc-800 border-slate-200 rounded-2xl px-4 py-3.5 flex items-center gap-1">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        </div>`;
+    chatWindow.appendChild(ind);
+    scrollToBottom();
 }
 
-function removeTypingIndicator() {
-    const targetedIndicator = document.getElementById("edithCoreTypingIndicator");
-    if (targetedIndicator) targetedIndicator.remove();
+function hideTypingIndicator() {
+    const el = document.getElementById("typingIndicatorBox");
+    if (el) el.remove();
 }
 
-function scrollToTerminalBottom() { chatArea.scrollTop = chatArea.scrollHeight; }
+function scrollToBottom() { chatWindow.scrollTop = chatWindow.scrollHeight; }
 
-function toggleSidebarMenu(open) {
-    const panel = document.getElementById("sidebarPanel");
-    const backdrop = document.getElementById("sidebarBackdrop");
+function toggleSidebar(open) {
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("sidebarOverlay");
     if (open) {
-        panel.classList.remove("mobile-sidebar-hide");
-        panel.classList.add("mobile-sidebar-show");
-        backdrop.classList.remove("hidden");
+        sidebar.classList.remove("-translate-x-full");
+        overlay.classList.remove("hidden");
     } else {
-        panel.classList.remove("mobile-sidebar-show");
-        panel.classList.add("mobile-sidebar-hide");
-        backdrop.classList.add("hidden");
+        sidebar.classList.add("-translate-x-full");
+        overlay.classList.add("hidden");
     }
 }
-
-window.onkeydown = (e) => {
-    if ((e.altKey || e.metaKey) && e.key.toLowerCase() === 'n') {
-        e.preventDefault();
-        createNewChatSession();
-    }
-};
 </script>
 </body>
 
 </html>
-
