@@ -10,7 +10,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&family=Caveat:wght=500;700&display=swap');
     
     body { 
       font-family: 'Plus Jakarta Sans', sans-serif; 
@@ -53,27 +53,30 @@
       box-shadow: 0 20px 40px -15px rgba(79, 70, 229, 0.1); 
     }
     
-    /* Code block layout configurations inside cards */
-    .note-content pre {
-      padding: 12px;
-      border-radius: 8px;
-      overflow-x: auto;
-      margin: 8px 0;
-    }
-    .dark .note-content pre {
-      background: #020617 !important;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    .light .note-content pre {
-      background: #f8fafc !important;
-      border: 1px solid rgba(0, 0, 0, 0.05);
+    /* Ruled Live Preview Matrix Styles */
+    .ruled-notebook-preview {
+      background-color: #faf8f5; 
+      background-image: linear-gradient(#e2dcd5 1px, transparent 1px);
+      background-size: 100% 24px;
+      font-family: 'Caveat', cursive;
+      font-size: 18px;
+      line-height: 24px;
+      color: #0f172a;
     }
 
-    .dark .note-content code { color: #a5b4fc; font-family: monospace; }
-    .light .note-content code { color: #4f46e5; font-family: monospace; }
+    .ruled-notebook-preview pre {
+      background: rgba(0,0,0,0.04) !important;
+      font-family: monospace;
+      font-size: 12px;
+      line-height: 1.4;
+      padding: 8px;
+      border-left: 3px solid #4f46e5;
+      border-radius: 4px;
+      color: #1e1b4b;
+    }
     
-    .note-content ul { list-style-type: disc; margin-left: 20px; }
-    .note-content ol { list-style-type: decimal; margin-left: 20px; }
+    .ruled-notebook-preview ul { list-style-type: disc; margin-left: 16px; }
+    .ruled-notebook-preview ol { list-style-type: decimal; margin-left: 16px; }
   </style>
 </head>
 <body class="text-gray-800 dark:text-gray-200 min-h-screen">
@@ -107,8 +110,7 @@
       </button>
     </div>
 
-    <div id="notesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      </div>
+    <div id="notesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
 
     <div id="emptyState" class="hidden text-center py-20">
       <div class="text-gray-400 dark:text-gray-600 text-5xl mb-4"><i class="fa-solid fa-folder-open"></i></div>
@@ -118,11 +120,8 @@
   </main>
 
   <script>
-    // Lifecycle initialization engine
     window.onload = () => {
       applySavedTheme();
-
-      // Security Token Verification Check
       if (!localStorage.getItem('token')) {
         window.location.href = 'login.html';
         return;
@@ -130,23 +129,19 @@
       renderNotes();
     };
 
-    // Advanced Theme Scanner (Checks multiple possible key setups)
     function applySavedTheme() {
       const dashboardMode = localStorage.getItem('mode');
       const dashboardTheme = localStorage.getItem('theme');
       
-      // If either 'mode' or 'theme' points to light state, apply light theme structure
       if (dashboardMode === 'light' || dashboardTheme === 'light' || dashboardMode === 'false') {
         document.documentElement.classList.remove('dark');
         document.documentElement.classList.add('light');
       } else {
-        // Fallback or explicit dark setting
         document.documentElement.classList.remove('light');
         document.documentElement.classList.add('dark');
       }
     }
 
-    // Toggles interface locally and syncs back data using common key targets
     function toggleTheme() {
       if (document.documentElement.classList.contains('dark')) {
         document.documentElement.classList.remove('dark');
@@ -183,11 +178,12 @@
       
       let htmlContent = "";
       notes.forEach(note => {
+        let rawContent = note.body || note.content || "";
         let renderedMarkdown = "";
         try {
-          renderedMarkdown = typeof marked.parse === 'function' ? marked.parse(note.content || "") : note.content;
+          renderedMarkdown = typeof marked.parse === 'function' ? marked.parse(rawContent) : rawContent;
         } catch(err) {
-          renderedMarkdown = note.content;
+          renderedMarkdown = rawContent;
         }
 
         htmlContent += `
@@ -199,15 +195,19 @@
                   <i class="fa-solid fa-trash-can"></i>
                 </button>
               </div>
-              <div class="note-content text-gray-600 dark:text-gray-300 text-sm font-light leading-relaxed break-words overflow-hidden space-y-2">
-                ${renderedMarkdown}
+              
+              <div class="ruled-notebook-preview rounded-xl p-4 max-h-60 overflow-y-auto border border-amber-200/40 shadow-inner space-y-2 mb-2">
+                <div class="text-xs font-sans font-bold text-indigo-600/60 uppercase tracking-widest border-b border-dashed border-indigo-200 pb-1 mb-2 select-none">// Live Notebook Blueprint Preview</div>
+                <div class="font-medium">
+                  ${renderedMarkdown}
+                </div>
               </div>
             </div>
             
-            <div class="mt-6 pt-4 border-t border-black/5 dark:border-white/5 flex items-center justify-between text-[11px] text-gray-400 dark:text-gray-500 font-mono">
+            <div class="mt-4 pt-4 border-t border-black/5 dark:border-white/5 flex items-center justify-between text-[11px] text-gray-400 dark:text-gray-500 font-mono">
               <span>${note.timestamp || "Recent Build"}</span>
               <button onclick="downloadSingleNoteAsPDF('${note.id}')" class="px-2.5 py-1 bg-indigo-600/10 dark:bg-purple-600/20 hover:bg-indigo-600 hover:dark:bg-purple-600 border border-indigo-500/30 dark:border-purple-500/30 text-indigo-600 dark:text-purple-300 hover:text-white rounded-md font-sans font-semibold transition-all flex items-center gap-1 text-[11px]">
-                <i class="fa-solid fa-file-pdf"></i> Handwriting PDF
+                <i class="fa-solid fa-file-pdf"></i> Export Handwriting PDF
               </button>
             </div>
           </div>
@@ -217,21 +217,19 @@
       container.innerHTML = htmlContent;
     }
 
-    // PDF Handwriting Notebook Style Engine
     function downloadSingleNoteAsPDF(noteId) {
       const notes = JSON.parse(localStorage.getItem('edith_vault_notes')) || [];
-      const note = notes.find(n => n.id === noteId);
+      const note = notes.find(n => n.id === noteId || n._id === noteId);
 
       if (!note) {
-        alert("Transcript not found.");
+        alert("Transcript map asset trace lost.");
         return;
       }
 
+      const rawContent = note.body || note.content || "";
       const printWrapper = document.createElement('div');
       printWrapper.style.padding = '50px 40px';
       printWrapper.style.color = '#0f172a'; 
-      
-      // Generating a ruled notebook background style matrix
       printWrapper.style.backgroundColor = '#faf8f5'; 
       printWrapper.style.backgroundImage = 'linear-gradient(#e2dcd5 1px, transparent 1px)';
       printWrapper.style.backgroundSize = '100% 28px';
@@ -241,16 +239,16 @@
 
       let parsedContent = "";
       try {
-        parsedContent = typeof marked.parse === 'function' ? marked.parse(note.content) : note.content;
+        parsedContent = typeof marked.parse === 'function' ? marked.parse(rawContent) : rawContent;
       } catch(e) {
-        parsedContent = note.content;
+        parsedContent = rawContent;
       }
 
       printWrapper.innerHTML = `
         <div style="border-bottom: 2px dashed #4f46e5; padding-bottom: 8px; margin-bottom: 28px; font-family: sans-serif; line-height: 1.4;">
           <h1 style="color: #4f46e5; margin: 0; font-size: 16px; font-weight: bold; letter-spacing: 1px;">EDITH DIGITAL VAULT NOTEBOOK</h1>
           <p style="color: #64748b; margin: 4px 0 0 0; font-size: 11px; text-transform: uppercase;">
-            Ref: ${note.id} • Created: ${note.timestamp}
+            Ref: ${note.id || 'Vault-Node'} • Created: ${note.timestamp || 'Chrono Node Active'}
           </p>
         </div>
         <div style="margin-bottom: 15px;">
@@ -290,7 +288,7 @@
     function deleteNote(noteId) {
       if(confirm("Delete this specific analytical transcript note entry?")) {
         let notes = JSON.parse(localStorage.getItem('edith_vault_notes')) || [];
-        notes = notes.filter(note => note.id !== noteId);
+        notes = notes.filter(note => note.id !== noteId && note._id !== noteId);
         localStorage.setItem('edith_vault_notes', JSON.stringify(notes));
         renderNotes();
       }
