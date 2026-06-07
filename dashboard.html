@@ -12,292 +12,254 @@
     }
   </script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
     
     html, body {
       font-family: 'Plus Jakarta Sans', sans-serif; 
       overflow-x: hidden !important;
-      position: relative;
       width: 100%;
-      transition: background 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.4s ease;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-    /* --- CINEMATIC AMBIENT GRADIENTS --- */
+    /* --- REFINED SYSTEM THEME PALETTES --- */
     .dark body {
-      background: radial-gradient(circle at 50% -20%, #13112c 0%, #030308 70%, #000000 100%); 
+      background-color: #090d16;
     }
     html:not(.dark) body {
-      background: radial-gradient(circle at 50% -20%, #f4f6fe 0%, #fafafa 70%, #f0f3fa 100%); 
+      background-color: #f8fafc;
     }
     
-    /* --- BENTO GLASS PHYSICS --- */
+    /* --- MINIMALIST FLAT BENTO CARDS --- */
     .bento-card {
-      position: relative;
-      overflow: hidden;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.25s ease-in-out;
     }
     
     .dark .bento-card {
-      background: rgba(10, 11, 22, 0.45);
-      backdrop-filter: blur(24px) saturate(150%);
-      border: 1px solid rgba(255, 255, 255, 0.04);
+      background-color: rgba(17, 24, 39, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
     html:not(.dark) .bento-card {
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(24px) saturate(120%);
-      border: 1px solid rgba(99, 102, 241, 0.06);
-    }
-    
-    .bento-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, transparent, rgba(99, 102, 241, 0.04), transparent);
-      opacity: 0;
-      transition: opacity 0.4s ease;
-    }
-    .bento-card:hover::before {
-      opacity: 1;
+      background-color: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
     }
 
     .dark .bento-card:hover { 
-      transform: translateY(-4px); 
-      background: rgba(14, 16, 33, 0.6);
-      border-color: rgba(99, 102, 241, 0.35);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 24px -2px rgba(99, 102, 241, 0.1); 
+      background-color: rgba(24, 33, 53, 0.7);
+      border-color: rgba(99, 102, 241, 0.4);
     }
     html:not(.dark) .bento-card:hover {
-      transform: translateY(-4px); 
-      background: #ffffff;
       border-color: rgba(99, 102, 241, 0.3);
-      box-shadow: 0 25px 40px -15px rgba(99, 102, 241, 0.12);
+      box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.08);
     }
 
-    /* --- LOGO ROTATION CORE PHYSICS --- */
+    /* --- STEADY ROTATION LOGO CORE --- */
     @keyframes spinClockwise { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    @keyframes spinCounterClockwise { 0% { transform: rotate(0deg); } 100% { transform: rotate(-360deg); } }
-    @keyframes coreBreathing { 0%, 100% { transform: scale(0.92); opacity: 0.5; } 50% { transform: scale(1.1); opacity: 0.9; } }
-    
-    .reactor-outer { animation: spinClockwise 26s linear infinite; transform-origin: center; }
-    .reactor-mid { animation: spinCounterClockwise 16s linear infinite; transform-origin: center; }
-    .reactor-inner { animation: spinClockwise 8s linear infinite; transform-origin: center; }
-    .reactor-core-glow { animation: coreBreathing 2.5s ease-in-out infinite; transform-origin: center; }
+    .reactor-outer { animation: spinClockwise 40s linear infinite; transform-origin: center; }
+    .reactor-inner { animation: spinClockwise 20s linear infinite; transform-origin: center; }
 
     /* Sliding Drawer Panels */
     .dark #profilePanel {
-      backdrop-filter: blur(40px);
-      background: rgba(4, 5, 12, 0.96);
-      border-left: 1px solid rgba(255, 255, 255, 0.04);
+      background-color: #0f172a;
+      border-left: 1px solid rgba(255, 255, 255, 0.08);
     }
     html:not(.dark) #profilePanel {
-      backdrop-filter: blur(40px);
-      background: rgba(255, 255, 255, 0.97);
-      border-left: 1px solid rgba(99, 102, 241, 0.08);
-      box-shadow: -20px 0 60px rgba(99, 102, 241, 0.04);
+      background-color: #ffffff;
+      border-left: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: -10px 0 30px rgba(0, 0, 0, 0.03);
     }
 
-    .fade-in-up {
-      animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    .fade-in {
+      animation: fadeIn 0.4s ease-out both;
     }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
-<body class="min-h-screen dark:text-slate-200 text-slate-800 transition-colors duration-300 relative">
+<body class="min-h-screen dark:text-slate-200 text-slate-700 relative">
 
-  <canvas id="neuralMatrixCanvas" class="absolute top-0 left-0 w-full h-full pointer-events-none z-0 opacity-40 dark:opacity-30"></canvas>
+  <!-- LIGHT STRUCTURAL CANVAS ACCENT LAYER -->
+  <canvas id="neuralMatrixCanvas" class="absolute top-0 left-0 w-full h-full pointer-events-none z-0 opacity-20 dark:opacity-25"></canvas>
 
-  <header class="sticky top-0 z-40 border-b dark:border-white/5 border-slate-200/60 w-full backdrop-blur-xl relative z-10">
-    <div class="max-w-7xl mx-auto px-6 py-3.5 flex items-center justify-between">
+  <!-- CLEAN HEADER CONTROL MATRIX -->
+  <header class="sticky top-0 z-40 border-b dark:border-white/5 border-slate-200/80 w-full backdrop-blur-md relative z-10">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
         
-        <div class="w-10 h-10 flex items-center justify-center select-none cursor-pointer group">
-          <svg viewBox="0 0 100 100" class="w-full h-full filter drop-shadow-[0_0_8px_rgba(99,102,241,0.35)] group-hover:drop-shadow-[0_0_15px_rgba(147,51,234,0.6)] transition-all duration-300" xmlns="http://www.w3.org/2000/svg">
+        <!-- CONTROL HUB BRAND ORB -->
+        <div class="w-8 h-8 flex items-center justify-center select-none cursor-pointer">
+          <svg viewBox="0 0 100 100" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <linearGradient id="reactorGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#4f46e5" />
-                <stop offset="50%" stop-color="#6366f1" />
-                <stop offset="100%" stop-color="#a855f7" />
+              <linearGradient id="indigoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#6366f1" />
+                <stop offset="100%" stop-color="#4f46e5" />
               </linearGradient>
             </defs>
-            <circle class="reactor-core-glow" cx="50" cy="50" r="38" fill="url(#reactorGrad)" opacity="0.2"/>
-            <circle class="reactor-outer" cx="50" cy="50" r="43" stroke="url(#reactorGrad)" stroke-width="2" stroke-dasharray="30 15 5 15" fill="none"/>
-            <circle class="reactor-mid" cx="50" cy="50" r="33" stroke="url(#reactorGrad)" stroke-width="1.5" stroke-dasharray="12 8" fill="none" opacity="0.6"/>
-            <polygon class="reactor-inner" points="50,26 71,38 71,62 50,74 29,62 29,38" fill="none" stroke="url(#reactorGrad)" stroke-width="2" stroke-linejoin="round" opacity="0.8"/>
-            <circle cx="50" cy="50" r="6" fill="url(#reactorGrad)"/>
+            <circle class="reactor-outer" cx="50" cy="50" r="42" stroke="url(#indigoGrad)" stroke-width="3" stroke-dasharray="25 15" fill="none"/>
+            <polygon class="reactor-inner" points="50,28 69,39 69,61 50,72 31,61 31,39" fill="none" stroke="url(#indigoGrad)" stroke-width="2" opacity="0.7"/>
+            <circle cx="50" cy="50" r="7" fill="url(#indigoGrad)"/>
           </svg>
         </div>
 
-        <h1 class="text-lg font-bold tracking-tight dark:bg-gradient-to-r dark:from-white dark:to-slate-400 bg-gradient-to-r from-slate-900 to-indigo-950 bg-clip-text text-transparent flex items-center gap-2">
-          EDITH <span class="text-[9px] font-extrabold tracking-wider text-indigo-500 dark:text-indigo-400 border border-indigo-500/20 dark:border-indigo-500/30 px-1.5 py-0.5 rounded bg-indigo-500/5">V3.2</span>
+        <h1 class="text-base font-bold tracking-tight dark:text-white text-slate-900 flex items-center gap-2">
+          EDITH <span class="text-[9px] font-bold text-indigo-500 bg-indigo-500/10 px-1.5 py-0.5 rounded">V3.2</span>
         </h1>
       </div>
 
-      <div class="flex items-center gap-3">
-        <button onclick="toggleThemePipeline()" id="themeTogglerBtn" title="Shift System Environment" class="w-9 h-9 border dark:border-white/10 border-slate-200 hover:bg-slate-500/5 dark:hover:bg-white/5 rounded-xl flex items-center justify-center transition-all dark:text-slate-400 text-slate-600 shadow-sm">
+      <div class="flex items-center gap-4">
+        <button onclick="toggleThemePipeline()" id="themeTogglerBtn" title="Toggle Workspace Theme" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
           <i class="fa-solid fa-sun text-sm hidden dark:block"></i>
           <i class="fa-solid fa-moon text-sm dark:hidden"></i>
         </button>
 
-        <div id="profileTrigger" onclick="toggleProfile()" class="flex items-center gap-2.5 cursor-pointer hover:bg-slate-500/5 dark:hover:bg-white/5 p-1.5 px-2.5 rounded-xl border border-transparent hover:border-slate-200 dark:hover:border-white/5 transition-all">
-          <div class="text-right hidden md:block">
-            <p id="navUserName" class="font-semibold dark:text-slate-200 text-slate-800 text-xs tracking-tight">Loading...</p>
-            <p class="text-[8px] text-indigo-600 dark:text-indigo-400 font-bold uppercase tracking-widest">Active Operator</p>
+        <div id="profileTrigger" onclick="toggleProfile()" class="flex items-center gap-2.5 cursor-pointer group">
+          <div class="text-right hidden sm:block">
+            <p id="navUserName" class="font-medium dark:text-slate-200 text-slate-800 text-xs tracking-tight">Loading...</p>
+            <p class="text-[8px] text-slate-400 font-mono tracking-wider">SYSTEM REGISTRY</p>
           </div>
-          <div class="w-8 h-8 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center text-xs font-bold text-white shadow-md">
-            <i class="fa-solid fa-user-gear"></i>
+          <div class="w-8 h-8 dark:bg-slate-800 bg-slate-200 rounded-lg flex items-center justify-center text-xs text-slate-600 dark:text-slate-300 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors">
+            <i class="fa-solid fa-user"></i>
           </div>
         </div>
       </div>
     </div>
   </header>
 
-  <div id="profilePanel" class="fixed top-0 right-0 h-full w-72 sm:w-80 z-50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out">
+  <!-- COLLAPSIBLE PROFILE DRAWER SYSTEM -->
+  <div id="profilePanel" class="fixed top-0 right-0 h-full w-72 z-50 transform translate-x-full transition-transform duration-200 ease-in-out">
     <div class="p-6 flex flex-col h-full">
-      <div class="flex justify-between items-center mb-8">
-        <h3 class="text-xs font-bold dark:text-white text-slate-900 uppercase tracking-widest opacity-70">System Core Profile</h3>
-        <button onclick="toggleProfile()" class="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors p-2">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Account Profile</h3>
+        <button onclick="toggleProfile()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
           <i class="fas fa-times text-sm"></i>
         </button>
       </div>
 
-      <div class="text-center mb-8">
-        <div class="w-16 h-16 mx-auto mb-3 flex items-center justify-center">
-          <svg viewBox="0 0 100 100" class="w-full h-full filter drop-shadow-[0_0_10px_rgba(99,102,241,0.4)]" xmlns="http://www.w3.org/2000/svg">
-            <circle class="reactor-core-glow" cx="50" cy="50" r="38" fill="url(#reactorGrad)" opacity="0.2"/>
-            <circle class="reactor-outer" cx="50" cy="50" r="43" stroke="url(#reactorGrad)" stroke-width="2.5" stroke-dasharray="20 10" fill="none"/>
-            <polygon class="reactor-inner" points="50,26 71,38 71,62 50,74 29,62 29,38" fill="none" stroke="url(#reactorGrad)" stroke-width="2.5" stroke-linejoin="round"/>
-            <circle cx="50" cy="50" r="7" fill="url(#reactorGrad)"/>
-          </svg>
-        </div>
-        <h4 id="profileName" class="text-lg font-bold dark:text-white text-slate-900 tracking-tight">Loading...</h4>
-        <p class="text-indigo-600 dark:text-indigo-400 text-[10px] font-bold tracking-wider uppercase mt-0.5">Control Registry Account</p>
+      <div class="mb-6">
+        <h4 id="profileName" class="text-base font-bold dark:text-white text-slate-900 tracking-tight">Loading...</h4>
+        <p class="text-indigo-500 text-[10px] font-medium uppercase tracking-wider mt-0.5">Authorized Operator</p>
       </div>
 
-      <div class="space-y-3 flex-1 overflow-y-auto pr-1">
-        <div class="dark:bg-slate-950/40 bg-slate-100/70 p-3.5 rounded-xl border dark:border-white/5 border-slate-200/60">
-          <p class="text-[8px] text-slate-400 dark:text-slate-500 uppercase font-bold tracking-widest mb-1">Email Interface Vector</p>
+      <div class="space-y-2.5 flex-1 overflow-y-auto">
+        <div class="dark:bg-slate-900/60 bg-slate-50 p-3 rounded-lg border dark:border-white/5 border-slate-200/60">
+          <p class="text-[8px] text-slate-400 uppercase tracking-widest mb-0.5">Email Endpoint</p>
           <p id="profileEmail" class="text-xs dark:text-slate-300 text-slate-700 truncate font-medium">Loading...</p>
         </div>
-        <div class="dark:bg-slate-950/40 bg-slate-100/70 p-3.5 rounded-xl border dark:border-white/5 border-slate-200/60">
-          <p class="text-[8px] text-slate-400 dark:text-slate-500 uppercase font-bold tracking-widest mb-1">Secure Line Contact</p>
+        <div class="dark:bg-slate-900/60 bg-slate-50 p-3 rounded-lg border dark:border-white/5 border-slate-200/60">
+          <p class="text-[8px] text-slate-400 uppercase tracking-widest mb-0.5">Secure Line</p>
           <p id="profilePhone" class="text-xs dark:text-slate-300 text-slate-700 font-mono">Loading...</p>
         </div>
-        <div class="dark:bg-slate-950/40 bg-slate-100/70 p-3.5 rounded-xl border dark:border-white/5 border-slate-200/60">
-          <p class="text-[8px] text-slate-400 dark:text-slate-500 uppercase font-bold tracking-widest mb-1">Authorization Clearance</p>
-          <p class="text-xs dark:text-slate-300 text-slate-700 font-medium flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block animate-pulse"></span> Active Terminal Session
+        <div class="dark:bg-slate-900/60 bg-slate-50 p-3 rounded-lg border dark:border-white/5 border-slate-200/60">
+          <p class="text-[8px] text-slate-400 uppercase tracking-widest mb-0.5">Clearance</p>
+          <p class="text-xs text-emerald-500 font-medium flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block"></span> Secure Session Active
           </p>
         </div>
       </div>
 
-      <button id="logoutBtn" class="w-full mt-6 py-3 bg-slate-500/5 hover:bg-red-500/10 dark:text-slate-400 text-slate-600 hover:text-red-500 border dark:border-white/10 border-slate-200 hover:border-red-500/20 rounded-xl font-semibold text-xs tracking-wide transition-all flex items-center justify-center gap-2">
+      <button id="logoutBtn" class="w-full mt-6 py-2.5 bg-red-500/5 hover:bg-red-500/10 text-red-500 border border-red-500/20 rounded-lg font-medium text-xs tracking-wide transition-colors flex items-center justify-center gap-2">
         <i class="fas fa-sign-out-alt"></i> Kill Active Session
       </button>
     </div>
   </div>
 
-  <main class="max-w-7xl mx-auto px-6 py-10 sm:py-14 w-full fade-in-up relative z-10">
+  <!-- CONTROL INTERFACE MAIN ENVIRONMENT -->
+  <main class="max-w-6xl mx-auto px-6 py-10 w-full fade-in relative z-10">
     
-    <div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b dark:border-white/5 border-slate-200 pb-8">
+    <!-- MINIMAL BANNER INTERFACE -->
+    <div class="mb-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b dark:border-white/5 border-slate-200 pb-6">
       <div>
-        <h2 class="text-2xl sm:text-4xl font-bold mb-2.5 tracking-tight dark:text-white text-slate-900">
-          Welcome Back, <span id="welcomeName" class="bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-500 dark:from-indigo-400 dark:via-indigo-300 dark:to-purple-400 bg-clip-text text-transparent">Operator!</span>
+        <h2 class="text-xl sm:text-2xl font-bold dark:text-white text-slate-900 tracking-tight">
+          Welcome back, <span id="welcomeName" class="text-indigo-500">Operator!</span>
         </h2>
-        <p class="dark:text-slate-400 text-slate-600 text-xs sm:text-sm font-light tracking-wide max-w-xl">
-          System functional arrays are currently stable. Select an environment pipeline dashboard layout module to launch specific deployment automation parameters.
+        <p class="dark:text-slate-400 text-slate-500 text-xs font-normal mt-0.5">
+          Select an environment array module down below to execute computing workflows.
         </p>
       </div>
       
-      <div class="flex flex-wrap gap-2.5 font-mono text-[10px]">
-        <div class="flex items-center gap-2 dark:bg-white/5 bg-slate-200/50 px-3 py-1.5 rounded-lg border dark:border-white/5 border-slate-200">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span class="dark:text-slate-400 text-slate-500">LATENCY:</span>
+      <!-- MINIMAL STATUS CHIPS -->
+      <div class="flex gap-2 font-mono text-[10px]">
+        <div class="flex items-center gap-2 dark:bg-slate-900 bg-slate-100 px-2.5 py-1 rounded border dark:border-white/5 border-slate-200">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          <span class="text-slate-400">PING:</span>
           <span class="font-bold text-emerald-500">14ms</span>
         </div>
-        <div class="flex items-center gap-2 dark:bg-white/5 bg-slate-200/50 px-3 py-1.5 rounded-lg border dark:border-white/5 border-slate-200">
-          <span class="dark:text-slate-400 text-slate-500">NODES ONLINE:</span>
-          <span class="font-bold text-indigo-500">45/45</span>
+        <div class="flex items-center gap-2 dark:bg-slate-900 bg-slate-100 px-2.5 py-1 rounded border dark:border-white/5 border-slate-200">
+          <span class="text-slate-400">MESH NODES:</span>
+          <span class="font-bold text-indigo-500">ACTIVE</span>
         </div>
       </div>
     </div>
 
+    <!-- CLEAN ASYMMETRICAL BENTO BOX ENVIRONMENT LAYER -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
       
-      <div onclick="window.location.href='index.html'" class="bento-card rounded-2xl p-7 cursor-pointer group flex flex-col justify-between md:col-span-2 min-h-[260px]">
+      <!-- CARD 1 (PRIMARY): ENGINE LAB -->
+      <div onclick="window.location.href='index.html'" class="bento-card rounded-xl p-6 cursor-pointer group flex flex-col justify-between md:col-span-2 min-h-[200px]">
         <div>
-          <div class="w-11 h-11 dark:bg-indigo-600/10 bg-indigo-50 border border-indigo-500/20 dark:border-indigo-500/30 rounded-xl flex items-center justify-center text-lg mb-5 shadow-sm group-hover:bg-indigo-600 group-hover:text-white text-indigo-600 dark:text-indigo-400 transition-all duration-300">
+          <div class="text-indigo-500 text-lg mb-4">
             <i class="fa-solid fa-brain"></i>
           </div>
-          <div class="flex items-center gap-2.5 mb-2">
-            <h3 class="text-lg font-bold group-hover:text-indigo-600 dark:group-hover:text-indigo-400 dark:text-white text-slate-900 tracking-tight transition-colors">AI Intelligence Lab</h3>
-            <span class="text-[9px] dark:bg-indigo-500/10 bg-indigo-50 px-2 py-0.5 rounded-full text-indigo-500 border border-indigo-500/20 font-mono">PRIMARY MODULE</span>
+          <div class="flex items-center gap-2 mb-1.5">
+            <h3 class="text-base font-bold dark:text-white text-slate-900 tracking-tight">AI Intelligence Lab</h3>
+            <span class="text-[8px] dark:bg-indigo-500/10 bg-indigo-50 px-2 py-0.5 rounded text-indigo-500 border border-indigo-500/10 font-mono">PRIMARY</span>
           </div>
-          <p class="dark:text-slate-400 text-slate-600 text-xs font-light leading-relaxed max-w-xl opacity-90">
-            Initialize primary neural compute layers to evaluate advanced logic engines, optimize structural parsing logic, and map dynamic algorithms through real-time logic engines.
+          <p class="dark:text-slate-400 text-slate-500 text-xs font-normal leading-relaxed max-w-lg">
+            Initialize execution blocks on primary neural networks to build structured code pipelines, optimize logical parameters, and execute live code analysis modeling processes instantly.
           </p>
         </div>
-        
-        <div class="flex items-center justify-between mt-6 pt-4 border-t border-slate-200/50 dark:border-white/5">
-          <span class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold flex items-center gap-2 tracking-wide">
-            Connect Primary Core Terminal <i class="fas fa-arrow-right text-[10px] group-hover:translate-x-1.5 transition-transform"></i>
-          </span>
-          <span class="text-[10px] text-slate-400 font-mono hidden sm:inline-block">SYS_STATUS // RUNNING</span>
-        </div>
-      </div>
-
-      <div onclick="window.location.href='notes.html'" class="bento-card rounded-2xl p-7 cursor-pointer group flex flex-col justify-between min-h-[260px]">
-        <div>
-          <div class="w-11 h-11 dark:bg-purple-600/10 bg-purple-50 border border-purple-500/20 dark:border-purple-500/30 rounded-xl flex items-center justify-center text-lg mb-5 shadow-sm group-hover:bg-purple-600 group-hover:text-white text-purple-600 dark:text-purple-400 transition-all duration-300">
-            <i class="fa-solid fa-folder-closed"></i>
-          </div>
-          <h3 class="text-lg font-bold mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 dark:text-white text-slate-900 tracking-tight transition-colors">Digital Vault Storage</h3>
-          <p class="dark:text-slate-400 text-slate-600 text-xs font-light leading-relaxed opacity-90">
-            Query long-term visual file repositories, trace localized operational runtime blocks, and parse memory arrays safely inside encrypted silos.
-          </p>
-        </div>
-        <span class="text-purple-600 dark:text-purple-400 text-xs font-semibold flex items-center gap-2 tracking-wide mt-6 pt-4 border-t border-slate-200/50 dark:border-white/5">
-          Unlock Records <i class="fas fa-arrow-right text-[10px] group-hover:translate-x-1.5 transition-transform"></i>
+        <span class="text-indigo-500 text-xs font-medium flex items-center gap-1.5 mt-6 pt-3 border-t dark:border-white/5 border-slate-100">
+          Open Terminal Core <i class="fas fa-arrow-right text-[9px] group-hover:translate-x-1 transition-transform"></i>
         </span>
       </div>
 
-      <div onclick="window.location.href='aitools.html'" class="bento-card rounded-2xl p-7 cursor-pointer group flex flex-col justify-between md:col-span-3 min-h-[200px]">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full items-start">
+      <!-- CARD 2: STORAGE ARRAYS -->
+      <div onclick="window.location.href='notes.html'" class="bento-card rounded-xl p-6 cursor-pointer group flex flex-col justify-between min-h-[200px]">
+        <div>
+          <div class="text-indigo-500 text-lg mb-4">
+            <i class="fa-solid fa-folder"></i>
+          </div>
+          <h3 class="text-base font-bold mb-1.5 dark:text-white text-slate-900 tracking-tight">Digital Vault Storage</h3>
+          <p class="dark:text-slate-400 text-slate-500 text-xs font-normal leading-relaxed">
+            Query encrypted secure storage vectors, access file block records, and scan historical telemetry tracking sequences inside sandbox environments.
+          </p>
+        </div>
+        <span class="text-indigo-500 text-xs font-medium flex items-center gap-1.5 mt-6 pt-3 border-t dark:border-white/5 border-slate-100">
+          Unlock Vault <i class="fas fa-arrow-right text-[9px] group-hover:translate-x-1 transition-transform"></i>
+        </span>
+      </div>
+
+      <!-- CARD 3: PIPELINE SUITES -->
+      <div onclick="window.location.href='aitools.html'" class="bento-card rounded-xl p-6 cursor-pointer group flex flex-col justify-between md:col-span-3">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full items-center">
           
           <div class="md:col-span-1">
-            <div class="w-11 h-11 dark:bg-cyan-600/10 bg-cyan-50 border border-cyan-500/20 dark:border-cyan-500/30 rounded-xl flex items-center justify-center text-lg mb-4 shadow-sm group-hover:bg-cyan-600 group-hover:text-white text-cyan-600 dark:text-cyan-400 transition-all duration-300">
+            <div class="text-indigo-500 text-lg mb-3">
               <i class="fa-solid fa-bolt"></i>
             </div>
-            <h3 class="text-lg font-bold mb-1.5 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 dark:text-white text-slate-900 tracking-tight transition-colors">Specialized Pipelines</h3>
-            <p class="dark:text-slate-400 text-slate-600 text-xs font-light leading-relaxed opacity-90">
-              Deploy high-speed automated systemic logic macro utilities configured for quick output formatting.
+            <h3 class="text-base font-bold mb-1 dark:text-white text-slate-900 tracking-tight">Specialized Pipelines</h3>
+            <p class="dark:text-slate-400 text-slate-500 text-xs font-normal leading-relaxed">
+              Accelerated operational macros preconfigured for fast syntax execution and file normalization.
             </p>
           </div>
 
-          <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-[11px] pointer-events-none w-full md:mt-2">
-            <div class="flex items-center justify-between p-3.5 rounded-xl dark:bg-slate-950/40 bg-slate-100/80 border dark:border-white/5 border-slate-200/60 shadow-sm">
-              <span class="dark:text-slate-300 text-slate-700 flex items-center gap-2.5"><i class="fa-solid fa-code text-cyan-500 text-xs"></i> Code Refactoring</span>
-              <span class="text-cyan-500 text-[9px] bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20 font-bold">READY</span>
+          <!-- REFINED SUB-UTILITIES CELLS -->
+          <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-2 w-full text-[11px] font-mono pointer-events-none">
+            <div class="flex items-center justify-between p-3 rounded-lg dark:bg-slate-900 bg-slate-50 border dark:border-white/5 border-slate-200">
+              <span class="dark:text-slate-300 text-slate-700"><i class="fa-solid fa-code text-indigo-500 mr-2"></i> Code Refactoring</span>
+              <span class="text-indigo-500 font-bold text-[9px]">ONLINE</span>
             </div>
-            <div class="flex items-center justify-between p-3.5 rounded-xl dark:bg-slate-950/40 bg-slate-100/80 border dark:border-white/5 border-slate-200/60 shadow-sm">
-              <span class="dark:text-slate-300 text-slate-700 flex items-center gap-2.5"><i class="fa-solid fa-wand-magic-sparkles text-purple-500 text-xs"></i> Grammar Optimizer</span>
-              <span class="text-purple-500 text-[9px] bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/20 font-bold">READY</span>
-            </div>
-            <div class="flex items-center justify-between p-3.5 rounded-xl dark:bg-slate-950/40 bg-slate-100/80 border dark:border-white/5 border-slate-200/60 shadow-sm">
-              <span class="dark:text-slate-300 text-slate-700 flex items-center gap-2.5"><i class="fa-solid fa-chart-simple text-emerald-500 text-xs"></i> Analytics Matrix</span>
-              <span class="text-emerald-500 text-[9px] bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 font-bold">STABLE</span>
-            </div>
-            <div class="flex items-center justify-between p-3.5 rounded-xl dark:bg-slate-950/40 bg-slate-100/80 border dark:border-white/5 border-slate-200/60 shadow-sm">
-              <span class="dark:text-slate-300 text-slate-700 flex items-center gap-2.5"><i class="fa-solid fa-shield-halved text-amber-500 text-xs"></i> Firewall Perimeter</span>
-              <span class="text-amber-500 text-[9px] bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20 font-bold">SECURE</span>
+            <div class="flex items-center justify-between p-3 rounded-lg dark:bg-slate-900 bg-slate-50 border dark:border-white/5 border-slate-200">
+              <span class="dark:text-slate-300 text-slate-700"><i class="fa-solid fa-wand-magic-sparkles text-indigo-500 mr-2"></i> Grammar Optimizer</span>
+              <span class="text-indigo-500 font-bold text-[9px]">ONLINE</span>
             </div>
           </div>
         </div>
         
-        <span class="text-cyan-600 dark:text-cyan-400 text-xs font-semibold flex items-center gap-2 tracking-wide mt-6 pt-4 border-t border-slate-200/50 dark:border-white/5">
-          Initialize Pipeline Suite Array <i class="fas fa-arrow-right text-[10px] group-hover:translate-x-1.5 transition-transform"></i>
+        <span class="text-indigo-500 text-xs font-medium flex items-center gap-1.5 mt-6 pt-3 border-t dark:border-white/5 border-slate-100">
+          Launch Toolkit Suite <i class="fas fa-arrow-right text-[9px] group-hover:translate-x-1 transition-transform"></i>
         </span>
       </div>
 
@@ -305,7 +267,7 @@
   </main>
 
   <script>
-    // --- HIGH-PERFORMANCE DYNAMIC NEURAL MATRIX GRAPH CANVAS ENGINE ---
+    // --- STABLE LOW-OVERHEAD AMBIENT GRAPH BACKGROUND ENGINE ---
     const canvas = document.getElementById('neuralMatrixCanvas');
     const ctx = canvas.getContext('2d');
     let nodes = [];
@@ -324,9 +286,9 @@
       reset() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 0.35;
-        this.vy = (Math.random() - 0.5) * 0.35;
-        this.radius = Math.random() * 1.8 + 1;
+        this.vx = (Math.random() - 0.5) * 0.2;
+        this.vy = (Math.random() - 0.5) * 0.2;
+        this.radius = 1.2;
       }
       update() {
         this.x += this.vx;
@@ -336,32 +298,29 @@
       }
       draw() {
         const isDark = document.documentElement.classList.contains('dark');
-        ctx.fillStyle = isDark ? 'rgba(99, 102, 241, 0.4)' : 'rgba(79, 70, 229, 0.2)';
+        ctx.fillStyle = isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(99, 102, 241, 0.15)';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fill();
       }
     }
 
-    const targetNodeDensity = 45;
-    for (let i = 0; i < targetNodeDensity; i++) {
+    for (let i = 0; i < 35; i++) {
       nodes.push(new NeuralNode());
     }
 
     function drawNetworkLines() {
       const isDark = document.documentElement.classList.contains('dark');
-      const connectionThreshold = 140;
-
       for (let i = 0; i < nodes.length; i++) {
         for (let j = i + 1; j < nodes.length; j++) {
           const dx = nodes[i].x - nodes[j].x;
           const dy = nodes[i].y - nodes[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
 
-          if (dist < connectionThreshold) {
-            const alpha = (1 - dist / connectionThreshold) * 0.12;
-            ctx.strokeStyle = isDark ? `rgba(99, 102, 241, ${alpha})` : `rgba(79, 70, 229, ${alpha * 0.75})`;
-            ctx.lineWidth = 0.7;
+          if (dist < 130) {
+            const alpha = (1 - dist / 130) * 0.08;
+            ctx.strokeStyle = isDark ? `rgba(255, 255, 255, ${alpha})` : `rgba(99, 102, 241, ${alpha})`;
+            ctx.lineWidth = 0.6;
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(nodes[j].x, nodes[j].y);
@@ -382,7 +341,7 @@
     }
     renderingPipelineLoop();
 
-    // --- CORE STORAGE AND INTERFACE UTILITY CONTEXTS ---
+    // --- WORKSPACE ENVIRONMENT STORAGE ACTIONS ---
     function initThemePipeline() {
       const savedTheme = localStorage.getItem('edith-theme') || 'dark';
       if (savedTheme === 'dark') {
