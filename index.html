@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Edith AI Assistant</title>
+    <title>EDITH AI Assistant</title>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -18,11 +18,16 @@
                 extend: {
                     colors: {
                         brand: {
-                            50: '#f5f3ff',
-                            100: '#ede9fe',
-                            500: '#6366f1',
-                            600: '#4f46e5',
-                            700: '#4338ca',
+                            50: '#ecfeff',
+                            100: '#cffafe',
+                            500: '#06b6d4', 
+                            600: '#0891b2', 
+                            700: '#0e7490',
+                        },
+                        matrix: {
+                            darkBg: '#05070a',
+                            darkCard: '#0b0f17',
+                            border: '#1e293b'
                         }
                     }
                 }
@@ -31,163 +36,138 @@
     </script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Smooth Custom Scrollbar */
-        .chat-scroll::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        .chat-scroll::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .dark .chat-scroll::-webkit-scrollbar-thumb {
-            background: #27272a;
-            border-radius: 99px;
-        }
-        html:not(.dark) .chat-scroll::-webkit-scrollbar-thumb {
-            background: #e2e8f0;
-            border-radius: 99px;
-        }
+        .chat-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+        .chat-scroll::-webkit-scrollbar-track { background: transparent; }
+        .dark .chat-scroll::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 99px; }
+        html:not(.dark) .chat-scroll::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 99px; }
 
-        /* Markdown Elements Custom Styling */
         .prose-content p { margin-bottom: 0.75rem; }
         .prose-content p:last-child { margin-bottom: 0; }
         .prose-content ul { list-style-type: disc; margin-left: 1.25rem; margin-bottom: 0.75rem; }
         .prose-content ol { list-style-type: decimal; margin-left: 1.25rem; margin-bottom: 0.75rem; }
         
-        /* Premium Code Block Structure */
         .code-block-container {
             position: relative;
             margin: 16px 0;
             border-radius: 12px;
             overflow: hidden;
-            border: 1px solid #27272a;
+            border: 1px solid #1e293b;
         }
-        html:not(.dark) .code-block-container {
-            border: 1px solid #e2e8f0;
-        }
-        pre {
-            background: #09090b !important;
-            padding: 16px;
-            overflow-x: auto;
-            margin: 0;
-        }
-        html:not(.dark) pre {
-            background: #f8fafc !important;
-        }
-        code {
-            color: #f4f4f5;
-            font-size: 0.875rem;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-        }
-        html:not(.dark) code {
-            color: #0f172a;
-        }
+        html:not(.dark) .code-block-container { border: 1px solid #e2e8f0; }
+        pre { background: #010409 !important; padding: 16px; overflow-x: auto; margin: 0; }
+        html:not(.dark) pre { background: #f8fafc !important; }
+        code { color: #e6edf3; font-size: 0.875rem; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+        html:not(.dark) code { color: #0f172a; }
 
-        /* Bouncing Animation for Typing Indicators */
-        .dot { animation: bouncePoint 1.4s infinite ease-in-out; width: 6px; height: 6px; background-color: #6366f1; border-radius: 50%; display: inline-block; }
+        .dot { animation: bouncePoint 1.4s infinite ease-in-out; width: 6px; height: 6px; background-color: #06b6d4; border-radius: 50%; display: inline-block; }
         .dot:nth-child(2) { animation-delay: 0.2s; }
         .dot:nth-child(3) { animation-delay: 0.4s; }
         @keyframes bouncePoint { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-6px); } }
 
-        .download-pdf-trigger { margin-top: 12px; width: max-content; display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); font-size: 12px; font-weight: 600; border-radius: 10px; color: #818cf8; transition: all 0.2s; cursor: pointer; }
-        .download-pdf-trigger:hover { background: #4f46e5; color: white; transform: translateY(-1px); }
+        .download-pdf-trigger { margin-top: 14px; width: max-content; display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; background: rgba(6, 182, 212, 0.08); border: 1px solid rgba(6, 182, 212, 0.2); font-size: 12px; font-weight: 700; border-radius: 8px; color: #22d3ee; transition: all 0.2s; cursor: pointer; }
+        .download-pdf-trigger:hover { background: #06b6d4; color: white; transform: translateY(-1px); }
     </style>
 </head>
 
-<body class="w-screen h-screen flex dark:bg-[#09090b] bg-slate-50 text-slate-900 dark:text-zinc-100 transition-colors duration-200 overflow-hidden">
+<body class="w-screen h-screen flex dark:bg-matrix-darkBg bg-slate-50 text-slate-900 dark:text-zinc-100 transition-colors duration-200 overflow-hidden">
 
-    <div id="sidebarOverlay" onclick="toggleSidebar(false)" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"></div>
+    <div id="sidebarOverlay" onclick="toggleSidebar(false)" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-40 lg:hidden"></div>
 
-    <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 -translate-x-full lg:translate-x-0 lg:relative z-50 flex flex-col h-full dark:bg-[#121214] bg-white border-r dark:border-zinc-800 border-slate-200 transition-transform duration-300 ease-in-out">
+    <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 -translate-x-full lg:translate-x-0 lg:relative z-50 flex flex-col h-full dark:bg-matrix-darkCard bg-white border-r dark:border-matrix-border border-slate-200 transition-transform duration-300 ease-in-out">
         
         <div class="p-4 space-y-4 shrink-0">
             <div class="flex items-center justify-between px-1">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold text-base shadow-md shadow-brand-500/20">E</div>
-                    <span class="text-lg font-bold tracking-tight dark:text-white text-slate-900">Edith <span class="text-brand-500 font-semibold">AI</span></span>
+                <div class="flex items-center gap-3">
+                    <div class="relative w-9 h-9 flex items-center justify-center shrink-0">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-cyan-500 to-indigo-600 rounded-xl blur-[3px] opacity-70 animate-pulse"></div>
+                        <div class="relative w-full h-full rounded-xl bg-slate-900 border border-white/10 flex items-center justify-center shadow-lg">
+                            <span class="text-sm font-black tracking-widest bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">E⚡️</span>
+                        </div>
+                    </div>
+                    <span class="text-lg font-black tracking-tight dark:text-white text-slate-900">EDITH <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-sky-400 font-bold">AI</span></span>
                 </div>
             </div>
-            <button onclick="createNewChat()" class="w-full h-11 flex items-center justify-center gap-2 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 active:scale-[0.98] rounded-xl shadow-sm transition-all duration-200">
-                <i class="fa-solid fa-plus text-xs"></i> New Conversation
+            <button onclick="createNewChat()" class="w-full h-11 flex items-center justify-center gap-2 text-sm font-bold text-white bg-brand-500 hover:bg-brand-600 active:scale-[0.98] rounded-xl shadow-md shadow-cyan-500/10 transition-all duration-200">
+                <i class="fa-solid fa-wand-magic-sparkles text-xs"></i> Initialize Stream
             </button>
         </div>
 
-        <div class="px-5 py-2.5 border-b dark:border-zinc-800 border-slate-100 flex justify-between items-center text-xs font-bold uppercase tracking-wider dark:text-zinc-500 text-slate-400 shrink-0">
-            <span>History Matrix</span>
-            <span id="chatCounter" class="bg-slate-100 dark:bg-zinc-800 px-2 py-0.5 rounded-md font-mono text-xs text-brand-500">0</span>
+        <div class="px-5 py-2.5 border-b dark:border-matrix-border border-slate-100 flex justify-between items-center text-xs font-bold uppercase tracking-wider dark:text-zinc-500 text-slate-400 shrink-0">
+            <span>Context History</span>
+            <span id="chatCounter" class="bg-slate-100 dark:bg-zinc-800/60 px-2 py-0.5 rounded-md font-mono text-xs text-brand-500">0</span>
         </div>
 
         <div id="chatHistoryList" class="flex-1 overflow-y-auto p-3 space-y-1 chat-scroll">
-            <div class="text-center py-8 text-xs text-zinc-400 font-medium animate-pulse">Loading history pipeline...</div>
+            <div class="text-center py-8 text-xs text-zinc-500 font-medium animate-pulse">Syncing chronological timeline...</div>
         </div>
 
-        <div class="p-4 border-t dark:border-zinc-800 border-slate-200 flex items-center justify-between dark:bg-zinc-900/20 bg-slate-50/50 shrink-0">
+        <div class="p-4 border-t dark:border-matrix-border border-slate-200 flex items-center justify-between dark:bg-zinc-900/10 bg-slate-50/50 shrink-0">
             <div class="flex items-center gap-3 overflow-hidden">
-                <div class="w-9 h-9 rounded-xl bg-zinc-800 dark:bg-zinc-800 border border-zinc-700 text-zinc-200 flex items-center justify-center text-sm font-bold shadow-sm shrink-0" id="userBadge">U</div>
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-slate-800 to-slate-900 border dark:border-zinc-700 text-cyan-400 flex items-center justify-center text-xs font-black shadow-sm shrink-0" id="userBadge">OP</div>
                 <div class="overflow-hidden">
-                    <span class="block text-sm font-bold dark:text-zinc-200 text-slate-800 truncate" id="userNameFooter">User</span>
-                    <span class="block text-[11px] font-medium text-zinc-500 truncate">Student Hub Plus</span>
+                    <span class="block text-sm font-bold dark:text-zinc-200 text-slate-800 truncate" id="userNameFooter">Operator</span>
+                    <span class="block text-[11px] font-semibold text-brand-500/80 tracking-wide uppercase truncate">Verified Node</span>
                 </div>
             </div>
-            <button onclick="logoutSession()" class="text-zinc-400 hover:text-red-500 dark:hover:text-red-400 transition-colors text-sm p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800" title="Sign Out">
-                <i class="fa-solid fa-right-from-bracket"></i>
+            <button onclick="logoutSession()" class="text-zinc-400 hover:text-red-400 transition-colors text-sm p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-900" title="Disconnect Session">
+                <i class="fa-solid fa-power-off"></i>
             </button>
         </div>
     </aside>
 
     <div class="flex-1 flex flex-col h-full overflow-hidden w-full relative">
         
-        <header class="h-16 border-b dark:border-zinc-800 border-slate-200 flex justify-between items-center px-4 md:px-6 dark:bg-[#121214] bg-white shrink-0 z-10">
+        <header class="h-16 border-b dark:border-matrix-border border-slate-200 flex justify-between items-center px-4 md:px-6 dark:bg-matrix-darkCard bg-white shrink-0 z-10">
             <div class="flex items-center gap-3">
-                <button onclick="toggleSidebar(true)" class="lg:hidden w-10 h-10 border dark:border-zinc-800 border-slate-200 rounded-xl flex items-center justify-center dark:text-zinc-300 text-slate-600 bg-transparent hover:bg-slate-50 dark:hover:bg-zinc-900 transition-colors">
+                <button onclick="toggleSidebar(true)" class="lg:hidden w-10 h-10 border dark:border-matrix-border border-slate-200 rounded-xl flex items-center justify-center dark:text-zinc-300 text-slate-600 bg-transparent hover:bg-slate-50 dark:hover:bg-zinc-900 transition-colors">
                     <i class="fa-solid fa-bars text-sm"></i>
                 </button>
-                <div id="activeChatTitleHeader" class="hidden lg:block text-sm font-semibold text-slate-700 dark:text-zinc-300 max-w-md truncate">Ready to link pipelines</div>
+                <div id="activeChatTitleHeader" class="hidden lg:block text-xs font-bold font-mono uppercase tracking-widest text-slate-400 dark:text-zinc-500 max-w-md truncate">// Standby Matrix Ready</div>
             </div>
             
             <div class="flex items-center gap-3">
-                <button onclick="switchDashboardTheme()" class="w-9 h-9 rounded-xl border dark:border-zinc-800 border-slate-200 flex items-center justify-center text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-900 transition-all">
+                <button onclick="switchDashboardTheme()" class="w-9 h-9 rounded-xl border dark:border-matrix-border border-slate-200 flex items-center justify-center text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-900 transition-all">
                     <i id="themeToggleIcon" class="fa-solid fa-moon text-sm"></i>
                 </button>
 
-                <div class="text-xs font-semibold text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-sm">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Cloud Active
+                <div class="text-[11px] font-bold tracking-wider uppercase text-cyan-400 bg-cyan-500/5 border border-cyan-500/20 px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-sm">
+                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span> Grid Active
                 </div>
             </div>
         </header>
 
-        <main id="chatWindow" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 chat-scroll dark:bg-[#09090b] bg-slate-50/40 flex flex-col"></main>
+        <main id="chatWindow" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 chat-scroll dark:bg-matrix-darkBg bg-slate-50/40 flex flex-col"></main>
 
-        <footer class="p-4 dark:bg-[#121214] bg-white border-t dark:border-zinc-800 border-slate-200 shrink-0">
+        <footer class="p-4 dark:bg-matrix-darkCard bg-white border-t dark:border-matrix-border border-slate-200 shrink-0">
             <div class="max-w-3xl mx-auto w-full">
                 
                 <div class="flex flex-wrap items-center gap-3 mb-2 px-1">
-                    <button onclick="toggleSummarizeMode()" id="summarizeToggleBtn" class="text-xs dark:text-zinc-400 text-slate-500 border border-slate-200 dark:border-zinc-800 px-2.5 py-1 rounded-lg hover:dark:text-indigo-400 transition-colors flex items-center gap-1.5 font-bold">
-                        Summarize Mode: <span id="summarizeBadge" class="text-slate-400">OFF</span>
+                    <button onclick="toggleSummarizeMode()" id="summarizeToggleBtn" class="text-xs dark:text-zinc-400 text-slate-500 border border-slate-200 dark:border-matrix-border px-2.5 py-1 rounded-lg hover:dark:text-cyan-400 transition-colors flex items-center gap-1.5 font-bold">
+                        Executive Compression: <span id="summarizeBadge" class="text-slate-400">STANDBY</span>
                     </button>
                     <label class="text-xs dark:text-zinc-400 text-slate-500 hover:dark:text-zinc-200 hover:text-slate-700 cursor-pointer flex items-center gap-1.5 font-bold transition-colors">
-                        <i class="fa-solid fa-paperclip text-xs text-brand-500"></i> Attach Media
+                        <i class="fa-solid fa-bolt text-xs text-brand-500"></i> Inject File Context
                         <input type="file" id="fileAttachment" multiple class="hidden" onchange="handleFileSelect()" />
                     </label>
                     <span id="fileBadgeLabel" class="text-xs text-brand-500 font-bold bg-brand-500/10 px-2 py-0.5 rounded-md hidden"></span>
                 </div>
 
-                <div class="flex items-center gap-2 relative bg-slate-100 dark:bg-zinc-900 border dark:border-zinc-800 border-slate-200 rounded-xl px-4 py-2 focus-within:ring-2 focus-within:ring-brand-500/20 focus-within:border-brand-500/50 transition-all duration-200">
-                    <input type="text" id="userInputText" placeholder="Ask Edith anything..." 
+                <div class="flex items-center gap-2 relative bg-slate-100 dark:bg-zinc-900/60 border dark:border-matrix-border border-slate-200 rounded-xl px-4 py-2 focus-within:ring-2 focus-within:ring-cyan-500/10 focus-within:border-cyan-500/30 transition-all duration-200">
+                    <input type="text" id="userInputText" placeholder="Consult EDITH Matrix..." 
                         class="w-full bg-transparent outline-none py-1.5 pr-24 text-sm dark:text-zinc-100 text-slate-900 placeholder-slate-400 dark:placeholder-zinc-500 font-normal"
                         onkeypress="if(event.key==='Enter')sendMessage()" />
 
                     <div class="absolute right-2 flex items-center gap-1.5">
                         <button onclick="toggleSpeech()" id="speechBtn" class="w-8 h-8 text-slate-400 dark:text-zinc-500 hover:text-brand-500 rounded-lg flex items-center justify-center transition-all"><i class="fa-solid fa-microphone text-sm"></i></button>
-                        <button onclick="sendMessage()" class="w-8 h-8 bg-brand-600 hover:bg-brand-700 text-white rounded-lg flex items-center justify-center transition-all shadow-sm active:scale-95">
-                            <i class="fa-solid fa-paper-plane text-xs"></i>
+                        <button onclick="sendMessage()" class="w-8 h-8 bg-brand-500 hover:bg-brand-600 text-white rounded-lg flex items-center justify-center transition-all shadow-sm active:scale-95">
+                            <i class="fa-solid fa-arrow-up-long text-xs"></i>
                         </button>
                     </div>
                 </div>
@@ -226,19 +206,19 @@ initDashboardTheme();
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     const SpeechLib = window.SpeechRecognition || window.webkitSpeechRecognition;
     voiceRecognitionInstance = new SpeechLib();
-    voiceRecognitionInstance.onstart = () => { isVoiceRecording = true; document.getElementById("speechBtn").classList.add("text-red-500", "animate-pulse"); };
-    voiceRecognitionInstance.onend = () => { isVoiceRecording = false; document.getElementById("speechBtn").classList.remove("text-red-500", "animate-pulse"); };
+    voiceRecognitionInstance.onstart = () => { isVoiceRecording = true; document.getElementById("speechBtn").classList.add("text-cyan-400", "animate-pulse"); };
+    voiceRecognitionInstance.onend = () => { isVoiceRecording = false; document.getElementById("speechBtn").classList.remove("text-cyan-400", "animate-pulse"); };
     voiceRecognitionInstance.onresult = (e) => { document.getElementById("userInputText").value = e.results[0][0].transcript; };
 }
 
-function toggleSpeech() { if (!voiceRecognitionInstance) return alert("Speech unsupported."); isVoiceRecording ? voiceRecognitionInstance.stop() : voiceRecognitionInstance.start(); }
+function toggleSpeech() { if (!voiceRecognitionInstance) return alert("Biometric speech streaming is unsupported by this browser environment."); isVoiceRecording ? voiceRecognitionInstance.stop() : voiceRecognitionInstance.start(); }
 function toggleSidebar(open) { document.getElementById("sidebar").classList.toggle("-translate-x-full", !open); document.getElementById("sidebarOverlay").classList.toggle("hidden", !open); }
 
 function toggleSummarizeMode() {
     isSummarizeActive = !isSummarizeActive;
     const badge = document.getElementById("summarizeBadge");
-    badge.textContent = isSummarizeActive ? "ON" : "OFF";
-    badge.className = isSummarizeActive ? "text-indigo-500 font-bold" : "text-slate-400";
+    badge.textContent = isSummarizeActive ? "ENGAGED" : "STANDBY";
+    badge.className = isSummarizeActive ? "text-cyan-400 font-bold" : "text-slate-400";
 }
 
 window.onload = () => {
@@ -279,29 +259,29 @@ function renderSidebarList(sessions) {
     chatHistoryList.innerHTML = "";
     document.getElementById("chatCounter").textContent = sessions.length;
     if (sessions.length === 0) {
-        chatHistoryList.innerHTML = '<div class="text-center py-8 text-xs text-zinc-500">No context logs found.</div>';
+        chatHistoryList.innerHTML = '<div class="text-center py-8 text-xs text-zinc-500 font-mono">// No history nodes linked.</div>';
         return;
     }
     sessions.forEach(session => {
         const isActive = session._id === currentSessionId;
         let title = session.messages && session.messages[0] ? session.messages[0].content : 'Untitled Chat';
         if (title.length > 22) title = title.substring(0, 22) + "...";
-        if(isActive) activeChatTitleHeader.textContent = title;
+        if(isActive) activeChatTitleHeader.textContent = `// ${title.toUpperCase()}`;
         
         const div = document.createElement("div");
-        div.className = "group w-full flex items-center justify-between px-3 py-2.5 my-0.5 text-sm rounded-xl cursor-pointer " + (isActive ? 'bg-brand-50 dark:bg-brand-500/10 text-brand-600 dark:text-brand-400 font-semibold border border-brand-500/20' : 'text-zinc-400 hover:bg-zinc-900/60');
+        div.className = "group w-full flex items-center justify-between px-3 py-2.5 my-0.5 text-sm rounded-xl cursor-pointer transition-all " + (isActive ? 'bg-cyan-500/10 text-cyan-400 font-semibold border border-cyan-500/20' : 'text-zinc-400 hover:bg-zinc-900/40 hover:text-zinc-200');
         div.onclick = () => selectSession(session._id);
-        div.innerHTML = '<span class="truncate flex items-center gap-2.5"><i class="fa-regular fa-message text-xs opacity-70"></i><span class="truncate">' + title + '</span></span><button onclick="deleteSession(event, \'' + session._id + '\')" class="p-1 text-zinc-500 hover:text-red-500 opacity-0 group-hover:opacity-100"><i class="fa-regular fa-trash-can text-xs"></i></button>';
+        div.innerHTML = '<span class="truncate flex items-center gap-2.5"><i class="fa-solid fa-terminal text-xs opacity-60"></i><span class="truncate">' + title + '</span></span><button onclick="deleteSession(event, \'' + session._id + '\')" class="p-1 text-zinc-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity"><i class="fa-regular fa-trash-can text-xs"></i></button>';
         chatHistoryList.appendChild(div);
     });
 }
 
-function createNewChat() { currentSessionId = null; chatWindow.innerHTML = ""; activeChatTitleHeader.textContent = "New Line"; showEmptyStateWelcome(); }
+function createNewChat() { currentSessionId = null; chatWindow.innerHTML = ""; activeChatTitleHeader.textContent = "// Standby Matrix Ready"; showEmptyStateWelcome(); }
 function selectSession(id) { currentSessionId = id; renderSidebarList(cachedSessionsList); loadActiveMessages(); toggleSidebar(false); }
 
 async function deleteSession(event, id) {
     event.stopPropagation();
-    if (!confirm("Delete context loop?")) return;
+    if (!confirm("Are you sure you want to terminate this context timeline?")) return;
     try {
         await apiCall("/api/chat/" + id, { method: "DELETE" });
         if (currentSessionId === id) createNewChat();
@@ -318,8 +298,30 @@ function loadActiveMessages() {
 }
 
 function showEmptyStateWelcome() {
-    const name = localStorage.getItem("userName") || "User";
-    chatWindow.innerHTML = `<div id="welcomeScreen" class="flex flex-col items-center justify-center flex-1 max-w-md mx-auto text-center space-y-3 my-auto"><div class="w-12 h-12 rounded-2xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-500 text-xl"><i class="fa-solid fa-brain"></i></div><h3 class="text-base font-bold">Welcome, ${name}</h3><p class="text-xs dark:text-zinc-400 text-slate-500 leading-relaxed">Ask EDITH anything to generate streaming notes.</p></div>`;
+    const name = localStorage.getItem("userName") || "Operator";
+    chatWindow.innerHTML = `
+        <div id="welcomeScreen" class="flex flex-col items-center justify-center flex-1 max-w-lg mx-auto text-center space-y-6 my-auto p-6">
+            <div class="relative w-16 h-16 flex items-center justify-center">
+                <div class="absolute inset-0 bg-cyan-500/20 rounded-2xl blur-md animate-pulse"></div>
+                <div class="relative w-full h-full rounded-2xl bg-zinc-900 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-2xl">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+            </div>
+            <div class="space-y-2">
+                <h3 class="text-xl font-extrabold tracking-tight dark:text-white text-slate-900">Systems Online. Greetings, ${name}.</h3>
+                <p class="text-sm dark:text-zinc-400 text-slate-500 max-w-xs mx-auto">EDITH core matrix is standing by. Choose a processing directive or transmit a query.</p>
+            </div>
+            <div class="grid grid-cols-2 gap-3 w-full max-w-sm pt-2">
+                <div onclick="document.getElementById('userInputText').value='Generate an executive framework summary...'; document.getElementById('userInputText').focus();" class="p-3 border dark:border-zinc-800 bg-zinc-900/30 rounded-xl text-left cursor-pointer hover:border-cyan-500/40 transition-all">
+                    <h5 class="text-xs font-bold text-cyan-400 mb-1">Synthesize Notes</h5>
+                    <p class="text-[11px] text-zinc-500 truncate">Convert materials to frameworks</p>
+                </div>
+                <div onclick="document.getElementById('userInputText').value='Analyze structural discrepancies inside...'; document.getElementById('userInputText').focus();" class="p-3 border dark:border-zinc-800 bg-zinc-900/30 rounded-xl text-left cursor-pointer hover:border-cyan-500/40 transition-all">
+                    <h5 class="text-xs font-bold text-cyan-400 mb-1">Code Refactoring</h5>
+                    <p class="text-[11px] text-zinc-500 truncate">Examine algorithm layers</p>
+                </div>
+            </div>
+        </div>`;
 }
 
 function insertMessageBubble(role, content) {
@@ -328,7 +330,7 @@ function insertMessageBubble(role, content) {
     wrapper.className = "flex gap-3 w-full max-w-3xl mx-auto py-2 " + (role === 'user' ? 'flex-row-reverse' : 'flex-row');
     
     const bubble = document.createElement("div");
-    bubble.className = "rounded-2xl px-4 py-3 text-sm md:text-base leading-relaxed break-words " + (role === 'user' ? 'bg-brand-600 text-white ml-auto' : 'dark:bg-[#121214] bg-white border dark:border-zinc-800 border-slate-200 prose-content');
+    bubble.className = "rounded-2xl px-4 py-3 text-sm md:text-base leading-relaxed break-words shadow-sm " + (role === 'user' ? 'bg-brand-500 text-white ml-auto' : 'dark:bg-matrix-darkCard bg-white border dark:border-matrix-border border-slate-200 prose-content');
     
     if (role === 'user') bubble.textContent = content;
     else {
@@ -343,20 +345,22 @@ function insertMessageBubble(role, content) {
 
 function attachCodeBlockCopyLogic(container) {
     container.querySelectorAll("pre").forEach(pre => {
+        if(pre.parentNode.classList.contains("code-block-container")) return;
         const wrapper = document.createElement("div"); wrapper.className = "code-block-container";
-        const btn = document.createElement("button"); btn.className = "absolute top-2.5 right-2.5 bg-zinc-900 border text-zinc-400 text-xs px-2.5 py-1.5 rounded-lg";
-        btn.innerHTML = "Copy"; btn.onclick = () => { navigator.clipboard.writeText(pre.innerText); btn.innerHTML = "Copied"; setTimeout(() => btn.innerHTML="Copy", 2000); };
+        const btn = document.createElement("button"); btn.className = "absolute top-2.5 right-2.5 bg-zinc-900/80 border border-zinc-800 text-zinc-400 text-xs px-2.5 py-1.5 rounded-lg backdrop-blur-sm";
+        btn.innerHTML = "<i class='fa-regular fa-copy mr-1'></i> Copy"; 
+        btn.onclick = () => { navigator.clipboard.writeText(pre.innerText); btn.innerHTML = "Copied!"; setTimeout(() => btn.innerHTML="<i class='fa-regular fa-copy mr-1'></i> Copy", 2000); };
         pre.parentNode.insertBefore(wrapper, pre); wrapper.appendChild(pre); wrapper.appendChild(btn);
     });
 }
 
 function injectDownloadActionTrigger(container) {
     if (container.querySelector(".download-pdf-trigger")) return;
-    const btn = document.createElement("button"); btn.className = "download-pdf-trigger"; btn.innerHTML = '<i class="fa-solid fa-file-pdf"></i> Download Notes PDF';
+    const btn = document.createElement("button"); btn.className = "download-pdf-trigger"; btn.innerHTML = '<i class="fa-solid fa-file-pdf"></i> Download EDITH Report (PDF)';
     btn.onclick = () => {
         const f = document.createElement("div"); f.style.padding = "40px"; f.style.background = "#fff"; f.style.color = "#000"; f.innerHTML = container.innerHTML;
         f.querySelectorAll("button").forEach(b => b.remove());
-        html2pdf().from(f).set({ margin: 15, filename: 'EDITH-Notes.pdf', html2canvas: { scale: 2 }, jsPDF: { format: 'a4' } }).save();
+        html2pdf().from(f).set({ margin: 15, filename: 'EDITH-Matrix-Notes.pdf', html2canvas: { scale: 2 }, jsPDF: { format: 'a4' } }).save();
     };
     container.appendChild(btn);
 }
@@ -368,7 +372,7 @@ async function sendMessage() {
     input.value = "";
     if (text) insertMessageBubble('user', text);
     
-    const bubble = insertMessageBubble('assistant', "<em>Syncing Core Matrix...</em>");
+    const bubble = insertMessageBubble('assistant', "<div class='flex items-center gap-1.5 py-1 text-zinc-400 font-mono text-xs'><div class='dot'></div><div class='dot'></div><div class='dot'></div><span class='ml-2'>Accessing Deep EDITH Matrix Core...</span></div>");
     try {
         const formData = new FormData();
         formData.append("message", text);
@@ -388,14 +392,17 @@ async function sendMessage() {
             bubble.innerHTML = marked.parse(chunkedText);
             chatWindow.scrollTop = chatWindow.scrollHeight;
         }
-        attachCodeBlockCopyLogic(bubble); injectDownloadActionTrigger(bubble);
-        clearFileSelector(); loadChatSessions(false);
-    } catch (err) { bubble.innerHTML = "<span class='text-red-500'>Connection pipeline breakdown.</span>"; }
+        bubble.innerHTML = marked.parse(chunkedText); 
+        attachCodeBlockCopyLogic(bubble); 
+        injectDownloadActionTrigger(bubble);
+        clearFileSelector(); 
+        loadChatSessions(false);
+    } catch (err) { bubble.innerHTML = "<span class='text-red-400 font-mono text-xs'>// Critical pipeline exception: Connection dropped.</span>"; }
 }
 
 function handleFileSelect() {
     const f = document.getElementById("fileAttachment"), lbl = document.getElementById("fileBadgeLabel");
-    lbl.textContent = "(" + f.files.length + " selected)"; lbl.classList.toggle("hidden", f.files.length === 0);
+    lbl.textContent = "(" + f.files.length + " Loaded)"; lbl.classList.toggle("hidden", f.files.length === 0);
 }
 function clearFileSelector() { document.getElementById("fileAttachment").value = ""; document.getElementById("fileBadgeLabel").classList.add("hidden"); }
 </script>
