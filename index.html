@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EDITH AI Assistant</title>
+    <title>EDITH | Intelligence Core</title>
 
+    <!-- Core Dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -22,7 +23,6 @@
                             100: '#ede9fe',
                             500: '#6366f1', 
                             600: '#4f46e5', 
-                            700: '#4338ca',
                         },
                         matrix: {
                             darkBg: '#090d16',
@@ -41,44 +41,33 @@
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             -webkit-font-smoothing: antialiased;
-            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        .chat-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
+        /* Scrollbar Styling */
+        .chat-scroll::-webkit-scrollbar { width: 5px; }
         .chat-scroll::-webkit-scrollbar-track { background: transparent; }
         .dark .chat-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 99px; }
-        html:not(.dark) .chat-scroll::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 99px; }
 
+        /* Prose Styling for AI responses */
         .prose-content p { margin-bottom: 0.75rem; line-height: 1.6; }
-        .prose-content p:last-child { margin-bottom: 0; }
         .prose-content ul { list-style-type: disc; margin-left: 1.25rem; margin-bottom: 0.75rem; }
-        .prose-content ol { list-style-type: decimal; margin-left: 1.25rem; margin-bottom: 0.75rem; }
         
-        .code-block-container {
-            position: relative;
-            margin: 14px 0;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.06);
+        .download-pdf-trigger { 
+            margin-top: 10px; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 6px; 
+            padding: 6px 12px; 
+            background: rgba(99, 102, 241, 0.1); 
+            border: 1px solid rgba(99, 102, 241, 0.2); 
+            font-size: 11px; 
+            font-weight: 600; 
+            border-radius: 6px; 
+            color: #818cf8; 
+            cursor: pointer; 
         }
-        html:not(.dark) .code-block-container { border: 1px solid #e2e8f0; }
-        pre { background: #0f172a !important; padding: 14px; overflow-x: auto; margin: 0; }
-        html:not(.dark) pre { background: #f8fafc !important; }
-        code { color: #f1f5f9; font-size: 0.85rem; font-family: ui-monospace, monospace; }
-        html:not(.dark) code { color: #0f172a; }
 
-        .download-pdf-trigger { margin-top: 10px; width: max-content; display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; background: rgba(99, 102, 241, 0.06); border: 1px solid rgba(99, 102, 241, 0.15); font-size: 11px; font-weight: 600; border-radius: 6px; color: #6366f1; transition: all 0.2s; cursor: pointer; }
-        .download-pdf-trigger:hover { background: #6366f1; color: white; }
-
-        /* Premium Styled Academic Notes Blueprint Template for PDFs */
-        .pdf-notes-container { font-family: 'Plus Jakarta Sans', sans-serif; color: #1e293b; padding: 40px; background: #ffffff; }
-        .pdf-notes-header { border-bottom: 2px solid #4f46e5; padding-bottom: 16px; margin-bottom: 24px; }
-        .pdf-notes-title { font-size: 24px; color: #0f172a; font-weight: 700; }
-        .pdf-meta-tag { font-size: 10px; text-transform: uppercase; tracking: 0.05em; color: #64748b; font-weight: 600; margin-top: 4px; }
-        .pdf-body-text { font-size: 13px; line-height: 1.6; color: #334155; }
-        .pdf-footer-branding { margin-top: 40px; border-top: 1px solid #e2e8f0; padding-top: 12px; font-size: 10px; text-align: center; color: #94a3b8; font-weight: 500; }
-
-        .dot { animation: bouncePoint 1.4s infinite ease-in-out; width: 5px; height: 5px; background-color: #6366f1; border-radius: 50%; display: inline-block; }
+        .dot { animation: bouncePoint 1.4s infinite ease-in-out; width: 4px; height: 4px; background-color: #6366f1; border-radius: 50%; display: inline-block; }
         .dot:nth-child(2) { animation-delay: 0.2s; }
         .dot:nth-child(3) { animation-delay: 0.4s; }
         @keyframes bouncePoint { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-4px); } }
@@ -87,563 +76,234 @@
 
 <body class="w-screen h-screen flex dark:bg-matrix-darkBg bg-slate-50 text-slate-800 dark:text-slate-200 overflow-hidden text-sm">
 
-    <div id="cameraModal" class="hidden fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="w-full max-w-md dark:bg-matrix-darkCard bg-white border dark:border-matrix-border border-slate-200 rounded-xl overflow-hidden shadow-xl flex flex-col">
-            <div class="px-4 py-3 border-b dark:border-matrix-border border-slate-100 flex justify-between items-center bg-slate-50/50 dark:bg-zinc-900/20">
-                <span class="text-xs font-medium tracking-wide dark:text-slate-400 text-slate-500">Visual Input Sensor</span>
-                <button onclick="closeCameraSensor()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i class="fa-solid fa-xmark"></i></button>
+    <!-- CAMERA MODAL -->
+    <div id="cameraModal" class="hidden fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="w-full max-w-md dark:bg-matrix-darkCard bg-white border dark:border-matrix-border rounded-xl overflow-hidden shadow-2xl">
+            <div class="px-4 py-3 border-b dark:border-matrix-border flex justify-between items-center">
+                <span class="text-xs font-bold tracking-widest uppercase text-brand-500">Visual Input Node</span>
+                <button onclick="closeCamera()"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="relative bg-black aspect-video flex items-center justify-center">
-                <video id="cameraVideoFeed" autoplay playsinline class="w-full h-full object-cover scale-x-[-1]"></video>
-                <canvas id="cameraCanvasBuffer" class="hidden"></canvas>
-            </div>
-            <div class="p-3 flex justify-center gap-2 bg-slate-50/50 dark:bg-zinc-900/20 border-t dark:border-matrix-border border-slate-100">
-                <button onclick="captureCameraSnapshot()" class="bg-brand-500 hover:bg-brand-600 text-white font-medium text-xs px-3 py-2 rounded-lg flex items-center gap-1.5 transition-all">
-                    <i class="fa-solid fa-camera"></i> Capture Frame
-                </button>
-                <button onclick="closeCameraSensor()" class="border dark:border-matrix-border border-slate-200 dark:text-slate-300 text-slate-600 font-medium text-xs px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all">
-                    Cancel
-                </button>
+            <video id="videoFeed" autoplay playsinline class="w-full aspect-video bg-black object-cover"></video>
+            <div class="p-4 flex gap-2">
+                <button onclick="captureImage()" class="flex-1 bg-brand-500 py-2 rounded-lg font-bold text-white text-xs">CAPTURE FRAME</button>
             </div>
         </div>
     </div>
 
-    <div id="sidebarOverlay" onclick="toggleSidebar(false)" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-40 lg:hidden"></div>
-
-    <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 -translate-x-full lg:translate-x-0 lg:relative z-50 flex flex-col h-full dark:bg-matrix-darkCard bg-white border-r dark:border-matrix-border border-slate-200 transition-transform duration-200 ease-in-out">
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 -translate-x-full lg:translate-x-0 lg:relative z-50 flex flex-col h-full dark:bg-matrix-darkCard bg-white border-r dark:border-matrix-border transition-transform">
         
-        <div class="p-4 space-y-3.5 shrink-0">
-            <div class="flex items-center gap-3 px-1">
-                <div class="relative w-9 h-9 flex items-center justify-center">
+        <div class="p-6 space-y-6 shrink-0">
+            <!-- New Geometric Logo -->
+            <div class="flex items-center gap-3">
+                <div class="relative w-10 h-10 flex items-center justify-center">
                     <div class="absolute inset-0 bg-brand-500/20 blur-md rounded-full animate-pulse"></div>
-                    <svg class="relative w-7 h-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2L3.5 7V17L12 22L20.5 17V7L12 2Z" stroke="currentColor" stroke-width="1.5" class="text-brand-500" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M12 22V12M12 12L3.5 7M12 12L20.5 7" stroke="currentColor" stroke-width="1" class="text-brand-500/50" stroke-linecap="round"/>
-                        <circle cx="12" cy="12" r="2.5" class="fill-brand-500 animate-pulse" />
+                    <svg class="relative w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L3.5 7V17L12 22L20.5 17V7L12 2Z" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 22V12M12 12L3.5 7M12 12L20.5 7" stroke="#6366f1" stroke-width="1" stroke-opacity="0.5"/>
+                        <circle cx="12" cy="12" r="2.5" fill="#6366f1" class="animate-pulse" />
                     </svg>
                 </div>
-                <div class="flex flex-col">
-                    <span class="text-base font-bold tracking-tighter dark:text-white text-slate-900 leading-none">EDITH <span class="text-brand-500">CORE</span></span>
-                    <span class="text-[9px] uppercase tracking-[0.2em] text-slate-400 font-semibold mt-1">Intelligence Node</span>
+                <div>
+                    <h1 class="text-lg font-black tracking-tighter leading-none">EDITH</h1>
+                    <p class="text-[9px] uppercase tracking-[0.3em] text-slate-500 font-bold">Intelligence Core</p>
                 </div>
             </div>
 
-            <button onclick="createNewChat()" class="w-full h-10 flex items-center justify-center gap-1.5 text-xs font-semibold text-white bg-brand-500 hover:bg-brand-600 active:scale-[0.99] rounded-lg transition-all">
-                <i class="fa-solid fa-plus text-[10px]"></i> New Active Workspace
+            <button onclick="newChat()" class="w-full py-2.5 bg-brand-500 hover:bg-brand-600 text-white rounded-lg text-xs font-bold shadow-lg shadow-brand-500/20 transition-all active:scale-95">
+                + NEW WORKSPACE
             </button>
         </div>
 
-        <div class="px-4 pb-2 shrink-0">
-            <button onclick="toggleDigitalVaultView()" class="w-full py-2 px-3 border dark:border-matrix-border border-slate-200 bg-slate-50 dark:bg-slate-900/40 hover:border-indigo-500/30 text-slate-700 dark:text-slate-300 rounded-lg flex items-center justify-between transition-all">
-                <span class="text-xs font-semibold flex items-center gap-1.5"><i class="fa-solid fa-vault text-brand-500"></i> Vault Storage</span>
-                <span id="vaultItemsBadge" class="bg-indigo-500/10 text-brand-500 text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
-            </button>
+        <!-- History -->
+        <div class="flex-1 overflow-y-auto px-4 space-y-1 chat-scroll" id="historyList">
+            <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2 px-2">Session Logs</p>
         </div>
 
-        <div class="px-4 py-2 flex justify-between items-center text-xs font-semibold dark:text-slate-500 text-slate-400 tracking-wide shrink-0">
-            <span>Workspace Logs</span>
-            <span id="chatCounter" class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-[11px] font-mono text-brand-500">0</span>
-        </div>
-
-        <div id="chatHistoryList" class="flex-1 overflow-y-auto p-2 space-y-0.5 chat-scroll">
-            <div class="text-center py-6 text-xs text-slate-400 font-medium">Syncing log records...</div>
-        </div>
-
-        <div class="p-3 border-t dark:border-matrix-border border-slate-200 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/20 shrink-0">
-            <div class="flex items-center gap-2.5 overflow-hidden">
-                <div class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 border dark:border-slate-700 text-slate-600 dark:text-slate-300 flex items-center justify-center text-xs font-semibold shrink-0" id="userBadge">OP</div>
-                <div class="overflow-hidden">
-                    <span class="block text-xs font-semibold dark:text-slate-200 text-slate-800 truncate" id="userNameFooter">Operator</span>
-                    <span class="block text-[10px] text-slate-400 truncate">System Session</span>
-                </div>
+        <!-- User Profile -->
+        <div class="p-4 border-t dark:border-matrix-border flex items-center gap-3 bg-slate-900/20">
+            <div class="w-8 h-8 rounded-lg bg-brand-500 flex items-center justify-center font-bold text-white text-xs">OP</div>
+            <div class="flex-1 overflow-hidden">
+                <p class="text-xs font-bold truncate">Operator</p>
+                <p class="text-[10px] text-slate-500">Secure Link Active</p>
             </div>
-            <button onclick="logoutSession()" class="text-slate-400 hover:text-red-500 transition-colors text-xs p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" title="Disconnect Session">
-                <i class="fa-solid fa-power-off"></i>
-            </button>
+            <button onclick="logout()" class="text-slate-500 hover:text-red-400"><i class="fa-solid fa-power-off"></i></button>
         </div>
     </aside>
 
-    <div class="flex-1 flex flex-col h-full overflow-hidden w-full relative">
-        
-        <header class="h-14 border-b dark:border-matrix-border border-slate-200 flex justify-between items-center px-4 dark:bg-matrix-darkCard bg-white shrink-0 z-10">
-            <div class="flex items-center gap-2.5">
-                <button onclick="toggleSidebar(true)" class="lg:hidden w-9 h-9 border dark:border-matrix-border border-slate-200 rounded-lg flex items-center justify-center dark:text-slate-300 text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-                    <i class="fa-solid fa-bars text-xs"></i>
-                </button>
-                <div id="activeChatTitleHeader" class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 max-w-[160px] md:max-w-md truncate">Ready Session Matrix</div>
+    <!-- MAIN CONTENT -->
+    <div class="flex-1 flex flex-col min-w-0">
+        <!-- Header -->
+        <header class="h-14 border-b dark:border-matrix-border flex items-center justify-between px-6 bg-white dark:bg-matrix-darkCard">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()" class="lg:hidden text-slate-400"><i class="fa-solid fa-bars"></i></button>
+                <span id="sessionTitle" class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Terminal Ready</span>
             </div>
-            
-            <div class="flex items-center gap-2.5">
-                <button onclick="switchDashboardTheme()" class="w-8 h-8 rounded-lg border dark:border-matrix-border border-slate-200 flex items-center justify-center text-slate-400 dark:text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">
-                    <i id="themeToggleIcon" class="fa-solid fa-moon text-xs"></i>
-                </button>
-
-                <div class="text-[10px] font-semibold tracking-wide uppercase text-brand-500 bg-brand-500/5 border border-brand-500/10 px-2.5 py-1 rounded-lg flex items-center gap-1.5">
-                    <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span> Live Node
+            <div class="flex items-center gap-3">
+                <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-[9px] font-bold text-emerald-500 tracking-tighter">NODE ONLINE</span>
                 </div>
             </div>
         </header>
 
-        <div id="digitalVaultDrawer" class="hidden border-b dark:border-matrix-border border-slate-200 dark:bg-[#0c121f] bg-slate-100 p-4 max-h-[300px] overflow-y-auto chat-scroll z-20">
-            <div class="max-w-2xl mx-auto">
-                <div class="flex justify-between items-center mb-2.5">
-                    <h4 class="text-xs font-semibold text-slate-500 uppercase tracking-wide flex items-center gap-1.5"><i class="fa-solid fa-vault text-brand-500"></i> Locked Notes Directory</h4>
-                    <button onclick="clearDigitalVaultStorage()" class="text-[10px] text-red-500 hover:underline font-medium"><i class="fa-solid fa-trash-can mr-0.5"></i> Clear Vault</button>
+        <!-- Chat Area -->
+        <main id="chatBox" class="flex-1 overflow-y-auto p-6 space-y-6 chat-scroll flex flex-col items-center">
+            <!-- Welcome State -->
+            <div id="welcome" class="my-auto text-center space-y-4 max-w-sm">
+                <div class="w-16 h-16 bg-brand-500/10 border border-brand-500/20 rounded-2xl flex items-center justify-center mx-auto text-brand-500 text-2xl">
+                    <i class="fa-solid fa-microchip"></i>
                 </div>
-                <div id="vaultItemsContainer" class="space-y-1.5"></div>
+                <h2 class="text-xl font-bold">Initialize System Directive</h2>
+                <p class="text-xs text-slate-500 leading-relaxed">EDITH is ready to assist with neural data analysis, syllabus compilation, and tactical planning.</p>
             </div>
-        </div>
+        </main>
 
-        <main id="chatWindow" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 chat-scroll dark:bg-matrix-darkBg bg-slate-50/40 flex flex-col"></main>
-
-        <footer class="p-4 dark:bg-matrix-darkCard bg-white border-t dark:border-matrix-border border-slate-200 shrink-0">
-            <div class="max-w-2xl mx-auto w-full">
-                
-                <div class="flex flex-wrap items-center justify-between gap-2 mb-2 px-0.5 text-xs">
-                    <div class="flex items-center gap-3">
-                        <button onclick="toggleSummarizeMode()" id="summarizeToggleBtn" class="dark:text-slate-400 text-slate-500 border border-slate-200 dark:border-matrix-border px-2 py-0.5 rounded-md hover:dark:text-slate-200 transition-colors flex items-center gap-1 font-medium">
-                            Compression Focus: <span id="summarizeBadge" class="text-slate-400 font-semibold">STANDBY</span>
-                        </button>
-                        
-                        <label class="dark:text-slate-400 text-slate-500 hover:dark:text-slate-200 cursor-pointer flex items-center gap-1 font-medium transition-colors">
-                            <i class="fa-solid fa-paperclip text-brand-500"></i> Upload Media
-                            <input type="file" id="fileAttachment" multiple class="hidden" onchange="handleFileSelect()" />
-                        </label>
-                        
-                        <button onclick="openCameraSensor()" class="dark:text-slate-400 text-slate-500 hover:dark:text-slate-200 flex items-center gap-1 font-medium transition-colors">
-                            <i class="fa-solid fa-camera text-brand-500"></i> Capture Object
-                        </button>
-                    </div>
-
-                    <span id="fileBadgeLabel" class="text-[10px] text-brand-500 font-semibold bg-brand-500/5 border border-brand-500/10 px-1.5 py-0.5 rounded hidden"></span>
+        <!-- Input Area -->
+        <footer class="p-6 bg-white dark:bg-matrix-darkCard border-t dark:border-matrix-border">
+            <div class="max-w-3xl mx-auto space-y-4">
+                <div class="flex items-center gap-4 text-[10px] font-bold text-slate-500">
+                    <button class="hover:text-brand-500 transition-colors" onclick="document.getElementById('fileInput').click()">
+                        <i class="fa-solid fa-paperclip mr-1 text-brand-500"></i> ATTACH
+                    </button>
+                    <button class="hover:text-brand-500 transition-colors" onclick="openCamera()">
+                        <i class="fa-solid fa-camera mr-1 text-brand-500"></i> SCAN
+                    </button>
+                    <div id="fileStatus" class="hidden text-brand-500 bg-brand-500/10 px-2 py-0.5 rounded">0 FILES READY</div>
                 </div>
 
-                <div class="flex items-center gap-2 relative bg-slate-50 dark:bg-slate-900/40 border dark:border-matrix-border border-slate-200 rounded-lg px-3 py-1.5 focus-within:border-brand-500/40 transition-all">
-                    <input type="text" id="userInputText" placeholder="Query interface node... (e.g. 'Compile astrophysics study modules')" 
-                        class="w-full bg-transparent outline-none py-1 pr-20 text-xs md:text-sm dark:text-slate-100 text-slate-900 placeholder-slate-400 dark:placeholder-slate-500 font-normal"
-                        onkeypress="if(event.key==='Enter')sendMessage()" />
-
-                    <div class="absolute right-1.5 flex items-center gap-1">
-                        <button onclick="toggleSpeech()" id="speechBtn" class="w-7 h-7 text-slate-400 hover:text-brand-500 rounded-md flex items-center justify-center transition-all"><i class="fa-solid fa-microphone text-xs"></i></button>
-                        <button onclick="sendMessage()" class="w-7 h-7 bg-brand-500 hover:bg-brand-600 text-white rounded-md flex items-center justify-center transition-all shadow-sm active:scale-95">
-                            <i class="fa-solid fa-arrow-up text-xs"></i>
-                        </button>
-                    </div>
+                <div class="relative group">
+                    <input type="file" id="fileInput" multiple class="hidden" onchange="updateFileCount()">
+                    <input type="text" id="userInput" placeholder="Input system command..." 
+                        class="w-full bg-slate-100 dark:bg-slate-900 border dark:border-matrix-border rounded-xl py-4 px-5 pr-14 outline-none focus:border-brand-500/50 transition-all text-sm font-medium">
+                    <button onclick="handleSend()" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-brand-500 text-white rounded-lg flex items-center justify-center hover:bg-brand-600 shadow-lg shadow-brand-500/30 active:scale-90 transition-all">
+                        <i class="fa-solid fa-arrow-up"></i>
+                    </button>
                 </div>
             </div>
         </footer>
     </div>
 
-<script>
-const API_URL = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"
-    ? "http://localhost:5000"
-    : "https://student-hub-edith-backend.onrender.com";
-
-const chatWindow = document.getElementById("chatWindow");
-const chatHistoryList = document.getElementById("chatHistoryList");
-const activeChatTitleHeader = document.getElementById("activeChatTitleHeader");
-
-let currentSessionId = null; 
-let cachedSessionsList = []; 
-let voiceRecognitionInstance = null;
-let isVoiceRecording = false;
-let isSummarizeActive = false;
-let localMediaStream = null;
-let capturedCameraFiles = []; 
-
-function initDashboardTheme() {
-    const activeTheme = localStorage.getItem('edith-theme') || 'dark';
-    document.documentElement.classList.toggle('dark', activeTheme === 'dark');
-    const themeToggleIcon = document.getElementById("themeToggleIcon");
-    themeToggleIcon.className = activeTheme === 'dark' ? "fa-solid fa-sun text-xs text-amber-400" : "fa-solid fa-moon text-xs text-slate-500";
-}
-
-function switchDashboardTheme() {
-    localStorage.setItem('edith-theme', document.documentElement.classList.contains('dark') ? 'light' : 'dark');
-    initDashboardTheme();
-}
-initDashboardTheme();
-
-if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-    const SpeechLib = window.SpeechRecognition || window.webkitSpeechRecognition;
-    voiceRecognitionInstance = new SpeechLib();
-    voiceRecognitionInstance.onstart = () => { isVoiceRecording = true; document.getElementById("speechBtn").classList.add("text-brand-500", "animate-pulse"); };
-    voiceRecognitionInstance.onend = () => { isVoiceRecording = false; document.getElementById("speechBtn").classList.remove("text-brand-500", "animate-pulse"); };
-    voiceRecognitionInstance.onresult = (e) => { document.getElementById("userInputText").value = e.results[0][0].transcript; };
-}
-
-function toggleSpeech() { if (!voiceRecognitionInstance) return alert("Biometric speech streaming is unsupported by this browser environment."); isVoiceRecording ? voiceRecognitionInstance.stop() : voiceRecognitionInstance.start(); }
-function toggleSidebar(open) { document.getElementById("sidebar").classList.toggle("-translate-x-full", !open); document.getElementById("sidebarOverlay").classList.toggle("hidden", !open); }
-
-function toggleSummarizeMode() {
-    isSummarizeActive = !isSummarizeActive;
-    const badge = document.getElementById("summarizeBadge");
-    badge.textContent = isSummarizeActive ? "ACTIVE" : "STANDBY";
-    badge.className = isSummarizeActive ? "text-brand-500 font-semibold" : "text-slate-400";
-}
-
-/* Vault Storage Systems Subsystems Framework */
-function toggleDigitalVaultView(forceShow = null) {
-    const drawer = document.getElementById("digitalVaultDrawer");
-    if (forceShow !== null) {
-        forceShow ? drawer.classList.remove("hidden") : drawer.classList.add("hidden");
-    } else {
-        drawer.classList.toggle("hidden");
-    }
-    renderDigitalVaultItems();
-}
-
-function fetchDigitalVaultData() {
-    return JSON.parse(localStorage.getItem("edith_vault_notes") || "[]");
-}
-
-function pushItemToVault(title, rawContent) {
-    const records = fetchDigitalVaultData();
-    records.unshift({
-        id: "vault-" + Date.now(),
-        title: title || "Compiled Core Directive",
-        timestamp: new Date().toLocaleString(),
-        body: rawContent
-    });
-    localStorage.setItem("edith_vault_notes", JSON.stringify(records));
-    updateVaultInterfaceBadge();
-}
-
-function updateVaultInterfaceBadge() {
-    const records = fetchDigitalVaultData();
-    document.getElementById("vaultItemsBadge").textContent = records.length;
-}
-
-function clearDigitalVaultStorage() {
-    if(confirm("Wipe all assets from the Vault node storage configuration?")) {
-        localStorage.removeItem("edith_vault_notes");
-        updateVaultInterfaceBadge();
-        renderDigitalVaultItems();
-    }
-}
-
-function renderDigitalVaultItems() {
-    const container = document.getElementById("vaultItemsContainer");
-    const items = fetchDigitalVaultData();
-    container.innerHTML = "";
-    
-    if(items.length === 0) {
-        container.innerHTML = `<div class='text-xs text-slate-400 py-3 text-center font-mono'>// Storage container isolation empty.</div>`;
-        return;
-    }
-    
-    items.forEach(item => {
-        const row = document.createElement("div");
-        row.className = "p-2.5 bg-white dark:bg-slate-900 border dark:border-matrix-border border-slate-200 rounded-lg flex items-center justify-between gap-4";
-        row.innerHTML = `
-            <div class="overflow-hidden">
-                <h5 class="text-xs font-semibold text-slate-800 dark:text-zinc-200 truncate">${item.title}</h5>
-                <span class="text-[10px] text-slate-400 font-mono">${item.timestamp}</span>
-            </div>
-            <div class="flex items-center gap-2 shrink-0">
-                <button onclick="downloadCustomNotesPdf(\`${encodeURIComponent(item.title)}\`, \`${encodeURIComponent(item.body)}\`)" class="px-2 py-1 text-[10px] font-semibold bg-brand-500/10 hover:bg-brand-500 text-brand-500 hover:text-white rounded transition-all">Export PDF</button>
-            </div>
-        `;
-        container.appendChild(row);
-    });
-}
-
-/* Beautiful Paper-Style Academic PDF Framework Engine */
-function downloadCustomNotesPdf(encodedTitle, encodedContent) {
-    const title = decodeURIComponent(encodedTitle);
-    const bodyMarkdown = decodeURIComponent(encodedContent);
-    
-    const wrapper = document.createElement("div");
-    wrapper.className = "pdf-notes-container";
-    
-    let contentHtml = marked.parse(bodyMarkdown);
-    
-    wrapper.innerHTML = `
-        <div class="pdf-notes-header">
-            <h1 class="pdf-notes-title">${title}</h1>
-            <div class="pdf-meta-tag">EDITH Automated Syllabus Notes Framework &bull; Chrono Dynamic Generation</div>
-        </div>
-        <div class="pdf-body-text">
-            ${contentHtml}
-        </div>
-        <div class="pdf-footer-branding">
-            &copy; 2026 EDITH Intelligence Core &bull; Confidential Distributed Data Nodes
-        </div>
-    `;
-
-    wrapper.querySelectorAll("h1, h2, h3").forEach(header => {
-        header.style.color = "#4f46e5";
-        header.style.marginTop = "20px";
-        header.style.marginBottom = "10px";
-        header.style.fontWeight = "bold";
-    });
-    
-    wrapper.querySelectorAll("p").forEach(p => {
-        p.style.marginBottom = "12px";
-        p.style.fontSize = "13px";
-        p.style.lineHeight = "1.6";
-        p.style.color = "#334155";
-    });
-
-    const options = {
-        margin: [15, 15, 20, 15],
-        filename: `${title.replace(/\s+/g, '-').toLowerCase()}-notes.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, letterRendering: true },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-    };
-
-    html2pdf().from(wrapper).set(options).save();
-}
-
-/* Native Camera Handling Subroutines */
-async function openCameraSensor() {
-    try {
-        localMediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
-        const videoFeed = document.getElementById("cameraVideoFeed");
-        videoFeed.srcObject = localMediaStream;
-        document.getElementById("cameraModal").classList.remove("hidden");
-    } catch(err) {
-        alert("Unable to map optical nodes. Ensure camera access permissions are enabled.");
-    }
-}
-
-function closeCameraSensor() {
-    if (localMediaStream) {
-        localMediaStream.getTracks().forEach(track => track.stop());
-    }
-    document.getElementById("cameraModal").classList.add("hidden");
-}
-
-function captureCameraSnapshot() {
-    const video = document.getElementById("cameraVideoFeed");
-    const canvas = document.getElementById("cameraCanvasBuffer");
-    const ctx = canvas.getContext("2d");
-
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    
-    ctx.translate(canvas.width, 0);
-    ctx.scale(-1, 1);
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    
-    canvas.toBlob((blob) => {
-        const frameFile = new File([blob], `Snapshot-${Date.now()}.jpg`, { type: "image/jpeg" });
-        capturedCameraFiles.push(frameFile);
-        updateInterfaceAttachmentLabels();
-        closeCameraSensor();
-    }, "image/jpeg", 0.85);
-}
-
-window.onload = () => {
-    const userToken = localStorage.getItem("token");
-    const accountName = localStorage.getItem("userName") || "Operator";
-    if (!userToken) { window.location.href = "login.html"; return; }
-
-    document.getElementById("userNameFooter").textContent = accountName;
-    document.getElementById("userBadge").textContent = accountName.substring(0, 2).toUpperCase();
-    marked.setOptions({ breaks: true, gfm: true });
-    updateVaultInterfaceBadge();
-    loadChatSessions(true);
-};
-
-async function apiCall(endpoint, config = {}) {
-    const userToken = localStorage.getItem("token");
-    const headers = { ...(config.headers || {}), "Authorization": `Bearer ${userToken}` };
-    if (!(config.body instanceof FormData) && !headers["Content-Type"]) headers["Content-Type"] = "application/json";
-    
-    const response = await fetch(`${API_URL}${endpoint}`, { ...config, headers });
-    if (response.status === 401) { logoutSession(); return null; }
-    return response;
-}
-
-function logoutSession() { localStorage.clear(); window.location.href = "login.html"; }
-
-async function loadChatSessions(autoLoadFirst = false) {
-    try {
-        const response = await apiCall("/api/history");
-        if (!response) return;
-        cachedSessionsList = await response.json();
-        renderSidebarList(cachedSessionsList);
-        if (autoLoadFirst && cachedSessionsList.length > 0) selectSession(cachedSessionsList[0]._id);
-        else if (cachedSessionsList.length === 0) showEmptyStateWelcome();
-    } catch (err) { showEmptyStateWelcome(); }
-}
-
-function renderSidebarList(sessions) {
-    chatHistoryList.innerHTML = "";
-    document.getElementById("chatCounter").textContent = sessions.length;
-    if (sessions.length === 0) {
-        chatHistoryList.innerHTML = '<div class="text-center py-6 text-xs text-slate-400 font-mono">// No history logged.</div>';
-        return;
-    }
-    sessions.forEach(session => {
-        const isActive = session._id === currentSessionId;
-        let title = session.messages && session.messages[0] ? session.messages[0].content : 'Untitled Chat';
-        if (title.length > 22) title = title.substring(0, 22) + "...";
-        if(isActive) activeChatTitleHeader.textContent = `${title.toUpperCase()}`;
+    <script>
+        const chatBox = document.getElementById('chatBox');
+        const userInput = document.getElementById('userInput');
+        const fileInput = document.getElementById('fileInput');
         
-        const div = document.createElement("div");
-        div.className = "group w-full flex items-center justify-between px-2.5 py-2 text-xs rounded-lg cursor-pointer transition-all " + (isActive ? 'bg-brand-500/10 text-brand-500 font-semibold border border-brand-500/10' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 hover:text-slate-800 dark:hover:text-slate-200');
-        div.onclick = () => selectSession(session._id);
-        div.innerHTML = '<span class="truncate flex items-center gap-2"><i class="fa-solid fa-message opacity-50 text-[10px]"></i><span class="truncate">' + title + '</span></span><button onclick="deleteSession(event, \'' + session._id + '\')" class="p-0.5 text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"><i class="fa-regular fa-trash-can text-[10px]"></i></button>';
-        chatHistoryList.appendChild(div);
-    });
-}
+        let stream = null;
+        let capturedFiles = [];
 
-function createNewChat() { currentSessionId = null; chatWindow.innerHTML = ""; activeChatTitleHeader.textContent = "Ready Session Matrix"; showEmptyStateWelcome(); }
-function selectSession(id) { currentSessionId = id; renderSidebarList(cachedSessionsList); loadActiveMessages(); toggleSidebar(false); }
+        // UI Logic
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+        }
 
-async function deleteSession(event, id) {
-    event.stopPropagation();
-    if (!confirm("Are you sure you want to delete this context session?")) return;
-    try {
-        await apiCall("/api/chat/" + id, { method: "DELETE" });
-        if (currentSessionId === id) createNewChat();
-        loadChatSessions(true);
-    } catch (err) {}
-}
+        function updateFileCount() {
+            const count = fileInput.files.length + capturedFiles.length;
+            const status = document.getElementById('fileStatus');
+            if (count > 0) {
+                status.textContent = `${count} ASSETS ATTACHED`;
+                status.classList.remove('hidden');
+            } else {
+                status.classList.add('hidden');
+            }
+        }
 
-function loadActiveMessages() {
-    if (!currentSessionId) return;
-    const session = cachedSessionsList.find(s => s._id === currentSessionId);
-    chatWindow.innerHTML = "";
-    if (session && session.messages) session.messages.forEach(msg => insertMessageBubble(msg.role, msg.content));
-    chatWindow.scrollTop = chatWindow.scrollHeight;
-}
-
-function showEmptyStateWelcome() {
-    const name = localStorage.getItem("userName") || "Operator";
-    chatWindow.innerHTML = `
-        <div id="welcomeScreen" class="flex flex-col items-center justify-center flex-1 max-w-sm mx-auto text-center space-y-4 my-auto p-4">
-            <div class="w-12 h-12 rounded-xl bg-brand-500/5 border border-brand-500/10 flex items-center justify-center text-brand-500 text-lg">
-                <i class="fa-solid fa-terminal"></i>
-            </div>
-            <div class="space-y-1.5">
-                <h3 class="text-base font-bold dark:text-white text-slate-900">Systems Standby. Welcome, ${name}.</h3>
-                <p class="text-xs dark:text-slate-400 text-slate-500 max-w-xs mx-auto">The EDITH operational canvas is primed. Submit an active configuration instruction or file context.</p>
-            </div>
-            <div class="grid grid-cols-2 gap-2 w-full pt-1">
-                <div onclick="document.getElementById('userInputText').value='Prepare notes on Quantum Mechanics Architecture'; document.getElementById('userInputText').focus();" class="p-2.5 border dark:border-matrix-border border-slate-200 bg-white dark:bg-slate-900/40 rounded-lg text-left cursor-pointer hover:border-brand-500/30 transition-all">
-                    <h5 class="text-[11px] font-semibold text-brand-500 mb-0.5">Syllabus Notes</h5>
-                    <p class="text-[10px] text-slate-400 truncate">Auto-Vault & PDF Export</p>
-                </div>
-                <div onclick="document.getElementById('userInputText').value='Analyze structural discrepancies inside...'; document.getElementById('userInputText').focus();" class="p-2.5 border dark:border-matrix-border border-slate-200 bg-white dark:bg-slate-900/40 rounded-lg text-left cursor-pointer hover:border-brand-500/30 transition-all">
-                    <h5 class="text-[11px] font-semibold text-brand-500 mb-0.5">Code Inspection</h5>
-                    <p class="text-[10px] text-slate-400 truncate">Optimize script structure</p>
-                </div>
-            </div>
-        </div>`;
-}
-
-function insertMessageBubble(role, content) {
-    const welcome = document.getElementById("welcomeScreen"); if(welcome) welcome.remove();
-    const wrapper = document.createElement("div");
-    wrapper.className = "flex gap-3 w-full max-w-2xl mx-auto py-1.5 " + (role === 'user' ? 'flex-row-reverse' : 'flex-row');
-    
-    const bubble = document.createElement("div");
-    bubble.className = "rounded-xl px-3.5 py-2.5 text-xs md:text-sm leading-relaxed break-words shadow-sm max-w-[85%] " + (role === 'user' ? 'bg-brand-500 text-white' : 'dark:bg-matrix-darkCard bg-white dark:text-slate-200 text-slate-800 border dark:border-matrix-border border-slate-200/60');
-    
-    if (role === 'user') {
-        bubble.textContent = content;
-        wrapper.appendChild(bubble);
-    } else {
-        const uniqueId = "directive-node-" + Math.floor(Math.random() * 100000);
-        const textWrapper = document.createElement("div");
-        textWrapper.id = uniqueId;
-        textWrapper.className = "prose-content";
-        textWrapper.innerHTML = marked.parse(content);
-        bubble.appendChild(textWrapper);
-        
-        if (content.includes("###") || content.includes("==") || content.includes("**Notes**") || content.toLowerCase().includes("syllabus")) {
-            const headingMatch = content.match(/###\s+(.*)/);
-            const identifiedTitle = headingMatch ? headingMatch[1].trim() : "Compiled Syllabus Notes";
+        // Message Handling
+        function appendMessage(role, text) {
+            document.getElementById('welcome')?.remove();
             
-            const actionBtn = document.createElement("button");
-            actionBtn.className = "download-pdf-trigger";
-            actionBtn.innerHTML = `<i class="fa-solid fa-file-pdf"></i> Lock to Vault & Export PDF`;
-            actionBtn.onclick = () => {
-                pushItemToVault(identifiedTitle, content);
-                downloadCustomNotesPdf(encodeURIComponent(identifiedTitle), encodeURIComponent(content));
-            };
-            bubble.appendChild(actionBtn);
+            const wrapper = document.createElement('div');
+            wrapper.className = `flex w-full max-w-3xl animate-in fade-in slide-in-from-bottom-2 duration-300 ${role === 'user' ? 'justify-end' : 'justify-start'}`;
+            
+            const bubble = document.createElement('div');
+            bubble.className = `max-w-[85%] p-4 rounded-2xl text-sm ${
+                role === 'user' 
+                ? 'bg-brand-500 text-white font-medium ml-12' 
+                : 'dark:bg-slate-900 bg-slate-100 border dark:border-matrix-border mr-12'
+            }`;
+
+            if (role === 'ai') {
+                bubble.innerHTML = `<div class="prose-content">${marked.parse(text)}</div>`;
+                if (text.includes('###')) {
+                    const btn = document.createElement('button');
+                    btn.className = 'download-pdf-trigger';
+                    btn.innerHTML = `<i class="fa-solid fa-file-export"></i> EXPORT SYLLABUS PDF`;
+                    btn.onclick = () => alert('Generating Encrypted PDF...');
+                    bubble.appendChild(btn);
+                }
+            } else {
+                bubble.textContent = text;
+            }
+
+            wrapper.appendChild(bubble);
+            chatBox.appendChild(wrapper);
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
-        wrapper.appendChild(bubble);
-    }
-    
-    chatWindow.appendChild(wrapper);
-    chatWindow.scrollTop = chatWindow.scrollHeight;
-}
 
-function handleFileSelect() {
-    const files = document.getElementById("fileAttachment").files;
-    const label = document.getElementById("fileBadgeLabel");
-    if (files.length > 0) {
-        label.textContent = `${files.length} context items injected`;
-        label.classList.remove("hidden");
-    } else {
-        label.classList.add("hidden");
-    }
-}
+        function handleSend() {
+            const val = userInput.value.trim();
+            if (!val && fileInput.files.length === 0) return;
 
-function updateInterfaceAttachmentLabels() {
-    const label = document.getElementById("fileBadgeLabel");
-    const dynamicCount = capturedCameraFiles.length + document.getElementById("fileAttachment").files.length;
-    if(dynamicCount > 0) {
-        label.textContent = `${dynamicCount} object sources attached`;
-        label.classList.remove("hidden");
-    } else {
-        label.classList.add("hidden");
-    }
-}
-
-async function sendMessage() {
-    const input = document.getElementById("userInputText");
-    const fileElement = document.getElementById("fileAttachment");
-    const query = input.value.trim();
-    if (!query && fileElement.files.length === 0 && capturedCameraFiles.length === 0) return;
-
-    insertMessageBubble('user', query || "[Injected Media Context Package]");
-    input.value = "";
-
-    const loader = document.createElement("div");
-    loader.className = "flex gap-2 items-center p-3 max-w-2xl mx-auto text-slate-400 font-mono text-xs";
-    loader.innerHTML = `<span>Processing input string</span> <div class="space-x-0.5"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>`;
-    chatWindow.appendChild(loader);
-    chatWindow.scrollTop = chatWindow.scrollHeight;
-
-    const pack = new FormData();
-    pack.append("message", query);
-    pack.append("summarize", isSummarizeActive);
-    if(currentSessionId) pack.append("sessionId", currentSessionId);
-
-    for (let i = 0; i < fileElement.files.length; i++) {
-        pack.append("files", fileElement.files[i]);
-    }
-    capturedCameraFiles.forEach(file => pack.append("files", file));
-
-    try {
-        const response = await apiCall("/api/chat", { method: "POST", body: pack });
-        loader.remove();
-        fileElement.value = "";
-        capturedCameraFiles = [];
-        document.getElementById("fileBadgeLabel").classList.add("hidden");
-
-        if (!response) return;
-        const resData = await response.json();
-        
-        if (!currentSessionId && resData.sessionId) {
-            currentSessionId = resData.sessionId;
+            appendMessage('user', val || "Context upload initiated.");
+            userInput.value = '';
+            
+            // Simulate AI response
+            setTimeout(() => {
+                appendMessage('ai', "### Analysis Complete\nProcessing your query through the EDITH neural core. \n\n*   **Status**: Success\n*   **Node**: Primary\n\nHow should we proceed with this data?");
+            }, 800);
+            
+            fileInput.value = '';
+            capturedFiles = [];
+            updateFileCount();
         }
-        
-        insertMessageBubble('assistant', resData.response);
-        loadChatSessions(false);
-    } catch(err) {
-        loader.remove();
-        insertMessageBubble('assistant', "System error processing current configuration package link.");
-    }
-}
-</script>
+
+        // Camera Logic
+        async function openCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                document.getElementById('videoFeed').srcObject = stream;
+                document.getElementById('cameraModal').classList.remove('hidden');
+            } catch (err) {
+                alert("Camera access denied.");
+            }
+        }
+
+        function closeCamera() {
+            stream?.getTracks().forEach(t => t.stop());
+            document.getElementById('cameraModal').classList.add('hidden');
+        }
+
+        function captureImage() {
+            const video = document.getElementById('videoFeed');
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            
+            canvas.toBlob(blob => {
+                const file = new File([blob], "capture.jpg", { type: "image/jpeg" });
+                capturedFiles.push(file);
+                updateFileCount();
+                closeCamera();
+            });
+        }
+
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleSend();
+        });
+
+        function newChat() {
+            chatBox.innerHTML = `
+                <div id="welcome" class="my-auto text-center space-y-4 max-w-sm">
+                    <div class="w-16 h-16 bg-brand-500/10 border border-brand-500/20 rounded-2xl flex items-center justify-center mx-auto text-brand-500 text-2xl">
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+                    <h2 class="text-xl font-bold">New Matrix Initialized</h2>
+                    <p class="text-xs text-slate-500 leading-relaxed">System ready for new operational parameters.</p>
+                </div>
+            `;
+        }
+    </script>
 </body>
+
 </html>
