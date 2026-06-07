@@ -113,12 +113,21 @@
     <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 -translate-x-full lg:translate-x-0 lg:relative z-50 flex flex-col h-full dark:bg-matrix-darkCard bg-white border-r dark:border-matrix-border border-slate-200 transition-transform duration-200 ease-in-out">
         
         <div class="p-4 space-y-3.5 shrink-0">
-            <div class="flex items-center gap-2 px-1">
-                <div class="w-7 h-7 rounded-lg bg-indigo-500/10 flex items-center justify-center text-brand-500 border border-indigo-500/20">
-                    <i class="fa-solid fa-cube text-xs"></i>
+            <div class="flex items-center gap-3 px-1">
+                <div class="relative w-9 h-9 flex items-center justify-center">
+                    <div class="absolute inset-0 bg-brand-500/20 blur-md rounded-full animate-pulse"></div>
+                    <svg class="relative w-7 h-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L3.5 7V17L12 22L20.5 17V7L12 2Z" stroke="currentColor" stroke-width="1.5" class="text-brand-500" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 22V12M12 12L3.5 7M12 12L20.5 7" stroke="currentColor" stroke-width="1" class="text-brand-500/50" stroke-linecap="round"/>
+                        <circle cx="12" cy="12" r="2.5" class="fill-brand-500 animate-pulse" />
+                    </svg>
                 </div>
-                <span class="text-base font-bold tracking-tight dark:text-white text-slate-900">EDITH <span class="text-brand-500 font-semibold">AI</span></span>
+                <div class="flex flex-col">
+                    <span class="text-base font-bold tracking-tighter dark:text-white text-slate-900 leading-none">EDITH <span class="text-brand-500">CORE</span></span>
+                    <span class="text-[9px] uppercase tracking-[0.2em] text-slate-400 font-semibold mt-1">Intelligence Node</span>
+                </div>
             </div>
+
             <button onclick="createNewChat()" class="w-full h-10 flex items-center justify-center gap-1.5 text-xs font-semibold text-white bg-brand-500 hover:bg-brand-600 active:scale-[0.99] rounded-lg transition-all">
                 <i class="fa-solid fa-plus text-[10px]"></i> New Active Workspace
             </button>
@@ -534,4 +543,107 @@ function insertMessageBubble(role, content) {
     wrapper.className = "flex gap-3 w-full max-w-2xl mx-auto py-1.5 " + (role === 'user' ? 'flex-row-reverse' : 'flex-row');
     
     const bubble = document.createElement("div");
-    bubble.className = "rounded-xl px-3.5 py-2.5 text-xs md:text-sm leading-relaxed break-words shadow-sm max-w-[85%] " + (role === 'user' ? 'bg-brand-500 text
+    bubble.className = "rounded-xl px-3.5 py-2.5 text-xs md:text-sm leading-relaxed break-words shadow-sm max-w-[85%] " + (role === 'user' ? 'bg-brand-500 text-white' : 'dark:bg-matrix-darkCard bg-white dark:text-slate-200 text-slate-800 border dark:border-matrix-border border-slate-200/60');
+    
+    if (role === 'user') {
+        bubble.textContent = content;
+        wrapper.appendChild(bubble);
+    } else {
+        const uniqueId = "directive-node-" + Math.floor(Math.random() * 100000);
+        const textWrapper = document.createElement("div");
+        textWrapper.id = uniqueId;
+        textWrapper.className = "prose-content";
+        textWrapper.innerHTML = marked.parse(content);
+        bubble.appendChild(textWrapper);
+        
+        if (content.includes("###") || content.includes("==") || content.includes("**Notes**") || content.toLowerCase().includes("syllabus")) {
+            const headingMatch = content.match(/###\s+(.*)/);
+            const identifiedTitle = headingMatch ? headingMatch[1].trim() : "Compiled Syllabus Notes";
+            
+            const actionBtn = document.createElement("button");
+            actionBtn.className = "download-pdf-trigger";
+            actionBtn.innerHTML = `<i class="fa-solid fa-file-pdf"></i> Lock to Vault & Export PDF`;
+            actionBtn.onclick = () => {
+                pushItemToVault(identifiedTitle, content);
+                downloadCustomNotesPdf(encodeURIComponent(identifiedTitle), encodeURIComponent(content));
+            };
+            bubble.appendChild(actionBtn);
+        }
+        wrapper.appendChild(bubble);
+    }
+    
+    chatWindow.appendChild(wrapper);
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+function handleFileSelect() {
+    const files = document.getElementById("fileAttachment").files;
+    const label = document.getElementById("fileBadgeLabel");
+    if (files.length > 0) {
+        label.textContent = `${files.length} context items injected`;
+        label.classList.remove("hidden");
+    } else {
+        label.classList.add("hidden");
+    }
+}
+
+function updateInterfaceAttachmentLabels() {
+    const label = document.getElementById("fileBadgeLabel");
+    const dynamicCount = capturedCameraFiles.length + document.getElementById("fileAttachment").files.length;
+    if(dynamicCount > 0) {
+        label.textContent = `${dynamicCount} object sources attached`;
+        label.classList.remove("hidden");
+    } else {
+        label.classList.add("hidden");
+    }
+}
+
+async function sendMessage() {
+    const input = document.getElementById("userInputText");
+    const fileElement = document.getElementById("fileAttachment");
+    const query = input.value.trim();
+    if (!query && fileElement.files.length === 0 && capturedCameraFiles.length === 0) return;
+
+    insertMessageBubble('user', query || "[Injected Media Context Package]");
+    input.value = "";
+
+    const loader = document.createElement("div");
+    loader.className = "flex gap-2 items-center p-3 max-w-2xl mx-auto text-slate-400 font-mono text-xs";
+    loader.innerHTML = `<span>Processing input string</span> <div class="space-x-0.5"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>`;
+    chatWindow.appendChild(loader);
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+
+    const pack = new FormData();
+    pack.append("message", query);
+    pack.append("summarize", isSummarizeActive);
+    if(currentSessionId) pack.append("sessionId", currentSessionId);
+
+    for (let i = 0; i < fileElement.files.length; i++) {
+        pack.append("files", fileElement.files[i]);
+    }
+    capturedCameraFiles.forEach(file => pack.append("files", file));
+
+    try {
+        const response = await apiCall("/api/chat", { method: "POST", body: pack });
+        loader.remove();
+        fileElement.value = "";
+        capturedCameraFiles = [];
+        document.getElementById("fileBadgeLabel").classList.add("hidden");
+
+        if (!response) return;
+        const resData = await response.json();
+        
+        if (!currentSessionId && resData.sessionId) {
+            currentSessionId = resData.sessionId;
+        }
+        
+        insertMessageBubble('assistant', resData.response);
+        loadChatSessions(false);
+    } catch(err) {
+        loader.remove();
+        insertMessageBubble('assistant', "System error processing current configuration package link.");
+    }
+}
+</script>
+</body>
+</html>
