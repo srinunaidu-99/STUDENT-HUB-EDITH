@@ -12,7 +12,7 @@
     }
   </script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
     
     html, body {
       font-family: 'Plus Jakarta Sans', sans-serif; 
@@ -22,39 +22,38 @@
       transition: background 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.4s ease;
     }
 
-    /* --- PREMIUM NEBULA LAYER STYLES --- */
+    /* --- CINEMATIC AMBIENT GRADIENTS --- */
     .dark body {
-      background: radial-gradient(circle at 50% -20%, #1e154a 0%, #070714 45%, #020205 100%); 
+      background: radial-gradient(circle at 50% -20%, #161233 0%, #05050d 60%, #010103 100%); 
     }
     html:not(.dark) body {
-      background: radial-gradient(circle at 50% -20%, #eef2ff 0%, #f8fafc 50%, #f1f5f9 100%); 
+      background: radial-gradient(circle at 50% -20%, #f3f5ff 0%, #f8fafc 70%, #edf0f7 100%); 
     }
     
-    /* Executive Glassmorphism & Glare Elements */
+    /* --- GLASSMORPHISM LAYER PHYSICS --- */
     .glass-card {
       position: relative;
       overflow: hidden;
-      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
     
     .dark .glass-card {
-      background: linear-gradient(135deg, rgba(17, 19, 40, 0.45) 0%, rgba(10, 11, 22, 0.3) 100%);
+      background: linear-gradient(135deg, rgba(15, 18, 38, 0.5) 0%, rgba(8, 9, 18, 0.3) 100%);
       backdrop-filter: blur(20px) saturate(140%);
       border: 1px solid rgba(255, 255, 255, 0.03);
     }
     html:not(.dark) .glass-card {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.75) 0%, rgba(248, 250, 252, 0.5) 100%);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.75) 0%, rgba(243, 244, 246, 0.4) 100%);
       backdrop-filter: blur(20px) saturate(120%);
-      border: 1px solid rgba(99, 102, 241, 0.06);
-      box-shadow: 0 10px 30px -15px rgba(99, 102, 241, 0.03);
+      border: 1px solid rgba(99, 102, 241, 0.08);
     }
     
-    /* Advanced Micro-Interactive Hover Physics */
+    /* Neon Scanner Glare Sweep */
     .glass-card::before {
       content: '';
       position: absolute;
       top: 0; left: -150%; width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+      background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.08), transparent);
       transition: all 0.6s ease;
     }
     .glass-card:hover::before {
@@ -62,48 +61,37 @@
     }
 
     .dark .glass-card:hover { 
-      transform: translateY(-5px) scale(1.01); 
-      background: linear-gradient(135deg, rgba(22, 26, 54, 0.6) 0%, rgba(14, 16, 36, 0.45) 100%);
-      border-color: rgba(99, 102, 241, 0.4);
-      box-shadow: 0 30px 60px -20px rgba(5, 5, 12, 0.9), 0 0 40px 1px rgba(99, 102, 241, 0.1); 
+      transform: translateY(-6px) scale(1.01); 
+      background: linear-gradient(135deg, rgba(20, 24, 51, 0.6) 0%, rgba(11, 13, 28, 0.45) 100%);
+      border-color: rgba(99, 102, 241, 0.45);
+      box-shadow: 0 30px 60px -25px rgba(2, 2, 5, 0.85), 0 0 30px 1px rgba(99, 102, 241, 0.15); 
     }
     html:not(.dark) .glass-card:hover {
-      transform: translateY(-5px) scale(1.01); 
+      transform: translateY(-6px) scale(1.01); 
       background: #ffffff;
-      border-color: rgba(99, 102, 241, 0.35);
-      box-shadow: 0 30px 50px -20px rgba(99, 102, 241, 0.12);
+      border-color: rgba(99, 102, 241, 0.4);
+      box-shadow: 0 30px 50px -20px rgba(99, 102, 241, 0.15);
     }
 
-    /* --- CYBERPUNK CORE ORB ENGINE --- */
-    @keyframes coreSpin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    @keyframes corePulse {
-      0%, 100% { transform: scale(1); opacity: 0.35; }
-      50% { transform: scale(1.12); opacity: 0.7; }
-    }
-    .orb-ring-outer {
-      animation: coreSpin 25s linear infinite;
-      transform-origin: center;
-    }
-    .orb-ring-inner {
-      animation: coreSpin 12s linear infinite reverse;
-      transform-origin: center;
-    }
-    .orb-glow-pulse {
-      animation: corePulse 4s ease-in-out infinite;
-    }
+    /* --- THE HOLOGRAPHIC QUANTUM REACTOR LOGO --- */
+    @keyframes spinClockwise { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    @keyframes spinCounterClockwise { 0% { transform: rotate(0deg); } 100% { transform: rotate(-360deg); } }
+    @keyframes coreBreathing { 0%, 100% { transform: scale(0.9); opacity: 0.4; } 50% { transform: scale(1.15); opacity: 0.85; } }
+    
+    .reactor-outer { animation: spinClockwise 30s linear infinite; transform-origin: center; }
+    .reactor-mid { animation: spinCounterClockwise 20s linear infinite; transform-origin: center; }
+    .reactor-inner { animation: spinClockwise 10s linear infinite; transform-origin: center; }
+    .reactor-core-glow { animation: coreBreathing 3s ease-in-out infinite; transform-origin: center; }
 
-    /* System Panel Configurations */
+    /* Profile Panel Blueprint Overlay */
     .dark #profilePanel {
       backdrop-filter: blur(40px);
-      background: rgba(6, 7, 16, 0.92);
+      background: rgba(5, 6, 14, 0.94);
       border-left: 1px solid rgba(255, 255, 255, 0.04);
     }
     html:not(.dark) #profilePanel {
       backdrop-filter: blur(40px);
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.96);
       border-left: 1px solid rgba(99, 102, 241, 0.08);
       box-shadow: -20px 0 60px rgba(99, 102, 241, 0.05);
     }
@@ -112,35 +100,40 @@
       animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
     @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body class="min-h-screen dark:text-slate-200 text-slate-800 transition-colors duration-300 relative">
 
-  <!-- LIVING BACKGROUND AMBIENT GRID -->
-  <canvas id="matrixCanvas" class="absolute top-0 left-0 w-full h-full pointer-events-none z-0 opacity-40 dark:opacity-30"></canvas>
+  <!-- DYNAMIC LOGIC LINK CONSTSTELLATION MATRIX CANVAS -->
+  <canvas id="neuralMatrixCanvas" class="absolute top-0 left-0 w-full h-full pointer-events-none z-0 opacity-45 dark:opacity-35"></canvas>
 
   <header class="sticky top-0 z-40 bg-transparent border-b dark:border-white/5 border-slate-200/80 w-full backdrop-blur-md relative z-10">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3.5">
         
-        <!-- HIGH-TECH LIVING SVG ORB LOGO -->
-        <div class="w-10 h-10 flex items-center justify-center select-none cursor-pointer group">
-          <svg viewBox="0 0 100 100" class="w-full h-full filter drop-shadow-[0_0_8px_rgba(99,102,241,0.5)] group-hover:drop-shadow-[0_0_15px_rgba(147,51,234,0.8)] transition-all duration-300" xmlns="http://www.w3.org/2000/svg">
+        <!-- CYBERREACTOR ORB MODULE -->
+        <div class="w-11 h-11 flex items-center justify-center select-none cursor-pointer group">
+          <svg viewBox="0 0 100 100" class="w-full h-full filter drop-shadow-[0_0_8px_rgba(99,102,241,0.4)] group-hover:drop-shadow-[0_0_18px_rgba(147,51,234,0.75)] transition-all duration-300" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <linearGradient id="orbGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <linearGradient id="reactorGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stop-color="#4f46e5" />
                 <stop offset="50%" stop-color="#6366f1" />
-                <stop offset="100%" stop-color="#9333ea" />
+                <stop offset="100%" stop-color="#a855f7" />
               </linearGradient>
             </defs>
-            <circle class="orb-glow-pulse" cx="50" cy="50" r="40" fill="url(#orbGrad)" opacity="0.15"/>
-            <circle class="orb-ring-outer" cx="50" cy="50" r="42" stroke="url(#orbGrad)" stroke-width="2.5" stroke-dasharray="24 12 8 12" fill="none"/>
-            <circle class="orb-ring-inner" cx="50" cy="50" r="32" stroke="url(#orbGrad)" stroke-width="2" stroke-dasharray="12 6" fill="none" opacity="0.7"/>
-            <polygon points="50,28 69,39 69,61 50,72 31,61 31,39" fill="none" stroke="url(#orbGrad)" stroke-width="3" stroke-linejoin="round"/>
-            <circle cx="50" cy="50" r="7" fill="url(#orbGrad)"/>
+            <!-- Core Aura Glow -->
+            <circle class="reactor-core-glow" cx="50" cy="50" r="38" fill="url(#reactorGrad)" opacity="0.2"/>
+            <!-- Outer Ring Array -->
+            <circle class="reactor-outer" cx="50" cy="50" r="43" stroke="url(#reactorGrad)" stroke-width="2" stroke-dasharray="30 15 5 15" fill="none"/>
+            <!-- Mid Ring Geometry -->
+            <circle class="reactor-mid" cx="50" cy="50" r="33" stroke="url(#reactorGrad)" stroke-width="1.5" stroke-dasharray="12 8" fill="none" opacity="0.7"/>
+            <!-- Inner Array Structure -->
+            <polygon class="reactor-inner" points="50,26 71,38 71,62 50,74 29,62 29,38" fill="none" stroke="url(#reactorGrad)" stroke-width="2" stroke-linejoin="round" opacity="0.85"/>
+            <!-- Active Singularity Center Point -->
+            <circle cx="50" cy="50" r="6" fill="url(#reactorGrad)"/>
           </svg>
         </div>
 
@@ -168,7 +161,7 @@
     </div>
   </header>
 
-  <!-- COLLAPSIBLE LATERAL PROFILE DRAWER -->
+  <!-- LATERAL SLIDEOUT CONTROL SYSTEM -->
   <div id="profilePanel" class="fixed top-0 right-0 h-full w-72 sm:w-80 z-50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out">
     <div class="p-6 flex flex-col h-full">
       <div class="flex justify-between items-center mb-8">
@@ -180,11 +173,11 @@
 
       <div class="text-center mb-8">
         <div class="w-20 h-20 mx-auto mb-4 flex items-center justify-center">
-          <svg viewBox="0 0 100 100" class="w-full h-full filter drop-shadow-[0_0_10px_rgba(99,102,241,0.6)]" xmlns="http://www.w3.org/2000/svg">
-            <circle class="orb-glow-pulse" cx="50" cy="50" r="40" fill="url(#orbGrad)" opacity="0.2"/>
-            <circle class="orb-ring-outer" cx="50" cy="50" r="42" stroke="url(#orbGrad)" stroke-width="3" stroke-dasharray="20 10" fill="none"/>
-            <polygon points="50,28 69,39 69,61 50,72 31,61 31,39" fill="none" stroke="url(#orbGrad)" stroke-width="3" stroke-linejoin="round"/>
-            <circle cx="50" cy="50" r="8" fill="url(#orbGrad)"/>
+          <svg viewBox="0 0 100 100" class="w-full h-full filter drop-shadow-[0_0_10px_rgba(99,102,241,0.55)]" xmlns="http://www.w3.org/2000/svg">
+            <circle class="reactor-core-glow" cx="50" cy="50" r="38" fill="url(#reactorGrad)" opacity="0.2"/>
+            <circle class="reactor-outer" cx="50" cy="50" r="43" stroke="url(#reactorGrad)" stroke-width="2.5" stroke-dasharray="20 10" fill="none"/>
+            <polygon class="reactor-inner" points="50,26 71,38 71,62 50,74 29,62 29,38" fill="none" stroke="url(#reactorGrad)" stroke-width="2.5" stroke-linejoin="round"/>
+            <circle cx="50" cy="50" r="7" fill="url(#reactorGrad)"/>
           </svg>
         </div>
         <h4 id="profileName" class="text-xl font-bold dark:text-white text-slate-900 tracking-tight">Loading...</h4>
@@ -214,29 +207,29 @@
     </div>
   </div>
 
-  <!-- MAIN OPERATIONAL VIEWPORT CONTAINER -->
+  <!-- CONTROL ROOM GRID ENVIRONMENT -->
   <main class="max-w-7xl mx-auto px-6 py-12 sm:py-20 w-full fade-in-up relative z-10">
     <div class="mb-16">
       <h2 class="text-3xl sm:text-5xl font-bold mb-3 tracking-tight dark:text-white text-slate-900">
         Welcome Back, <span id="welcomeName" class="bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-500 dark:from-indigo-400 dark:via-indigo-300 dark:to-purple-400 bg-clip-text text-transparent">Operator!</span>
       </h2>
       <p class="dark:text-slate-400 text-slate-600 text-sm sm:text-base font-light tracking-wide max-w-2xl">
-        System interfaces operational. Choose an processing node module from the matrix array below to initialize target execution workflows.
+        System functional metrics normal. Select an operational environment array pipeline component below to configure task deployment profiles.
       </p>
     </div>
 
     <!-- MAIN MATRIX INTERACTIVE GRID -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
       
-      <!-- NODE 1: AI LAB -->
+      <!-- MODULE 1: AI INTELLIGENCE LAB -->
       <div onclick="window.location.href='index.html'" class="glass-card rounded-[24px] p-8 cursor-pointer group flex flex-col justify-between">
         <div>
           <div class="w-12 h-12 dark:bg-indigo-600/10 bg-indigo-50 border border-indigo-500/20 dark:border-indigo-500/30 rounded-xl flex items-center justify-center text-xl mb-6 shadow-sm group-hover:bg-indigo-600 group-hover:text-white text-indigo-600 dark:text-indigo-400 transition-all duration-300">
             <i class="fa-solid fa-brain"></i>
           </div>
           <h3 class="text-lg font-bold mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 dark:text-white text-slate-900 tracking-tight transition-colors">AI Intelligence Lab</h3>
-          <p class="dark:text-slate-400 text-slate-600 text-sm font-light leading-relaxed mb-6 opacity-80">
-            Engage EDITH core nodes to parse systemic engineering math architecture, debug syntax arrays, or model custom records.
+          <p class="dark:text-slate-400 text-slate-600 text-sm font-light leading-relaxed mb-6 opacity-85">
+            Initialize primary neural networks to process systemic algorithmic logic blocks, optimize complex structures, or run real-time logic.
           </p>
         </div>
         <span class="text-indigo-600 dark:text-indigo-400 text-sm font-semibold flex items-center gap-2 tracking-wide mt-auto pt-4 border-t border-slate-200/40 dark:border-white/5">
@@ -244,15 +237,15 @@
         </span>
       </div>
 
-      <!-- NODE 2: DIGITAL STORAGE -->
+      <!-- MODULE 2: DIGITAL STORAGE VAULT -->
       <div onclick="window.location.href='notes.html'" class="glass-card rounded-[24px] p-8 cursor-pointer group flex flex-col justify-between">
         <div>
           <div class="w-12 h-12 dark:bg-purple-600/10 bg-purple-50 border border-purple-500/20 dark:border-purple-500/30 rounded-xl flex items-center justify-center text-xl mb-6 shadow-md group-hover:bg-purple-600 group-hover:text-white text-purple-600 dark:text-purple-400 transition-all duration-300">
             <i class="fa-solid fa-folder-closed"></i>
           </div>
           <h3 class="text-lg font-bold mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 dark:text-white text-slate-900 tracking-tight transition-colors">Digital Vault Storage</h3>
-          <p class="dark:text-slate-400 text-slate-600 text-sm font-light leading-relaxed mb-6 opacity-80">
-            Access compiled raw analytic transcripts, query structural parameters, and check written node memories.
+          <p class="dark:text-slate-400 text-slate-600 text-sm font-light leading-relaxed mb-6 opacity-85">
+            Query deep memory blocks, parse archived historical session structures, and analyze historical data vault arrays.
           </p>
         </div>
         <span class="text-purple-600 dark:text-purple-400 text-sm font-semibold flex items-center gap-2 tracking-wide mt-auto pt-4 border-t border-slate-200/40 dark:border-white/5">
@@ -260,25 +253,25 @@
         </span>
       </div>
 
-      <!-- NODE 3: PIPELINES -->
+      <!-- MODULE 3: SPECIALIZED PIPELINES -->
       <div onclick="window.location.href='aitools.html'" class="glass-card rounded-[24px] p-8 cursor-pointer group flex flex-col justify-between">
         <div>
           <div class="w-12 h-12 dark:bg-cyan-600/10 bg-cyan-50 border border-cyan-500/20 dark:border-cyan-500/30 rounded-xl flex items-center justify-center text-xl mb-6 shadow-md group-hover:bg-cyan-600 group-hover:text-white text-cyan-600 dark:text-cyan-400 transition-all duration-300">
             <i class="fa-solid fa-bolt"></i>
           </div>
           <h3 class="text-lg font-bold mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 dark:text-white text-slate-900 tracking-tight transition-colors">Specialized Pipelines</h3>
-          <p class="dark:text-slate-400 text-slate-600 text-sm font-light leading-relaxed mb-4 opacity-80">
-            Accelerated high-throughput pipelines optimized for dynamic asset mutation and structural syntax updates.
+          <p class="dark:text-slate-400 text-slate-600 text-sm font-light leading-relaxed mb-4 opacity-85">
+            Accelerated macros optimized for immediate functional conversion and formatting deployment.
           </p>
           
-          <div class="space-y-2 mb-6 pointer-events-none">
-            <div class="flex items-center justify-between p-2 rounded-xl dark:bg-slate-900/50 bg-slate-50 border dark:border-white/5 border-slate-200 text-[11px]">
+          <div class="space-y-2 mb-6 font-mono text-[11px] pointer-events-none">
+            <div class="flex items-center justify-between p-2 rounded-xl dark:bg-slate-950/50 bg-slate-50 border dark:border-white/5 border-slate-200">
               <span class="dark:text-slate-300 text-slate-700 flex items-center gap-2"><i class="fa-solid fa-code text-cyan-600 dark:text-cyan-400"></i> Code Refactoring</span>
-              <span class="text-cyan-600 dark:text-cyan-400 font-mono text-[9px] bg-cyan-500/10 px-1.5 py-0.5 rounded border border-cyan-500/20">READY</span>
+              <span class="text-cyan-600 dark:text-cyan-400 text-[9px] bg-cyan-500/10 px-1.5 py-0.5 rounded border border-cyan-500/20">READY</span>
             </div>
-            <div class="flex items-center justify-between p-2 rounded-xl dark:bg-slate-900/50 bg-slate-50 border dark:border-white/5 border-slate-200 text-[11px]">
+            <div class="flex items-center justify-between p-2 rounded-xl dark:bg-slate-950/50 bg-slate-50 border dark:border-white/5 border-slate-200">
               <span class="dark:text-slate-300 text-slate-700 flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles text-purple-600 dark:text-purple-400"></i> Grammar AI Optimizer</span>
-              <span class="text-purple-600 dark:text-purple-400 font-mono text-[9px] bg-purple-500/10 px-1.5 py-0.5 rounded border border-purple-500/20">READY</span>
+              <span class="text-purple-600 dark:text-purple-400 text-[9px] bg-purple-500/10 px-1.5 py-0.5 rounded border border-purple-500/20">READY</span>
             </div>
           </div>
         </div>
@@ -292,10 +285,10 @@
   </main>
 
   <script>
-    // --- AMBIENT DRIVER MATRIX BACKGROUND ENGINE ---
-    const canvas = document.getElementById('matrixCanvas');
+    // --- HIGH-PERFORMANCE DYNAMIC NEURAL MATRIX GRAPH CANVAS ENGINE ---
+    const canvas = document.getElementById('neuralMatrixCanvas');
     const ctx = canvas.getContext('2d');
-    let particles = [];
+    let nodes = [];
 
     function resizeCanvas() {
       canvas.width = window.innerWidth;
@@ -304,45 +297,73 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    class Particle {
+    class NeuralNode {
       constructor() {
         this.reset();
       }
       reset() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 1.5 + 0.5;
-        this.speedY = Math.random() * 0.3 + 0.1;
-        this.opacity = Math.random() * 0.5 + 0.1;
+        this.vx = (Math.random() - 0.5) * 0.4;
+        this.vy = (Math.random() - 0.5) * 0.4;
+        this.radius = Math.random() * 2 + 1;
       }
       update() {
-        this.y -= this.speedY;
-        if (this.y < 0) this.reset();
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
       }
       draw() {
         const isDark = document.documentElement.classList.contains('dark');
-        ctx.fillStyle = isDark ? `rgba(99, 102, 241, ${this.opacity})` : `rgba(79, 70, 229, ${this.opacity * 0.6})`;
+        ctx.fillStyle = isDark ? 'rgba(99, 102, 241, 0.45)' : 'rgba(79, 70, 229, 0.25)';
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fill();
       }
     }
 
-    for (let i = 0; i < 60; i++) {
-      particles.push(new Particle());
+    // Populate matrix arrays
+    const targetNodeDensity = 45;
+    for (let i = 0; i < targetNodeDensity; i++) {
+      nodes.push(new NeuralNode());
     }
 
-    function animateParticles() {
+    function drawNetworkLines() {
+      const isDark = document.documentElement.classList.contains('dark');
+      const connectionThreshold = 140;
+
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < connectionThreshold) {
+            const alpha = (1 - dist / connectionThreshold) * 0.12;
+            ctx.strokeStyle = isDark ? `rgba(99, 102, 241, ${alpha})` : `rgba(79, 70, 229, ${alpha * 0.8})`;
+            ctx.lineWidth = 0.8;
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function renderingPipelineLoop() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => {
-        p.update();
-        p.draw();
+      nodes.forEach(node => {
+        node.update();
+        node.draw();
       });
-      requestAnimationFrame(animateParticles);
+      drawNetworkLines();
+      requestAnimationFrame(renderingPipelineLoop);
     }
-    animateParticles();
+    renderingPipelineLoop();
 
-    // --- CORE ENVIRONMENT MANAGEMENT ENGINE ---
+    // --- CORE LOCAL ENVIRONMENT MANAGEMENT ENGINE ---
     function initThemePipeline() {
       const savedTheme = localStorage.getItem('edith-theme') || 'dark';
       if (savedTheme === 'dark') {
