@@ -12,7 +12,7 @@
     }
   </script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700&family=JetBrains+Mono:wght=400;500&display=swap');
     
     html, body {
       font-family: 'Plus Jakarta Sans', sans-serif; 
@@ -37,7 +37,7 @@
       transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
     
-    .dark class-panel, .dark .glass-panel {
+    .dark .glass-panel {
       background: linear-gradient(135deg, rgba(15, 18, 38, 0.55) 0%, rgba(8, 9, 18, 0.35) 100%);
       backdrop-filter: blur(24px) saturate(140%);
       border: 1px solid rgba(255, 255, 255, 0.04);
@@ -88,14 +88,12 @@
 </head>
 <body class="min-h-screen dark:text-slate-200 text-slate-800 transition-colors duration-300 relative select-none">
 
-  <!-- DYNAMIC LOGIC LINK CONSTELLATION MATRIX CANVAS -->
   <canvas id="neuralMatrixCanvas" class="absolute top-0 left-0 w-full h-full pointer-events-none z-0 opacity-45 dark:opacity-35"></canvas>
 
   <header class="sticky top-0 z-40 bg-transparent border-b dark:border-white/5 border-slate-200/80 w-full backdrop-blur-md relative z-10">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3.5">
         
-        <!-- HOME CONTROL BUTTON (RETURNS BACK TO THE DASHBOARD) -->
         <div onclick="window.location.href='dashboard.html'" class="w-11 h-11 flex items-center justify-center select-none cursor-pointer group">
           <svg viewBox="0 0 100 100" class="w-full h-full filter drop-shadow-[0_0_8px_rgba(99,102,241,0.4)] group-hover:drop-shadow-[0_0_18px_rgba(147,51,234,0.75)] transition-all duration-300" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -119,7 +117,6 @@
       </div>
 
       <div class="flex items-center gap-3">
-        <!-- RETURN ACTION ACCELERATOR LINK -->
         <button onclick="window.location.href='dashboard.html'" class="hidden sm:flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold rounded-xl border border-slate-200 dark:border-white/10 dark:text-slate-300 text-slate-700 hover:bg-slate-500/5 dark:hover:bg-white/5 transition-all">
           <i class="fa-solid fa-arrow-left text-[10px]"></i> Matrix Control Room
         </button>
@@ -142,7 +139,6 @@
     </div>
   </header>
 
-  <!-- LATERAL SLIDEOUT PROFILE COMPONENT -->
   <div id="profilePanel" class="fixed top-0 right-0 h-full w-72 sm:w-80 z-50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out">
     <div class="p-6 flex flex-col h-full">
       <div class="flex justify-between items-center mb-8">
@@ -188,12 +184,10 @@
     </div>
   </div>
 
-  <!-- CORE INTELLIGENCE TERMINAL ENGINE FRAME -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 w-full h-[calc(100vh-80px)] flex flex-col fade-in-up relative z-10">
     
     <div class="flex-1 grid grid-cols-1 lg:grid-cols-4 gap-6 min-h-0 w-full">
       
-      <!-- LATERAL PANEL MODULES: PROMPTS AND CONTROLS -->
       <div class="lg:col-span-1 flex flex-col gap-4 min-h-0">
         <div class="glass-panel rounded-2xl p-5 flex flex-col flex-1">
           <h2 class="text-xs font-bold dark:text-white text-slate-900 tracking-wider uppercase mb-4 flex items-center gap-2">
@@ -227,13 +221,10 @@
         </div>
       </div>
 
-      <!-- MAIN DATA CONSOLE CONTEXT BOX -->
       <div class="lg:col-span-3 glass-panel rounded-2xl p-4 sm:p-6 flex flex-col min-h-0 h-full relative">
         
-        <!-- RESPONSE CONTAINER TERMINAL WINDOW -->
         <div id="terminalStreamBox" class="flex-1 overflow-y-auto pr-2 space-y-6 terminal-scrollbar mb-4 text-sm font-light leading-relaxed">
           
-          <!-- SYSTEM NODE INTRO INCOMING DIALOGUE EXAMPLE -->
           <div class="flex gap-4 items-start max-w-3xl">
             <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center text-xs text-white shrink-0 shadow-md">
               <i class="fa-solid fa-robot"></i>
@@ -248,12 +239,11 @@
 
         </div>
 
-        <!-- USER INPUT CONSOLE AREA CONTAINER -->
         <div class="relative mt-auto">
           <div class="flex items-center gap-2 p-1.5 bg-slate-100 dark:bg-slate-950/50 rounded-xl border border-slate-200 dark:border-white/5 focus-within:border-indigo-500/40 transition-all">
             <textarea rows="1" placeholder="Inject functional prompt telemetry..." class="w-full bg-transparent resize-none py-2 px-3 text-sm focus:outline-none dark:text-slate-200 text-slate-800 placeholder-slate-400 dark:placeholder-slate-600 font-light max-h-32 terminal-scrollbar"></textarea>
             
-            <button class="w-9 h-9 shrink-0 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg flex items-center justify-center transition-all shadow-md group">
+            <button id="sendPayloadBtn" class="w-9 h-9 shrink-0 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg flex items-center justify-center transition-all shadow-md group">
               <i class="fa-solid fa-paper-plane text-xs group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
             </button>
           </div>
@@ -418,6 +408,109 @@
         panel.classList.add('translate-x-full');
       }
     });
+
+    // --- CHAT INTERACTION OPERATIONAL SCRIPT ENGINE ---
+    const messageInput = document.querySelector('textarea');
+    const sendButton = document.getElementById('sendPayloadBtn');
+    const streamBox = document.getElementById('terminalStreamBox');
+
+    messageInput.addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = (this.scrollHeight) + 'px';
+    });
+
+    function executePayloadSubmission() {
+      const queryPayload = messageInput.value.trim();
+      if (!queryPayload) return;
+
+      appendUserMessageCard(queryPayload);
+      messageInput.value = '';
+      messageInput.style.height = 'auto';
+
+      generateSystemStreamResponse(queryPayload);
+    }
+
+    sendButton.addEventListener('click', executePayloadSubmission);
+    messageInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        executePayloadSubmission();
+      }
+    });
+
+    function appendUserMessageCard(text) {
+      const operatorName = localStorage.getItem('userName') || "Operator";
+      const userCard = document.createElement('div');
+      userCard.className = "flex gap-4 items-start max-w-3xl ml-auto flex-row-reverse fade-in-up";
+      
+      userCard.innerHTML = `
+        <div class="w-8 h-8 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-lg flex items-center justify-center text-xs text-white shrink-0 shadow-md">
+          <i class="fa-solid fa-user-gear"></i>
+        </div>
+        <div class="space-y-1 text-right">
+          <p class="text-[10px] font-bold text-purple-600 dark:text-purple-400 uppercase tracking-widest">${operatorName}</p>
+          <div class="text-slate-800 dark:text-slate-200 bg-indigo-500/10 dark:bg-indigo-500/5 p-3.5 rounded-2xl rounded-tr-none border border-indigo-500/20 dark:border-indigo-500/10 inline-block text-left">
+            ${escapeHtmlEntities(text)}
+          </div>
+        </div>
+      `;
+      
+      streamBox.appendChild(userCard);
+      scrollToTerminalBottom();
+    }
+
+    function generateSystemStreamResponse(userPrompt) {
+      const responseId = "edith-stream-" + Date.now();
+      const systemCard = document.createElement('div');
+      systemCard.className = "flex gap-4 items-start max-w-3xl fade-in-up";
+      
+      systemCard.innerHTML = `
+        <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center text-xs text-white shrink-0 shadow-md">
+          <i class="fa-solid fa-robot"></i>
+        </div>
+        <div class="space-y-1">
+          <p class="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">EDITH Intelligence</p>
+          <div id="${responseId}" class="dark:text-slate-300 text-slate-700 bg-slate-500/5 p-3.5 rounded-2xl rounded-tl-none border border-slate-200/40 dark:border-white/5 font-mono text-xs">
+            <span class="inline-block w-2 h-4 bg-indigo-500 animate-pulse"></span> Analyzing telemetry vectors...
+          </div>
+        </div>
+      `;
+      
+      streamBox.appendChild(systemCard);
+      scrollToTerminalBottom();
+
+      const targetOutputContainer = document.getElementById(responseId);
+      const mockReplyString = `Telemetry payload parsed successfully.\n\n[ANALYSIS LOGS]: Target logic block metrics configured normal.\nInitializing sub-routine compilers for context matrix: "${userPrompt.substring(0, 30)}${userPrompt.length > 30 ? '...' : ''}".\n\nSystem Core remains operational at 100% capacity. Ready for next instruction vector block.`;
+      
+      let characterIndex = 0;
+      targetOutputContainer.innerHTML = ""; 
+
+      function characterPrintPipeline() {
+        if (characterIndex < mockReplyString.length) {
+          const currentChar = mockReplyString.charAt(characterIndex);
+          if (currentChar === '\n') {
+            targetOutputContainer.innerHTML += '<br>';
+          } else {
+            targetOutputContainer.innerHTML += escapeHtmlEntities(currentChar);
+          }
+          characterIndex++;
+          scrollToTerminalBottom();
+          setTimeout(characterPrintPipeline, Math.random() * 15 + 5); 
+        }
+      }
+      setTimeout(characterPrintPipeline, 650);
+    }
+
+    function scrollToTerminalBottom() {
+      streamBox.scrollTo({
+        top: streamBox.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
+
+    function escapeHtmlEntities(string) {
+      return string.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
   </script>
 </body>
 </html>
