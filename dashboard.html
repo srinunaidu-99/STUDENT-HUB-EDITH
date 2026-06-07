@@ -12,123 +12,144 @@
     }
   </script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
     
     html, body {
       font-family: 'Plus Jakarta Sans', sans-serif; 
       overflow-x: hidden !important;
       position: relative;
       width: 100%;
-      transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s ease;
+      transition: background 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.4s ease;
     }
 
-    /* --- RICH ULTRA-PREMIUM GRADIENTS --- */
+    /* --- PREMIUM NEBULA LAYER STYLES --- */
     .dark body {
-      background: radial-gradient(circle at 50% 0%, #0d0b26 0%, #05050c 50%, #020205 100%); 
+      background: radial-gradient(circle at 50% -20%, #1e154a 0%, #070714 45%, #020205 100%); 
     }
     html:not(.dark) body {
-      background: radial-gradient(circle at 50% 0%, #f0f3ff 0%, #f8fafc 60%, #f1f5f9 100%); 
+      background: radial-gradient(circle at 50% -20%, #eef2ff 0%, #f8fafc 50%, #f1f5f9 100%); 
     }
     
-    /* Executive Glassmorphism Panels */
+    /* Executive Glassmorphism & Glare Elements */
     .glass-card {
-      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
     
     .dark .glass-card {
-      background: linear-gradient(135deg, rgba(15, 17, 34, 0.65) 0%, rgba(10, 11, 22, 0.45) 100%);
-      backdrop-filter: blur(24px) saturate(140%);
-      border: 1px solid rgba(255, 255, 255, 0.04);
+      background: linear-gradient(135deg, rgba(17, 19, 40, 0.45) 0%, rgba(10, 11, 22, 0.3) 100%);
+      backdrop-filter: blur(20px) saturate(140%);
+      border: 1px solid rgba(255, 255, 255, 0.03);
     }
     html:not(.dark) .glass-card {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(248, 250, 252, 0.6) 100%);
-      backdrop-filter: blur(24px) saturate(130%);
-      border: 1px solid rgba(99, 102, 241, 0.08);
-      box-shadow: 0 10px 40px -15px rgba(0, 0, 0, 0.02);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.75) 0%, rgba(248, 250, 252, 0.5) 100%);
+      backdrop-filter: blur(20px) saturate(120%);
+      border: 1px solid rgba(99, 102, 241, 0.06);
+      box-shadow: 0 10px 30px -15px rgba(99, 102, 241, 0.03);
     }
     
-    /* Micro-Interactive Hover Physics */
+    /* Advanced Micro-Interactive Hover Physics */
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -150%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+      transition: all 0.6s ease;
+    }
+    .glass-card:hover::before {
+      left: 150%;
+    }
+
     .dark .glass-card:hover { 
-      transform: translateY(-6px); 
-      background: linear-gradient(135deg, rgba(20, 24, 48, 0.8) 0%, rgba(13, 15, 30, 0.6) 100%);
-      border-color: rgba(99, 102, 241, 0.45);
-      box-shadow: 0 40px 80px -25px rgba(8, 7, 24, 0.8), 0 0 50px 2px rgba(99, 102, 241, 0.15); 
+      transform: translateY(-5px) scale(1.01); 
+      background: linear-gradient(135deg, rgba(22, 26, 54, 0.6) 0%, rgba(14, 16, 36, 0.45) 100%);
+      border-color: rgba(99, 102, 241, 0.4);
+      box-shadow: 0 30px 60px -20px rgba(5, 5, 12, 0.9), 0 0 40px 1px rgba(99, 102, 241, 0.1); 
     }
     html:not(.dark) .glass-card:hover {
-      transform: translateY(-6px); 
+      transform: translateY(-5px) scale(1.01); 
       background: #ffffff;
-      border-color: rgba(99, 102, 241, 0.3);
-      box-shadow: 0 40px 60px -20px rgba(99, 102, 241, 0.14);
+      border-color: rgba(99, 102, 241, 0.35);
+      box-shadow: 0 30px 50px -20px rgba(99, 102, 241, 0.12);
     }
 
-    /* --- CINEMATIC PULSE GLOW VECTOR LOGO --- */
-    @keyframes pulseGlow {
-      0%, 100% {
-        transform: scale(1);
-        filter: drop-shadow(0 0 12px rgba(79, 70, 229, 0.65)) drop-shadow(0 0 30px rgba(147, 51, 234, 0.3));
-      }
-      50% {
-        transform: scale(1.03);
-        filter: drop-shadow(0 0 22px rgba(99, 102, 241, 0.95)) drop-shadow(0 0 50px rgba(168, 85, 247, 0.55));
-      }
+    /* --- CYBERPUNK CORE ORB ENGINE --- */
+    @keyframes coreSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
-    .edith-orb-logo {
-      animation: pulseGlow 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    @keyframes corePulse {
+      0%, 100% { transform: scale(1); opacity: 0.35; }
+      50% { transform: scale(1.12); opacity: 0.7; }
+    }
+    .orb-ring-outer {
+      animation: coreSpin 25s linear infinite;
+      transform-origin: center;
+    }
+    .orb-ring-inner {
+      animation: coreSpin 12s linear infinite reverse;
+      transform-origin: center;
+    }
+    .orb-glow-pulse {
+      animation: corePulse 4s ease-in-out infinite;
     }
 
+    /* System Panel Configurations */
     .dark #profilePanel {
       backdrop-filter: blur(40px);
-      background: rgba(3, 4, 10, 0.94);
-      border-left: 1px solid rgba(255, 255, 255, 0.03);
+      background: rgba(6, 7, 16, 0.92);
+      border-left: 1px solid rgba(255, 255, 255, 0.04);
     }
     html:not(.dark) #profilePanel {
       backdrop-filter: blur(40px);
-      background: rgba(255, 255, 255, 0.97);
+      background: rgba(255, 255, 255, 0.95);
       border-left: 1px solid rgba(99, 102, 241, 0.08);
-      box-shadow: -20px 0 60px rgba(0, 0, 0, 0.05);
+      box-shadow: -20px 0 60px rgba(99, 102, 241, 0.05);
     }
 
     .fade-in-up {
       animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
-
     @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(24px); }
+      from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
-<body class="min-h-screen dark:text-slate-200 text-slate-800 transition-colors duration-300">
+<body class="min-h-screen dark:text-slate-200 text-slate-800 transition-colors duration-300 relative">
 
-  <header class="sticky top-0 z-40 bg-transparent border-b dark:border-white/5 border-slate-200/80 w-full backdrop-blur-md">
+  <!-- LIVING BACKGROUND AMBIENT GRID -->
+  <canvas id="matrixCanvas" class="absolute top-0 left-0 w-full h-full pointer-events-none z-0 opacity-40 dark:opacity-30"></canvas>
+
+  <header class="sticky top-0 z-40 bg-transparent border-b dark:border-white/5 border-slate-200/80 w-full backdrop-blur-md relative z-10">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3.5">
         
-        <div class="edith-orb-logo w-10 h-10 flex items-center justify-center select-none">
-          <svg viewBox="0 0 100 100" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+        <!-- HIGH-TECH LIVING SVG ORB LOGO -->
+        <div class="w-10 h-10 flex items-center justify-center select-none cursor-pointer group">
+          <svg viewBox="0 0 100 100" class="w-full h-full filter drop-shadow-[0_0_8px_rgba(99,102,241,0.5)] group-hover:drop-shadow-[0_0_15px_rgba(147,51,234,0.8)] transition-all duration-300" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <linearGradient id="premiumGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <linearGradient id="orbGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stop-color="#4f46e5" />
                 <stop offset="50%" stop-color="#6366f1" />
                 <stop offset="100%" stop-color="#9333ea" />
               </linearGradient>
             </defs>
-            <circle cx="50" cy="50" r="44" stroke="url(#premiumGrad)" stroke-width="4.5" stroke-dasharray="16 6 4 6" fill="none" opacity="0.95"/>
-            <polygon points="50,20 76,35 76,65 50,80 24,65 24,35" fill="none" stroke="url(#premiumGrad)" stroke-width="5" stroke-linejoin="round"/>
-            <circle cx="50" cy="50" r="9" fill="url(#premiumGrad)"/>
-            <line x1="50" y1="20" x2="50" y2="41" stroke="url(#premiumGrad)" stroke-width="3.5" stroke-linecap="round" />
-            <line x1="24" y1="65" x2="42" y2="55" stroke="url(#premiumGrad)" stroke-width="3.5" stroke-linecap="round" />
-            <line x1="76" y1="65" x2="58" y2="55" stroke="url(#premiumGrad)" stroke-width="3.5" stroke-linecap="round" />
+            <circle class="orb-glow-pulse" cx="50" cy="50" r="40" fill="url(#orbGrad)" opacity="0.15"/>
+            <circle class="orb-ring-outer" cx="50" cy="50" r="42" stroke="url(#orbGrad)" stroke-width="2.5" stroke-dasharray="24 12 8 12" fill="none"/>
+            <circle class="orb-ring-inner" cx="50" cy="50" r="32" stroke="url(#orbGrad)" stroke-width="2" stroke-dasharray="12 6" fill="none" opacity="0.7"/>
+            <polygon points="50,28 69,39 69,61 50,72 31,61 31,39" fill="none" stroke="url(#orbGrad)" stroke-width="3" stroke-linejoin="round"/>
+            <circle cx="50" cy="50" r="7" fill="url(#orbGrad)"/>
           </svg>
         </div>
 
         <h1 class="text-xl font-bold tracking-tight dark:bg-gradient-to-r dark:from-white dark:via-slate-200 dark:to-slate-400 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 bg-clip-text text-transparent">
-          EDITH <span class="text-[10px] font-bold tracking-wider text-indigo-500 dark:text-indigo-400 border border-indigo-500/20 dark:border-indigo-500/30 px-2 py-0.5 rounded-md ml-1.5 bg-indigo-500/5 uppercase">V3.2</span>
+          EDITH <span class="text-[9px] font-bold tracking-wider text-indigo-500 dark:text-indigo-400 border border-indigo-500/20 dark:border-indigo-500/30 px-1.5 py-0.5 rounded ml-1 bg-indigo-500/5">V3.2</span>
         </h1>
       </div>
 
       <div class="flex items-center gap-3">
-        
         <button onclick="toggleThemePipeline()" id="themeTogglerBtn" title="Shift Environment Workspace" class="w-9 h-9 border dark:border-white/10 border-slate-200 hover:bg-slate-500/5 dark:hover:bg-white/5 rounded-xl flex items-center justify-center transition-all dark:text-slate-400 text-slate-600 shadow-sm">
           <i class="fa-solid fa-sun text-sm hidden dark:block"></i>
           <i class="fa-solid fa-moon text-sm dark:hidden"></i>
@@ -139,7 +160,7 @@
             <p id="navUserName" class="font-semibold dark:text-slate-200 text-slate-800 text-sm tracking-tight">Loading...</p>
             <p class="text-[9px] text-indigo-600 dark:text-indigo-400 font-bold uppercase tracking-widest mt-0.5">Control Registry</p>
           </div>
-          <div class="w-9 h-9 bg-gradient-to-br from-indigo-600 via-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-sm font-bold text-white shadow-lg shadow-indigo-500/10 ring-2 ring-indigo-500/20">
+          <div class="w-9 h-9 bg-gradient-to-br from-indigo-600 via-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-sm font-bold text-white shadow-lg ring-2 ring-indigo-500/20">
             <i class="fa-solid fa-user-gear"></i>
           </div>
         </div>
@@ -147,6 +168,7 @@
     </div>
   </header>
 
+  <!-- COLLAPSIBLE LATERAL PROFILE DRAWER -->
   <div id="profilePanel" class="fixed top-0 right-0 h-full w-72 sm:w-80 z-50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out">
     <div class="p-6 flex flex-col h-full">
       <div class="flex justify-between items-center mb-8">
@@ -157,14 +179,12 @@
       </div>
 
       <div class="text-center mb-8">
-        <div class="edith-orb-logo w-20 h-20 mx-auto mb-4 flex items-center justify-center">
-          <svg viewBox="0 0 100 100" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="50" r="44" stroke="url(#premiumGrad)" stroke-width="4.5" stroke-dasharray="16 6 4 6" fill="none" opacity="0.95"/>
-            <polygon points="50,20 76,35 76,65 50,80 24,65 24,35" fill="none" stroke="url(#premiumGrad)" stroke-width="5" stroke-linejoin="round"/>
-            <circle cx="50" cy="50" r="9" fill="url(#premiumGrad)"/>
-            <line x1="50" y1="20" x2="50" y2="41" stroke="url(#premiumGrad)" stroke-width="3.5" stroke-linecap="round" />
-            <line x1="24" y1="65" x2="42" y2="55" stroke="url(#premiumGrad)" stroke-width="3.5" stroke-linecap="round" />
-            <line x1="76" y1="65" x2="58" y2="55" stroke="url(#premiumGrad)" stroke-width="3.5" stroke-linecap="round" />
+        <div class="w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+          <svg viewBox="0 0 100 100" class="w-full h-full filter drop-shadow-[0_0_10px_rgba(99,102,241,0.6)]" xmlns="http://www.w3.org/2000/svg">
+            <circle class="orb-glow-pulse" cx="50" cy="50" r="40" fill="url(#orbGrad)" opacity="0.2"/>
+            <circle class="orb-ring-outer" cx="50" cy="50" r="42" stroke="url(#orbGrad)" stroke-width="3" stroke-dasharray="20 10" fill="none"/>
+            <polygon points="50,28 69,39 69,61 50,72 31,61 31,39" fill="none" stroke="url(#orbGrad)" stroke-width="3" stroke-linejoin="round"/>
+            <circle cx="50" cy="50" r="8" fill="url(#orbGrad)"/>
           </svg>
         </div>
         <h4 id="profileName" class="text-xl font-bold dark:text-white text-slate-900 tracking-tight">Loading...</h4>
@@ -194,56 +214,61 @@
     </div>
   </div>
 
-  <main class="max-w-7xl mx-auto px-6 py-12 sm:py-20 w-full fade-in-up">
+  <!-- MAIN OPERATIONAL VIEWPORT CONTAINER -->
+  <main class="max-w-7xl mx-auto px-6 py-12 sm:py-20 w-full fade-in-up relative z-10">
     <div class="mb-16">
       <h2 class="text-3xl sm:text-5xl font-bold mb-3 tracking-tight dark:text-white text-slate-900">
         Welcome Back, <span id="welcomeName" class="bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-500 dark:from-indigo-400 dark:via-indigo-300 dark:to-purple-400 bg-clip-text text-transparent">Operator!</span>
       </h2>
-      <p class="dark:text-slate-400 text-slate-600 text-sm sm:text-base font-light tracking-wide">
-        System interfaces operational. Choose a tool matrix module to begin task execution.
+      <p class="dark:text-slate-400 text-slate-600 text-sm sm:text-base font-light tracking-wide max-w-2xl">
+        System interfaces operational. Choose an processing node module from the matrix array below to initialize target execution workflows.
       </p>
     </div>
 
+    <!-- MAIN MATRIX INTERACTIVE GRID -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
       
+      <!-- NODE 1: AI LAB -->
       <div onclick="window.location.href='index.html'" class="glass-card rounded-[24px] p-8 cursor-pointer group flex flex-col justify-between">
         <div>
           <div class="w-12 h-12 dark:bg-indigo-600/10 bg-indigo-50 border border-indigo-500/20 dark:border-indigo-500/30 rounded-xl flex items-center justify-center text-xl mb-6 shadow-sm group-hover:bg-indigo-600 group-hover:text-white text-indigo-600 dark:text-indigo-400 transition-all duration-300">
             <i class="fa-solid fa-brain"></i>
           </div>
           <h3 class="text-lg font-bold mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 dark:text-white text-slate-900 tracking-tight transition-colors">AI Intelligence Lab</h3>
-          <p class="dark:text-slate-400 text-slate-600 text-sm font-light leading-relaxed mb-6">
-            Engage EDITH core nodes to solve engineering puzzles, compose code, or synthesize data records.
+          <p class="dark:text-slate-400 text-slate-600 text-sm font-light leading-relaxed mb-6 opacity-80">
+            Engage EDITH core nodes to parse systemic engineering math architecture, debug syntax arrays, or model custom records.
           </p>
         </div>
-        <span class="text-indigo-600 dark:text-indigo-400 text-sm font-semibold flex items-center gap-2 tracking-wide mt-auto">
+        <span class="text-indigo-600 dark:text-indigo-400 text-sm font-semibold flex items-center gap-2 tracking-wide mt-auto pt-4 border-t border-slate-200/40 dark:border-white/5">
           Connect Terminal <i class="fas fa-arrow-right text-xs group-hover:translate-x-1.5 transition-transform"></i>
         </span>
       </div>
 
+      <!-- NODE 2: DIGITAL STORAGE -->
       <div onclick="window.location.href='notes.html'" class="glass-card rounded-[24px] p-8 cursor-pointer group flex flex-col justify-between">
         <div>
           <div class="w-12 h-12 dark:bg-purple-600/10 bg-purple-50 border border-purple-500/20 dark:border-purple-500/30 rounded-xl flex items-center justify-center text-xl mb-6 shadow-md group-hover:bg-purple-600 group-hover:text-white text-purple-600 dark:text-purple-400 transition-all duration-300">
             <i class="fa-solid fa-folder-closed"></i>
           </div>
           <h3 class="text-lg font-bold mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 dark:text-white text-slate-900 tracking-tight transition-colors">Digital Vault Storage</h3>
-          <p class="dark:text-slate-400 text-slate-600 text-sm font-light leading-relaxed mb-6">
-            Review generated analytical transcripts, study parameters, and curated structured system memories.
+          <p class="dark:text-slate-400 text-slate-600 text-sm font-light leading-relaxed mb-6 opacity-80">
+            Access compiled raw analytic transcripts, query structural parameters, and check written node memories.
           </p>
         </div>
-        <span class="text-purple-600 dark:text-purple-400 text-sm font-semibold flex items-center gap-2 tracking-wide mt-auto">
+        <span class="text-purple-600 dark:text-purple-400 text-sm font-semibold flex items-center gap-2 tracking-wide mt-auto pt-4 border-t border-slate-200/40 dark:border-white/5">
           Unlock Records <i class="fas fa-arrow-right text-xs group-hover:translate-x-1.5 transition-transform"></i>
         </span>
       </div>
 
+      <!-- NODE 3: PIPELINES -->
       <div onclick="window.location.href='aitools.html'" class="glass-card rounded-[24px] p-8 cursor-pointer group flex flex-col justify-between">
         <div>
           <div class="w-12 h-12 dark:bg-cyan-600/10 bg-cyan-50 border border-cyan-500/20 dark:border-cyan-500/30 rounded-xl flex items-center justify-center text-xl mb-6 shadow-md group-hover:bg-cyan-600 group-hover:text-white text-cyan-600 dark:text-cyan-400 transition-all duration-300">
             <i class="fa-solid fa-bolt"></i>
           </div>
           <h3 class="text-lg font-bold mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 dark:text-white text-slate-900 tracking-tight transition-colors">Specialized Pipelines</h3>
-          <p class="dark:text-slate-400 text-slate-600 text-sm font-light leading-relaxed mb-4">
-            Accelerated macro processors built for dynamic semantic building & complex asset manipulation.
+          <p class="dark:text-slate-400 text-slate-600 text-sm font-light leading-relaxed mb-4 opacity-80">
+            Accelerated high-throughput pipelines optimized for dynamic asset mutation and structural syntax updates.
           </p>
           
           <div class="space-y-2 mb-6 pointer-events-none">
@@ -258,7 +283,7 @@
           </div>
         </div>
         
-        <span class="text-cyan-600 dark:text-cyan-400 text-sm font-semibold flex items-center gap-2 tracking-wide mt-auto">
+        <span class="text-cyan-600 dark:text-cyan-400 text-sm font-semibold flex items-center gap-2 tracking-wide mt-auto pt-4 border-t border-slate-200/40 dark:border-white/5">
           Initialize Suite <i class="fas fa-arrow-right text-xs group-hover:translate-x-1.5 transition-transform"></i>
         </span>
       </div>
@@ -267,7 +292,57 @@
   </main>
 
   <script>
-    // --- SAFE CORE ENVIRONMENT MANAGEMENT ENGINE ---
+    // --- AMBIENT DRIVER MATRIX BACKGROUND ENGINE ---
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 1.5 + 0.5;
+        this.speedY = Math.random() * 0.3 + 0.1;
+        this.opacity = Math.random() * 0.5 + 0.1;
+      }
+      update() {
+        this.y -= this.speedY;
+        if (this.y < 0) this.reset();
+      }
+      draw() {
+        const isDark = document.documentElement.classList.contains('dark');
+        ctx.fillStyle = isDark ? `rgba(99, 102, 241, ${this.opacity})` : `rgba(79, 70, 229, ${this.opacity * 0.6})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < 60; i++) {
+      particles.push(new Particle());
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // --- CORE ENVIRONMENT MANAGEMENT ENGINE ---
     function initThemePipeline() {
       const savedTheme = localStorage.getItem('edith-theme') || 'dark';
       if (savedTheme === 'dark') {
