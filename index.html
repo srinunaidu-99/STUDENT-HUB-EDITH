@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edith AI Assistant</title>
 
-    <!-- Dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
@@ -75,13 +74,10 @@
 
 <body class="w-screen h-screen flex dark:bg-[#09090b] bg-slate-50 text-slate-900 dark:text-zinc-100 transition-colors duration-200">
 
-    <!-- Mobile Screen Sidebar Dismiss Backdrop Overlay -->
     <div id="sidebarOverlay" onclick="toggleSidebar(false)" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"></div>
 
-    <!-- Main Navigation Sidebar Panel -->
     <aside id="sidebar" class="fixed inset-y-0 left-0 w-66 -translate-x-full lg:translate-x-0 lg:relative z-50 flex flex-col h-full dark:bg-[#121214] bg-white border-r dark:border-zinc-800 border-slate-200 transition-transform duration-300 ease-in-out">
         
-        <!-- Application Branding & New Stream Actions -->
         <div class="p-4 space-y-3 shrink-0">
             <div class="flex items-center gap-2 px-1">
                 <div class="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-sm">E</div>
@@ -92,18 +88,15 @@
             </button>
         </div>
 
-        <!-- Dynamic History Counter Metrics Header -->
         <div class="px-5 py-2 border-b dark:border-zinc-800 border-slate-100 flex justify-between items-center text-xs font-semibold uppercase tracking-wider dark:text-zinc-500 text-slate-400 shrink-0">
             <span>Conversations</span>
             <span id="chatCounter" class="bg-slate-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded font-mono">0</span>
         </div>
 
-        <!-- Rendered Realtime History Streams Wrapper -->
         <div id="chatHistoryList" class="flex-1 overflow-y-auto p-2 space-y-1 chat-scroll">
             <div class="text-center py-8 text-xs text-zinc-400">Loading your history...</div>
         </div>
 
-        <!-- User Authentication Profiles Management Account Tray -->
         <div class="p-4 border-t dark:border-zinc-800 border-slate-200 flex items-center justify-between dark:bg-zinc-900/30 bg-slate-50/80 shrink-0">
             <div class="flex items-center gap-3 overflow-hidden">
                 <div class="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-xs font-bold" id="userBadge">U</div>
@@ -117,10 +110,8 @@
         </div>
     </aside>
 
-    <!-- Context Response Shell Stream Interface Container -->
     <div class="flex-1 flex flex-col h-full overflow-hidden w-full">
         
-        <!-- Navbar Controlling Layer Elements -->
         <header class="h-14 border-b dark:border-zinc-800 border-slate-200 flex justify-between items-center px-4 dark:bg-[#121214] bg-white shrink-0">
             <div class="flex items-center gap-3">
                 <button onclick="toggleSidebar(true)" class="lg:hidden w-9 h-9 border dark:border-zinc-800 border-slate-200 rounded-lg flex items-center justify-center dark:text-zinc-300 text-slate-600 bg-transparent">
@@ -136,14 +127,11 @@
             </div>
         </header>
 
-        <!-- Dynamic Live Bubble Output Stream Log Area -->
         <main id="chatWindow" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 chat-scroll dark:bg-[#09090b] bg-slate-50/30"></main>
 
-        <!-- Command Form Box User Submissions Inputs Layer -->
         <footer class="p-3 md:p-4 dark:bg-[#121214] bg-white border-t dark:border-zinc-800 border-slate-200 shrink-0">
             <div class="max-w-3xl mx-auto w-full">
                 
-                <!-- File System Selected Indicators Metadata Status Row -->
                 <div class="flex items-center gap-2 mb-2 px-1">
                     <label class="text-xs dark:text-zinc-400 text-slate-500 hover:dark:text-zinc-200 hover:text-slate-700 cursor-pointer flex items-center gap-1.5 font-semibold transition-colors">
                         <i class="fa-solid fa-paperclip text-xs text-indigo-500"></i> Attach Files
@@ -152,7 +140,6 @@
                     <span id="fileBadgeLabel" class="text-xs text-indigo-500 font-bold"></span>
                 </div>
 
-                <!-- Structured Interactive Native Input Action Module -->
                 <div class="flex items-center gap-2 relative bg-slate-100 dark:bg-zinc-900 border dark:border-zinc-800 border-slate-200 rounded-xl px-3 py-1.5">
                     <input type="text" id="userInputText" placeholder="Ask Edith anything..." 
                         class="w-full bg-transparent outline-none py-1.5 pr-20 text-sm dark:text-zinc-100 text-slate-900 placeholder-slate-400 dark:placeholder-zinc-600 font-normal"
@@ -213,6 +200,7 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     };
 }
 
+// Fixed Speech Feature Exception Handler 
 function toggleSpeech() {
     if (!voiceRecognitionInstance) return alert("Speech recognition features are disabled or unsupported on this browser agent.");
     if (isVoiceRecording) voiceRecognitionInstance.stop(); else voiceRecognitionInstance.start();
@@ -393,7 +381,9 @@ async function sendMessage() {
     const fileSelector = document.getElementById("fileAttachment");
 
     if (!textPrompt && fileSelector.files.length === 0) return;
-    if (!currentSessionId) await createNewChatSession();
+    
+    // Fixed reference: changed from createNewChatSession to createNewChat
+    if (!currentSessionId) await createNewChat();
 
     input.value = "";
     if (textPrompt) insertMessageBubble('user', textPrompt);
@@ -435,6 +425,46 @@ function clearFileSelector() {
     document.getElementById("fileBadgeLabel").textContent = "";
 }
 
+// Fixed & Finished Typing Indicator Module 
 function displayTypingIndicator() {
     hideTypingIndicator();
-    const ind = doc
+    const indicatorElement = document.createElement("div");
+    indicatorElement.id = "typingIndicator";
+    indicatorElement.className = "flex justify-start w-full animate-pulse";
+    indicatorElement.innerHTML = `
+        <div class="dark:bg-[#121214] bg-white border dark:border-zinc-800 border-slate-200 rounded-2xl px-4 py-3.5 flex items-center gap-1">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+    `;
+    chatWindow.appendChild(indicatorElement);
+    scrollToBottom();
+}
+
+function hideTypingIndicator() {
+    const indicatorElement = document.getElementById("typingIndicator");
+    if (indicatorElement) {
+        indicatorElement.remove();
+    }
+}
+
+// Added Missing Helper Window Utilities
+function scrollToBottom() {
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+function toggleSidebar(open) {
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+    if (open) {
+        sidebar.classList.remove("-translate-x-full");
+        overlay.classList.remove("hidden");
+    } else {
+        sidebar.classList.add("-translate-x-full");
+        overlay.classList.add("hidden");
+    }
+}
+</script>
+</body>
+</html>
