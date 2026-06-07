@@ -78,12 +78,35 @@
 
 <body class="w-screen h-screen flex dark:bg-matrix-darkBg bg-slate-50 text-slate-900 dark:text-zinc-100 transition-colors duration-200 overflow-hidden">
 
+    <!-- Camera HUD Backdrop Overlays -->
+    <div id="cameraModal" class="hidden fixed inset-0 z-[60] bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="w-full max-w-md dark:bg-matrix-darkCard bg-white border dark:border-matrix-border border-slate-200 rounded-2xl overflow-hidden shadow-2xl flex flex-col">
+            <div class="px-4 py-3 border-b dark:border-matrix-border border-slate-200 flex justify-between items-center bg-slate-50 dark:bg-zinc-900/40">
+                <span class="text-xs font-mono font-bold uppercase tracking-widest text-cyan-400">// Visual Sensor Stream</span>
+                <button onclick="closeCameraSensor()" class="text-zinc-400 hover:text-zinc-100"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="relative bg-black aspect-video flex items-center justify-center">
+                <video id="cameraVideoFeed" autoplay playsinline class="w-full h-full object-cover scale-x-[-1]"></video>
+                <canvas id="cameraCanvasBuffer" class="hidden"></canvas>
+            </div>
+            <div class="p-4 flex justify-center gap-3 bg-slate-50 dark:bg-zinc-900/40 border-t dark:border-matrix-border border-slate-200">
+                <button onclick="captureCameraSnapshot()" class="bg-brand-500 hover:bg-brand-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl flex items-center gap-2 shadow-md shadow-cyan-500/10 transition-all">
+                    <i class="fa-solid fa-camera"></i> Capture Frame
+                </button>
+                <button onclick="closeCameraSensor()" class="border dark:border-matrix-border border-slate-200 dark:text-zinc-300 text-slate-600 font-bold text-xs px-4 py-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div id="sidebarOverlay" onclick="toggleSidebar(false)" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-40 lg:hidden"></div>
 
     <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 -translate-x-full lg:translate-x-0 lg:relative z-50 flex flex-col h-full dark:bg-matrix-darkCard bg-white border-r dark:border-matrix-border border-slate-200 transition-transform duration-300 ease-in-out">
         
         <div class="p-4 space-y-4 shrink-0">
             <div class="flex items-center justify-between px-1">
+                <!-- Premium Cypher Token Logo -->
                 <div class="flex items-center gap-3">
                     <div class="relative w-9 h-9 flex items-center justify-center shrink-0">
                         <div class="absolute inset-0 bg-gradient-to-tr from-cyan-500 to-indigo-600 rounded-xl blur-[3px] opacity-70 animate-pulse"></div>
@@ -148,14 +171,23 @@
         <footer class="p-4 dark:bg-matrix-darkCard bg-white border-t dark:border-matrix-border border-slate-200 shrink-0">
             <div class="max-w-3xl mx-auto w-full">
                 
-                <div class="flex flex-wrap items-center gap-3 mb-2 px-1">
+                <div class="flex flex-wrap items-center gap-4 mb-2 px-1">
                     <button onclick="toggleSummarizeMode()" id="summarizeToggleBtn" class="text-xs dark:text-zinc-400 text-slate-500 border border-slate-200 dark:border-matrix-border px-2.5 py-1 rounded-lg hover:dark:text-cyan-400 transition-colors flex items-center gap-1.5 font-bold">
                         Executive Compression: <span id="summarizeBadge" class="text-slate-400">STANDBY</span>
                     </button>
-                    <label class="text-xs dark:text-zinc-400 text-slate-500 hover:dark:text-zinc-200 hover:text-slate-700 cursor-pointer flex items-center gap-1.5 font-bold transition-colors">
-                        <i class="fa-solid fa-bolt text-xs text-brand-500"></i> Inject File Context
-                        <input type="file" id="fileAttachment" multiple class="hidden" onchange="handleFileSelect()" />
-                    </label>
+                    
+                    <div class="flex items-center gap-3.5">
+                        <label class="text-xs dark:text-zinc-400 text-slate-500 hover:dark:text-zinc-200 hover:text-slate-700 cursor-pointer flex items-center gap-1.5 font-bold transition-colors">
+                            <i class="fa-solid fa-bolt text-xs text-brand-500"></i> Inject File Context
+                            <input type="file" id="fileAttachment" multiple class="hidden" onchange="handleFileSelect()" />
+                        </label>
+                        
+                        <!-- Camera Action Button -->
+                        <button onclick="openCameraSensor()" class="text-xs dark:text-zinc-400 text-slate-500 hover:dark:text-cyan-400 hover:text-slate-700 flex items-center gap-1.5 font-bold transition-colors">
+                            <i class="fa-solid fa-camera text-xs text-brand-500"></i> Open Camera
+                        </button>
+                    </div>
+
                     <span id="fileBadgeLabel" class="text-xs text-brand-500 font-bold bg-brand-500/10 px-2 py-0.5 rounded-md hidden"></span>
                 </div>
 
@@ -189,6 +221,8 @@ let cachedSessionsList = [];
 let voiceRecognitionInstance = null;
 let isVoiceRecording = false;
 let isSummarizeActive = false;
+let localMediaStream = null;
+let capturedCameraFiles = []; // Keeps reference to captured frame visual blobs
 
 function initDashboardTheme() {
     const activeTheme = localStorage.getItem('edith-theme') || 'dark';
@@ -221,6 +255,46 @@ function toggleSummarizeMode() {
     badge.className = isSummarizeActive ? "text-cyan-400 font-bold" : "text-slate-400";
 }
 
+/* Native Camera Logic Elements */
+async function openCameraSensor() {
+    try {
+        localMediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
+        const videoFeed = document.getElementById("cameraVideoFeed");
+        videoFeed.srcObject = localMediaStream;
+        document.getElementById("cameraModal").classList.remove("hidden");
+    } catch(err) {
+        alert("Unable to map optical nodes. Ensure camera access permissions are enabled.");
+    }
+}
+
+function closeCameraSensor() {
+    if (localMediaStream) {
+        localMediaStream.getTracks().forEach(track => track.stop());
+    }
+    document.getElementById("cameraModal").classList.add("hidden");
+}
+
+function captureCameraSnapshot() {
+    const video = document.getElementById("cameraVideoFeed");
+    const canvas = document.getElementById("cameraCanvasBuffer");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    
+    // Mirror adjustments
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1);
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    
+    canvas.toBlob((blob) => {
+        const frameFile = new File([blob], `Snapshot-${Date.now()}.jpg`, { type: "image/jpeg" });
+        capturedCameraFiles.push(frameFile);
+        updateInterfaceAttachmentLabels();
+        closeCameraSensor();
+    }, "image/jpeg", 0.85);
+}
+
 window.onload = () => {
     const userToken = localStorage.getItem("token");
     const accountName = localStorage.getItem("userName") || "Operator";
@@ -242,7 +316,7 @@ async function apiCall(endpoint, config = {}) {
     return response;
 }
 
-function logoutSession() { localStorage.clear(); window.location.href = "login.html"; }
+function logoutSession() { logoutSession(); window.location.href = "login.html"; }
 
 async function loadChatSessions(autoLoadFirst = false) {
     try {
@@ -367,7 +441,7 @@ function injectDownloadActionTrigger(container) {
 
 async function sendMessage() {
     const input = document.getElementById("userInputText"), fileSelector = document.getElementById("fileAttachment"), text = input.value.trim();
-    if (!text && fileSelector.files.length === 0) return;
+    if (!text && fileSelector.files.length === 0 && capturedCameraFiles.length === 0) return;
     
     input.value = "";
     if (text) insertMessageBubble('user', text);
@@ -378,7 +452,11 @@ async function sendMessage() {
         formData.append("message", text);
         formData.append("isSummarize", isSummarizeActive);
         if (currentSessionId) formData.append("sessionId", currentSessionId);
+        
+        // Append input file uploads
         for (let i = 0; i < fileSelector.files.length; i++) formData.append("files", fileSelector.files[i]);
+        // Append native camera snapshots
+        for (let j = 0; j < capturedCameraFiles.length; j++) formData.append("files", capturedCameraFiles[j]);
 
         const response = await apiCall("/api/chat", { method: "POST", body: formData });
         const incomingId = response.headers.get("X-Session-Id");
@@ -401,10 +479,23 @@ async function sendMessage() {
 }
 
 function handleFileSelect() {
-    const f = document.getElementById("fileAttachment"), lbl = document.getElementById("fileBadgeLabel");
-    lbl.textContent = "(" + f.files.length + " Loaded)"; lbl.classList.toggle("hidden", f.files.length === 0);
+    updateInterfaceAttachmentLabels();
 }
-function clearFileSelector() { document.getElementById("fileAttachment").value = ""; document.getElementById("fileBadgeLabel").classList.add("hidden"); }
+
+function updateInterfaceAttachmentLabels() {
+    const fileSelector = document.getElementById("fileAttachment");
+    const lbl = document.getElementById("fileBadgeLabel");
+    const totalCount = fileSelector.files.length + capturedCameraFiles.length;
+    
+    lbl.textContent = "(" + totalCount + " Loaded)"; 
+    lbl.classList.toggle("hidden", totalCount === 0);
+}
+
+function clearFileSelector() { 
+    document.getElementById("fileAttachment").value = ""; 
+    capturedCameraFiles = [];
+    document.getElementById("fileBadgeLabel").classList.add("hidden"); 
+}
 </script>
 </body>
 
