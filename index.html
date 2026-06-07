@@ -36,7 +36,7 @@
     </script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400&display=swap');
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -73,10 +73,20 @@
 
         .download-pdf-trigger { margin-top: 14px; width: max-content; display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; background: rgba(6, 182, 212, 0.08); border: 1px solid rgba(6, 182, 212, 0.2); font-size: 12px; font-weight: 700; border-radius: 8px; color: #22d3ee; transition: all 0.2s; cursor: pointer; }
         .download-pdf-trigger:hover { background: #06b6d4; color: white; transform: translateY(-1px); }
+
+        /* Premium Styled Academic Notes Blueprint Template for PDFs */
+        .pdf-notes-container { font-family: 'Plus Jakarta Sans', sans-serif; color: #1e293b; padding: 45px; background: #ffffff; }
+        .pdf-notes-header { border-bottom: 3px solid #0891b2; padding-bottom: 20px; margin-bottom: 30px; display: flex; justify-between: items-center; }
+        .pdf-notes-title { font-family: 'Playfair Display', serif; font-size: 28px; color: #0f172a; font-weight: 700; }
+        .pdf-meta-tag { font-size: 11px; text-transform: uppercase; tracking: 0.1em; color: #64748b; font-weight: 700; }
+        .pdf-section-card { background: #f8fafc; border-left: 5px solid #06b6d4; padding: 18px; margin-bottom: 20px; border-radius: 0 12px 12px 0; page-break-inside: avoid; }
+        .pdf-section-title { font-size: 16px; font-weight: 800; color: #0891b2; text-transform: uppercase; margin-bottom: 10px; tracking: 0.05em; }
+        .pdf-body-text { font-size: 14px; line-height: 1.7; color: #334155; }
+        .pdf-footer-branding { margin-top: 50px; border-top: 1px solid #e2e8f0; padding-top: 15px; font-size: 11px; text-align: center; color: #94a3b8; font-weight: 600; letter-spacing: 0.05em; }
     </style>
 </head>
 
-<body class="w-screen h-screen flex dark:bg-matrix-darkBg bg-slate-50 text-slate-900 dark:text-zinc-100 transition-colors duration-200 overflow-hidden">
+<body class="w-screen h-screen flex dark:bg-matrix-darkBg bg-slate-50 text-slate-900 dark:text-zinc-100 transition-colors duration-200 overflow-hidden text-sm md:text-base">
 
     <!-- Camera HUD Backdrop Overlays -->
     <div id="cameraModal" class="hidden fixed inset-0 z-[60] bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
@@ -106,7 +116,6 @@
         
         <div class="p-4 space-y-4 shrink-0">
             <div class="flex items-center justify-between px-1">
-                <!-- Premium Cypher Token Logo -->
                 <div class="flex items-center gap-3">
                     <div class="relative w-9 h-9 flex items-center justify-center shrink-0">
                         <div class="absolute inset-0 bg-gradient-to-tr from-cyan-500 to-indigo-600 rounded-xl blur-[3px] opacity-70 animate-pulse"></div>
@@ -119,6 +128,14 @@
             </div>
             <button onclick="createNewChat()" class="w-full h-11 flex items-center justify-center gap-2 text-sm font-bold text-white bg-brand-500 hover:bg-brand-600 active:scale-[0.98] rounded-xl shadow-md shadow-cyan-500/10 transition-all duration-200">
                 <i class="fa-solid fa-wand-magic-sparkles text-xs"></i> Initialize Stream
+            </button>
+        </div>
+
+        <!-- Digital Vault Panel Switcher inside Sidebar -->
+        <div class="px-4 pb-2 shrink-0">
+            <button onclick="toggleDigitalVaultView()" class="w-full py-2.5 px-3 border border-dashed dark:border-cyan-500/30 border-slate-300 bg-cyan-500/5 hover:bg-cyan-500/10 text-cyan-500 rounded-xl flex items-center justify-between transition-all">
+                <span class="text-xs font-bold tracking-wide uppercase flex items-center gap-2"><i class="fa-solid fa-vault"></i> Digital Vault</span>
+                <span id="vaultItemsBadge" class="bg-cyan-500 text-white font-mono text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
             </button>
         </div>
 
@@ -152,7 +169,7 @@
                 <button onclick="toggleSidebar(true)" class="lg:hidden w-10 h-10 border dark:border-matrix-border border-slate-200 rounded-xl flex items-center justify-center dark:text-zinc-300 text-slate-600 bg-transparent hover:bg-slate-50 dark:hover:bg-zinc-900 transition-colors">
                     <i class="fa-solid fa-bars text-sm"></i>
                 </button>
-                <div id="activeChatTitleHeader" class="hidden lg:block text-xs font-bold font-mono uppercase tracking-widest text-slate-400 dark:text-zinc-500 max-w-md truncate">// Standby Matrix Ready</div>
+                <div id="activeChatTitleHeader" class="text-xs font-bold font-mono uppercase tracking-widest text-slate-400 dark:text-zinc-500 max-w-[180px] md:max-w-md truncate">// Standby Matrix Ready</div>
             </div>
             
             <div class="flex items-center gap-3">
@@ -166,12 +183,25 @@
             </div>
         </header>
 
+        <!-- Dynamic Digital Vault Dropdown Overlay Area -->
+        <div id="digitalVaultDrawer" class="hidden border-b dark:border-matrix-border border-slate-200 dark:bg-zinc-950 bg-slate-100 p-4 max-h-[350px] overflow-y-auto chat-scroll z-20">
+            <div class="max-w-3xl mx-auto">
+                <div class="flex justify-between items-center mb-3">
+                    <h4 class="text-xs font-bold uppercase tracking-wider font-mono text-cyan-400"><i class="fa-solid fa-vault mr-1.5"></i> Encrypted Local Storage Notes Vault</h4>
+                    <button onclick="clearDigitalVaultStorage()" class="text-[11px] text-red-400 hover:underline font-semibold"><i class="fa-solid fa-trash-can mr-1"></i> Wipe Vault</button>
+                </div>
+                <div id="vaultItemsContainer" class="space-y-2">
+                    <!-- Script injected notes logs map here -->
+                </div>
+            </div>
+        </div>
+
         <main id="chatWindow" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 chat-scroll dark:bg-matrix-darkBg bg-slate-50/40 flex flex-col"></main>
 
         <footer class="p-4 dark:bg-matrix-darkCard bg-white border-t dark:border-matrix-border border-slate-200 shrink-0">
             <div class="max-w-3xl mx-auto w-full">
                 
-                <div class="flex flex-wrap items-center gap-4 mb-2 px-1">
+                <div class="flex flex-wrap items-center gap-3 mb-2 px-1">
                     <button onclick="toggleSummarizeMode()" id="summarizeToggleBtn" class="text-xs dark:text-zinc-400 text-slate-500 border border-slate-200 dark:border-matrix-border px-2.5 py-1 rounded-lg hover:dark:text-cyan-400 transition-colors flex items-center gap-1.5 font-bold">
                         Executive Compression: <span id="summarizeBadge" class="text-slate-400">STANDBY</span>
                     </button>
@@ -182,7 +212,6 @@
                             <input type="file" id="fileAttachment" multiple class="hidden" onchange="handleFileSelect()" />
                         </label>
                         
-                        <!-- Camera Action Button -->
                         <button onclick="openCameraSensor()" class="text-xs dark:text-zinc-400 text-slate-500 hover:dark:text-cyan-400 hover:text-slate-700 flex items-center gap-1.5 font-bold transition-colors">
                             <i class="fa-solid fa-camera text-xs text-brand-500"></i> Open Camera
                         </button>
@@ -192,7 +221,7 @@
                 </div>
 
                 <div class="flex items-center gap-2 relative bg-slate-100 dark:bg-zinc-900/60 border dark:border-matrix-border border-slate-200 rounded-xl px-4 py-2 focus-within:ring-2 focus-within:ring-cyan-500/10 focus-within:border-cyan-500/30 transition-all duration-200">
-                    <input type="text" id="userInputText" placeholder="Consult EDITH Matrix..." 
+                    <input type="text" id="userInputText" placeholder="Consult EDITH Matrix... (e.g. 'Give me notes on quantum mechanics')" 
                         class="w-full bg-transparent outline-none py-1.5 pr-24 text-sm dark:text-zinc-100 text-slate-900 placeholder-slate-400 dark:placeholder-zinc-500 font-normal"
                         onkeypress="if(event.key==='Enter')sendMessage()" />
 
@@ -222,7 +251,7 @@ let voiceRecognitionInstance = null;
 let isVoiceRecording = false;
 let isSummarizeActive = false;
 let localMediaStream = null;
-let capturedCameraFiles = []; // Keeps reference to captured frame visual blobs
+let capturedCameraFiles = []; 
 
 function initDashboardTheme() {
     const activeTheme = localStorage.getItem('edith-theme') || 'dark';
@@ -255,6 +284,122 @@ function toggleSummarizeMode() {
     badge.className = isSummarizeActive ? "text-cyan-400 font-bold" : "text-slate-400";
 }
 
+/* Digital Vault Logic Engine */
+function toggleDigitalVaultView() {
+    const drawer = document.getElementById("digitalVaultDrawer");
+    drawer.classList.toggle("hidden");
+    renderDigitalVaultItems();
+}
+
+function fetchDigitalVaultData() {
+    return JSON.parse(localStorage.getItem("edith_vault_notes") || "[]");
+}
+
+function pushItemToVault(title, rawContent) {
+    const records = fetchDigitalVaultData();
+    records.unshift({
+        id: "vault-" + Date.now(),
+        title: title || "Automated Academic Study Notes",
+        timestamp: new Date().toLocaleString(),
+        body: rawContent
+    });
+    localStorage.setItem("edith_vault_notes", JSON.stringify(records));
+    updateVaultInterfaceBadge();
+}
+
+function updateVaultInterfaceBadge() {
+    const records = fetchDigitalVaultData();
+    document.getElementById("vaultItemsBadge").textContent = records.length;
+}
+
+function clearDigitalVaultStorage() {
+    if(confirm("Wipe all locally compiled notes out of your digital vault?")) {
+        localStorage.removeItem("edith_vault_notes");
+        updateVaultInterfaceBadge();
+        renderDigitalVaultItems();
+    }
+}
+
+function renderDigitalVaultItems() {
+    const container = document.getElementById("vaultItemsContainer");
+    const items = fetchDigitalVaultData();
+    container.innerHTML = "";
+    
+    if(items.length === 0) {
+        container.innerHTML = `<div class='text-xs font-mono text-zinc-500 py-3 text-center'>// Vault isolation clean. No items logged.</div>`;
+        return;
+    }
+    
+    items.forEach(item => {
+        const row = document.createElement("div");
+        row.className = "p-3 bg-white dark:bg-zinc-900 border dark:border-matrix-border border-slate-200 rounded-xl flex items-center justify-between gap-4";
+        row.innerHTML = `
+            <div class="overflow-hidden">
+                <h5 class="text-xs font-bold text-slate-800 dark:text-zinc-200 truncate">${item.title}</h5>
+                <span class="text-[10px] text-zinc-500 font-mono">${item.timestamp}</span>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+                <button onclick="downloadCustomNotesPdf(\`${encodeURIComponent(item.title)}\`, \`${encodeURIComponent(item.body)}\`)" class="px-2.5 py-1 text-[11px] font-bold bg-cyan-500/10 hover:bg-cyan-500 text-cyan-400 hover:text-white rounded-md transition-all">Download PDF</button>
+            </div>
+        `;
+        container.appendChild(row);
+    });
+}
+
+/* Beautiful Paper-Style Academic PDF Generation Engine */
+function downloadCustomNotesPdf(encodedTitle, encodedContent) {
+    const title = decodeURIComponent(encodedTitle);
+    const bodyMarkdown = decodeURIComponent(encodedContent);
+    
+    // Create highly styled HTML sheet for note synthesis 
+    const wrapper = document.createElement("div");
+    wrapper.className = "pdf-notes-container";
+    
+    let contentHtml = marked.parse(bodyMarkdown);
+    
+    wrapper.innerHTML = `
+        <div class="pdf-notes-header">
+            <div>
+                <h1 class="pdf-notes-title">${title}</h1>
+                <div class="pdf-meta-tag">EDITH Automated Syllabus Notes Framework &bull; Chrono Dynamic Generation</div>
+            </div>
+        </div>
+        <div class="pdf-body-text">
+            ${contentHtml}
+        </div>
+        <div class="pdf-footer-branding">
+            &copy; 2026 EDITH Intelligence Core &bull; Confidential Distributed Data Nodes
+        </div>
+    `;
+
+    // Process beautiful formatting enhancements across the DOM elements before burning to PDF
+    wrapper.querySelectorAll("h1, h2, h3").forEach(header => {
+        header.style.color = "#0891b2";
+        header.style.fontFamily = "'Playfair Display', serif";
+        header.style.marginTop = "24px";
+        header.style.marginBottom = "12px";
+        header.style.fontWeight = "bold";
+    });
+    
+    wrapper.querySelectorAll("p").forEach(p => {
+        p.style.marginBottom = "14px";
+        p.style.fontSize = "14px";
+        p.style.lineHeight = "1.7";
+        p.style.color = "#334155";
+    });
+
+    const options = {
+        margin: [15, 15, 20, 15],
+        filename: `${title.replace(/\s+/g, '-').toLowerCase()}-notes.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+    };
+
+    html2pdf().from(wrapper).set(options).save();
+}
+
 /* Native Camera Logic Elements */
 async function openCameraSensor() {
     try {
@@ -282,7 +427,6 @@ function captureCameraSnapshot() {
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     
-    // Mirror adjustments
     ctx.translate(canvas.width, 0);
     ctx.scale(-1, 1);
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
@@ -303,6 +447,7 @@ window.onload = () => {
     document.getElementById("userNameFooter").textContent = accountName;
     document.getElementById("userBadge").textContent = accountName.substring(0, 2).toUpperCase();
     marked.setOptions({ breaks: true, gfm: true });
+    updateVaultInterfaceBadge();
     loadChatSessions(true);
 };
 
@@ -316,7 +461,7 @@ async function apiCall(endpoint, config = {}) {
     return response;
 }
 
-function logoutSession() { logoutSession(); window.location.href = "login.html"; }
+function logoutSession() { localStorage.clear(); window.location.href = "login.html"; }
 
 async function loadChatSessions(autoLoadFirst = false) {
     try {
@@ -386,9 +531,9 @@ function showEmptyStateWelcome() {
                 <p class="text-sm dark:text-zinc-400 text-slate-500 max-w-xs mx-auto">EDITH core matrix is standing by. Choose a processing directive or transmit a query.</p>
             </div>
             <div class="grid grid-cols-2 gap-3 w-full max-w-sm pt-2">
-                <div onclick="document.getElementById('userInputText').value='Generate an executive framework summary...'; document.getElementById('userInputText').focus();" class="p-3 border dark:border-zinc-800 bg-zinc-900/30 rounded-xl text-left cursor-pointer hover:border-cyan-500/40 transition-all">
-                    <h5 class="text-xs font-bold text-cyan-400 mb-1">Synthesize Notes</h5>
-                    <p class="text-[11px] text-zinc-500 truncate">Convert materials to frameworks</p>
+                <div onclick="document.getElementById('userInputText').value='Give me comprehensive notes on Machine Learning Architecture'; document.getElementById('userInputText').focus();" class="p-3 border dark:border-zinc-800 bg-zinc-900/30 rounded-xl text-left cursor-pointer hover:border-cyan-500/40 transition-all">
+                    <h5 class="text-xs font-bold text-cyan-400 mb-1">Request Notes</h5>
+                    <p class="text-[11px] text-zinc-500 truncate">Auto-PDF & Vault Integration</p>
                 </div>
                 <div onclick="document.getElementById('userInputText').value='Analyze structural discrepancies inside...'; document.getElementById('userInputText').focus();" class="p-3 border dark:border-zinc-800 bg-zinc-900/30 rounded-xl text-left cursor-pointer hover:border-cyan-500/40 transition-all">
                     <h5 class="text-xs font-bold text-cyan-400 mb-1">Code Refactoring</h5>
@@ -404,13 +549,13 @@ function insertMessageBubble(role, content) {
     wrapper.className = "flex gap-3 w-full max-w-3xl mx-auto py-2 " + (role === 'user' ? 'flex-row-reverse' : 'flex-row');
     
     const bubble = document.createElement("div");
-    bubble.className = "rounded-2xl px-4 py-3 text-sm md:text-base leading-relaxed break-words shadow-sm " + (role === 'user' ? 'bg-brand-500 text-white ml-auto' : 'dark:bg-matrix-darkCard bg-white border dark:border-matrix-border border-slate-200 prose-content');
+    bubble.className = "rounded-2xl px-4 py-3 text-sm md:text-base leading-relaxed break-words shadow-sm max-w-[85%] " + (role === 'user' ? 'bg-brand-500 text-white ml-auto' : 'dark:bg-matrix-darkCard bg-white border dark:border-matrix-border border-slate-200 prose-content');
     
     if (role === 'user') bubble.textContent = content;
     else {
         bubble.innerHTML = marked.parse(content);
         attachCodeBlockCopyLogic(bubble);
-        injectDownloadActionTrigger(bubble);
+        injectDownloadActionTrigger(bubble, content);
     }
     wrapper.appendChild(bubble); chatWindow.appendChild(wrapper);
     chatWindow.scrollTop = chatWindow.scrollHeight;
@@ -428,13 +573,13 @@ function attachCodeBlockCopyLogic(container) {
     });
 }
 
-function injectDownloadActionTrigger(container) {
+function injectDownloadActionTrigger(container, rawMarkdownContent) {
     if (container.querySelector(".download-pdf-trigger")) return;
-    const btn = document.createElement("button"); btn.className = "download-pdf-trigger"; btn.innerHTML = '<i class="fa-solid fa-file-pdf"></i> Download EDITH Report (PDF)';
+    const btn = document.createElement("button"); 
+    btn.className = "download-pdf-trigger"; 
+    btn.innerHTML = '<i class="fa-solid fa-file-pdf"></i> Download Premium Notes Report';
     btn.onclick = () => {
-        const f = document.createElement("div"); f.style.padding = "40px"; f.style.background = "#fff"; f.style.color = "#000"; f.innerHTML = container.innerHTML;
-        f.querySelectorAll("button").forEach(b => b.remove());
-        html2pdf().from(f).set({ margin: 15, filename: 'EDITH-Matrix-Notes.pdf', html2canvas: { scale: 2 }, jsPDF: { format: 'a4' } }).save();
+        downloadCustomNotesPdf("EDITH Executive Study Notes", rawMarkdownContent);
     };
     container.appendChild(btn);
 }
@@ -446,6 +591,9 @@ async function sendMessage() {
     input.value = "";
     if (text) insertMessageBubble('user', text);
     
+    // Auto Intercept "notes" intent tags
+    const userAsksForNotes = text.toLowerCase().includes("notes") || text.toLowerCase().includes("give me notes");
+
     const bubble = insertMessageBubble('assistant', "<div class='flex items-center gap-1.5 py-1 text-zinc-400 font-mono text-xs'><div class='dot'></div><div class='dot'></div><div class='dot'></div><span class='ml-2'>Accessing Deep EDITH Matrix Core...</span></div>");
     try {
         const formData = new FormData();
@@ -453,9 +601,7 @@ async function sendMessage() {
         formData.append("isSummarize", isSummarizeActive);
         if (currentSessionId) formData.append("sessionId", currentSessionId);
         
-        // Append input file uploads
         for (let i = 0; i < fileSelector.files.length; i++) formData.append("files", fileSelector.files[i]);
-        // Append native camera snapshots
         for (let j = 0; j < capturedCameraFiles.length; j++) formData.append("files", capturedCameraFiles[j]);
 
         const response = await apiCall("/api/chat", { method: "POST", body: formData });
@@ -472,21 +618,29 @@ async function sendMessage() {
         }
         bubble.innerHTML = marked.parse(chunkedText); 
         attachCodeBlockCopyLogic(bubble); 
-        injectDownloadActionTrigger(bubble);
+        injectDownloadActionTrigger(bubble, chunkedText);
         clearFileSelector(); 
         loadChatSessions(false);
+
+        // Vault automation step
+        if (userAsksForNotes) {
+            pushItemToVault("Notes Context: " + text.substring(0, 30), chunkedText);
+            renderDigitalVaultItems();
+            // Automatically compile & fire document generation seamlessly
+            setTimeout(() => {
+                downloadCustomNotesPdf("Automated Notes Document", chunkedText);
+            }, 800);
+        }
+
     } catch (err) { bubble.innerHTML = "<span class='text-red-400 font-mono text-xs'>// Critical pipeline exception: Connection dropped.</span>"; }
 }
 
-function handleFileSelect() {
-    updateInterfaceAttachmentLabels();
-}
+function handleFileSelect() { updateInterfaceAttachmentLabels(); }
 
 function updateInterfaceAttachmentLabels() {
     const fileSelector = document.getElementById("fileAttachment");
     const lbl = document.getElementById("fileBadgeLabel");
     const totalCount = fileSelector.files.length + capturedCameraFiles.length;
-    
     lbl.textContent = "(" + totalCount + " Loaded)"; 
     lbl.classList.toggle("hidden", totalCount === 0);
 }
