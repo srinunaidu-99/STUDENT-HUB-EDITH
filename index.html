@@ -1,309 +1,423 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EDITH | Intelligence Core</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>AI Lab Terminal - EDITH Intelligence</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+    
+    html, body {
+      font-family: 'Plus Jakarta Sans', sans-serif; 
+      overflow-x: hidden !important;
+      position: relative;
+      width: 100%;
+      transition: background 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.4s ease;
+    }
 
-    <!-- Core Dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+    /* --- CINEMATIC AMBIENT GRADIENTS --- */
+    .dark body {
+      background: radial-gradient(circle at 50% -20%, #161233 0%, #05050d 60%, #010103 100%); 
+    }
+    html:not(.dark) body {
+      background: radial-gradient(circle at 50% -20%, #f3f5ff 0%, #f8fafc 70%, #edf0f7 100%); 
+    }
+    
+    /* --- GLASSMORPHISM TERMINAL CORES --- */
+    .glass-panel {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .dark class-panel, .dark .glass-panel {
+      background: linear-gradient(135deg, rgba(15, 18, 38, 0.55) 0%, rgba(8, 9, 18, 0.35) 100%);
+      backdrop-filter: blur(24px) saturate(140%);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    html:not(.dark) .glass-panel {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(243, 244, 246, 0.45) 100%);
+      backdrop-filter: blur(24px) saturate(120%);
+      border: 1px solid rgba(99, 102, 241, 0.08);
+      box-shadow: 0 10px 40px -15px rgba(99, 102, 241, 0.04);
+    }
 
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#f5f3ff',
-                            100: '#ede9fe',
-                            500: '#6366f1', 
-                            600: '#4f46e5', 
-                        },
-                        matrix: {
-                            darkBg: '#090d16',
-                            darkCard: '#111827',
-                            border: 'rgba(255, 255, 255, 0.06)'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    /* --- THE HOLOGRAPHIC QUANTUM REACTOR LOGO --- */
+    @keyframes spinClockwise { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    @keyframes spinCounterClockwise { 0% { transform: rotate(0deg); } 100% { transform: rotate(-360deg); } }
+    @keyframes coreBreathing { 0%, 100% { transform: scale(0.9); opacity: 0.4; } 50% { transform: scale(1.15); opacity: 0.85; } }
+    
+    .reactor-outer { animation: spinClockwise 30s linear infinite; transform-origin: center; }
+    .reactor-mid { animation: spinCounterClockwise 20s linear infinite; transform-origin: center; }
+    .reactor-inner { animation: spinClockwise 10s linear infinite; transform-origin: center; }
+    .reactor-core-glow { animation: coreBreathing 3s ease-in-out infinite; transform-origin: center; }
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+    /* Custom Terminal Scrollbar */
+    .terminal-scrollbar::-webkit-scrollbar { width: 6px; }
+    .terminal-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .terminal-scrollbar::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.15); border-radius: 10px; }
+    .terminal-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(99, 102, 241, 0.3); }
 
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
+    .dark #profilePanel {
+      backdrop-filter: blur(40px);
+      background: rgba(5, 6, 14, 0.94);
+      border-left: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    html:not(.dark) #profilePanel {
+      backdrop-filter: blur(40px);
+      background: rgba(255, 255, 255, 0.96);
+      border-left: 1px solid rgba(99, 102, 241, 0.08);
+      box-shadow: -20px 0 60px rgba(99, 102, 241, 0.05);
+    }
 
-        /* Scrollbar Styling */
-        .chat-scroll::-webkit-scrollbar { width: 5px; }
-        .chat-scroll::-webkit-scrollbar-track { background: transparent; }
-        .dark .chat-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 99px; }
-
-        /* Prose Styling for AI responses */
-        .prose-content p { margin-bottom: 0.75rem; line-height: 1.6; }
-        .prose-content ul { list-style-type: disc; margin-left: 1.25rem; margin-bottom: 0.75rem; }
-        
-        .download-pdf-trigger { 
-            margin-top: 10px; 
-            display: inline-flex; 
-            align-items: center; 
-            gap: 6px; 
-            padding: 6px 12px; 
-            background: rgba(99, 102, 241, 0.1); 
-            border: 1px solid rgba(99, 102, 241, 0.2); 
-            font-size: 11px; 
-            font-weight: 600; 
-            border-radius: 6px; 
-            color: #818cf8; 
-            cursor: pointer; 
-        }
-
-        .dot { animation: bouncePoint 1.4s infinite ease-in-out; width: 4px; height: 4px; background-color: #6366f1; border-radius: 50%; display: inline-block; }
-        .dot:nth-child(2) { animation-delay: 0.2s; }
-        .dot:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes bouncePoint { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-4px); } }
-    </style>
+    .fade-in-up {
+      animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
+<body class="min-h-screen dark:text-slate-200 text-slate-800 transition-colors duration-300 relative select-none">
 
-<body class="w-screen h-screen flex dark:bg-matrix-darkBg bg-slate-50 text-slate-800 dark:text-slate-200 overflow-hidden text-sm">
+  <!-- DYNAMIC LOGIC LINK CONSTELLATION MATRIX CANVAS -->
+  <canvas id="neuralMatrixCanvas" class="absolute top-0 left-0 w-full h-full pointer-events-none z-0 opacity-45 dark:opacity-35"></canvas>
 
-    <!-- CAMERA MODAL -->
-    <div id="cameraModal" class="hidden fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="w-full max-w-md dark:bg-matrix-darkCard bg-white border dark:border-matrix-border rounded-xl overflow-hidden shadow-2xl">
-            <div class="px-4 py-3 border-b dark:border-matrix-border flex justify-between items-center">
-                <span class="text-xs font-bold tracking-widest uppercase text-brand-500">Visual Input Node</span>
-                <button onclick="closeCamera()"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <video id="videoFeed" autoplay playsinline class="w-full aspect-video bg-black object-cover"></video>
-            <div class="p-4 flex gap-2">
-                <button onclick="captureImage()" class="flex-1 bg-brand-500 py-2 rounded-lg font-bold text-white text-xs">CAPTURE FRAME</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- SIDEBAR -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 -translate-x-full lg:translate-x-0 lg:relative z-50 flex flex-col h-full dark:bg-matrix-darkCard bg-white border-r dark:border-matrix-border transition-transform">
+  <header class="sticky top-0 z-40 bg-transparent border-b dark:border-white/5 border-slate-200/80 w-full backdrop-blur-md relative z-10">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3.5">
         
-        <div class="p-6 space-y-6 shrink-0">
-            <!-- New Geometric Logo -->
-            <div class="flex items-center gap-3">
-                <div class="relative w-10 h-10 flex items-center justify-center">
-                    <div class="absolute inset-0 bg-brand-500/20 blur-md rounded-full animate-pulse"></div>
-                    <svg class="relative w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2L3.5 7V17L12 22L20.5 17V7L12 2Z" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M12 22V12M12 12L3.5 7M12 12L20.5 7" stroke="#6366f1" stroke-width="1" stroke-opacity="0.5"/>
-                        <circle cx="12" cy="12" r="2.5" fill="#6366f1" class="animate-pulse" />
-                    </svg>
-                </div>
-                <div>
-                    <h1 class="text-lg font-black tracking-tighter leading-none">EDITH</h1>
-                    <p class="text-[9px] uppercase tracking-[0.3em] text-slate-500 font-bold">Intelligence Core</p>
-                </div>
+        <!-- HOME CONTROL BUTTON (RETURNS BACK TO THE DASHBOARD) -->
+        <div onclick="window.location.href='dashboard.html'" class="w-11 h-11 flex items-center justify-center select-none cursor-pointer group">
+          <svg viewBox="0 0 100 100" class="w-full h-full filter drop-shadow-[0_0_8px_rgba(99,102,241,0.4)] group-hover:drop-shadow-[0_0_18px_rgba(147,51,234,0.75)] transition-all duration-300" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="reactorGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#4f46e5" />
+                <stop offset="50%" stop-color="#6366f1" />
+                <stop offset="100%" stop-color="#a855f7" />
+              </linearGradient>
+            </defs>
+            <circle class="reactor-core-glow" cx="50" cy="50" r="38" fill="url(#reactorGrad)" opacity="0.2"/>
+            <circle class="reactor-outer" cx="50" cy="50" r="43" stroke="url(#reactorGrad)" stroke-width="2" stroke-dasharray="30 15 5 15" fill="none"/>
+            <circle class="reactor-mid" cx="50" cy="50" r="33" stroke="url(#reactorGrad)" stroke-width="1.5" stroke-dasharray="12 8" fill="none" opacity="0.7"/>
+            <polygon class="reactor-inner" points="50,26 71,38 71,62 50,74 29,62 29,38" fill="none" stroke="url(#reactorGrad)" stroke-width="2" stroke-linejoin="round" opacity="0.85"/>
+            <circle cx="50" cy="50" r="6" fill="url(#reactorGrad)"/>
+          </svg>
+        </div>
+
+        <h1 class="text-xl font-bold tracking-tight dark:bg-gradient-to-r dark:from-white dark:via-slate-200 dark:to-slate-400 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 bg-clip-text text-transparent">
+          EDITH <span class="text-[9px] font-bold tracking-wider text-indigo-500 dark:text-indigo-400 border border-indigo-500/20 dark:border-indigo-500/30 px-1.5 py-0.5 rounded ml-1 bg-indigo-500/5">LAB V3.2</span>
+        </h1>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <!-- RETURN ACTION ACCELERATOR LINK -->
+        <button onclick="window.location.href='dashboard.html'" class="hidden sm:flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold rounded-xl border border-slate-200 dark:border-white/10 dark:text-slate-300 text-slate-700 hover:bg-slate-500/5 dark:hover:bg-white/5 transition-all">
+          <i class="fa-solid fa-arrow-left text-[10px]"></i> Matrix Control Room
+        </button>
+
+        <button onclick="toggleThemePipeline()" id="themeTogglerBtn" title="Shift Environment Workspace" class="w-9 h-9 border dark:border-white/10 border-slate-200 hover:bg-slate-500/5 dark:hover:bg-white/5 rounded-xl flex items-center justify-center transition-all dark:text-slate-400 text-slate-600 shadow-sm">
+          <i class="fa-solid fa-sun text-sm hidden dark:block"></i>
+          <i class="fa-solid fa-moon text-sm dark:hidden"></i>
+        </button>
+
+        <div id="profileTrigger" onclick="toggleProfile()" class="flex items-center gap-3 cursor-pointer hover:bg-slate-500/5 dark:hover:bg-white/5 p-1.5 px-3 rounded-xl border border-transparent hover:border-slate-200 dark:hover:border-white/5 transition-all">
+          <div class="text-right hidden md:block">
+            <p id="navUserName" class="font-semibold dark:text-slate-200 text-slate-800 text-sm tracking-tight">Loading...</p>
+            <p class="text-[9px] text-indigo-600 dark:text-indigo-400 font-bold uppercase tracking-widest mt-0.5">Control Registry</p>
+          </div>
+          <div class="w-9 h-9 bg-gradient-to-br from-indigo-600 via-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-sm font-bold text-white shadow-lg ring-2 ring-indigo-500/20">
+            <i class="fa-solid fa-user-gear"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- LATERAL SLIDEOUT PROFILE COMPONENT -->
+  <div id="profilePanel" class="fixed top-0 right-0 h-full w-72 sm:w-80 z-50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out">
+    <div class="p-6 flex flex-col h-full">
+      <div class="flex justify-between items-center mb-8">
+        <h3 class="text-sm font-bold dark:text-white text-slate-900 uppercase tracking-widest opacity-80">System Core Profile</h3>
+        <button onclick="toggleProfile()" class="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors p-2">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="text-center mb-8">
+        <div class="w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+          <svg viewBox="0 0 100 100" class="w-full h-full filter drop-shadow-[0_0_10px_rgba(99,102,241,0.55)]" xmlns="http://www.w3.org/2000/svg">
+            <circle class="reactor-core-glow" cx="50" cy="50" r="38" fill="url(#reactorGrad)" opacity="0.2"/>
+            <circle class="reactor-outer" cx="50" cy="50" r="43" stroke="url(#reactorGrad)" stroke-width="2.5" stroke-dasharray="20 10" fill="none"/>
+            <polygon class="reactor-inner" points="50,26 71,38 71,62 50,74 29,62 29,38" fill="none" stroke="url(#reactorGrad)" stroke-width="2.5" stroke-linejoin="round"/>
+            <circle cx="50" cy="50" r="7" fill="url(#reactorGrad)"/>
+          </svg>
+        </div>
+        <h4 id="profileName" class="text-xl font-bold dark:text-white text-slate-900 tracking-tight">Loading...</h4>
+        <p class="text-indigo-600 dark:text-indigo-400 text-xs font-bold tracking-wider uppercase mt-1">Authorized Operator</p>
+      </div>
+
+      <div class="space-y-3 flex-1 overflow-y-auto pr-1">
+        <div class="dark:bg-slate-950/40 bg-slate-100 p-4 rounded-xl border dark:border-white/5 border-slate-200">
+          <p class="text-[9px] text-slate-400 dark:text-slate-500 uppercase font-bold tracking-widest mb-1.5">Email Interface Vector</p>
+          <p id="profileEmail" class="text-sm dark:text-slate-300 text-slate-700 truncate font-medium">Loading...</p>
+        </div>
+        <div class="dark:bg-slate-950/40 bg-slate-100 p-4 rounded-xl border dark:border-white/5 border-slate-200">
+          <p class="text-[9px] text-slate-400 dark:text-slate-500 uppercase font-bold tracking-widest mb-1.5">Secure Line Contact</p>
+          <p id="profilePhone" class="text-sm dark:text-slate-300 text-slate-700 font-mono">Loading...</p>
+        </div>
+        <div class="dark:bg-slate-950/40 bg-slate-100 p-4 rounded-xl border dark:border-white/5 border-slate-200">
+          <p class="text-[9px] text-slate-400 dark:text-slate-500 uppercase font-bold tracking-widest mb-1.5">Authorization Clearance</p>
+          <p class="text-sm dark:text-slate-300 text-slate-700 font-medium flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block animate-pulse"></span> Active Session
+          </p>
+        </div>
+      </div>
+
+      <button id="logoutBtn" class="w-full mt-6 py-3.5 bg-slate-500/5 hover:bg-red-500/10 dark:text-slate-400 text-slate-600 hover:text-red-500 border dark:border-white/10 border-slate-200 hover:border-red-500/20 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2">
+        <i class="fas fa-sign-out-alt"></i> Kill Active Session
+      </button>
+    </div>
+  </div>
+
+  <!-- CORE INTELLIGENCE TERMINAL ENGINE FRAME -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 w-full h-[calc(100vh-80px)] flex flex-col fade-in-up relative z-10">
+    
+    <div class="flex-1 grid grid-cols-1 lg:grid-cols-4 gap-6 min-h-0 w-full">
+      
+      <!-- LATERAL PANEL MODULES: PROMPTS AND CONTROLS -->
+      <div class="lg:col-span-1 flex flex-col gap-4 min-h-0">
+        <div class="glass-panel rounded-2xl p-5 flex flex-col flex-1">
+          <h2 class="text-xs font-bold dark:text-white text-slate-900 tracking-wider uppercase mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-sliders text-indigo-500"></i> Model Settings
+          </h2>
+          
+          <div class="space-y-4 flex-1">
+            <div>
+              <label class="block text-[10px] uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500 mb-1.5">Context Model Matrix</label>
+              <select class="w-full bg-slate-100 dark:bg-slate-900/60 text-xs font-medium px-3 py-2.5 rounded-xl border border-slate-200 dark:border-white/5 focus:outline-none focus:border-indigo-500/50 transition-all text-slate-700 dark:text-slate-300">
+                <option>EDITH Core Omni-Pro</option>
+                <option>EDITH Code-Refactor Engine</option>
+                <option>Semantic Synthesizer Ultra</option>
+              </select>
             </div>
 
-            <button onclick="newChat()" class="w-full py-2.5 bg-brand-500 hover:bg-brand-600 text-white rounded-lg text-xs font-bold shadow-lg shadow-brand-500/20 transition-all active:scale-95">
-                + NEW WORKSPACE
+            <div>
+              <label class="block text-[10px] uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500 mb-1.5">Creativity Engine Alpha</label>
+              <div class="flex items-center gap-3">
+                <input type="range" min="0" max="100" value="70" class="w-full accent-indigo-500 bg-slate-200 dark:bg-slate-800 rounded-lg h-1 cursor-pointer">
+                <span class="text-[10px] font-mono font-bold bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 px-1.5 py-0.5 rounded">0.7</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-slate-200/40 dark:border-white/5">
+            <button class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 font-semibold text-xs tracking-wide text-white rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/10">
+              <i class="fa-solid fa-plus text-[10px]"></i> Initialize New Frame
             </button>
+          </div>
         </div>
+      </div>
 
-        <!-- History -->
-        <div class="flex-1 overflow-y-auto px-4 space-y-1 chat-scroll" id="historyList">
-            <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2 px-2">Session Logs</p>
-        </div>
-
-        <!-- User Profile -->
-        <div class="p-4 border-t dark:border-matrix-border flex items-center gap-3 bg-slate-900/20">
-            <div class="w-8 h-8 rounded-lg bg-brand-500 flex items-center justify-center font-bold text-white text-xs">OP</div>
-            <div class="flex-1 overflow-hidden">
-                <p class="text-xs font-bold truncate">Operator</p>
-                <p class="text-[10px] text-slate-500">Secure Link Active</p>
-            </div>
-            <button onclick="logout()" class="text-slate-500 hover:text-red-400"><i class="fa-solid fa-power-off"></i></button>
-        </div>
-    </aside>
-
-    <!-- MAIN CONTENT -->
-    <div class="flex-1 flex flex-col min-w-0">
-        <!-- Header -->
-        <header class="h-14 border-b dark:border-matrix-border flex items-center justify-between px-6 bg-white dark:bg-matrix-darkCard">
-            <div class="flex items-center gap-4">
-                <button onclick="toggleSidebar()" class="lg:hidden text-slate-400"><i class="fa-solid fa-bars"></i></button>
-                <span id="sessionTitle" class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Terminal Ready</span>
-            </div>
-            <div class="flex items-center gap-3">
-                <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span class="text-[9px] font-bold text-emerald-500 tracking-tighter">NODE ONLINE</span>
-                </div>
-            </div>
-        </header>
-
-        <!-- Chat Area -->
-        <main id="chatBox" class="flex-1 overflow-y-auto p-6 space-y-6 chat-scroll flex flex-col items-center">
-            <!-- Welcome State -->
-            <div id="welcome" class="my-auto text-center space-y-4 max-w-sm">
-                <div class="w-16 h-16 bg-brand-500/10 border border-brand-500/20 rounded-2xl flex items-center justify-center mx-auto text-brand-500 text-2xl">
-                    <i class="fa-solid fa-microchip"></i>
-                </div>
-                <h2 class="text-xl font-bold">Initialize System Directive</h2>
-                <p class="text-xs text-slate-500 leading-relaxed">EDITH is ready to assist with neural data analysis, syllabus compilation, and tactical planning.</p>
-            </div>
-        </main>
-
-        <!-- Input Area -->
-        <footer class="p-6 bg-white dark:bg-matrix-darkCard border-t dark:border-matrix-border">
-            <div class="max-w-3xl mx-auto space-y-4">
-                <div class="flex items-center gap-4 text-[10px] font-bold text-slate-500">
-                    <button class="hover:text-brand-500 transition-colors" onclick="document.getElementById('fileInput').click()">
-                        <i class="fa-solid fa-paperclip mr-1 text-brand-500"></i> ATTACH
-                    </button>
-                    <button class="hover:text-brand-500 transition-colors" onclick="openCamera()">
-                        <i class="fa-solid fa-camera mr-1 text-brand-500"></i> SCAN
-                    </button>
-                    <div id="fileStatus" class="hidden text-brand-500 bg-brand-500/10 px-2 py-0.5 rounded">0 FILES READY</div>
-                </div>
-
-                <div class="relative group">
-                    <input type="file" id="fileInput" multiple class="hidden" onchange="updateFileCount()">
-                    <input type="text" id="userInput" placeholder="Input system command..." 
-                        class="w-full bg-slate-100 dark:bg-slate-900 border dark:border-matrix-border rounded-xl py-4 px-5 pr-14 outline-none focus:border-brand-500/50 transition-all text-sm font-medium">
-                    <button onclick="handleSend()" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-brand-500 text-white rounded-lg flex items-center justify-center hover:bg-brand-600 shadow-lg shadow-brand-500/30 active:scale-90 transition-all">
-                        <i class="fa-solid fa-arrow-up"></i>
-                    </button>
-                </div>
-            </div>
-        </footer>
-    </div>
-
-    <script>
-        const chatBox = document.getElementById('chatBox');
-        const userInput = document.getElementById('userInput');
-        const fileInput = document.getElementById('fileInput');
+      <!-- MAIN DATA CONSOLE CONTEXT BOX -->
+      <div class="lg:col-span-3 glass-panel rounded-2xl p-4 sm:p-6 flex flex-col min-h-0 h-full relative">
         
-        let stream = null;
-        let capturedFiles = [];
+        <!-- RESPONSE CONTAINER TERMINAL WINDOW -->
+        <div id="terminalStreamBox" class="flex-1 overflow-y-auto pr-2 space-y-6 terminal-scrollbar mb-4 text-sm font-light leading-relaxed">
+          
+          <!-- SYSTEM NODE INTRO INCOMING DIALOGUE EXAMPLE -->
+          <div class="flex gap-4 items-start max-w-3xl">
+            <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center text-xs text-white shrink-0 shadow-md">
+              <i class="fa-solid fa-robot"></i>
+            </div>
+            <div class="space-y-1">
+              <p class="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">EDITH Intelligence</p>
+              <div class="dark:text-slate-300 text-slate-700 bg-slate-500/5 p-3.5 rounded-2xl rounded-tl-none border border-slate-200/40 dark:border-white/5">
+                Lab module systems are fully ready, <span id="terminalUserMsgName" class="font-medium text-slate-900 dark:text-white">Operator</span>. Send a prompt vector payload below to initialize analytical processing arrays.
+              </div>
+            </div>
+          </div>
 
-        // UI Logic
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('-translate-x-full');
-        }
+        </div>
 
-        function updateFileCount() {
-            const count = fileInput.files.length + capturedFiles.length;
-            const status = document.getElementById('fileStatus');
-            if (count > 0) {
-                status.textContent = `${count} ASSETS ATTACHED`;
-                status.classList.remove('hidden');
-            } else {
-                status.classList.add('hidden');
-            }
-        }
-
-        // Message Handling
-        function appendMessage(role, text) {
-            document.getElementById('welcome')?.remove();
+        <!-- USER INPUT CONSOLE AREA CONTAINER -->
+        <div class="relative mt-auto">
+          <div class="flex items-center gap-2 p-1.5 bg-slate-100 dark:bg-slate-950/50 rounded-xl border border-slate-200 dark:border-white/5 focus-within:border-indigo-500/40 transition-all">
+            <textarea rows="1" placeholder="Inject functional prompt telemetry..." class="w-full bg-transparent resize-none py-2 px-3 text-sm focus:outline-none dark:text-slate-200 text-slate-800 placeholder-slate-400 dark:placeholder-slate-600 font-light max-h-32 terminal-scrollbar"></textarea>
             
-            const wrapper = document.createElement('div');
-            wrapper.className = `flex w-full max-w-3xl animate-in fade-in slide-in-from-bottom-2 duration-300 ${role === 'user' ? 'justify-end' : 'justify-start'}`;
-            
-            const bubble = document.createElement('div');
-            bubble.className = `max-w-[85%] p-4 rounded-2xl text-sm ${
-                role === 'user' 
-                ? 'bg-brand-500 text-white font-medium ml-12' 
-                : 'dark:bg-slate-900 bg-slate-100 border dark:border-matrix-border mr-12'
-            }`;
+            <button class="w-9 h-9 shrink-0 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg flex items-center justify-center transition-all shadow-md group">
+              <i class="fa-solid fa-paper-plane text-xs group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+            </button>
+          </div>
+        </div>
 
-            if (role === 'ai') {
-                bubble.innerHTML = `<div class="prose-content">${marked.parse(text)}</div>`;
-                if (text.includes('###')) {
-                    const btn = document.createElement('button');
-                    btn.className = 'download-pdf-trigger';
-                    btn.innerHTML = `<i class="fa-solid fa-file-export"></i> EXPORT SYLLABUS PDF`;
-                    btn.onclick = () => alert('Generating Encrypted PDF...');
-                    bubble.appendChild(btn);
-                }
-            } else {
-                bubble.textContent = text;
-            }
+      </div>
 
-            wrapper.appendChild(bubble);
-            chatBox.appendChild(wrapper);
-            chatBox.scrollTop = chatBox.scrollHeight;
+    </div>
+  </main>
+
+  <script>
+    // --- HIGH-PERFORMANCE DYNAMIC NEURAL MATRIX GRAPH CANVAS ENGINE ---
+    const canvas = document.getElementById('neuralMatrixCanvas');
+    const ctx = canvas.getContext('2d');
+    let nodes = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class NeuralNode {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.4;
+        this.vy = (Math.random() - 0.5) * 0.4;
+        this.radius = Math.random() * 2 + 1;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+      }
+      draw() {
+        const isDark = document.documentElement.classList.contains('dark');
+        ctx.fillStyle = isDark ? 'rgba(99, 102, 241, 0.45)' : 'rgba(79, 70, 229, 0.25)';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    const targetNodeDensity = 45;
+    for (let i = 0; i < targetNodeDensity; i++) {
+      nodes.push(new NeuralNode());
+    }
+
+    function drawNetworkLines() {
+      const isDark = document.documentElement.classList.contains('dark');
+      const connectionThreshold = 140;
+
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < connectionThreshold) {
+            const alpha = (1 - dist / connectionThreshold) * 0.12;
+            ctx.strokeStyle = isDark ? `rgba(99, 102, 241, ${alpha})` : `rgba(79, 70, 229, ${alpha * 0.8})`;
+            ctx.lineWidth = 0.8;
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.stroke();
+          }
         }
+      }
+    }
 
-        function handleSend() {
-            const val = userInput.value.trim();
-            if (!val && fileInput.files.length === 0) return;
+    function renderingPipelineLoop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      nodes.forEach(node => {
+        node.update();
+        node.draw();
+      });
+      drawNetworkLines();
+      requestAnimationFrame(renderingPipelineLoop);
+    }
+    renderingPipelineLoop();
 
-            appendMessage('user', val || "Context upload initiated.");
-            userInput.value = '';
-            
-            // Simulate AI response
-            setTimeout(() => {
-                appendMessage('ai', "### Analysis Complete\nProcessing your query through the EDITH neural core. \n\n*   **Status**: Success\n*   **Node**: Primary\n\nHow should we proceed with this data?");
-            }, 800);
-            
-            fileInput.value = '';
-            capturedFiles = [];
-            updateFileCount();
-        }
+    // --- CORE LOCAL ENVIRONMENT MANAGEMENT ENGINE ---
+    function initThemePipeline() {
+      const savedTheme = localStorage.getItem('edith-theme') || 'dark';
+      if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
 
-        // Camera Logic
-        async function openCamera() {
-            try {
-                stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                document.getElementById('videoFeed').srcObject = stream;
-                document.getElementById('cameraModal').classList.remove('hidden');
-            } catch (err) {
-                alert("Camera access denied.");
-            }
-        }
+    function toggleThemePipeline() {
+      const isDark = document.documentElement.classList.contains('dark');
+      if (isDark) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('edith-theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('edith-theme', 'dark');
+      }
+    }
 
-        function closeCamera() {
-            stream?.getTracks().forEach(t => t.stop());
-            document.getElementById('cameraModal').classList.add('hidden');
-        }
+    initThemePipeline();
 
-        function captureImage() {
-            const video = document.getElementById('videoFeed');
-            const canvas = document.createElement('canvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0);
-            
-            canvas.toBlob(blob => {
-                const file = new File([blob], "capture.jpg", { type: "image/jpeg" });
-                capturedFiles.push(file);
-                updateFileCount();
-                closeCamera();
-            });
-        }
+    window.onload = () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        window.location.href = 'login.html';
+        return;
+      }
 
-        userInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') handleSend();
-        });
+      const savedName = localStorage.getItem('userName');
+      const savedEmail = localStorage.getItem('userEmail');
+      const savedPhone = localStorage.getItem('userPhone') || localStorage.getItem('phone') || localStorage.getItem('mobile'); 
 
-        function newChat() {
-            chatBox.innerHTML = `
-                <div id="welcome" class="my-auto text-center space-y-4 max-w-sm">
-                    <div class="w-16 h-16 bg-brand-500/10 border border-brand-500/20 rounded-2xl flex items-center justify-center mx-auto text-brand-500 text-2xl">
-                        <i class="fa-solid fa-microchip"></i>
-                    </div>
-                    <h2 class="text-xl font-bold">New Matrix Initialized</h2>
-                    <p class="text-xs text-slate-500 leading-relaxed">System ready for new operational parameters.</p>
-                </div>
-            `;
-        }
-    </script>
+      if (savedName && savedName.trim() !== "") {
+        document.getElementById('navUserName').innerText = savedName;
+        document.getElementById('profileName').innerText = savedName;
+        document.getElementById('terminalUserMsgName').innerText = savedName;
+      } else {
+        const defaultFounder = "Srinivasarao Pokala";
+        document.getElementById('navUserName').innerText = defaultFounder;
+        document.getElementById('profileName').innerText = defaultFounder;
+        document.getElementById('terminalUserMsgName').innerText = defaultFounder;
+      }
+
+      if (savedEmail && savedEmail.trim() !== "") {
+        document.getElementById('profileEmail').innerText = savedEmail;
+      } else {
+        document.getElementById('profileEmail').innerText = "info@studenthub.ai";
+      }
+
+      if (savedPhone && savedPhone.trim() !== "") {
+        document.getElementById('profilePhone').innerText = savedPhone;
+      } else {
+        document.getElementById('profilePhone').innerText = "+91 System Secure Line";
+      }
+    };
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.clear();
+      window.location.href = 'login.html';
+    });
+
+    function toggleProfile() {
+      const panel = document.getElementById('profilePanel');
+      panel.classList.toggle('translate-x-full');
+    }
+
+    document.addEventListener('click', (e) => {
+      const panel = document.getElementById('profilePanel');
+      const trigger = document.getElementById('profileTrigger');
+      
+      if (!panel.contains(e.target) && !trigger.contains(e.target) && !panel.classList.contains('translate-x-full')) {
+        panel.classList.add('translate-x-full');
+      }
+    });
+  </script>
 </body>
-
 </html>
