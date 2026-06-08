@@ -21,95 +21,55 @@
       transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-    /* --- REFINED SYSTEM THEME PALETTES --- */
-    .dark body {
-      background-color: #090d16;
-    }
-    html:not(.dark) body {
-      background-color: #f8fafc;
-    }
+    .dark body { background-color: #090d16; }
+    html:not(.dark) body { background-color: #f8fafc; }
     
-    /* --- MINIMALIST FLAT BENTO CARDS --- */
-    .bento-card {
-      transition: all 0.25s ease-in-out;
-    }
+    .bento-card { transition: all 0.25s ease-in-out; }
     
-    .dark .bento-card {
-      background-color: rgba(17, 24, 39, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    html:not(.dark) .bento-card {
-      background-color: #ffffff;
-      border: 1px solid rgba(0, 0, 0, 0.06);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-    }
+    .dark .bento-card { background-color: rgba(17, 24, 39, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); }
+    html:not(.dark) .bento-card { background-color: #ffffff; border: 1px solid rgba(0, 0, 0, 0.06); box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
 
-    .dark .bento-card:hover { 
-      background-color: rgba(24, 33, 53, 0.7);
-      border-color: rgba(99, 102, 241, 0.4);
-    }
-    html:not(.dark) .bento-card:hover {
-      border-color: rgba(99, 102, 241, 0.3);
-      box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.08);
-    }
+    .dark .bento-card:hover { background-color: rgba(24, 33, 53, 0.7); border-color: rgba(16, 185, 129, 0.4); }
+    html:not(.dark) .bento-card:hover { border-color: rgba(16, 185, 129, 0.3); box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.08); }
 
-    /* --- STEADY ROTATION LOGO CORE --- */
     @keyframes spinClockwise { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .reactor-outer { animation: spinClockwise 40s linear infinite; transform-origin: center; }
     .reactor-inner { animation: spinClockwise 20s linear infinite; transform-origin: center; }
 
-    /* Sliding Drawer Panels */
-    .dark #profilePanel {
-      background-color: #0f172a;
-      border-left: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    html:not(.dark) #profilePanel {
-      background-color: #ffffff;
-      border-left: 1px solid rgba(0, 0, 0, 0.08);
-      box-shadow: -10px 0 30px rgba(0, 0, 0, 0.03);
-    }
+    .dark #profilePanel { background-color: #0f172a; border-left: 1px solid rgba(255, 255, 255, 0.08); }
+    html:not(.dark) #profilePanel { background-color: #ffffff; border-left: 1px solid rgba(0, 0, 0, 0.08); box-shadow: -10px 0 30px rgba(0, 0, 0, 0.03); }
 
-    .fade-in {
-      animation: fadeIn 0.4s ease-out both;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    .fade-in { animation: fadeIn 0.4s ease-out both; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body class="min-h-screen dark:text-slate-200 text-slate-700 relative">
 
-  <!-- LIGHT STRUCTURAL CANVAS ACCENT LAYER -->
   <canvas id="neuralMatrixCanvas" class="absolute top-0 left-0 w-full h-full pointer-events-none z-0 opacity-20 dark:opacity-25"></canvas>
 
-  <!-- CLEAN HEADER CONTROL MATRIX -->
   <header class="sticky top-0 z-40 border-b dark:border-white/5 border-slate-200/80 w-full backdrop-blur-md relative z-10">
     <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        
-        <!-- CONTROL HUB BRAND ORB -->
         <div class="w-8 h-8 flex items-center justify-center select-none cursor-pointer">
           <svg viewBox="0 0 100 100" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <linearGradient id="indigoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#6366f1" />
-                <stop offset="100%" stop-color="#4f46e5" />
+              <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#10b981" />
+                <stop offset="100%" stop-color="#059669" />
               </linearGradient>
             </defs>
-            <circle class="reactor-outer" cx="50" cy="50" r="42" stroke="url(#indigoGrad)" stroke-width="3" stroke-dasharray="25 15" fill="none"/>
-            <polygon class="reactor-inner" points="50,28 69,39 69,61 50,72 31,61 31,39" fill="none" stroke="url(#indigoGrad)" stroke-width="2" opacity="0.7"/>
-            <circle cx="50" cy="50" r="7" fill="url(#indigoGrad)"/>
+            <circle class="reactor-outer" cx="50" cy="50" r="42" stroke="url(#emeraldGrad)" stroke-width="3" stroke-dasharray="25 15" fill="none"/>
+            <polygon class="reactor-inner" points="50,28 69,39 69,61 50,72 31,61 31,39" fill="none" stroke="url(#emeraldGrad)" stroke-width="2" opacity="0.7"/>
+            <circle cx="50" cy="50" r="7" fill="url(#emeraldGrad)"/>
           </svg>
         </div>
-
         <h1 class="text-base font-bold tracking-tight dark:text-white text-slate-900 flex items-center gap-2">
-          EDITH <span class="text-[9px] font-bold text-indigo-500 bg-indigo-500/10 px-1.5 py-0.5 rounded">V3.2</span>
+          EDITH <span class="text-[9px] font-bold text-emerald-500 bg-emerald-500/10 px-1.5 py-0.5 rounded">V3.2</span>
         </h1>
       </div>
 
       <div class="flex items-center gap-4">
-        <button onclick="toggleThemePipeline()" id="themeTogglerBtn" title="Toggle Workspace Theme" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+        <button onclick="toggleThemePipeline()" id="themeTogglerBtn" title="Toggle Workspace Theme" class="text-slate-400 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors">
           <i class="fa-solid fa-sun text-sm hidden dark:block"></i>
           <i class="fa-solid fa-moon text-sm dark:hidden"></i>
         </button>
@@ -119,7 +79,7 @@
             <p id="navUserName" class="font-medium dark:text-slate-200 text-slate-800 text-xs tracking-tight">Loading...</p>
             <p class="text-[8px] text-slate-400 font-mono tracking-wider">SYSTEM REGISTRY</p>
           </div>
-          <div class="w-8 h-8 dark:bg-slate-800 bg-slate-200 rounded-lg flex items-center justify-center text-xs text-slate-600 dark:text-slate-300 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors">
+          <div class="w-8 h-8 dark:bg-slate-800 bg-slate-200 rounded-lg flex items-center justify-center text-xs text-slate-600 dark:text-slate-300 group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors">
             <i class="fa-solid fa-user"></i>
           </div>
         </div>
@@ -127,19 +87,18 @@
     </div>
   </header>
 
-  <!-- COLLAPSIBLE PROFILE DRAWER SYSTEM -->
   <div id="profilePanel" class="fixed top-0 right-0 h-full w-72 z-50 transform translate-x-full transition-transform duration-200 ease-in-out">
     <div class="p-6 flex flex-col h-full">
       <div class="flex justify-between items-center mb-6">
         <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Account Profile</h3>
-        <button onclick="toggleProfile()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+        <button onclick="toggleProfile()" class="text-slate-400 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors">
           <i class="fas fa-times text-sm"></i>
         </button>
       </div>
 
       <div class="mb-6">
         <h4 id="profileName" class="text-base font-bold dark:text-white text-slate-900 tracking-tight">Loading...</h4>
-        <p class="text-indigo-500 text-[10px] font-medium uppercase tracking-wider mt-0.5">Authorized Operator</p>
+        <p class="text-emerald-500 text-[10px] font-medium uppercase tracking-wider mt-0.5">Authorized Operator</p>
       </div>
 
       <div class="space-y-2.5 flex-1 overflow-y-auto">
@@ -165,21 +124,17 @@
     </div>
   </div>
 
-  <!-- CONTROL INTERFACE MAIN ENVIRONMENT -->
   <main class="max-w-6xl mx-auto px-6 py-10 w-full fade-in relative z-10">
-    
-    <!-- MINIMAL BANNER INTERFACE -->
     <div class="mb-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b dark:border-white/5 border-slate-200 pb-6">
       <div>
         <h2 class="text-xl sm:text-2xl font-bold dark:text-white text-slate-900 tracking-tight">
-          Welcome back, <span id="welcomeName" class="text-indigo-500">Operator!</span>
+          Welcome back, <span id="welcomeName" class="text-emerald-500">Operator!</span>
         </h2>
         <p class="dark:text-slate-400 text-slate-500 text-xs font-normal mt-0.5">
           Select an environment array module down below to execute computing workflows.
         </p>
       </div>
       
-      <!-- MINIMAL STATUS CHIPS -->
       <div class="flex gap-2 font-mono text-[10px]">
         <div class="flex items-center gap-2 dark:bg-slate-900 bg-slate-100 px-2.5 py-1 rounded border dark:border-white/5 border-slate-200">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
@@ -188,86 +143,75 @@
         </div>
         <div class="flex items-center gap-2 dark:bg-slate-900 bg-slate-100 px-2.5 py-1 rounded border dark:border-white/5 border-slate-200">
           <span class="text-slate-400">MESH NODES:</span>
-          <span class="font-bold text-indigo-500">ACTIVE</span>
+          <span class="font-bold text-emerald-500">ACTIVE</span>
         </div>
       </div>
     </div>
 
-    <!-- CLEAN ASYMMETRICAL BENTO BOX ENVIRONMENT LAYER -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
-      
-      <!-- CARD 1 (PRIMARY): ENGINE LAB -->
       <div onclick="window.location.href='index.html'" class="bento-card rounded-xl p-6 cursor-pointer group flex flex-col justify-between md:col-span-2 min-h-[200px]">
         <div>
-          <div class="text-indigo-500 text-lg mb-4">
+          <div class="text-emerald-500 text-lg mb-4">
             <i class="fa-solid fa-brain"></i>
           </div>
           <div class="flex items-center gap-2 mb-1.5">
             <h3 class="text-base font-bold dark:text-white text-slate-900 tracking-tight">AI Intelligence Lab</h3>
-            <span class="text-[8px] dark:bg-indigo-500/10 bg-indigo-50 px-2 py-0.5 rounded text-indigo-500 border border-indigo-500/10 font-mono">PRIMARY</span>
+            <span class="text-[8px] dark:bg-emerald-500/10 bg-emerald-50 px-2 py-0.5 rounded text-emerald-500 border border-emerald-500/10 font-mono">PRIMARY</span>
           </div>
           <p class="dark:text-slate-400 text-slate-500 text-xs font-normal leading-relaxed max-w-lg">
-            Initialize execution blocks on primary neural networks to build structured code pipelines, optimize logical parameters, and execute live code analysis modeling processes instantly.
+            Initialize execution blocks on primary neural networks to build structured code pipelines and optimize logical parameters.
           </p>
         </div>
-        <span class="text-indigo-500 text-xs font-medium flex items-center gap-1.5 mt-6 pt-3 border-t dark:border-white/5 border-slate-100">
+        <span class="text-emerald-500 text-xs font-medium flex items-center gap-1.5 mt-6 pt-3 border-t dark:border-white/5 border-slate-100">
           Open Terminal Core <i class="fas fa-arrow-right text-[9px] group-hover:translate-x-1 transition-transform"></i>
         </span>
       </div>
 
-      <!-- CARD 2: STORAGE ARRAYS -->
       <div onclick="window.location.href='notes.html'" class="bento-card rounded-xl p-6 cursor-pointer group flex flex-col justify-between min-h-[200px]">
         <div>
-          <div class="text-indigo-500 text-lg mb-4">
+          <div class="text-emerald-500 text-lg mb-4">
             <i class="fa-solid fa-folder"></i>
           </div>
           <h3 class="text-base font-bold mb-1.5 dark:text-white text-slate-900 tracking-tight">Digital Vault Storage</h3>
           <p class="dark:text-slate-400 text-slate-500 text-xs font-normal leading-relaxed">
-            Query encrypted secure storage vectors, access file block records, and scan historical telemetry tracking sequences inside sandbox environments.
+            Query encrypted secure storage vectors, access file block records, and scan historical telemetry tracking sequences.
           </p>
         </div>
-        <span class="text-indigo-500 text-xs font-medium flex items-center gap-1.5 mt-6 pt-3 border-t dark:border-white/5 border-slate-100">
+        <span class="text-emerald-500 text-xs font-medium flex items-center gap-1.5 mt-6 pt-3 border-t dark:border-white/5 border-slate-100">
           Unlock Vault <i class="fas fa-arrow-right text-[9px] group-hover:translate-x-1 transition-transform"></i>
         </span>
       </div>
 
-      <!-- CARD 3: PIPELINE SUITES -->
       <div onclick="window.location.href='aitools.html'" class="bento-card rounded-xl p-6 cursor-pointer group flex flex-col justify-between md:col-span-3">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full items-center">
-          
           <div class="md:col-span-1">
-            <div class="text-indigo-500 text-lg mb-3">
+            <div class="text-emerald-500 text-lg mb-3">
               <i class="fa-solid fa-bolt"></i>
             </div>
             <h3 class="text-base font-bold mb-1 dark:text-white text-slate-900 tracking-tight">Specialized Pipelines</h3>
             <p class="dark:text-slate-400 text-slate-500 text-xs font-normal leading-relaxed">
-              Accelerated operational macros preconfigured for fast syntax execution and file normalization.
+              Accelerated operational macros preconfigured for fast syntax execution.
             </p>
           </div>
-
-          <!-- REFINED SUB-UTILITIES CELLS -->
           <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-2 w-full text-[11px] font-mono pointer-events-none">
             <div class="flex items-center justify-between p-3 rounded-lg dark:bg-slate-900 bg-slate-50 border dark:border-white/5 border-slate-200">
-              <span class="dark:text-slate-300 text-slate-700"><i class="fa-solid fa-code text-indigo-500 mr-2"></i> Code Refactoring</span>
-              <span class="text-indigo-500 font-bold text-[9px]">ONLINE</span>
+              <span class="dark:text-slate-300 text-slate-700"><i class="fa-solid fa-code text-emerald-500 mr-2"></i> Code Refactoring</span>
+              <span class="text-emerald-500 font-bold text-[9px]">ONLINE</span>
             </div>
             <div class="flex items-center justify-between p-3 rounded-lg dark:bg-slate-900 bg-slate-50 border dark:border-white/5 border-slate-200">
-              <span class="dark:text-slate-300 text-slate-700"><i class="fa-solid fa-wand-magic-sparkles text-indigo-500 mr-2"></i> Grammar Optimizer</span>
-              <span class="text-indigo-500 font-bold text-[9px]">ONLINE</span>
+              <span class="dark:text-slate-300 text-slate-700"><i class="fa-solid fa-wand-magic-sparkles text-emerald-500 mr-2"></i> Grammar Optimizer</span>
+              <span class="text-emerald-500 font-bold text-[9px]">ONLINE</span>
             </div>
           </div>
         </div>
-        
-        <span class="text-indigo-500 text-xs font-medium flex items-center gap-1.5 mt-6 pt-3 border-t dark:border-white/5 border-slate-100">
+        <span class="text-emerald-500 text-xs font-medium flex items-center gap-1.5 mt-6 pt-3 border-t dark:border-white/5 border-slate-100">
           Launch Toolkit Suite <i class="fas fa-arrow-right text-[9px] group-hover:translate-x-1 transition-transform"></i>
         </span>
       </div>
-
     </div>
   </main>
 
   <script>
-    // --- STABLE LOW-OVERHEAD AMBIENT GRAPH BACKGROUND ENGINE ---
     const canvas = document.getElementById('neuralMatrixCanvas');
     const ctx = canvas.getContext('2d');
     let nodes = [];
@@ -280,9 +224,7 @@
     resizeCanvas();
 
     class NeuralNode {
-      constructor() {
-        this.reset();
-      }
+      constructor() { this.reset(); }
       reset() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
@@ -298,16 +240,14 @@
       }
       draw() {
         const isDark = document.documentElement.classList.contains('dark');
-        ctx.fillStyle = isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(99, 102, 241, 0.15)';
+        ctx.fillStyle = isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(16, 185, 129, 0.15)';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fill();
       }
     }
 
-    for (let i = 0; i < 35; i++) {
-      nodes.push(new NeuralNode());
-    }
+    for (let i = 0; i < 35; i++) { nodes.push(new NeuralNode()); }
 
     function drawNetworkLines() {
       const isDark = document.documentElement.classList.contains('dark');
@@ -316,10 +256,9 @@
           const dx = nodes[i].x - nodes[j].x;
           const dy = nodes[i].y - nodes[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-
           if (dist < 130) {
             const alpha = (1 - dist / 130) * 0.08;
-            ctx.strokeStyle = isDark ? `rgba(255, 255, 255, ${alpha})` : `rgba(99, 102, 241, ${alpha})`;
+            ctx.strokeStyle = isDark ? `rgba(255, 255, 255, ${alpha})` : `rgba(16, 185, 129, ${alpha})`;
             ctx.lineWidth = 0.6;
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
@@ -332,71 +271,38 @@
 
     function renderingPipelineLoop() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      nodes.forEach(node => {
-        node.update();
-        node.draw();
-      });
+      nodes.forEach(node => { node.update(); node.draw(); });
       drawNetworkLines();
       requestAnimationFrame(renderingPipelineLoop);
     }
     renderingPipelineLoop();
 
-    // --- WORKSPACE ENVIRONMENT STORAGE ACTIONS ---
     function initThemePipeline() {
       const savedTheme = localStorage.getItem('edith-theme') || 'dark';
-      if (savedTheme === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
+      document.documentElement.classList.toggle('dark', savedTheme === 'dark');
     }
 
     function toggleThemePipeline() {
       const isDark = document.documentElement.classList.contains('dark');
-      if (isDark) {
-        document.documentElement.classList.remove('dark');
-        localStorage.setItem('edith-theme', 'light');
-      } else {
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('edith-theme', 'dark');
-      }
+      document.documentElement.classList.toggle('dark', !isDark);
+      localStorage.setItem('edith-theme', !isDark ? 'dark' : 'light');
     }
 
     initThemePipeline();
 
     window.onload = () => {
       const token = localStorage.getItem('token');
-      if (!token) {
-        window.location.href = 'login.html';
-        return;
-      }
+      if (!token) { window.location.href = 'login.html'; return; }
 
-      const savedName = localStorage.getItem('userName');
-      const savedEmail = localStorage.getItem('userEmail');
-      const savedPhone = localStorage.getItem('userPhone') || localStorage.getItem('phone') || localStorage.getItem('mobile'); 
+      const savedName = localStorage.getItem('userName') || "Srinivasarao Pokala";
+      const savedEmail = localStorage.getItem('userEmail') || "info@studenthub.ai";
+      const savedPhone = localStorage.getItem('userPhone') || "+91 System Secure Line";
 
-      if (savedName && savedName.trim() !== "") {
-        document.getElementById('navUserName').innerText = savedName;
-        document.getElementById('profileName').innerText = savedName;
-        document.getElementById('welcomeName').innerText = savedName + '!';
-      } else {
-        const defaultFounder = "Srinivasarao Pokala";
-        document.getElementById('navUserName').innerText = defaultFounder;
-        document.getElementById('profileName').innerText = defaultFounder;
-        document.getElementById('welcomeName').innerText = defaultFounder + '!';
-      }
-
-      if (savedEmail && savedEmail.trim() !== "") {
-        document.getElementById('profileEmail').innerText = savedEmail;
-      } else {
-        document.getElementById('profileEmail').innerText = "info@studenthub.ai";
-      }
-
-      if (savedPhone && savedPhone.trim() !== "") {
-        document.getElementById('profilePhone').innerText = savedPhone;
-      } else {
-        document.getElementById('profilePhone').innerText = "+91 System Secure Line";
-      }
+      document.getElementById('navUserName').innerText = savedName;
+      document.getElementById('profileName').innerText = savedName;
+      document.getElementById('welcomeName').innerText = savedName + '!';
+      document.getElementById('profileEmail').innerText = savedEmail;
+      document.getElementById('profilePhone').innerText = savedPhone;
     };
 
     document.getElementById('logoutBtn').addEventListener('click', () => {
@@ -405,18 +311,8 @@
     });
 
     function toggleProfile() {
-      const panel = document.getElementById('profilePanel');
-      panel.classList.toggle('translate-x-full');
+      document.getElementById('profilePanel').classList.toggle('translate-x-full');
     }
-
-    document.addEventListener('click', (e) => {
-      const panel = document.getElementById('profilePanel');
-      const trigger = document.getElementById('profileTrigger');
-      
-      if (!panel.contains(e.target) && !trigger.contains(e.target) && !panel.classList.contains('translate-x-full')) {
-        panel.classList.add('translate-x-full');
-      }
-    });
   </script>
 </body>
 </html>
