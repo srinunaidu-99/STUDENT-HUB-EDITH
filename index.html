@@ -165,8 +165,7 @@
             </button>
         </div>
 
-        <div id="sessionHistoryBox" class="flex-1 overflow-y-auto p-3 space-y-1 chat-container">
-            </div>
+        <div id="sessionHistoryBox" class="flex-1 overflow-y-auto p-3 space-y-1 chat-container"></div>
 
         <div class="p-4 border-t border-white/5 bg-gray-950/60 flex items-center gap-3">
             <div id="userAvatarSidebar" class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white text-xs font-bold uppercase">S</div>
@@ -381,12 +380,10 @@ function switchActiveThreadViewportContext(targetThreadId, shouldDismissMobileDr
     const currentThreadContext = runtimeThreadsList.find(t => t.id === activeSessionThreadId);
     if (!currentThreadContext) return;
 
-    // Reset runtime configuration switchers elements inside visual interfaces
     if (currentThreadContext.model) {
         document.getElementById("modelSelectorEngine").value = currentThreadContext.model;
     }
 
-    // Purge previous dynamic children array elements except welcome window layers
     const liveChatFeedChildren = chatArea.children;
     for (let indexPos = liveChatFeedChildren.length - 1; indexPos >= 0; indexPos--) {
         if (liveChatFeedChildren[indexPos].id !== "welcomeScreen") {
@@ -405,7 +402,6 @@ function switchActiveThreadViewportContext(targetThreadId, shouldDismissMobileDr
         appendSystemUIMessageBubbleElement(entryMessage.text, entryMessage.isUser, false);
     });
 
-    // Handle visibility of regression trigger panel controls
     const lastMessageIndexNode = currentThreadContext.records[currentThreadContext.records.length - 1];
     if (lastMessageIndexNode && !lastMessageIndexNode.isUser) {
         document.getElementById("regenerateActionBtn").classList.remove("hidden");
@@ -493,7 +489,14 @@ async function regenerateLastOutputSession() {
         if (precedingUserRecordNode.isUser) {
             lastDispatchedUserPromptPayloadBackup = precedingUserRecordNode.text;
             switchActiveThreadViewportContext(activeSessionThreadId, false);
-            await firePipelineStreamRequest(lastDispatchedUserPromptPayloadBackup, []);
+            
+            // Build temporary Form data to replay model selection
+            const formData = new FormData();
+            formData.append("message", lastDispatchedUserPromptPayloadBackup);
+            formData.append("summarize", isSummarize);
+            formData.append("model", document.getElementById("modelSelectorEngine").value);
+            
+            await firePipelineStreamRequest(lastDispatchedUserPromptPayloadBackup, formData);
         }
     }
 }
@@ -632,7 +635,6 @@ function cleanAndParseMarkdown(text) {
     return container.innerHTML;
 }
 
-// UPGRADED MESSAGING COMPONENT (ASYMMETRIC CHAT FEED LAYOUT STRUCTURAL MATRIX)
 function appendSystemUIMessageBubbleElement(text, isUser, shouldSaveToCache = true) {
     if (welcomeScreen && welcomeScreen.style.display !== "none") {
         welcomeScreen.style.display = "none";
@@ -643,7 +645,6 @@ function appendSystemUIMessageBubbleElement(text, isUser, shouldSaveToCache = tr
 
     const profileInitialChar = document.getElementById("userAvatarSidebar").innerText || "U";
     
-    // Asymmetric Avatar Rendering Engines
     const profileAvatarHtmlMarkup = isUser 
         ? `<div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white text-xs font-mono font-bold shrink-0 order-2 shadow-md">${profileInitialChar}</div>`
         : `<div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white text-xs shrink-0 order-1 shadow-md"><i class="fa-solid fa-brain text-[11px]"></i></div>`;
@@ -666,7 +667,6 @@ function appendSystemUIMessageBubbleElement(text, isUser, shouldSaveToCache = tr
         if (foundThreadTarget) {
             foundThreadTarget.records.push({ isUser, text });
             
-            // Generate title based on first query
             if (isUser && foundThreadTarget.records.length === 1) {
                 foundThreadTarget.title = text.length > 26 ? text.substring(0, 26) + "..." : text;
                 renderHistorySidebarNavigationPane();
@@ -703,6 +703,7 @@ function escapeHtml(text) {
     return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+// PIPELINE STREAM HANDLERS & ROUTING CORE ENGINE FIXES
 async function sendMsg() {
     const input = document.getElementById("msg");
     const fileInput = document.getElementById("fileInput");
@@ -710,94 +711,106 @@ async function sendMsg() {
 
     if (!message && fileInput.files.length === 0) return;
 
-    lastDispatchedUserPromptPayloadBackup = message;
-    appendSystemUIMessageBubbleElement(message || "Analyzing documents...", true);
     input.value = "";
+    document.getElementById("regenerateActionBtn").classList.add("hidden");
+    lastDispatchedUserPromptPayloadBackup = message;
 
-    const operationalCachedFilesArray = Array.from(fileInput.files);
-    fileInput.value = "";
-    document.getElementById("fileCount").innerText = "";
+    // 1. Output the text bubble directly inside user view pane instantly
+    appendSystemUIMessageBubbleElement(message, true);
 
-    await firePipelineStreamRequest(message, operationalCachedFilesArray);
-}
-
-// ASYNC HIGH-PERFORMANCE DATA STREAM DISPATCH PIPELINE
-async function firePipelineStreamRequest(textPrompt, arraysOfFilesToUpload = []) {
-    const securityTokenKey = localStorage.getItem("token");
-    const selectedEngineModel = document.getElementById("modelSelectorEngine").value;
-
-    const dynamicMultipartFormData = new FormData();
-    dynamicMultipartFormData.append("message", textPrompt);
-    dynamicMultipartFormData.append("isSummarize", isSummarize);
-    dynamicMultipartFormData.append("model", selectedEngineModel);
-
-    for (let dataFile of arraysOfFilesToUpload) {
-        dynamicMultipartFormData.append("files", dataFile);
+    // 2. Map file collections into multi-part standard body array payload schemas
+    const formData = new FormData();
+    formData.append("message", message);
+    formData.append("summarize", isSummarize);
+    formData.append("model", document.getElementById("modelSelectorEngine").value);
+    
+    for (let i = 0; i < fileInput.files.length; i++) {
+        formData.append("files", fileInput.files[i]);
     }
 
+    fileInput.value = "";
+    updateFileStatus();
+
+    // 3. Initiate processing core connection fetch routine execution cycles
+    await firePipelineStreamRequest(message, formData);
+}
+
+async function firePipelineStreamRequest(message, formData) {
     showTypingIndicator();
     
-    document.getElementById("stopGenerationActionBtn").classList.remove("hidden");
-    document.getElementById("regenerateActionBtn").classList.add("hidden");
+    const stopBtn = document.getElementById("stopGenerationActionBtn");
+    stopBtn.classList.remove("hidden");
 
     networkStreamAbortController = new AbortController();
+    const token = localStorage.getItem("token");
+
+    let fullAiResponse = "";
+    let aiResponseContainer = null;
 
     try {
-        const responseDataChannel = await fetch(`${API_BASE}/api/chat`, {
+        const response = await fetch(`${API_BASE}/api/chat/stream`, {
             method: "POST",
-            headers: { Authorization: `Bearer ${securityTokenKey}` },
-            body: dynamicMultipartFormData,
+            headers: { "Authorization": `Bearer ${token}` },
+            body: formData,
             signal: networkStreamAbortController.signal
         });
 
-        removeTypingIndicator();
-
-        if (!responseDataChannel.ok) {
-            const parsedErrorResponseText = await responseDataChannel.text();
-            appendSystemUIMessageBubbleElement("❌ " + parsedErrorResponseText, false);
-            document.getElementById("stopGenerationActionBtn").classList.add("hidden");
+        // SAFETY GATE: Intercept token validation failures (401/403 Expired errors)
+        if (response.status === 401 || response.status === 403) {
+            removeTypingIndicator();
+            appendSystemUIMessageBubbleElement("🔒 Your session has expired. Redirecting to access screen...", false);
+            setTimeout(() => {
+                localStorage.clear();
+                window.location.href = "login.html";
+            }, 2500);
             return;
         }
 
-        const dataStreamReaderNode = responseDataChannel.body.getReader();
-        const textDataDecoderInstance = new TextDecoder();
-        
-        const uiTextElementPayloadBubble = appendSystemUIMessageBubbleElement("", false, false);
-        let accumulatedStreamingTextOutput = "";
+        if (!response.ok) throw new Error(`Server Pipeline Fault: ${response.statusText}`);
+
+        removeTypingIndicator();
+        aiResponseContainer = appendSystemUIMessageBubbleElement("", false, false);
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
 
         while (true) {
-            const { done, value } = await dataStreamReaderNode.read();
+            const { value, done } = await reader.read();
             if (done) break;
 
-            accumulatedStreamingTextOutput += textDataDecoderInstance.decode(value, { stream: true });
-            uiTextElementPayloadBubble.innerHTML = cleanAndParseMarkdown(accumulatedStreamingTextOutput);
+            const chunk = decoder.decode(value, { stream: true });
+            fullAiResponse += chunk;
+
+            aiResponseContainer.innerHTML = cleanAndParseMarkdown(fullAiResponse);
             chatArea.scrollTop = chatArea.scrollHeight;
         }
 
-        // Commit full text to internal records arrays upon stream exhaustion
-        if (activeSessionThreadId) {
-            const targetThreadTracker = runtimeThreadsList.find(t => t.id === activeSessionThreadId);
-            if (targetThreadTracker) {
-                targetThreadTracker.records.push({ isUser: false, text: accumulatedStreamingTextOutput });
-                flushRuntimeStateToDiskStorage();
-            }
-        }
+        saveFinalAiResponse(fullAiResponse);
 
-    } catch (networkFaultException) {
-        removeTypingIndicator();
-        if (networkFaultException.name === 'AbortError') {
-            appendSystemUIMessageBubbleElement("⚡ Processing core stream sequence truncated by operational instruction matrix.", false);
+    } catch (error) {
+        if (error.name === 'AbortError') {
+            console.log("Transmission stream interrupted by operator client request.");
+            saveFinalAiResponse(fullAiResponse + " [Generation Stopped]");
         } else {
-            console.error(networkFaultException);
-            appendSystemUIMessageBubbleElement("❌ Matrix Connection Interrupted (Server Failure)", false);
+            console.error("Critical Connection Link Failure:", error);
+            removeTypingIndicator();
+            appendSystemUIMessageBubbleElement("⚠️ Lost link coordination with EDITH Core backend. Please ensure service configuration alignment is running.", false);
         }
     } finally {
-        document.getElementById("stopGenerationActionBtn").classList.add("hidden");
+        stopBtn.classList.add("hidden");
         document.getElementById("regenerateActionBtn").classList.remove("hidden");
         networkStreamAbortController = null;
     }
 }
-</script>
 
+function saveFinalAiResponse(text) {
+    if (!activeSessionThreadId) return;
+    const thread = runtimeThreadsList.find(t => t.id === activeSessionThreadId);
+    if (thread) {
+        thread.records.push({ isUser: false, text: text });
+        flushRuntimeStateToDiskStorage();
+    }
+}
+</script>
 </body>
 </html>
