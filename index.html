@@ -687,7 +687,8 @@ function removeTypingIndicator() {
     if (indicator) indicator.remove();
 }
 
-/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+function escapeHtml(text) {
+    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
 async function sendMsg() {
