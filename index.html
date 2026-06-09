@@ -326,6 +326,7 @@ const API_BASE = window.location.hostname === "127.0.0.1"
 const chatArea = document.getElementById("chatArea");
 const welcomeScreen = document.getElementById("welcomeScreen");
 let isSummarize = false;
+let currentChatId = null;
 
 // Audio Configuration (Web Speech API Integration)
 let recognition;
@@ -392,11 +393,37 @@ window.onload = () => {
         document.getElementById("sidebarUserName").innerText = name;
     }
 
-    // Load actual histories directly from operational server matrix
     loadChatHistory();
 };
 
 /* --- SYSTEM ROUTING & CHAT LIFE PIPELINES --- */
+
+function renderHistoryUI(chats) {
+    const historyList = document.getElementById("historyList");
+    historyList.innerHTML = ""; 
+    
+    if (!chats || chats.length === 0) {
+        historyList.innerHTML = '<p class="text-[11px] text-gray-500 px-3 py-2">No past sessions found.</p>';
+        return;
+    }
+
+    chats.forEach(chat => {
+        const chatId = chat._id || chat.id;
+        const chatItem = document.createElement("div");
+        chatItem.className = `chat-history-item text-xs font-medium rounded-lg px-3 py-2 cursor-pointer transition-all flex items-center justify-between group truncate ${currentChatId === chatId ? 'text-white bg-white/10 border border-white/5' : 'text-gray-400 hover:text-white hover:bg-white/5'}`;
+        chatItem.setAttribute("onclick", `loadChat('${chatId}')`);
+        
+        chatItem.innerHTML = `
+            <span class="truncate flex items-center gap-2">
+                <i class="fa-regular fa-comment text-indigo-400/70 text-[11px]"></i> 
+                ${escapeHtml(chat.title || "Untitled Operation")}
+            </span>
+            <i class="fa-solid fa-trash text-[10px] text-gray-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity" 
+               onclick="event.stopPropagation(); deleteChat('${chatId}')"></i>
+        `;
+        historyList.appendChild(chatItem);
+    });
+}
 
 async function loadChatHistory() {
     const token = localStorage.getItem("token");
@@ -415,40 +442,27 @@ async function loadChatHistory() {
         if (!res.ok) throw new Error("Failed validation status extraction.");
 
         const chats = await res.json();
-        historyList.innerHTML = ""; 
-
-        if (chats.length === 0) {
-            historyList.innerHTML = '<p class="text-[11px] text-gray-500 px-3 py-2">No past sessions found.</p>';
-            return;
-        }
-
-        chats.forEach(chat => {
-            const chatItem = document.createElement("div");
-            chatItem.className = "chat-history-item text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-3 py-2 cursor-pointer transition-all flex items-center justify-between group truncate";
-            chatItem.setAttribute("onclick", `loadChat('${chat._id || chat.id}')`);
-            
-            chatItem.innerHTML = `
-                <span class="truncate flex items-center gap-2">
-                    <i class="fa-regular fa-comment text-gray-600 text-[11px]"></i> 
-                    ${escapeHtml(chat.title || "Untitled Operation")}
-                </span>
-                <i class="fa-solid fa-trash text-[10px] text-gray-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity" 
-                   onclick="event.stopPropagation(); deleteChat('${chat._id || chat.id}')"></i>
-            `;
-            historyList.appendChild(chatItem);
-        });
+        localStorage.setItem("edith_chats_backup", JSON.stringify(chats));
+        renderHistoryUI(chats);
     } catch (err) {
-        console.error("History sync failure:", err);
-        historyList.innerHTML = '<p class="text-[11px] text-red-500/70 px-3 py-2">Failed to sync histories</p>';
+        console.warn("History server sync failed. Reverting to structural local sandbox storage context:", err);
+        const localBackup = localStorage.getItem("edith_chats_backup");
+        if (localBackup) {
+            renderHistoryUI(JSON.parse(localBackup));
+        } else {
+            historyList.innerHTML = '<p class="text-[11px] text-red-500/70 px-3 py-2">Sync fault. Local sandbox completely empty.</p>';
+        }
     }
 }
 
 async function loadChat(id) {
+    currentChatId = id;
     const token = localStorage.getItem("token");
-    if (!token) return;
-
     chatArea.innerHTML = "";
     showTypingIndicator();
+
+    // Re-highlight active state dynamically in DOM structure list
+    loadChatHistory();
 
     try {
         const res = await fetch(`${API_BASE}/api/chat/${id}`, {
@@ -457,11 +471,10 @@ async function loadChat(id) {
         });
         
         removeTypingIndicator();
-        if (!res.ok) return alert("Could not pull workspace context logs.");
+        if (!res.ok) throw new Error("Failed remote layout sync.");
         
         const data = await res.json();
         
-        // Loop through and render retrieved operational dialogue rows
         if (data.messages && data.messages.length > 0) {
             data.messages.forEach(msg => {
                 addMessage(msg.text || msg.content, msg.isUser ?? (msg.role === 'user'));
@@ -469,7 +482,18 @@ async function loadChat(id) {
         }
     } catch (err) {
         removeTypingIndicator();
-        console.error(err);
+        console.warn("Falling back to client cache parameters for rendering active layout timeline stack:", err);
+        const localBackup = localStorage.getItem("edith_chats_backup");
+        if(localBackup) {
+            const cachedChat = JSON.parse(localBackup).find(c => (c._id === id || c.id === id));
+            if(cachedChat && cachedChat.messages) {
+                cachedChat.messages.forEach(msg => {
+                    addMessage(msg.text || msg.content, msg.isUser ?? (msg.role === 'user'));
+                });
+                return;
+            }
+        }
+        addMessage("❌ Could not pull terminal log matrices from database or dynamic storage.", false);
     }
 }
 
@@ -477,20 +501,26 @@ async function deleteChat(id) {
     if (!confirm("Confirm complete erasure of this operational timeline matrix?")) return;
     const token = localStorage.getItem("token");
 
+    // Proactively purge from client side storage structures layout
+    const localBackup = localStorage.getItem("edith_chats_backup");
+    if(localBackup) {
+        const updatedBackup = JSON.parse(localBackup).filter(c => (c._id !== id && c.id !== id));
+        localStorage.setItem("edith_chats_backup", JSON.stringify(updatedBackup));
+    }
+
     try {
-        const res = await fetch(`${API_BASE}/api/chat/${id}`, {
+        await fetch(`${API_BASE}/api/chat/${id}`, {
             method: "DELETE",
             headers: { "Authorization": `Bearer ${token}` }
         });
-
-        if (res.ok) {
-            loadChatHistory();
-            startNewChat();
-        } else {
-            alert("Execution fault during context database purging.");
-        }
     } catch (err) {
-        console.error(err);
+        console.error("Backend failed sync trace clean up:", err);
+    }
+
+    if(currentChatId === id) {
+        startNewChat();
+    } else {
+        loadChatHistory();
     }
 }
 
@@ -502,6 +532,7 @@ function toggleMobileSidebar() {
 }
 
 function startNewChat() {
+    currentChatId = null;
     chatArea.innerHTML = `
         <div id="welcomeScreen" class="flex flex-col justify-center items-center mt-24 text-center px-4 animate-msg">
             <div class="edith-orb w-20 h-20 rounded-3xl flex items-center justify-center text-3xl text-white mb-6">
@@ -521,6 +552,7 @@ function startNewChat() {
     if (!document.getElementById("sidebar").classList.contains("-translate-x-full")) {
         toggleMobileSidebar();
     }
+    loadChatHistory();
 }
 
 function filterChats() {
@@ -705,6 +737,9 @@ async function sendMsg() {
     const formData = new FormData();
     formData.append("message", message);
     formData.append("isSummarize", isSummarize);
+    if (currentChatId) {
+        formData.append("chatId", currentChatId);
+    }
 
     for (let file of fileInput.files) {
         formData.append("files", file);
@@ -727,6 +762,7 @@ async function sendMsg() {
             return;
         }
 
+        const dataResponse = res.clone();
         const reader = res.body.getReader();
         const decoder = new TextDecoder();
         const aiBubble = addMessage("", false);
@@ -740,13 +776,52 @@ async function sendMsg() {
             aiBubble.innerHTML = cleanAndParseMarkdown(aiText);
             chatArea.scrollTop = chatArea.scrollHeight;
         }
+
+        // Capture returned structural ID matrix context elements if headers contain it
+        const responseChatId = dataResponse.headers.get("X-Chat-Id") || dataResponse.headers.get("chatId");
+        if(responseChatId && !currentChatId) {
+            currentChatId = responseChatId;
+        }
         
-        // Refresh history layout list since a new conversation context may have saved
+        // Backup architecture fallback updating logic
+        let currentBackup = JSON.parse(localStorage.getItem("edith_chats_backup") || "[]");
+        let activeInstance = currentBackup.find(c => (c._id === currentChatId || c.id === currentChatId));
+        
+        if(!activeInstance && currentChatId) {
+            activeInstance = { id: currentChatId, title: message.substring(0, 24), messages: [] };
+            currentBackup.unshift(activeInstance);
+        }
+        if(activeInstance) {
+            activeInstance.messages.push({ content: message, role: 'user', isUser: true });
+            activeInstance.messages.push({ content: aiText, role: 'assistant', isUser: false });
+            localStorage.setItem("edith_chats_backup", JSON.stringify(currentBackup));
+        }
+
         loadChatHistory();
     } catch (err) {
         console.error(err);
         removeTypingIndicator();
-        addMessage("❌ Matrix Connection Interrupted (Server Failure)", false);
+        
+        // Pure Local Client Sandbox execution logic path if server network pipeline is broken
+        if(currentChatId === null) {
+            currentChatId = "local_" + Date.now();
+        }
+        let currentBackup = JSON.parse(localStorage.getItem("edith_chats_backup") || "[]");
+        let activeInstance = currentBackup.find(c => (c._id === currentChatId || c.id === currentChatId));
+        
+        if(!activeInstance) {
+            activeInstance = { id: currentChatId, title: message.substring(0, 24), messages: [] };
+            currentBackup.unshift(activeInstance);
+        }
+        
+        const offlineResponse = "⚠️ Operating in Offline Matrix Fallback Sandbox Mode. Your input data points was recorded completely locally inside your client device module layer.";
+        addMessage(offlineResponse, false);
+        
+        activeInstance.messages.push({ content: message, role: 'user', isUser: true });
+        activeInstance.messages.push({ content: offlineResponse, role: 'assistant', isUser: false });
+        localStorage.setItem("edith_chats_backup", JSON.stringify(currentBackup));
+        
+        loadChatHistory();
     }
 
     fileInput.value = "";
