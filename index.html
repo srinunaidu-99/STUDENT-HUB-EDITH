@@ -604,6 +604,12 @@ function showTypingIndicator() {
     chatArea.appendChild(div);
     chatArea.scrollTop = chatArea.scrollHeight;
 }
+    <!-- Chat History System Wrapper -->
+<div id="historyList" class="space-y-0.5">
+    <div class="chat-history-item ..." onclick="loadChat(1)">
+        <span>Quantum Mechanics Revision</span>
+    </div>
+</div>
 
 function removeTypingIndicator() {
     const indicator = document.getElementById("edithTypingIndicator");
