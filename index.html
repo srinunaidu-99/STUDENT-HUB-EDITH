@@ -20,17 +20,17 @@
         }
 
         /* Custom Scrollbar */
-        .chat-container::-webkit-scrollbar {
+        .chat-container::-webkit-scrollbar, .sidebar-scroll::-webkit-scrollbar {
             width: 6px;
         }
-        .chat-container::-webkit-scrollbar-track {
+        .chat-container::-webkit-scrollbar-track, .sidebar-scroll::-webkit-scrollbar-track {
             background: transparent;
         }
-        .chat-container::-webkit-scrollbar-thumb {
+        .chat-container::-webkit-scrollbar-thumb, .sidebar-scroll::-webkit-scrollbar-thumb {
             background: rgba(99, 102, 241, 0.2);
             border-radius: 10px;
         }
-        .chat-container::-webkit-scrollbar-thumb:hover {
+        .chat-container::-webkit-scrollbar-thumb:hover, .sidebar-scroll::-webkit-scrollbar-thumb:hover {
             background: rgba(99, 102, 241, 0.4);
         }
 
@@ -97,6 +97,13 @@
             box-shadow: 0 4px 16px rgba(79, 70, 229, 0.25);
         }
 
+        /* Sidebar Styling */
+        .sidebar-panel {
+            background: rgba(7, 8, 18, 0.85);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
         /* Code Block Copy Enhancement Wrapper */
         .code-block-wrapper {
             position: relative;
@@ -155,89 +162,167 @@
 
 <body class="text-gray-100 min-h-screen flex items-center justify-center p-0 sm:p-4">
 
-<div class="w-full max-w-5xl h-screen sm:h-[92vh] flex flex-col glass-panel sm:rounded-3xl shadow-2xl relative overflow-hidden">
+<div class="w-full max-w-6xl h-screen sm:h-[92vh] flex glass-panel sm:rounded-3xl shadow-2xl relative overflow-hidden">
     
-    <!-- Top Navbar (Cleaned & High-Tech Upgraded) -->
-    <div class="p-4 border-b border-white/5 flex justify-between items-center bg-gray-950/20 px-6">
-        <div class="flex items-center gap-3.5">
-            <div class="edith-orb w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold tracking-wider text-sm shadow-lg shadow-indigo-500/30">
-                E
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 sidebar-panel transform -translate-x-full transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 flex flex-col justify-between h-full">
+        
+        <div class="flex flex-col flex-1 overflow-hidden">
+            <div class="p-4 border-b border-white/5 flex flex-col gap-3">
+                <button onclick="startNewChat()" class="w-full bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-500/30 text-indigo-200 rounded-xl py-2.5 px-4 text-xs font-semibold tracking-wide flex items-center justify-center gap-2 transition-all active:scale-[0.98]">
+                    <i class="fa-solid fa-plus text-xs"></i> New Chat
+                </button>
+                
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-gray-500"></i>
+                    <input type="text" id="chatSearch" oninput="filterChats()" placeholder="Search Chats..." 
+                        class="w-full bg-gray-900/60 border border-white/5 focus:border-indigo-500/30 rounded-xl pl-9 pr-4 py-2 outline-none text-xs text-gray-200 placeholder-gray-500 transition-all"/>
+                </div>
             </div>
-            <div>
-                <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-indigo-300 bg-clip-text text-transparent">
-                    EDITH <span class="text-xs font-semibold text-indigo-400 border border-indigo-500/30 px-1.5 py-0.5 rounded-md ml-1.5 bg-indigo-500/10">V3.2</span>
-                </h1>
-                <p class="text-[10px] uppercase tracking-widest text-indigo-400 font-bold flex items-center gap-1.5 mt-0.5">
-                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block animate-pulse"></span>
-                    Operator: <span id="displayUserName">Student</span>
+
+            <div class="flex-1 overflow-y-auto p-3 space-y-4 sidebar-scroll">
+                
+                <div class="space-y-1">
+                    <button onclick="navigateTo('explore')" class="w-full text-left text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-3 py-2 flex items-center justify-between transition-all group">
+                        <span class="flex items-center gap-2.5"><i class="fa-solid fa-compass text-indigo-400 group-hover:scale-110 transition-transform"></i> Explore GPTs</span>
+                        <i class="fa-solid fa-chevron-right text-[9px] text-gray-600"></i>
+                    </button>
+                    <button onclick="navigateTo('projects')" class="w-full text-left text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-3 py-2 flex items-center justify-between transition-all group">
+                        <span class="flex items-center gap-2.5"><i class="fa-solid fa-folder-open text-indigo-400 group-hover:scale-110 transition-transform"></i> Library / Projects</span>
+                        <i class="fa-solid fa-chevron-right text-[9px] text-gray-600"></i>
+                    </button>
+                </div>
+
+                <hr class="border-white/5" />
+
+                <div>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-gray-500 px-3 block mb-2">Chat History</span>
+                    <div id="historyList" class="space-y-0.5">
+                        <div class="chat-history-item text-xs font-medium text-gray-300 hover:bg-white/5 rounded-lg px-3 py-2 cursor-pointer transition-all flex items-center justify-between group truncate" onclick="loadChat(1)">
+                            <span class="truncate flex items-center gap-2"><i class="fa-regular fa-comment text-gray-500 text-[11px]"></i> Quantum Mechanics Revision</span>
+                            <i class="fa-solid fa-trash text-[10px] text-gray-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity" onclick="event.stopPropagation(); deleteChat(1)"></i>
+                        </div>
+                        <div class="chat-history-item text-xs font-medium text-gray-300 hover:bg-white/5 rounded-lg px-3 py-2 cursor-pointer transition-all flex items-center justify-between group truncate" onclick="loadChat(2)">
+                            <span class="truncate flex items-center gap-2"><i class="fa-regular fa-comment text-gray-500 text-[11px]"></i> Database Architecture Plan</span>
+                            <i class="fa-solid fa-trash text-[10px] text-gray-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity" onclick="event.stopPropagation(); deleteChat(2)"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-3 border-t border-white/5 space-y-1 bg-gray-950/20">
+            <button onclick="openModal('settings')" class="w-full text-left text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-3 py-2 flex items-center gap-2.5 transition-all">
+                <i class="fa-solid fa-sliders text-indigo-400/80"></i> Settings Configuration
+            </button>
+            
+            <div onclick="openModal('profile')" class="w-full flex items-center justify-between text-left rounded-xl p-2 hover:bg-white/5 cursor-pointer border border-transparent hover:border-white/5 transition-all mt-1">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center text-white text-xs font-bold font-mono shadow-sm">
+                        ST
+                    </div>
+                    <div class="truncate">
+                        <p class="text-xs font-bold text-gray-200 truncate" id="sidebarUserName">Student Account</p>
+                        <p class="text-[10px] text-indigo-400 font-medium">Premium Operator</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-ellipsis-vertical text-gray-500 text-xs pr-1"></i>
+            </div>
+        </div>
+    </div>
+
+    <div id="sidebarOverlay" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-30 hidden lg:hidden"></div>
+
+    <div class="flex-1 flex flex-col h-full overflow-hidden">
+        
+        <div class="p-4 border-b border-white/5 flex justify-between items-center bg-gray-950/20 px-6">
+            <div class="flex items-center gap-3.5">
+                <button onclick="toggleMobileSidebar()" class="block lg:hidden text-gray-400 hover:text-white mr-1">
+                    <i class="fa-solid fa-bars text-lg"></i>
+                </button>
+
+                <div class="edith-orb w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold tracking-wider text-sm shadow-lg shadow-indigo-500/30">
+                    E
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-indigo-300 bg-clip-text text-transparent">
+                        EDITH <span class="text-xs font-semibold text-indigo-400 border border-indigo-500/30 px-1.5 py-0.5 rounded-md ml-1.5 bg-indigo-500/10">V3.2</span>
+                    </h1>
+                    <p class="text-[10px] uppercase tracking-widest text-indigo-400 font-bold flex items-center gap-1.5 mt-0.5">
+                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block animate-pulse"></span>
+                        Operator: <span id="displayUserName">Student</span>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="hidden sm:flex items-center gap-4 text-right">
+                <div class="text-[11px] font-medium text-gray-400">
+                    <span class="text-gray-500 uppercase block text-[9px] tracking-wider font-bold">Latency</span>
+                    <span class="text-emerald-400 font-mono">14ms</span>
+                </div>
+                <div class="w-px h-6 bg-white/10"></div>
+                <div class="text-[11px] font-medium text-gray-400">
+                    <span class="text-gray-500 uppercase block text-[9px] tracking-wider font-bold">Core Load</span>
+                    <span class="text-indigo-400 font-mono">2.4%</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="chatArea" class="flex-1 overflow-y-auto p-6 space-y-6 chat-container">
+            <div id="welcomeScreen" class="flex flex-col justify-center items-center mt-24 text-center px-4">
+                <div class="edith-orb w-20 h-20 rounded-3xl flex items-center justify-center text-3xl text-white mb-6">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-bold mb-2 tracking-tight text-white">
+                    How can I assist you today?
+                </h2>
+                <p class="text-gray-400 text-sm max-w-sm font-light leading-relaxed">
+                    I can process documents, parse voice input, analyze complex media datasets, or just run brainstorm sessions.
                 </p>
             </div>
         </div>
-        
-        <!-- Live Infrastructure Monitoring Metrics -->
-        <div class="hidden sm:flex items-center gap-4 text-right">
-            <div class="text-[11px] font-medium text-gray-400">
-                <span class="text-gray-500 uppercase block text-[9px] tracking-wider font-bold">Latency</span>
-                <span class="text-emerald-400 font-mono">14ms</span>
+
+        <div class="p-4 sm:p-6 bg-gray-950/40 border-t border-white/5 backdrop-blur-md">
+            <div class="flex flex-wrap gap-2 mb-3.5 px-1">
+                <button onclick="toggleSummarize()" id="sumBtn" class="px-4 py-1.5 rounded-full border border-white/10 hover:border-indigo-500/40 bg-white/5 text-[11px] font-medium transition-all flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-gray-400" id="sumDot"></span>
+                    Summarize Notes: <span id="sumStatus" class="font-bold text-gray-400">OFF</span>
+                </button>
+
+                <label class="px-4 py-1.5 rounded-full border border-white/10 hover:border-indigo-500/40 bg-white/5 text-[11px] font-medium cursor-pointer transition-all flex items-center gap-1.5">
+                    <i class="fa-solid fa-paperclip text-indigo-400"></i> Attach Files
+                    <input type="file" id="fileInput" multiple class="hidden" onchange="updateFileStatus()" />
+                </label>
+                <span id="fileCount" class="text-[11px] text-indigo-300 self-center font-medium"></span>
             </div>
-            <div class="w-px h-6 bg-white/10"></div>
-            <div class="text-[11px] font-medium text-gray-400">
-                <span class="text-gray-500 uppercase block text-[9px] tracking-wider font-bold">Core Load</span>
-                <span class="text-indigo-400 font-mono">2.4%</span>
+
+            <div class="flex gap-3 items-center relative">
+                <input type="text" id="msg" placeholder="Ask EDITH anything..." 
+                    class="w-full bg-gray-900/80 border border-white/10 focus:border-indigo-500/50 rounded-2xl pl-5 pr-28 py-4 outline-none transition-all text-sm placeholder-gray-500 text-gray-100 shadow-inner"
+                    onkeypress="if(event.key==='Enter')sendMsg()" />
+
+                <div class="absolute right-2 flex items-center gap-1.5">
+                    <button onclick="toggleVoiceInput()" id="micBtn" title="Voice Input"
+                        class="w-10 h-10 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 rounded-xl flex items-center justify-center transition-all">
+                        <i class="fa-solid fa-microphone text-sm"></i>
+                    </button>
+                    
+                    <button onclick="sendMsg()" class="w-10 h-10 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white rounded-xl flex items-center justify-center transition-all shadow-lg shadow-indigo-600/20">
+                        <i class="fa-solid fa-paper-plane text-xs"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Chat Space -->
-    <div id="chatArea" class="flex-1 overflow-y-auto p-6 space-y-6 chat-container">
-        <!-- Rebranded Welcome Screen -->
-        <div id="welcomeScreen" class="flex flex-col justify-center items-center mt-24 text-center px-4">
-            <div class="edith-orb w-20 h-20 rounded-3xl flex items-center justify-center text-3xl text-white mb-6">
-                <i class="fa-solid fa-brain"></i>
+<div id="systemModal" class="fixed inset-0 z-50 flex items-center justify-center hidden p-4">
+    <div class="fixed inset-0 bg-black/60 backdrop-blur-md" onclick="closeModal()"></div>
+    <div class="glass-panel w-full max-w-md rounded-2xl p-6 relative z-10 shadow-2xl border border-white/10 text-gray-200">
+        <h3 id="modalTitle" class="text-lg font-bold text-white mb-2 flex items-center gap-2">Configuration Panel</h3>
+        <div id="modalBody" class="text-xs space-y-4 py-2">
             </div>
-            <h2 class="text-2xl sm:text-3xl font-bold mb-2 tracking-tight text-white">
-                How can I assist you today?
-            </h2>
-            <p class="text-gray-400 text-sm max-w-sm font-light leading-relaxed">
-                I can process documents, parse voice input, analyze complex media datasets, or just run brainstorm sessions.
-            </p>
-        </div>
-    </div>
-
-    <!-- Input Dashboard -->
-    <div class="p-4 sm:p-6 bg-gray-950/40 border-t border-white/5 backdrop-blur-md">
-        <div class="flex flex-wrap gap-2 mb-3.5 px-1">
-            <!-- Mode Selector Toggles -->
-            <button onclick="toggleSummarize()" id="sumBtn" class="px-4 py-1.5 rounded-full border border-white/10 hover:border-indigo-500/40 bg-white/5 text-[11px] font-medium transition-all flex items-center gap-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-gray-400" id="sumDot"></span>
-                Summarize Notes: <span id="sumStatus" class="font-bold text-gray-400">OFF</span>
-            </button>
-
-            <label class="px-4 py-1.5 rounded-full border border-white/10 hover:border-indigo-500/40 bg-white/5 text-[11px] font-medium cursor-pointer transition-all flex items-center gap-1.5">
-                <i class="fa-solid fa-paperclip text-indigo-400"></i> Attach Files
-                <input type="file" id="fileInput" multiple class="hidden" onchange="updateFileStatus()" />
-            </label>
-            <span id="fileCount" class="text-[11px] text-indigo-300 self-center font-medium"></span>
-        </div>
-
-        <!-- System Control Interaction Line -->
-        <div class="flex gap-3 items-center relative">
-            <input type="text" id="msg" placeholder="Ask EDITH anything..." 
-                class="w-full bg-gray-900/80 border border-white/10 focus:border-indigo-500/50 rounded-2xl pl-5 pr-28 py-4 outline-none transition-all text-sm placeholder-gray-500 text-gray-100 shadow-inner"
-                onkeypress="if(event.key==='Enter')sendMsg()" />
-
-            <div class="absolute right-2 flex items-center gap-1.5">
-                <!-- Microphone System Input Button -->
-                <button onclick="toggleVoiceInput()" id="micBtn" title="Voice Input"
-                    class="w-10 h-10 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 rounded-xl flex items-center justify-center transition-all">
-                    <i class="fa-solid fa-microphone text-sm"></i>
-                </button>
-                
-                <!-- Action Send Button -->
-                <button onclick="sendMsg()" class="w-10 h-10 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white rounded-xl flex items-center justify-center transition-all shadow-lg shadow-indigo-600/20">
-                    <i class="fa-solid fa-paper-plane text-xs"></i>
-                </button>
-            </div>
+        <div class="mt-6 flex justify-end">
+            <button onclick="closeModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold transition-all">Close Pipeline</button>
         </div>
     </div>
 </div>
@@ -312,8 +397,118 @@ window.onload = () => {
     }
     if (name) {
         document.getElementById("displayUserName").innerText = name;
+        document.getElementById("sidebarUserName").innerText = name;
     }
 };
+
+/* --- NEW FEATURE IMPLEMENTATION SUITE EXTENSIONS --- */
+
+function toggleMobileSidebar() {
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+    sidebar.classList.toggle("-translate-x-full");
+    overlay.classList.toggle("hidden");
+}
+
+function startNewChat() {
+    chatArea.innerHTML = `
+        <div id="welcomeScreen" class="flex flex-col justify-center items-center mt-24 text-center px-4 animate-msg">
+            <div class="edith-orb w-20 h-20 rounded-3xl flex items-center justify-center text-3xl text-white mb-6">
+                <i class="fa-solid fa-brain"></i>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-bold mb-2 tracking-tight text-white">
+                Fresh Terminal Context Opened.
+            </h2>
+            <p class="text-gray-400 text-sm max-w-sm font-light leading-relaxed">
+                Ask a brand new question or drop complex datasets to kick off operations.
+            </p>
+        </div>
+    `;
+    const msgInput = document.getElementById("msg");
+    if (msgInput) msgInput.value = "";
+    
+    // Close sidebar on mobile views
+    if (!document.getElementById("sidebar").classList.contains("-translate-x-full")) {
+        toggleMobileSidebar();
+    }
+}
+
+function filterChats() {
+    const query = document.getElementById("chatSearch").value.toLowerCase();
+    const items = document.querySelectorAll(".chat-history-item");
+    items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(query) ? "flex" : "none";
+    });
+}
+
+function loadChat(id) {
+    alert(`Initializing extraction loop for Chat Matrix Workspace Block ID: ${id}`);
+    startNewChat();
+}
+
+function deleteChat(id) {
+    alert(`Purging database indexes for Chat Module Context: ${id}`);
+}
+
+function navigateTo(module) {
+    alert(`Mapping system architecture routing pipeline layer directly into: ${module.toUpperCase()}`);
+}
+
+function openModal(type) {
+    const modal = document.getElementById("systemModal");
+    const title = document.getElementById("modalTitle");
+    const body = document.getElementById("modalBody");
+    
+    modal.classList.remove("hidden");
+    
+    if(type === 'settings') {
+        title.innerHTML = '<i class="fa-solid fa-sliders text-indigo-400"></i> Settings Matrix';
+        body.innerHTML = `
+            <div class="space-y-3">
+                <div class="flex justify-between items-center bg-white/5 p-2.5 rounded-xl border border-white/5">
+                    <span>Dark Mode Core UI Optimization</span>
+                    <input type="checkbox" checked disabled class="accent-indigo-500 h-4 w-4">
+                </div>
+                <div class="flex justify-between items-center bg-white/5 p-2.5 rounded-xl border border-white/5">
+                    <span>Memory Synapse Retention</span>
+                    <input type="checkbox" checked class="accent-indigo-500 h-4 w-4">
+                </div>
+                <div class="space-y-1">
+                    <label class="text-gray-400 font-medium text-[11px]">System Model Core Allocation Selection</label>
+                    <select class="w-full bg-gray-950 border border-white/10 rounded-xl p-2 text-xs text-gray-300 outline-none">
+                        <option>EDITH Neural Core (Default)</option>
+                        <option>EDITH DeepReasoning 3.5</option>
+                    </select>
+                </div>
+            </div>
+        `;
+    } else if(type === 'profile') {
+        const name = localStorage.getItem("userName") || "Student";
+        title.innerHTML = '<i class="fa-solid fa-circle-user text-indigo-400"></i> Operator Preferences';
+        body.innerHTML = `
+            <div class="text-center space-y-3">
+                <div class="w-16 h-16 rounded-2xl bg-indigo-600 mx-auto flex items-center justify-center text-2xl font-bold tracking-tight text-white shadow-xl shadow-indigo-600/20">
+                    ST
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-white">${name}</h4>
+                    <p class="text-gray-400 text-[11px]">operator_id: x77_hub_session</p>
+                </div>
+                <hr class="border-white/5">
+                <button onclick="localStorage.clear(); window.location.reload();" class="w-full bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 text-red-200 py-2 rounded-xl font-bold text-xs transition-all">
+                    Terminate Session Lifecycle (Logout)
+                </button>
+            </div>
+        `;
+    }
+}
+
+function closeModal() {
+    document.getElementById("systemModal").classList.add("hidden");
+}
+
+/* --- END OF EXTENSIONS SUITE --- */
 
 function toggleSummarize() {
     isSummarize = !isSummarize;
@@ -376,8 +571,9 @@ function cleanAndParseMarkdown(text) {
 }
 
 function addMessage(text, isUser) {
-    if (welcomeScreen && welcomeScreen.style.display !== "none") {
-        welcomeScreen.style.display = "none";
+    const welcome = document.getElementById("welcomeScreen");
+    if (welcome) {
+        welcome.remove();
     }
 
     const div = document.createElement("div");
