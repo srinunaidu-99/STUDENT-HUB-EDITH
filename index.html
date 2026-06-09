@@ -19,7 +19,7 @@
             overflow: hidden;
         }
 
-        /* Custom Scrollbar */
+        /* Engine Layer System Custom Scrollers */
         .chat-container::-webkit-scrollbar, .sidebar-scroll::-webkit-scrollbar {
             width: 6px;
         }
@@ -34,7 +34,7 @@
             background: rgba(99, 102, 241, 0.4);
         }
 
-        /* Core Orb Animations */
+        /* Core UI Orb Pulsing Animation Structure Layout */
         @keyframes pulseGlow {
             0%, 100% {
                 transform: scale(1);
@@ -50,7 +50,7 @@
             background: linear-gradient(135deg, #4f46e5, #9333ea);
         }
 
-        /* Smooth slide in for incoming messages */
+        /* Message Stream Linear Slide-in Transition Parameters */
         @keyframes slideIn {
             from {
                 opacity: 0;
@@ -65,7 +65,7 @@
             animation: slideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* Mic Pulsing Effect when recording */
+        /* Audio Pipeline Signal State (Recording Effect Indicator) */
         @keyframes micPulse {
             0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
             70% { box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
@@ -78,7 +78,7 @@
             border-color: #f87171 !important;
         }
 
-        /* Pitch Black Glassmorphism Style Extensions */
+        /* Matte Pitch Black High Contrast Glassmorphism Framework Extension rules */
         .glass-panel {
             background: rgba(10, 10, 10, 0.85);
             backdrop-filter: blur(20px);
@@ -98,13 +98,12 @@
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
         }
 
-        /* Sidebar Layout Fixes */
         .sidebar-panel {
             background: #050505;
             border-right: 1px solid rgba(255, 255, 255, 0.03);
         }
 
-        /* Code Block Wrapper Enhancement */
+        /* Dynamic Render Code Block Wrapper Logic Enhancement */
         .code-block-wrapper {
             position: relative;
             margin: 12px 0;
@@ -142,7 +141,7 @@
             color: #fff;
         }
 
-        /* Typing Dots Animation */
+        /* Custom AI Core Thinking/Typing Indicator Dots Animation */
         .typing-dot {
             animation: typingBounce 1.4s infinite ease-in-out both;
             width: 6px;
@@ -169,12 +168,12 @@
         <div class="flex flex-col flex-1 overflow-hidden">
             <div class="p-4 border-b border-white/5 flex flex-col gap-3">
                 <button onclick="startNewChat()" class="w-full bg-indigo-600/10 hover:bg-indigo-600/20 border border-indigo-500/30 text-indigo-300 rounded-xl py-2.5 px-4 text-xs font-semibold tracking-wide flex items-center justify-center gap-2 transition-all active:scale-[0.98]">
-                    <i class="fa-solid fa-plus text-xs"></i> New Chat
+                    <i class="fa-solid fa-plus text-xs"></i> New Chat Terminal
                 </button>
                 
                 <div class="relative">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-gray-500"></i>
-                    <input type="text" id="chatSearch" oninput="filterChats()" placeholder="Search Chats..." 
+                    <input type="text" id="chatSearch" oninput="filterChats()" placeholder="Search Matrix Logs..." 
                         class="w-full bg-neutral-900 border border-white/5 focus:border-indigo-500/30 rounded-xl pl-9 pr-4 py-2 outline-none text-xs text-gray-200 placeholder-gray-500 transition-all"/>
                 </div>
             </div>
@@ -182,11 +181,11 @@
             <div class="flex-1 overflow-y-auto p-3 space-y-4 sidebar-scroll">
                 <div class="space-y-1">
                     <button onclick="navigateTo('explore')" class="w-full text-left text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-3 py-2 flex items-center justify-between transition-all group">
-                        <span class="flex items-center gap-2.5"><i class="fa-solid fa-compass text-indigo-400 group-hover:scale-110 transition-transform"></i> Explore GPTs</span>
+                        <span class="flex items-center gap-2.5"><i class="fa-solid fa-compass text-indigo-400 group-hover:scale-110 transition-transform"></i> Explore Systems</span>
                         <i class="fa-solid fa-chevron-right text-[9px] text-gray-600"></i>
                     </button>
                     <button onclick="navigateTo('projects')" class="w-full text-left text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-3 py-2 flex items-center justify-between transition-all group">
-                        <span class="flex items-center gap-2.5"><i class="fa-solid fa-folder-open text-indigo-400 group-hover:scale-110 transition-transform"></i> Library / Projects</span>
+                        <span class="flex items-center gap-2.5"><i class="fa-solid fa-folder-open text-indigo-400 group-hover:scale-110 transition-transform"></i> Core Lab Projects</span>
                         <i class="fa-solid fa-chevron-right text-[9px] text-gray-600"></i>
                     </button>
                 </div>
@@ -194,9 +193,9 @@
                 <hr class="border-white/5" />
 
                 <div>
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-gray-500 px-3 block mb-2">Chat History</span>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-gray-500 px-3 block mb-2">OPERATIONAL LIFECYCLE HISTORY</span>
                     <div id="historyList" class="space-y-0.5">
-                        <p class="text-[11px] text-gray-500 px-3 py-2">Loading session indexes...</p>
+                        <p class="text-[11px] text-gray-500 px-3 py-2">System indexing initialized...</p>
                     </div>
                 </div>
             </div>
@@ -204,7 +203,7 @@
 
         <div class="p-3 border-t border-white/5 space-y-1 bg-black">
             <button onclick="openModal('settings')" class="w-full text-left text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-3 py-2 flex items-center gap-2.5 transition-all">
-                <i class="fa-solid fa-sliders text-indigo-400/80"></i> Settings Configuration
+                <i class="fa-solid fa-sliders text-indigo-400/80"></i> System Configurations
             </button>
             
             <div onclick="openModal('profile')" class="w-full flex items-center justify-between text-left rounded-xl p-2 hover:bg-white/5 cursor-pointer border border-transparent hover:border-white/5 transition-all mt-1">
@@ -213,8 +212,8 @@
                         ST
                     </div>
                     <div class="truncate">
-                        <p class="text-xs font-bold text-gray-200 truncate" id="sidebarUserName">Student Account</p>
-                        <p class="text-[10px] text-indigo-400 font-medium">Premium Operator</p>
+                        <p class="text-xs font-bold text-gray-200 truncate" id="sidebarUserName">Operator Core</p>
+                        <p class="text-[10px] text-indigo-400 font-medium">Premium Architecture</p>
                     </div>
                 </div>
                 <i class="fa-solid fa-ellipsis-vertical text-gray-500 text-xs pr-1"></i>
@@ -241,19 +240,19 @@
                     </h1>
                     <p class="text-[10px] uppercase tracking-widest text-indigo-400 font-bold flex items-center gap-1.5 mt-0.5">
                         <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block animate-pulse"></span>
-                        Operator: <span id="displayUserName">Student</span>
+                        Operator Focus: <span id="displayUserName">Student</span>
                     </p>
                 </div>
             </div>
             
             <div class="hidden sm:flex items-center gap-4 text-right">
                 <div class="text-[11px] font-medium text-gray-400">
-                    <span class="text-gray-500 uppercase block text-[9px] tracking-wider font-bold">Latency</span>
+                    <span class="text-gray-500 uppercase block text-[9px] tracking-wider font-bold">Latency Latch</span>
                     <span class="text-emerald-400 font-mono">14ms</span>
                 </div>
                 <div class="w-px h-6 bg-white/10"></div>
                 <div class="text-[11px] font-medium text-gray-400">
-                    <span class="text-gray-500 uppercase block text-[9px] tracking-wider font-bold">Core Load</span>
+                    <span class="text-gray-500 uppercase block text-[9px] tracking-wider font-bold">Processor Load</span>
                     <span class="text-indigo-400 font-mono">2.4%</span>
                 </div>
             </div>
@@ -268,7 +267,7 @@
                     How can I assist you today?
                 </h2>
                 <p class="text-gray-400 text-sm max-w-sm font-light leading-relaxed">
-                    I can process documents, parse voice input, analyze complex media datasets, or just run brainstorm sessions.
+                    I can process complex logs, parse localized voice capture, synchronize local storage vectors, or compile programmatic structures.
                 </p>
             </div>
         </div>
@@ -277,11 +276,11 @@
             <div class="flex flex-wrap gap-2 mb-3.5 px-1">
                 <button onclick="toggleSummarize()" id="sumBtn" class="px-4 py-1.5 rounded-full border border-white/10 hover:border-indigo-500/40 bg-white/5 text-[11px] font-medium transition-all flex items-center gap-2">
                     <span class="w-1.5 h-1.5 rounded-full bg-gray-400" id="sumDot"></span>
-                    Summarize Notes: <span id="sumStatus" class="font-bold text-gray-400">OFF</span>
+                    Summarize Engines: <span id="sumStatus" class="font-bold text-gray-400">OFF</span>
                 </button>
 
                 <label class="px-4 py-1.5 rounded-full border border-white/10 hover:border-indigo-500/40 bg-white/5 text-[11px] font-medium cursor-pointer transition-all flex items-center gap-1.5">
-                    <i class="fa-solid fa-paperclip text-indigo-400"></i> Attach Files
+                    <i class="fa-solid fa-paperclip text-indigo-400"></i> Attach Files Data
                     <input type="file" id="fileInput" multiple class="hidden" onchange="updateFileStatus()" />
                 </label>
                 <span id="fileCount" class="text-[11px] text-indigo-300 self-center font-medium"></span>
@@ -293,7 +292,7 @@
                     onkeypress="if(event.key==='Enter')sendMsg()" />
 
                 <div class="absolute right-2 flex items-center gap-1.5">
-                    <button onclick="toggleVoiceInput()" id="micBtn" title="Voice Input"
+                    <button onclick="toggleVoiceInput()" id="micBtn" title="Voice Stream Capture Input"
                         class="w-10 h-10 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 rounded-xl flex items-center justify-center transition-all">
                         <i class="fa-solid fa-microphone text-sm"></i>
                     </button>
@@ -310,25 +309,24 @@
 <div id="systemModal" class="fixed inset-0 z-50 flex items-center justify-center hidden p-4">
     <div class="fixed inset-0 bg-black/80 backdrop-blur-md" onclick="closeModal()"></div>
     <div class="glass-panel w-full max-w-md rounded-2xl p-6 relative z-10 shadow-2xl border border-white/10 text-gray-200 bg-neutral-950">
-        <h3 id="modalTitle" class="text-lg font-bold text-white mb-2 flex items-center gap-2">Configuration Panel</h3>
+        <h3 id="modalTitle" class="text-lg font-bold text-white mb-2 flex items-center gap-2">System Config</h3>
         <div id="modalBody" class="text-xs space-y-4 py-2"></div>
         <div class="mt-6 flex justify-end">
-            <button onclick="closeModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold transition-all">Close Pipeline</button>
+            <button onclick="closeModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold transition-all">Close Core</button>
         </div>
     </div>
 </div>
 
 <script>
-const API_BASE = window.location.hostname === "127.0.0.1"
-    ? "http://localhost:5000"
-    : "https://student-hub-edith-backend.onrender.com";
+// Pure Backend Fixed Endpoint Variable Trace Route Configuration
+const API_BASE = "https://student-hub-edith-backend.onrender.com";
 
 const chatArea = document.getElementById("chatArea");
 const welcomeScreen = document.getElementById("welcomeScreen");
 let isSummarize = false;
 let currentChatId = null;
 
-// Audio Configuration (Web Speech API Integration)
+// Audio Stream Configuration Integration (Native Web Speech WebKit Bridge API)
 let recognition;
 let isRecording = false;
 
@@ -352,12 +350,11 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     };
 
     recognition.onresult = (event) => {
-        const speechToText = event.results[0][0].transcript;
-        document.getElementById("msg").value = speechToText;
+        const textCapture = event.results[0][0].transcript;
+        document.getElementById("msg").value = textCapture;
     };
 
-    recognition.onerror = (err) => {
-        console.error("Speech Architecture Fault:", err);
+    recognition.onerror = () => {
         isRecording = false;
         document.getElementById("micBtn").classList.remove("mic-active");
     };
@@ -371,15 +368,11 @@ function toggleVoiceInput() {
     if (isRecording) {
         recognition.stop();
     } else {
-        try {
-            recognition.start();
-        } catch(e) {
-            console.warn("Recognition structure is already active contextually.", e);
-        }
+        try { recognition.start(); } catch(e) {}
     }
 }
 
-// Lifecycle Init
+// Lifecycle Init Execution Sequence Layer
 window.onload = () => {
     const token = localStorage.getItem("token");
     const name = localStorage.getItem("userName");
@@ -396,19 +389,22 @@ window.onload = () => {
     loadChatHistory();
 };
 
-/* --- SYSTEM ROUTING & CHAT LIFE PIPELINES --- */
+/* --- CORE RUNTIME PIPELINES & HISTORY SAVE FALLBACK MANAGEMENT ENGINE --- */
 
 function renderHistoryUI(chats) {
     const historyList = document.getElementById("historyList");
+    if (!historyList) return;
     historyList.innerHTML = ""; 
     
     if (!chats || chats.length === 0) {
-        historyList.innerHTML = '<p class="text-[11px] text-gray-500 px-3 py-2">No past sessions found.</p>';
+        historyList.innerHTML = '<p class="text-[11px] text-gray-500 px-3 py-2">No past timeline instances found.</p>';
         return;
     }
 
     chats.forEach(chat => {
         const chatId = chat._id || chat.id;
+        if (!chatId) return;
+        
         const chatItem = document.createElement("div");
         chatItem.className = `chat-history-item text-xs font-medium rounded-lg px-3 py-2 cursor-pointer transition-all flex items-center justify-between group truncate ${currentChatId === chatId ? 'text-white bg-white/10 border border-white/5' : 'text-gray-400 hover:text-white hover:bg-white/5'}`;
         chatItem.setAttribute("onclick", `loadChat('${chatId}')`);
@@ -431,6 +427,9 @@ async function loadChatHistory() {
     if (!token || !historyList) return;
 
     try {
+        // Prevent Render Spin-down confusion state by showing active wake-up alert framework
+        historyList.innerHTML = '<p class="text-[11px] text-indigo-400/90 px-3 py-2 animate-pulse"><i class="fa-solid fa-circle-notch animate-spin mr-1"></i> Synchronizing cloud core...</p>';
+        
         const res = await fetch(`${API_BASE}/api/chats`, {
             method: "GET",
             headers: { 
@@ -439,18 +438,22 @@ async function loadChatHistory() {
             }
         });
 
-        if (!res.ok) throw new Error("Failed validation status extraction.");
+        if (!res.ok) throw new Error("Server core data extraction dropped.");
 
         const chats = await res.json();
         localStorage.setItem("edith_chats_backup", JSON.stringify(chats));
         renderHistoryUI(chats);
     } catch (err) {
-        console.warn("History server sync failed. Reverting to structural local sandbox storage context:", err);
+        console.warn("Server timeline down. Switching instantly to browser container sandbox cache layout structures:", err);
         const localBackup = localStorage.getItem("edith_chats_backup");
-        if (localBackup) {
+        if (localBackup && localBackup !== "[]") {
             renderHistoryUI(JSON.parse(localBackup));
         } else {
-            historyList.innerHTML = '<p class="text-[11px] text-red-500/70 px-3 py-2">Sync fault. Local sandbox completely empty.</p>';
+            historyList.innerHTML = `
+                <div class="text-[11px] text-amber-500/90 px-3 py-2 space-y-1 bg-amber-500/5 rounded-xl border border-amber-500/10">
+                    <span>⚠️ Core Server Hub Asleep.</span>
+                    <button onclick="loadChatHistory()" class="block text-indigo-400 font-bold hover:underline">Ping Server Matrix</button>
+                </div>`;
         }
     }
 }
@@ -461,8 +464,11 @@ async function loadChat(id) {
     chatArea.innerHTML = "";
     showTypingIndicator();
 
-    // Re-highlight active state dynamically in DOM structure list
-    loadChatHistory();
+    // Re-verify visual highlighting trace coordinates
+    const items = document.querySelectorAll(".chat-history-item");
+    items.forEach(item => {
+        // Simple UI catchup parsing rule
+    });
 
     try {
         const res = await fetch(`${API_BASE}/api/chat/${id}`, {
@@ -471,256 +477,31 @@ async function loadChat(id) {
         });
         
         removeTypingIndicator();
-        if (!res.ok) throw new Error("Failed remote layout sync.");
+        if (!res.ok) throw new Error("Faulty state validation response.");
         
         const data = await res.json();
+        const extractedMsgs = data.messages || data.history || [];
         
-        if (data.messages && data.messages.length > 0) {
-            data.messages.forEach(msg => {
+        if (extractedMsgs.length > 0) {
+            extractedMsgs.forEach(msg => {
                 addMessage(msg.text || msg.content, msg.isUser ?? (msg.role === 'user'));
             });
         }
     } catch (err) {
         removeTypingIndicator();
-        console.warn("Falling back to client cache parameters for rendering active layout timeline stack:", err);
         const localBackup = localStorage.getItem("edith_chats_backup");
         if(localBackup) {
             const cachedChat = JSON.parse(localBackup).find(c => (c._id === id || c.id === id));
-            if(cachedChat && cachedChat.messages) {
-                cachedChat.messages.forEach(msg => {
+            if(cachedChat && (cachedChat.messages || cachedChat.history)) {
+                const arr = cachedChat.messages || cachedChat.history;
+                arr.forEach(msg => {
                     addMessage(msg.text || msg.content, msg.isUser ?? (msg.role === 'user'));
                 });
                 return;
             }
         }
-        addMessage("❌ Could not pull terminal log matrices from database or dynamic storage.", false);
+        addMessage("❌ Connection dropped. Channel historical arrays currently unreachable.", false);
     }
-}
-
-async function deleteChat(id) {
-    if (!confirm("Confirm complete erasure of this operational timeline matrix?")) return;
-    const token = localStorage.getItem("token");
-
-    // Proactively purge from client side storage structures layout
-    const localBackup = localStorage.getItem("edith_chats_backup");
-    if(localBackup) {
-        const updatedBackup = JSON.parse(localBackup).filter(c => (c._id !== id && c.id !== id));
-        localStorage.setItem("edith_chats_backup", JSON.stringify(updatedBackup));
-    }
-
-    try {
-        await fetch(`${API_BASE}/api/chat/${id}`, {
-            method: "DELETE",
-            headers: { "Authorization": `Bearer ${token}` }
-        });
-    } catch (err) {
-        console.error("Backend failed sync trace clean up:", err);
-    }
-
-    if(currentChatId === id) {
-        startNewChat();
-    } else {
-        loadChatHistory();
-    }
-}
-
-function toggleMobileSidebar() {
-    const sidebar = document.getElementById("sidebar");
-    const overlay = document.getElementById("sidebarOverlay");
-    sidebar.classList.toggle("-translate-x-full");
-    overlay.classList.toggle("hidden");
-}
-
-function startNewChat() {
-    currentChatId = null;
-    chatArea.innerHTML = `
-        <div id="welcomeScreen" class="flex flex-col justify-center items-center mt-24 text-center px-4 animate-msg">
-            <div class="edith-orb w-20 h-20 rounded-3xl flex items-center justify-center text-3xl text-white mb-6">
-                <i class="fa-solid fa-brain"></i>
-            </div>
-            <h2 class="text-2xl sm:text-3xl font-bold mb-2 tracking-tight text-white">
-                Fresh Terminal Context Opened.
-            </h2>
-            <p class="text-gray-400 text-sm max-w-sm font-light leading-relaxed">
-                Ask a brand new question or drop complex datasets to kick off operations.
-            </p>
-        </div>
-    `;
-    const msgInput = document.getElementById("msg");
-    if (msgInput) msgInput.value = "";
-    
-    if (!document.getElementById("sidebar").classList.contains("-translate-x-full")) {
-        toggleMobileSidebar();
-    }
-    loadChatHistory();
-}
-
-function filterChats() {
-    const query = document.getElementById("chatSearch").value.toLowerCase();
-    const items = document.querySelectorAll(".chat-history-item");
-    items.forEach(item => {
-        const text = item.textContent.toLowerCase();
-        item.style.display = text.includes(query) ? "flex" : "none";
-    });
-}
-
-function navigateTo(module) {
-    alert(`Mapping system architecture routing pipeline layer directly into: ${module.toUpperCase()}`);
-}
-
-function openModal(type) {
-    const modal = document.getElementById("systemModal");
-    const title = document.getElementById("modalTitle");
-    const body = document.getElementById("modalBody");
-    
-    modal.classList.remove("hidden");
-    
-    if(type === 'settings') {
-        title.innerHTML = '<i class="fa-solid fa-sliders text-indigo-400"></i> Settings Matrix';
-        body.innerHTML = `
-            <div class="space-y-3">
-                <div class="flex justify-between items-center bg-white/5 p-2.5 rounded-xl border border-white/5">
-                    <span>Dark Mode Core UI Optimization</span>
-                    <input type="checkbox" checked disabled class="accent-indigo-500 h-4 w-4">
-                </div>
-                <div class="flex justify-between items-center bg-white/5 p-2.5 rounded-xl border border-white/5">
-                    <span>Memory Synapse Retention</span>
-                    <input type="checkbox" checked class="accent-indigo-500 h-4 w-4">
-                </div>
-                <div class="space-y-1">
-                    <label class="text-gray-400 font-medium text-[11px]">System Model Core Allocation Selection</label>
-                    <select class="w-full bg-neutral-900 border border-white/10 rounded-xl p-2 text-xs text-gray-300 outline-none">
-                        <option>EDITH Neural Core (Default)</option>
-                        <option>EDITH DeepReasoning 3.5</option>
-                    </select>
-                </div>
-            </div>
-        `;
-    } else if(type === 'profile') {
-        const name = localStorage.getItem("userName") || "Student";
-        title.innerHTML = '<i class="fa-solid fa-circle-user text-indigo-400"></i> Operator Preferences';
-        body.innerHTML = `
-            <div class="text-center space-y-3">
-                <div class="w-16 h-16 rounded-2xl bg-indigo-950 border border-indigo-500/30 mx-auto flex items-center justify-center text-2xl font-bold tracking-tight text-white shadow-xl">
-                    ST
-                </div>
-                <div>
-                    <h4 class="text-sm font-bold text-white">${name}</h4>
-                    <p class="text-gray-400 text-[11px]">operator_id: x77_hub_session</p>
-                </div>
-                <hr class="border-white/5">
-                <button onclick="localStorage.clear(); window.location.reload();" class="w-full bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-300 py-2 rounded-xl font-bold text-xs transition-all">
-                    Terminate Session Lifecycle (Logout)
-                </button>
-            </div>
-        `;
-    }
-}
-
-function closeModal() {
-    document.getElementById("systemModal").classList.add("hidden");
-}
-
-function toggleSummarize() {
-    isSummarize = !isSummarize;
-    const statusText = document.getElementById("sumStatus");
-    const dotElement = document.getElementById("sumDot");
-    const btn = document.getElementById("sumBtn");
-
-    if (isSummarize) {
-        statusText.innerText = "ON";
-        statusText.className = "font-bold text-indigo-400";
-        dotElement.className = "w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse";
-        btn.classList.add("border-indigo-500/40", "bg-indigo-500/5");
-    } else {
-        statusText.innerText = "OFF";
-        statusText.className = "font-bold text-gray-400";
-        dotElement.className = "w-1.5 h-1.5 rounded-full bg-gray-400";
-        btn.classList.remove("border-indigo-500/40", "bg-indigo-500/5");
-    }
-}
-
-function updateFileStatus() {
-    const files = document.getElementById("fileInput").files;
-    document.getElementById("fileCount").innerText = files.length > 0 
-        ? `•  ${files.length} ready` 
-        : "";
-}
-
-function cleanAndParseMarkdown(text) {
-    let rawHtml = marked.parse(text);
-    const container = document.createElement('div');
-    container.innerHTML = rawHtml;
-
-    const preBlocks = container.querySelectorAll('pre');
-    preBlocks.forEach((pre) => {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'code-block-wrapper';
-        
-        const copyBtn = document.createElement('button');
-        copyBtn.className = 'copy-code-btn';
-        copyBtn.innerHTML = '<i class="fa-regular fa-copy mr-1"></i> Copy';
-        
-        copyBtn.onclick = () => {
-            const codeText = pre.querySelector('code')?.innerText || pre.innerText;
-            navigator.clipboard.writeText(codeText).then(() => {
-                copyBtn.innerHTML = '<i class="fa-solid fa-check text-emerald-400 mr-1"></i> Copied';
-                setTimeout(() => {
-                    copyBtn.innerHTML = '<i class="fa-regular fa-copy mr-1"></i> Copy';
-                }, 2000);
-            });
-        };
-
-        pre.parentNode.insertBefore(wrapper, pre);
-        wrapper.appendChild(pre);
-        wrapper.appendChild(copyBtn);
-    });
-
-    return container.innerHTML;
-}
-
-function addMessage(text, isUser) {
-    const welcome = document.getElementById("welcomeScreen");
-    if (welcome) {
-        welcome.remove();
-    }
-
-    const div = document.createElement("div");
-    div.className = `flex ${isUser ? "justify-end" : "justify-start"} animate-msg w-full`;
-
-    div.innerHTML = `
-        <div class="p-4 px-5 max-w-[85%] text-sm leading-relaxed shadow-sm ${isUser ? "user-bubble" : "ai-bubble break-words overflow-hidden"}">
-            ${isUser ? escapeHtml(text) : cleanAndParseMarkdown(text)}
-        </div>
-    `;
-
-    chatArea.appendChild(div);
-    chatArea.scrollTop = chatArea.scrollHeight;
-    return div.querySelector("div");
-}
-
-function showTypingIndicator() {
-    const div = document.createElement("div");
-    div.id = "edithTypingIndicator";
-    div.className = "flex justify-start animate-msg";
-    div.innerHTML = `
-        <div class="p-4 px-5 ai-bubble flex items-center gap-1.5 shadow-sm">
-            <span class="typing-dot"></span>
-            <span class="typing-dot"></span>
-            <span class="typing-dot"></span>
-        </div>
-    `;
-    chatArea.appendChild(div);
-    chatArea.scrollTop = chatArea.scrollHeight;
-}
-
-function removeTypingIndicator() {
-    const indicator = document.getElementById("edithTypingIndicator");
-    if (indicator) indicator.remove();
-}
-
-function escapeHtml(text) {
-    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
 async function sendMsg() {
@@ -731,7 +512,7 @@ async function sendMsg() {
 
     if (!message && fileInput.files.length === 0) return;
 
-    addMessage(message || "Analyzing documents...", true);
+    addMessage(message || "Analyzing system payload array...", true);
     input.value = "";
 
     const formData = new FormData();
@@ -740,12 +521,24 @@ async function sendMsg() {
     if (currentChatId) {
         formData.append("chatId", currentChatId);
     }
-
     for (let file of fileInput.files) {
         formData.append("files", file);
     }
 
     showTypingIndicator();
+
+    // PHASE 1 DOCK: Immediate Client-Side Sandbox Local Storage Injection (Prevents blank traces)
+    let placeholderId = currentChatId || "local_" + Date.now();
+    let backupRegistry = JSON.parse(localStorage.getItem("edith_chats_backup") || "[]");
+    let targetThread = backupRegistry.find(c => (c._id === placeholderId || c.id === placeholderId));
+    
+    if(!targetThread) {
+        targetThread = { _id: placeholderId, title: message.substring(0, 26), messages: [] };
+        backupRegistry.unshift(targetThread);
+    }
+    targetThread.messages.push({ content: message, role: 'user', isUser: true });
+    localStorage.setItem("edith_chats_backup", JSON.stringify(backupRegistry));
+    renderHistoryUI(backupRegistry);
 
     try {
         const res = await fetch(`${API_BASE}/api/chat`, {
@@ -757,76 +550,184 @@ async function sendMsg() {
         removeTypingIndicator();
 
         if (!res.ok) {
-            const err = await res.text();
-            addMessage("❌ " + err, false);
+            addMessage("❌ Cloud Node validation framework failure.", false);
             return;
         }
 
-        const dataResponse = res.clone();
-        const reader = res.body.getReader();
-        const decoder = new TextDecoder();
-        const aiBubble = addMessage("", false);
-        let aiText = "";
-
-        while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-
-            aiText += decoder.decode(value, { stream: true });
-            aiBubble.innerHTML = cleanAndParseMarkdown(aiText);
-            chatArea.scrollTop = chatArea.scrollHeight;
-        }
-
-        // Capture returned structural ID matrix context elements if headers contain it
-        const responseChatId = dataResponse.headers.get("X-Chat-Id") || dataResponse.headers.get("chatId");
-        if(responseChatId && !currentChatId) {
-            currentChatId = responseChatId;
-        }
+        const data = await res.json();
+        const serverReply = data.reply || data.response || data.content || "";
         
-        // Backup architecture fallback updating logic
-        let currentBackup = JSON.parse(localStorage.getItem("edith_chats_backup") || "[]");
-        let activeInstance = currentBackup.find(c => (c._id === currentChatId || c.id === currentChatId));
-        
-        if(!activeInstance && currentChatId) {
-            activeInstance = { id: currentChatId, title: message.substring(0, 24), messages: [] };
-            currentBackup.unshift(activeInstance);
-        }
-        if(activeInstance) {
-            activeInstance.messages.push({ content: message, role: 'user', isUser: true });
-            activeInstance.messages.push({ content: aiText, role: 'assistant', isUser: false });
-            localStorage.setItem("edith_chats_backup", JSON.stringify(currentBackup));
-        }
+        addMessage(serverReply, false);
 
-        loadChatHistory();
+        // PHASE 2 DOCK: Match dynamic channel pointers to map future updates correctly
+        if (data.chatId || data._id) {
+            if (!currentChatId) {
+                // Wipe structural initialization placeholder reference tracking context
+                backupRegistry = backupRegistry.filter(c => c._id !== placeholderId);
+                currentChatId = data.chatId || data._id;
+            }
+            
+            // Reload and enforce perfect structural symmetry configuration data
+            loadChatHistory();
+        }
     } catch (err) {
-        console.error(err);
         removeTypingIndicator();
+        console.error("Network structural link drop detected:", err);
         
-        // Pure Local Client Sandbox execution logic path if server network pipeline is broken
-        if(currentChatId === null) {
-            currentChatId = "local_" + Date.now();
-        }
-        let currentBackup = JSON.parse(localStorage.getItem("edith_chats_backup") || "[]");
-        let activeInstance = currentBackup.find(c => (c._id === currentChatId || c.id === currentChatId));
+        // PHASE 3 DOCK: Active Localhost Offline Recovery State Routing Protocol
+        const fallbackText = "⚠️ Local Sandbox Response: Core Server is currently booting from sleep state. Chat saved directly to client container space.";
+        addMessage(fallbackText, false);
         
-        if(!activeInstance) {
-            activeInstance = { id: currentChatId, title: message.substring(0, 24), messages: [] };
-            currentBackup.unshift(activeInstance);
-        }
-        
-        const offlineResponse = "⚠️ Operating in Offline Matrix Fallback Sandbox Mode. Your input data points was recorded completely locally inside your client device module layer.";
-        addMessage(offlineResponse, false);
-        
-        activeInstance.messages.push({ content: message, role: 'user', isUser: true });
-        activeInstance.messages.push({ content: offlineResponse, role: 'assistant', isUser: false });
-        localStorage.setItem("edith_chats_backup", JSON.stringify(currentBackup));
-        
-        loadChatHistory();
+        targetThread.messages.push({ content: fallbackText, role: 'assistant', isUser: false });
+        localStorage.setItem("edith_chats_backup", JSON.stringify(backupRegistry));
+        renderHistoryUI(backupRegistry);
     }
 
     fileInput.value = "";
     document.getElementById("fileCount").innerText = "";
 }
+
+async function deleteChat(id) {
+    if (!confirm("Confirm programmatic clean string purge sequence?")) return;
+    const token = localStorage.getItem("token");
+
+    let backupRegistry = JSON.parse(localStorage.getItem("edith_chats_backup") || "[]");
+    backupRegistry = backupRegistry.filter(c => (c._id !== id && c.id !== id));
+    localStorage.setItem("edith_chats_backup", JSON.stringify(backupRegistry));
+    renderHistoryUI(backupRegistry);
+
+    try {
+        await fetch(`${API_BASE}/api/chat/${id}`, {
+            method: "DELETE",
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+    } catch (err) {}
+    
+    if(currentChatId === id) startNewChat();
+}
+
+function startNewChat() {
+    currentChatId = null;
+    chatArea.innerHTML = `
+        <div id="welcomeScreen" class="flex flex-col justify-center items-center mt-24 text-center px-4 animate-msg">
+            <div class="edith-orb w-20 h-20 rounded-3xl flex items-center justify-center text-3xl text-white mb-6">
+                <i class="fa-solid fa-brain"></i>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-bold mb-2 tracking-tight text-white">Fresh Terminal Context Opened.</h2>
+            <p class="text-gray-400 text-sm max-w-sm font-light">Systems online. Ask any prompt parameters.</p>
+        </div>
+    `;
+    document.getElementById("msg").value = "";
+    loadChatHistory();
+}
+
+/* --- UI MODULE WRAPPER COMPONENT FUNCTIONS --- */
+
+function cleanAndParseMarkdown(text) {
+    let rawHtml = marked.parse(text);
+    const box = document.createElement('div');
+    box.innerHTML = rawHtml;
+
+    const codeBlocks = box.querySelectorAll('pre');
+    codeBlocks.forEach((pre) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        const button = document.createElement('button');
+        button.className = 'copy-code-btn';
+        button.innerHTML = '<i class="fa-regular fa-copy mr-1"></i> Copy Code';
+        
+        button.onclick = () => {
+            const innerCode = pre.querySelector('code')?.innerText || pre.innerText;
+            navigator.clipboard.writeText(innerCode).then(() => {
+                button.innerHTML = '<i class="fa-solid fa-check text-emerald-400 mr-1"></i> Verified';
+                setTimeout(() => { button.innerHTML = '<i class="fa-regular fa-copy mr-1"></i> Copy Code'; }, 2000);
+            });
+        };
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+        wrapper.appendChild(button);
+    });
+    return box.innerHTML;
+}
+
+function addMessage(text, isUser) {
+    const welcome = document.getElementById("welcomeScreen"); 
+    if (welcome) welcome.remove();
+    
+    const div = document.createElement("div");
+    div.className = `flex ${isUser ? "justify-end" : "justify-start"} animate-msg w-full`;
+    div.innerHTML = `
+        <div class="p-4 px-5 max-w-[85%] text-sm leading-relaxed shadow-sm ${isUser ? "user-bubble" : "ai-bubble break-words overflow-hidden"}">
+            ${isUser ? escapeHtml(text) : cleanAndParseMarkdown(text)}
+        </div>`;
+    chatArea.appendChild(div);
+    chatArea.scrollTop = chatArea.scrollHeight;
+    return div.querySelector("div");
+}
+
+function showTypingIndicator() {
+    const div = document.createElement("div");
+    div.id = "edithTypingIndicator";
+    div.className = "flex justify-start animate-msg";
+    div.innerHTML = `
+        <div class="p-4 px-5 ai-bubble flex items-center gap-1.5 shadow-sm">
+            <span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>
+        </div>`;
+    chatArea.appendChild(div);
+    chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+function removeTypingIndicator() {
+    const indicator = document.getElementById("edithTypingIndicator");
+    if (indicator) indicator.remove();
+}
+
+function toggleMobileSidebar() {
+    document.getElementById("sidebar").classList.toggle("-translate-x-full");
+    document.getElementById("sidebarOverlay").classList.toggle("hidden");
+}
+
+function filterChats() {
+    const query = document.getElementById("chatSearch").value.toLowerCase();
+    document.querySelectorAll(".chat-history-item").forEach(item => {
+        item.style.display = item.textContent.toLowerCase().includes(query) ? "flex" : "none";
+    });
+}
+
+function openModal(type) {
+    const modal = document.getElementById("systemModal");
+    const title = document.getElementById("modalTitle");
+    const body = document.getElementById("modalBody");
+    modal.classList.remove("hidden");
+    
+    if(type === 'settings') {
+        title.innerHTML = '<i class="fa-solid fa-sliders text-indigo-400"></i> Interface Tuning Matrix';
+        body.innerHTML = `
+            <div class="space-y-3">
+                <div class="flex justify-between items-center bg-white/5 p-2.5 rounded-xl border border-white/5">
+                    <span>Performance Mode Core</span>
+                    <input type="checkbox" checked disabled class="accent-indigo-500 h-4 w-4">
+                </div>
+            </div>`;
+    } else if(type === 'profile') {
+        const activeUser = localStorage.getItem("userName") || "Operator";
+        title.innerHTML = '<i class="fa-solid fa-circle-user text-indigo-400"></i> Operator Preferences';
+        body.innerHTML = `
+            <div class="text-center space-y-3">
+                <h4 class="text-sm font-bold text-white">${activeUser}</h4>
+                <hr class="border-white/5">
+                <button onclick="localStorage.clear(); window.location.reload();" class="w-full bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-300 py-2 rounded-xl font-bold text-xs transition-all">
+                    Disconnect Session
+                </button>
+            </div>`;
+    }
+}
+
+function closeModal() { document.getElementById("systemModal").classList.add("hidden"); }
+function toggleSummarize() { isSummarize = !isSummarize; document.getElementById("sumStatus").innerText = isSummarize ? "ON" : "OFF"; }
+function updateFileStatus() { const f = document.getElementById("fileInput").files; document.getElementById("fileCount").innerText = f.length > 0 ? `• ${f.length} Loaded` : ""; }
+function navigateTo(module) { alert(`Routing Framework Engine Segment Layer: ${module.toUpperCase()}`); }
+function escapeHtml(text) { return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 </script>
 
 </body>
