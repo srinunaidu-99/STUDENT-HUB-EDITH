@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8" />
@@ -15,14 +15,13 @@
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: radial-gradient(circle at 50% 0%, #0f172a 0%, #020617 70%);
+            background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #030712 70%);
             overflow: hidden;
         }
 
         /* Custom Scrollbar */
         .chat-container::-webkit-scrollbar {
             width: 6px;
-            height: 6px;
         }
         .chat-container::-webkit-scrollbar-track {
             background: transparent;
@@ -39,11 +38,11 @@
         @keyframes pulseGlow {
             0%, 100% {
                 transform: scale(1);
-                box-shadow: 0 0 25px 2px rgba(99, 102, 241, 0.3), 0 0 50px 10px rgba(168, 85, 247, 0.15);
+                box-shadow: 0 0 25px 2px rgba(99, 102, 241, 0.4), 0 0 50px 10px rgba(168, 85, 247, 0.2);
             }
             50% {
                 transform: scale(1.03);
-                box-shadow: 0 0 40px 8px rgba(99, 102, 241, 0.5), 0 0 70px 20px rgba(168, 85, 247, 0.3);
+                box-shadow: 0 0 40px 8px rgba(99, 102, 241, 0.6), 0 0 70px 20px rgba(168, 85, 247, 0.4);
             }
         }
         .edith-orb {
@@ -55,7 +54,7 @@
         @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(12px) scale(0.99);
+                transform: translateY(16px) scale(0.99);
             }
             to {
                 opacity: 1;
@@ -63,7 +62,7 @@
             }
         }
         .animate-msg {
-            animation: slideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: slideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         /* Mic Pulsing Effect when recording */
@@ -81,21 +80,21 @@
 
         /* Glassmorphism Classes */
         .glass-panel {
-            background: rgba(7, 9, 19, 0.8);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(10, 11, 23, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
         }
         .ai-bubble {
-            background: rgba(30, 41, 59, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            color: #e2e8f0;
-            border-radius: 12px;
+            background: rgba(23, 24, 51, 0.6);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            color: #f3f4f6;
+            border-radius: 20px 20px 20px 4px;
         }
         .user-bubble {
-            background: rgba(30, 41, 59, 0.8);
-            border: 1px solid rgba(99, 102, 241, 0.2);
+            background: linear-gradient(135deg, #4f46e5, #3730a3);
             color: white;
-            border-radius: 12px;
+            border-radius: 20px 20px 4px 20px;
+            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.25);
         }
 
         /* Code Block Copy Enhancement Wrapper */
@@ -106,15 +105,15 @@
         }
         pre {
             background: #020617 !important;
-            padding: 16px;
-            border-radius: 8px;
+            padding: 18px 16px 16px 16px;
+            border-radius: 12px;
             overflow-x: auto;
             border: 1px solid rgba(255, 255, 255, 0.05);
             max-width: 100%;
         }
         code {
-            color: #cbd5e1;
-            font-size: 0.85rem;
+            color: #a5b4fc;
+            font-size: 0.875rem;
             white-space: pre;
         }
         .copy-code-btn {
@@ -156,352 +155,94 @@
 
 <body class="text-gray-100 min-h-screen flex items-center justify-center p-0 sm:p-4">
 
-<div class="w-full max-w-7xl h-screen sm:h-[92vh] flex glass-panel sm:rounded-3xl shadow-2xl relative overflow-hidden">
+<div class="w-full max-w-5xl h-screen sm:h-[92vh] flex flex-col glass-panel sm:rounded-3xl shadow-2xl relative overflow-hidden">
     
-    <aside id="sidebarPanel" class="fixed inset-y-0 left-0 z-40 w-64 transform -translate-x-full lg:translate-x-0 lg:relative lg:inset-auto flex flex-col bg-gray-950 border-r border-white/5 transition-transform duration-300 ease-in-out">
-        <div class="p-4 border-b border-white/5">
-            <button onclick="createNewThread()" class="w-full py-2.5 px-4 bg-white/5 hover:bg-white/10 text-gray-200 border border-white/10 rounded-xl text-xs font-semibold tracking-wide flex items-center justify-center gap-2 transition-all">
-                <i class="fa-solid fa-plus text-[10px]"></i> New Session
-            </button>
-        </div>
-
-        <div id="sessionHistoryBox" class="flex-1 overflow-y-auto p-3 space-y-1 chat-container"></div>
-
-        <div class="p-4 border-t border-white/5 bg-gray-950/60 flex items-center gap-3">
-            <div id="userAvatarSidebar" class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white text-xs font-bold uppercase">S</div>
-            <div class="truncate flex-1">
-                <p id="sidebarProfileName" class="text-xs font-semibold text-gray-300 truncate">Student Profile</p>
-                <p class="text-[9px] text-indigo-400 font-mono uppercase tracking-widest">Active Matrix</p>
+    <!-- Top Navbar (Cleaned & High-Tech Upgraded) -->
+    <div class="p-4 border-b border-white/5 flex justify-between items-center bg-gray-950/20 px-6">
+        <div class="flex items-center gap-3.5">
+            <div class="edith-orb w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold tracking-wider text-sm shadow-lg shadow-indigo-500/30">
+                E
             </div>
-        </div>
-    </aside>
-
-    <div class="flex-1 flex flex-col h-full overflow-hidden relative">
-        
-        <div class="p-4 border-b border-white/5 flex justify-between items-center bg-gray-950/20 px-4 sm:px-6 z-10">
-            <div class="flex items-center gap-3.5">
-                <button onclick="toggleMobileSidebar()" class="lg:hidden text-gray-400 hover:text-white transition-colors" title="Toggle Navigation Menu">
-                    <i class="fa-solid fa-bars text-base"></i>
-                </button>
-                <div class="edith-orb w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold tracking-wider text-sm shadow-lg shadow-indigo-500/30">
-                    E
-                </div>
-                <div>
-                    <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-indigo-300 bg-clip-text text-transparent">
-                        EDITH <span class="text-xs font-semibold text-indigo-400 border border-indigo-500/30 px-1.5 py-0.5 rounded-md ml-1.5 bg-indigo-500/10">V3.2</span>
-                    </h1>
-                    <p class="text-[10px] uppercase tracking-widest text-indigo-400 font-bold flex items-center gap-1.5 mt-0.5">
-                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block animate-pulse"></span>
-                        Operator: <span id="displayUserName">Student</span>
-                    </p>
-                </div>
-            </div>
-            
-            <div class="flex items-center gap-4">
-                <div class="relative inline-block">
-                    <select id="modelSelectorEngine" onchange="persistModelUpdate()" class="appearance-none bg-white/5 border border-white/10 rounded-xl pl-3 pr-8 py-1.5 text-xs text-gray-300 font-medium focus:outline-none focus:border-indigo-500/50 cursor-pointer transition-all">
-                        <option value="gpt-4o" class="bg-gray-950 text-gray-300">GPT-4o Engine</option>
-                        <option value="claude-3-5" class="bg-gray-950 text-gray-300">Claude 3.5 Sonnet</option>
-                        <option value="deepseek-r1" class="bg-gray-950 text-gray-300">DeepSeek R1 Core</option>
-                    </select>
-                    <i class="fa-solid fa-chevron-down absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] text-gray-400 pointer-events-none"></i>
-                </div>
-
-                <div class="hidden sm:flex items-center gap-4 text-right">
-                    <div class="text-[11px] font-medium text-gray-400">
-                        <span class="text-gray-500 uppercase block text-[9px] tracking-wider font-bold">Latency</span>
-                        <span class="text-emerald-400 font-mono">14ms</span>
-                    </div>
-                    <div class="w-px h-6 bg-white/10"></div>
-                    <div class="text-[11px] font-medium text-gray-400">
-                        <span class="text-gray-500 uppercase block text-[9px] tracking-wider font-bold">Core Load</span>
-                        <span class="text-indigo-400 font-mono">2.4%</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="chatArea" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 chat-container relative">
-            <div id="welcomeScreen" class="flex flex-col justify-center items-center mt-24 text-center px-4">
-                <div class="edith-orb w-20 h-20 rounded-3xl flex items-center justify-center text-3xl text-white mb-6">
-                    <i class="fa-solid fa-brain"></i>
-                </div>
-                <h2 class="text-2xl sm:text-3xl font-bold mb-2 tracking-tight text-white">
-                    How can I assist you today?
-                </h2>
-                <p class="text-gray-400 text-sm max-w-sm font-light leading-relaxed">
-                    I can process documents, parse voice input, analyze complex media datasets, or just run brainstorm sessions.
+            <div>
+                <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-indigo-300 bg-clip-text text-transparent">
+                    EDITH <span class="text-xs font-semibold text-indigo-400 border border-indigo-500/30 px-1.5 py-0.5 rounded-md ml-1.5 bg-indigo-500/10">V3.2</span>
+                </h1>
+                <p class="text-[10px] uppercase tracking-widest text-indigo-400 font-bold flex items-center gap-1.5 mt-0.5">
+                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block animate-pulse"></span>
+                    Operator: <span id="displayUserName">Student</span>
                 </p>
             </div>
         </div>
-
-        <div class="absolute bottom-28 left-1/2 -translate-x-1/2 flex items-center justify-center gap-3 z-30 pointer-events-none">
-            <button id="stopGenerationActionBtn" onclick="abortActiveStreamTransmission()" class="pointer-events-auto hidden px-4 py-2 bg-red-950/80 hover:bg-red-900 border border-red-500/30 text-red-200 text-xs font-semibold rounded-full shadow-2xl backdrop-blur-md items-center gap-2 transition-all">
-                <i class="fa-solid fa-circle-stop text-[11px] text-red-400"></i> Stop Generation
-            </button>
-            <button id="regenerateActionBtn" onclick="regenerateLastOutputSession()" class="pointer-events-auto hidden px-4 py-2 bg-indigo-950/80 hover:bg-indigo-900 border border-indigo-500/30 text-indigo-200 text-xs font-semibold rounded-full shadow-2xl backdrop-blur-md items-center gap-2 transition-all">
-                <i class="fa-solid fa-arrows-rotate text-[11px] text-indigo-400"></i> Regenerate Response
-            </button>
-        </div>
-
-        <div class="p-4 sm:p-6 bg-gray-950/40 border-t border-white/5 backdrop-blur-md">
-            <div class="max-w-4xl mx-auto">
-                <div class="flex flex-wrap gap-2 mb-3.5 px-1">
-                    <button onclick="toggleSummarize()" id="sumBtn" class="px-4 py-1.5 rounded-full border border-white/10 hover:border-indigo-500/40 bg-white/5 text-[11px] font-medium transition-all flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 rounded-full bg-gray-400" id="sumDot"></span>
-                        Summarize Notes: <span id="sumStatus" class="font-bold text-gray-400">OFF</span>
-                    </button>
-
-                    <label class="px-4 py-1.5 rounded-full border border-white/10 hover:border-indigo-500/40 bg-white/5 text-[11px] font-medium cursor-pointer transition-all flex items-center gap-1.5">
-                        <i class="fa-solid fa-paperclip text-indigo-400"></i> Attach Files
-                        <input type="file" id="fileInput" multiple class="hidden" onchange="updateFileStatus()" />
-                    </label>
-                    <span id="fileCount" class="text-[11px] text-indigo-300 self-center font-medium font-mono"></span>
-                </div>
-
-                <div class="flex gap-3 items-center relative">
-                    <input type="text" id="msg" placeholder="Ask EDITH anything..." 
-                        class="w-full bg-gray-900/80 border border-white/10 focus:border-indigo-500/50 rounded-2xl pl-5 pr-28 py-4 outline-none transition-all text-sm placeholder-gray-500 text-gray-100 shadow-inner"
-                        onkeypress="if(event.key==='Enter')sendMsg()" />
-
-                    <div class="absolute right-2 flex items-center gap-1.5">
-                        <button onclick="toggleVoiceInput()" id="micBtn" title="Voice Input"
-                            class="w-10 h-10 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 rounded-xl flex items-center justify-center transition-all">
-                            <i class="fa-solid fa-microphone text-sm"></i>
-                        </button>
-                        
-                        <button onclick="sendMsg()" class="w-10 h-10 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white rounded-xl flex items-center justify-center transition-all shadow-lg shadow-indigo-600/20">
-                            <i class="fa-solid fa-paper-plane text-xs"></i>
-                        </button>
-                    </div>
-                </div>
+        
+        <!-- Live Infrastructure Monitoring Metrics -->
+        <div class="hidden sm:flex items-center gap-4 text-right">
+            <div class="text-[11px] font-medium text-gray-400">
+                <span class="text-gray-500 uppercase block text-[9px] tracking-wider font-bold">Latency</span>
+                <span class="text-emerald-400 font-mono">14ms</span>
+            </div>
+            <div class="w-px h-6 bg-white/10"></div>
+            <div class="text-[11px] font-medium text-gray-400">
+                <span class="text-gray-500 uppercase block text-[9px] tracking-wider font-bold">Core Load</span>
+                <span class="text-indigo-400 font-mono">2.4%</span>
             </div>
         </div>
     </div>
-    
-    <div id="mobilePanelBackdropOverlay" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-30 hidden lg:hidden"></div>
+
+    <!-- Chat Space -->
+    <div id="chatArea" class="flex-1 overflow-y-auto p-6 space-y-6 chat-container">
+        <!-- Rebranded Welcome Screen -->
+        <div id="welcomeScreen" class="flex flex-col justify-center items-center mt-24 text-center px-4">
+            <div class="edith-orb w-20 h-20 rounded-3xl flex items-center justify-center text-3xl text-white mb-6">
+                <i class="fa-solid fa-brain"></i>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-bold mb-2 tracking-tight text-white">
+                How can I assist you today?
+            </h2>
+            <p class="text-gray-400 text-sm max-w-sm font-light leading-relaxed">
+                I can process documents, parse voice input, analyze complex media datasets, or just run brainstorm sessions.
+            </p>
+        </div>
+    </div>
+
+    <!-- Input Dashboard -->
+    <div class="p-4 sm:p-6 bg-gray-950/40 border-t border-white/5 backdrop-blur-md">
+        <div class="flex flex-wrap gap-2 mb-3.5 px-1">
+            <!-- Mode Selector Toggles -->
+            <button onclick="toggleSummarize()" id="sumBtn" class="px-4 py-1.5 rounded-full border border-white/10 hover:border-indigo-500/40 bg-white/5 text-[11px] font-medium transition-all flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-gray-400" id="sumDot"></span>
+                Summarize Notes: <span id="sumStatus" class="font-bold text-gray-400">OFF</span>
+            </button>
+
+            <label class="px-4 py-1.5 rounded-full border border-white/10 hover:border-indigo-500/40 bg-white/5 text-[11px] font-medium cursor-pointer transition-all flex items-center gap-1.5">
+                <i class="fa-solid fa-paperclip text-indigo-400"></i> Attach Files
+                <input type="file" id="fileInput" multiple class="hidden" onchange="updateFileStatus()" />
+            </label>
+            <span id="fileCount" class="text-[11px] text-indigo-300 self-center font-medium"></span>
+        </div>
+
+        <!-- System Control Interaction Line -->
+        <div class="flex gap-3 items-center relative">
+            <input type="text" id="msg" placeholder="Ask EDITH anything..." 
+                class="w-full bg-gray-900/80 border border-white/10 focus:border-indigo-500/50 rounded-2xl pl-5 pr-28 py-4 outline-none transition-all text-sm placeholder-gray-500 text-gray-100 shadow-inner"
+                onkeypress="if(event.key==='Enter')sendMsg()" />
+
+            <div class="absolute right-2 flex items-center gap-1.5">
+                <!-- Microphone System Input Button -->
+                <button onclick="toggleVoiceInput()" id="micBtn" title="Voice Input"
+                    class="w-10 h-10 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 rounded-xl flex items-center justify-center transition-all">
+                    <i class="fa-solid fa-microphone text-sm"></i>
+                </button>
+                
+                <!-- Action Send Button -->
+                <button onclick="sendMsg()" class="w-10 h-10 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white rounded-xl flex items-center justify-center transition-all shadow-lg shadow-indigo-600/20">
+                    <i class="fa-solid fa-paper-plane text-xs"></i>
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
-// LOCAL PERSISTENCE RUNTIME THREAD POOL CONFIGURATION VARIABLES
-let runtimeThreadsList = [];
-let activeSessionThreadId = null;
-let networkStreamAbortController = null;
-let lastDispatchedUserPromptPayloadBackup = "";
-
-// CORE COMPONENT ENGINE DISK INITIALIZER LOGIC
-function bootUpSessionDatabaseStorage() {
-    const serializedDataCache = localStorage.getItem("edith_intelligence_sessions");
-    if (serializedDataCache) {
-        try {
-            runtimeThreadsList = JSON.parse(serializedDataCache);
-        } catch (errorFault) {
-            console.error("Local Identity Cache Corruption Fault Detonated. Restructuring arrays.", errorFault);
-            runtimeThreadsList = [];
-        }
-    }
-    
-    if (runtimeThreadsList.length === 0) {
-        createNewThread();
-    } else {
-        activeSessionThreadId = runtimeThreadsList[0].id;
-        renderHistorySidebarNavigationPane();
-        switchActiveThreadViewportContext(activeSessionThreadId, false);
-    }
-}
-
-function flushRuntimeStateToDiskStorage() {
-    localStorage.setItem("edith_intelligence_sessions", JSON.stringify(runtimeThreadsList));
-}
-
-function createNewThread() {
-    const threadId = "session_node_" + Date.now();
-    const activeSelectedModel = document.getElementById("modelSelectorEngine").value;
-    const initialThreadSchema = {
-        id: threadId,
-        title: "New Conversation Matrix",
-        model: activeSelectedModel,
-        records: []
-    };
-    
-    runtimeThreadsList.unshift(initialThreadSchema);
-    activeSessionThreadId = threadId;
-    flushRuntimeStateToDiskStorage();
-    renderHistorySidebarNavigationPane();
-    switchActiveThreadViewportContext(threadId);
-}
-
-function renderHistorySidebarNavigationPane() {
-    const historyContainer = document.getElementById("sessionHistoryBox");
-    historyContainer.innerHTML = "";
-    
-    if(runtimeThreadsList.length === 0) {
-        historyContainer.innerHTML = `<p class="text-[11px] text-gray-500 px-3 py-2 italic font-medium">No system session logs found</p>`;
-        return;
-    }
-
-    runtimeThreadsList.forEach(sessionNode => {
-        const isCurrentlyActiveNode = sessionNode.id === activeSessionThreadId;
-        const rowWrapperDiv = document.createElement("div");
-        rowWrapperDiv.className = `group w-full text-left px-3 py-2.5 rounded-xl text-xs font-medium flex items-center justify-between gap-2 cursor-pointer transition-all ${
-            isCurrentlyActiveNode 
-                ? "bg-indigo-500/10 border border-indigo-500/20 text-indigo-300" 
-                : "hover:bg-white/5 text-gray-400 hover:text-gray-200"
-        }`;
-        rowWrapperDiv.setAttribute("onclick", `switchActiveThreadViewportContext('${sessionNode.id}')`);
-        
-        rowWrapperDiv.innerHTML = `
-            <div class="flex items-center gap-2.5 truncate flex-1">
-                <i class="fa-regular ${isCurrentlyActiveNode ? 'fa-comment-dots text-indigo-400' : 'fa-message text-gray-500'}"></i>
-                <span class="truncate tracking-wide font-medium block">${escapeHtml(sessionNode.title)}</span>
-            </div>
-            <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 lg:opacity-40 transition-opacity">
-                <button onclick="renameActiveSessionLogEntry('${sessionNode.id}', event)" class="p-1 hover:text-indigo-400 text-gray-500 transition-colors" title="Rename Session Title Moniker"><i class="fa-solid fa-pen text-[10px]"></i></button>
-                <button onclick="purgeActiveSessionLogMatrix('${sessionNode.id}', event)" class="p-1 hover:text-red-400 text-gray-500 transition-colors" title="Purge Session Frame Record From Disk"><i class="fa-solid fa-trash-can text-[10px]"></i></button>
-            </div>
-        `;
-        historyContainer.appendChild(rowWrapperDiv);
-    });
-}
-
-function switchActiveThreadViewportContext(targetThreadId, shouldDismissMobileDrawer = true) {
-    activeSessionThreadId = targetThreadId;
-    renderHistorySidebarNavigationPane();
-
-    if(shouldDismissMobileDrawer) {
-        const sidebar = document.getElementById('sidebarPanel');
-        const overlay = document.getElementById('mobilePanelBackdropOverlay');
-        if (!sidebar.classList.contains('-translate-x-full')) {
-            sidebar.classList.add('-translate-x-full');
-            overlay.classList.add('hidden');
-        }
-    }
-
-    const currentThreadContext = runtimeThreadsList.find(t => t.id === activeSessionThreadId);
-    if (!currentThreadContext) return;
-
-    if (currentThreadContext.model) {
-        document.getElementById("modelSelectorEngine").value = currentThreadContext.model;
-    }
-
-    const liveChatFeedChildren = chatArea.children;
-    for (let indexPos = liveChatFeedChildren.length - 1; indexPos >= 0; indexPos--) {
-        if (liveChatFeedChildren[indexPos].id !== "welcomeScreen") {
-            liveChatFeedChildren[indexPos].remove();
-        }
-    }
-
-    if (currentThreadContext.records.length === 0) {
-        welcomeScreen.style.display = "flex";
-        document.getElementById("regenerateActionBtn").classList.add("hidden");
-        return;
-    }
-
-    welcomeScreen.style.display = "none";
-    currentThreadContext.records.forEach(entryMessage => {
-        appendSystemUIMessageBubbleElement(entryMessage.text, entryMessage.isUser, false);
-    });
-
-    const lastMessageIndexNode = currentThreadContext.records[currentThreadContext.records.length - 1];
-    if (lastMessageIndexNode && !lastMessageIndexNode.isUser) {
-        document.getElementById("regenerateActionBtn").classList.remove("hidden");
-    } else {
-        document.getElementById("regenerateActionBtn").classList.add("hidden");
-    }
-    chatArea.scrollTop = chatArea.scrollHeight;
-}
-
-function renameActiveSessionLogEntry(targetThreadId, systemBrowserUIEvent) {
-    systemBrowserUIEvent.stopPropagation();
-    const targetedObjectNode = runtimeThreadsList.find(t => t.id === targetThreadId);
-    if (!targetedObjectNode) return;
-
-    const requestUserPromptStringInput = prompt("Provide an updated operation structural title description label:", targetedObjectNode.title);
-    if (requestUserPromptStringInput && requestUserPromptStringInput.trim() !== "") {
-        targetedObjectNode.title = requestUserPromptStringInput.trim();
-        flushRuntimeStateToDiskStorage();
-        renderHistorySidebarNavigationPane();
-    }
-}
-
-function purgeActiveSessionLogMatrix(targetThreadId, systemBrowserUIEvent) {
-    systemBrowserUIEvent.stopPropagation();
-    if (!confirm("Are you sure you want to permanently delete this chat thread?")) return;
-
-    runtimeThreadsList = runtimeThreadsList.filter(t => t.id !== targetThreadId);
-    flushRuntimeStateToDiskStorage();
-
-    if (runtimeThreadsList.length === 0) {
-        createNewThread();
-    } else {
-        if (activeSessionThreadId === targetThreadId) {
-            activeSessionThreadId = runtimeThreadsList[0].id;
-        }
-        renderHistorySidebarNavigationPane();
-        switchActiveThreadViewportContext(activeSessionThreadId, false);
-    }
-}
-
-function persistModelUpdate() {
-    const selectedModelValue = document.getElementById("modelSelectorEngine").value;
-    if (activeSessionThreadId) {
-        const structuralNode = runtimeThreadsList.find(t => t.id === activeSessionThreadId);
-        if (structuralNode) {
-            structuralNode.model = selectedModelValue;
-            flushRuntimeStateToDiskStorage();
-        }
-    }
-}
-
-function toggleMobileSidebar() {
-    const sidebarElement = document.getElementById('sidebarPanel');
-    const backgroundOverlayPanel = document.getElementById('mobilePanelBackdropOverlay');
-    if (sidebarElement.classList.contains('-translate-x-full')) {
-        sidebarElement.classList.remove('-translate-x-full');
-        backgroundOverlayPanel.classList.remove('hidden');
-    } else {
-        sidebarElement.classList.add('-translate-x-full');
-        backgroundOverlayPanel.classList.add('hidden');
-    }
-}
-
-function abortActiveStreamTransmission() {
-    if (networkStreamAbortController) {
-        networkStreamAbortController.abort();
-        removeTypingIndicator();
-        document.getElementById("stopGenerationActionBtn").classList.add("hidden");
-    }
-}
-
-async function regenerateLastOutputSession() {
-    if (!activeSessionThreadId) return;
-    const targetSessionObjectNode = runtimeThreadsList.find(t => t.id === activeSessionThreadId);
-    if (!targetSessionObjectNode || targetSessionObjectNode.records.length === 0) return;
-
-    const tailEndRecordEntry = targetSessionObjectNode.records[targetSessionObjectNode.records.length - 1];
-    if (!tailEndRecordEntry.isUser) {
-        targetSessionObjectNode.records.pop();
-        flushRuntimeStateToDiskStorage();
-    }
-
-    if (targetSessionObjectNode.records.length > 0) {
-        const precedingUserRecordNode = targetSessionObjectNode.records[targetSessionObjectNode.records.length - 1];
-        if (precedingUserRecordNode.isUser) {
-            lastDispatchedUserPromptPayloadBackup = precedingUserRecordNode.text;
-            switchActiveThreadViewportContext(activeSessionThreadId, false);
-            
-            // Build temporary Form data to replay model selection
-            const formData = new FormData();
-            formData.append("message", lastDispatchedUserPromptPayloadBackup);
-            formData.append("summarize", isSummarize);
-            formData.append("model", document.getElementById("modelSelectorEngine").value);
-            
-            await firePipelineStreamRequest(lastDispatchedUserPromptPayloadBackup, formData);
-        }
-    }
-}
-
-// BACKEND REST PIPELINE LINK MATRIX LAYER
 const API_BASE = window.location.hostname === "127.0.0.1"
     ? "http://localhost:5000"
     : "https://student-hub-edith-backend.onrender.com";
@@ -571,10 +312,7 @@ window.onload = () => {
     }
     if (name) {
         document.getElementById("displayUserName").innerText = name;
-        document.getElementById("sidebarProfileName").innerText = name;
-        document.getElementById("userAvatarSidebar").innerText = name.charAt(0).toUpperCase();
     }
-    bootUpSessionDatabaseStorage();
 };
 
 function toggleSummarize() {
@@ -603,11 +341,13 @@ function updateFileStatus() {
         : "";
 }
 
+// Intercepts custom formatting hooks to enrich code blocks with clear actions
 function cleanAndParseMarkdown(text) {
     let rawHtml = marked.parse(text);
     const container = document.createElement('div');
     container.innerHTML = rawHtml;
 
+    // Process code segments to add inline copy utilities
     const preBlocks = container.querySelectorAll('pre');
     preBlocks.forEach((pre) => {
         const wrapper = document.createElement('div');
@@ -635,56 +375,31 @@ function cleanAndParseMarkdown(text) {
     return container.innerHTML;
 }
 
-function appendSystemUIMessageBubbleElement(text, isUser, shouldSaveToCache = true) {
+function addMessage(text, isUser) {
     if (welcomeScreen && welcomeScreen.style.display !== "none") {
         welcomeScreen.style.display = "none";
     }
 
-    const elementRowBubbleDiv = document.createElement("div");
-    elementRowBubbleDiv.className = `flex w-full gap-4 items-start animate-msg ${isUser ? "justify-end" : "justify-start"}`;
+    const div = document.createElement("div");
+    div.className = `flex ${isUser ? "justify-end" : "justify-start"} animate-msg w-full`;
 
-    const profileInitialChar = document.getElementById("userAvatarSidebar").innerText || "U";
-    
-    const profileAvatarHtmlMarkup = isUser 
-        ? `<div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white text-xs font-mono font-bold shrink-0 order-2 shadow-md">${profileInitialChar}</div>`
-        : `<div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white text-xs shrink-0 order-1 shadow-md"><i class="fa-solid fa-brain text-[11px]"></i></div>`;
-
-    const textPayloadContainerHtml = `
-        <div class="p-3.5 px-4 max-w-[80%] text-sm leading-relaxed shadow-xs relative ${isUser ? 'user-bubble order-1' : 'ai-bubble order-2 break-words overflow-hidden'}">
-            <div class="chat-string-payload-space">${isUser ? escapeHtml(text) : cleanAndParseMarkdown(text)}</div>
+    div.innerHTML = `
+        <div class="p-4 px-5 max-w-[85%] text-sm leading-relaxed shadow-sm ${isUser ? "user-bubble" : "ai-bubble break-words overflow-hidden"}">
+            ${isUser ? escapeHtml(text) : cleanAndParseMarkdown(text)}
         </div>
     `;
 
-    elementRowBubbleDiv.innerHTML = isUser 
-        ? (textPayloadContainerHtml + profileAvatarHtmlMarkup) 
-        : (profileAvatarHtmlMarkup + textPayloadContainerHtml);
-
-    chatArea.appendChild(elementRowBubbleDiv);
+    chatArea.appendChild(div);
     chatArea.scrollTop = chatArea.scrollHeight;
-
-    if (shouldSaveToCache && activeSessionThreadId) {
-        const foundThreadTarget = runtimeThreadsList.find(t => t.id === activeSessionThreadId);
-        if (foundThreadTarget) {
-            foundThreadTarget.records.push({ isUser, text });
-            
-            if (isUser && foundThreadTarget.records.length === 1) {
-                foundThreadTarget.title = text.length > 26 ? text.substring(0, 26) + "..." : text;
-                renderHistorySidebarNavigationPane();
-            }
-            flushRuntimeStateToDiskStorage();
-        }
-    }
-
-    return elementRowBubbleDiv.querySelector(".chat-string-payload-space");
+    return div.querySelector("div");
 }
 
 function showTypingIndicator() {
     const div = document.createElement("div");
     div.id = "edithTypingIndicator";
-    div.className = "flex justify-start items-start gap-4 animate-msg w-full";
+    div.className = "flex justify-start animate-msg";
     div.innerHTML = `
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white text-xs shrink-0 shadow-md"><i class="fa-solid fa-brain text-[11px]"></i></div>
-        <div class="p-3.5 px-5 ai-bubble flex items-center gap-1.5 shadow-sm">
+        <div class="p-4 px-5 ai-bubble flex items-center gap-1.5 shadow-sm">
             <span class="typing-dot"></span>
             <span class="typing-dot"></span>
             <span class="typing-dot"></span>
@@ -703,114 +418,66 @@ function escapeHtml(text) {
     return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-// PIPELINE STREAM HANDLERS & ROUTING CORE ENGINE FIXES
 async function sendMsg() {
     const input = document.getElementById("msg");
     const fileInput = document.getElementById("fileInput");
     const message = input.value.trim();
+    const token = localStorage.getItem("token");
 
     if (!message && fileInput.files.length === 0) return;
 
+    addMessage(message || "Analyzing documents...", true);
     input.value = "";
-    document.getElementById("regenerateActionBtn").classList.add("hidden");
-    lastDispatchedUserPromptPayloadBackup = message;
 
-    // 1. Output the text bubble directly inside user view pane instantly
-    appendSystemUIMessageBubbleElement(message, true);
-
-    // 2. Map file collections into multi-part standard body array payload schemas
     const formData = new FormData();
     formData.append("message", message);
-    formData.append("summarize", isSummarize);
-    formData.append("model", document.getElementById("modelSelectorEngine").value);
-    
-    for (let i = 0; i < fileInput.files.length; i++) {
-        formData.append("files", fileInput.files[i]);
+    formData.append("isSummarize", isSummarize);
+
+    for (let file of fileInput.files) {
+        formData.append("files", file);
     }
 
-    fileInput.value = "";
-    updateFileStatus();
-
-    // 3. Initiate processing core connection fetch routine execution cycles
-    await firePipelineStreamRequest(message, formData);
-}
-
-async function firePipelineStreamRequest(message, formData) {
+    // Initialize temporary display layout
     showTypingIndicator();
-    
-    const stopBtn = document.getElementById("stopGenerationActionBtn");
-    stopBtn.classList.remove("hidden");
-
-    networkStreamAbortController = new AbortController();
-    const token = localStorage.getItem("token");
-
-    let fullAiResponse = "";
-    let aiResponseContainer = null;
 
     try {
-        const response = await fetch(`${API_BASE}/api/chat/stream`, {
+        const res = await fetch(`${API_BASE}/api/chat`, {
             method: "POST",
-            headers: { "Authorization": `Bearer ${token}` },
-            body: formData,
-            signal: networkStreamAbortController.signal
+            headers: { Authorization: `Bearer ${token}` },
+            body: formData
         });
 
-        // SAFETY GATE: Intercept token validation failures (401/403 Expired errors)
-        if (response.status === 401 || response.status === 403) {
-            removeTypingIndicator();
-            appendSystemUIMessageBubbleElement("🔒 Your session has expired. Redirecting to access screen...", false);
-            setTimeout(() => {
-                localStorage.clear();
-                window.location.href = "login.html";
-            }, 2500);
+        removeTypingIndicator();
+
+        if (!res.ok) {
+            const err = await res.text();
+            addMessage("❌ " + err, false);
             return;
         }
 
-        if (!response.ok) throw new Error(`Server Pipeline Fault: ${response.statusText}`);
-
-        removeTypingIndicator();
-        aiResponseContainer = appendSystemUIMessageBubbleElement("", false, false);
-
-        const reader = response.body.getReader();
+        const reader = res.body.getReader();
         const decoder = new TextDecoder();
+        const aiBubble = addMessage("", false);
+        let aiText = "";
 
         while (true) {
-            const { value, done } = await reader.read();
+            const { done, value } = await reader.read();
             if (done) break;
 
-            const chunk = decoder.decode(value, { stream: true });
-            fullAiResponse += chunk;
-
-            aiResponseContainer.innerHTML = cleanAndParseMarkdown(fullAiResponse);
+            aiText += decoder.decode(value, { stream: true });
+            aiBubble.innerHTML = cleanAndParseMarkdown(aiText);
             chatArea.scrollTop = chatArea.scrollHeight;
         }
-
-        saveFinalAiResponse(fullAiResponse);
-
-    } catch (error) {
-        if (error.name === 'AbortError') {
-            console.log("Transmission stream interrupted by operator client request.");
-            saveFinalAiResponse(fullAiResponse + " [Generation Stopped]");
-        } else {
-            console.error("Critical Connection Link Failure:", error);
-            removeTypingIndicator();
-            appendSystemUIMessageBubbleElement("⚠️ Lost link coordination with EDITH Core backend. Please ensure service configuration alignment is running.", false);
-        }
-    } finally {
-        stopBtn.classList.add("hidden");
-        document.getElementById("regenerateActionBtn").classList.remove("hidden");
-        networkStreamAbortController = null;
+    } catch (err) {
+        console.error(err);
+        removeTypingIndicator();
+        addMessage("❌ Matrix Connection Interrupted (Server Failure)", false);
     }
-}
 
-function saveFinalAiResponse(text) {
-    if (!activeSessionThreadId) return;
-    const thread = runtimeThreadsList.find(t => t.id === activeSessionThreadId);
-    if (thread) {
-        thread.records.push({ isUser: false, text: text });
-        flushRuntimeStateToDiskStorage();
-    }
+    fileInput.value = "";
+    document.getElementById("fileCount").innerText = "";
 }
 </script>
+
 </body>
 </html>
