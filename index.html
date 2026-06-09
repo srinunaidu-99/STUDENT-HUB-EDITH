@@ -15,7 +15,7 @@
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #030712 70%);
+            background: #000000;
             overflow: hidden;
         }
 
@@ -38,16 +38,16 @@
         @keyframes pulseGlow {
             0%, 100% {
                 transform: scale(1);
-                box-shadow: 0 0 25px 2px rgba(99, 102, 241, 0.4), 0 0 50px 10px rgba(168, 85, 247, 0.2);
+                box-shadow: 0 0 25px 2px rgba(99, 102, 241, 0.3), 0 0 50px 10px rgba(168, 85, 247, 0.1);
             }
             50% {
                 transform: scale(1.03);
-                box-shadow: 0 0 40px 8px rgba(99, 102, 241, 0.6), 0 0 70px 20px rgba(168, 85, 247, 0.4);
+                box-shadow: 0 0 40px 8px rgba(99, 102, 241, 0.5), 0 0 70px 20px rgba(168, 85, 247, 0.3);
             }
         }
         .edith-orb {
             animation: pulseGlow 4s ease-in-out infinite;
-            background: linear-gradient(135deg, #6366f1, #a855f7);
+            background: linear-gradient(135deg, #4f46e5, #9333ea);
         }
 
         /* Smooth slide in for incoming messages */
@@ -78,48 +78,48 @@
             border-color: #f87171 !important;
         }
 
-        /* Glassmorphism Classes */
+        /* Pitch Black Glassmorphism Style Extensions */
         .glass-panel {
-            background: rgba(10, 11, 23, 0.75);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
         }
         .ai-bubble {
-            background: rgba(23, 24, 51, 0.6);
-            border: 1px solid rgba(99, 102, 241, 0.25);
-            color: #f3f4f6;
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #e5e7eb;
             border-radius: 20px 20px 20px 4px;
         }
         .user-bubble {
-            background: linear-gradient(135deg, #4f46e5, #3730a3);
+            background: linear-gradient(135deg, #312e81, #1e1b4b);
             color: white;
+            border: 1px solid rgba(99, 102, 241, 0.3);
             border-radius: 20px 20px 4px 20px;
-            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.25);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
         }
 
-        /* Sidebar Styling */
+        /* Sidebar Layout Fixes */
         .sidebar-panel {
-            background: rgba(7, 8, 18, 0.85);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            background: #050505;
+            border-right: 1px solid rgba(255, 255, 255, 0.03);
         }
 
-        /* Code Block Copy Enhancement Wrapper */
+        /* Code Block Wrapper Enhancement */
         .code-block-wrapper {
             position: relative;
             margin: 12px 0;
             width: 100%;
         }
         pre {
-            background: #020617 !important;
+            background: #000000 !important;
             padding: 18px 16px 16px 16px;
             border-radius: 12px;
             overflow-x: auto;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             max-width: 100%;
         }
         code {
-            color: #a5b4fc;
+            color: #c7d2fe;
             font-size: 0.875rem;
             white-space: pre;
         }
@@ -127,8 +127,8 @@
             position: absolute;
             top: 8px;
             right: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             padding: 4px 8px;
             border-radius: 6px;
             font-size: 11px;
@@ -138,7 +138,7 @@
             z-index: 10;
         }
         .copy-code-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.12);
             color: #fff;
         }
 
@@ -168,19 +168,18 @@
         
         <div class="flex flex-col flex-1 overflow-hidden">
             <div class="p-4 border-b border-white/5 flex flex-col gap-3">
-                <button onclick="startNewChat()" class="w-full bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-500/30 text-indigo-200 rounded-xl py-2.5 px-4 text-xs font-semibold tracking-wide flex items-center justify-center gap-2 transition-all active:scale-[0.98]">
+                <button onclick="startNewChat()" class="w-full bg-indigo-600/10 hover:bg-indigo-600/20 border border-indigo-500/30 text-indigo-300 rounded-xl py-2.5 px-4 text-xs font-semibold tracking-wide flex items-center justify-center gap-2 transition-all active:scale-[0.98]">
                     <i class="fa-solid fa-plus text-xs"></i> New Chat
                 </button>
                 
                 <div class="relative">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-gray-500"></i>
                     <input type="text" id="chatSearch" oninput="filterChats()" placeholder="Search Chats..." 
-                        class="w-full bg-gray-900/60 border border-white/5 focus:border-indigo-500/30 rounded-xl pl-9 pr-4 py-2 outline-none text-xs text-gray-200 placeholder-gray-500 transition-all"/>
+                        class="w-full bg-neutral-900 border border-white/5 focus:border-indigo-500/30 rounded-xl pl-9 pr-4 py-2 outline-none text-xs text-gray-200 placeholder-gray-500 transition-all"/>
                 </div>
             </div>
 
             <div class="flex-1 overflow-y-auto p-3 space-y-4 sidebar-scroll">
-                
                 <div class="space-y-1">
                     <button onclick="navigateTo('explore')" class="w-full text-left text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-3 py-2 flex items-center justify-between transition-all group">
                         <span class="flex items-center gap-2.5"><i class="fa-solid fa-compass text-indigo-400 group-hover:scale-110 transition-transform"></i> Explore GPTs</span>
@@ -197,27 +196,20 @@
                 <div>
                     <span class="text-[10px] font-bold uppercase tracking-widest text-gray-500 px-3 block mb-2">Chat History</span>
                     <div id="historyList" class="space-y-0.5">
-                        <div class="chat-history-item text-xs font-medium text-gray-300 hover:bg-white/5 rounded-lg px-3 py-2 cursor-pointer transition-all flex items-center justify-between group truncate" onclick="loadChat(1)">
-                            <span class="truncate flex items-center gap-2"><i class="fa-regular fa-comment text-gray-500 text-[11px]"></i> Quantum Mechanics Revision</span>
-                            <i class="fa-solid fa-trash text-[10px] text-gray-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity" onclick="event.stopPropagation(); deleteChat(1)"></i>
-                        </div>
-                        <div class="chat-history-item text-xs font-medium text-gray-300 hover:bg-white/5 rounded-lg px-3 py-2 cursor-pointer transition-all flex items-center justify-between group truncate" onclick="loadChat(2)">
-                            <span class="truncate flex items-center gap-2"><i class="fa-regular fa-comment text-gray-500 text-[11px]"></i> Database Architecture Plan</span>
-                            <i class="fa-solid fa-trash text-[10px] text-gray-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity" onclick="event.stopPropagation(); deleteChat(2)"></i>
-                        </div>
+                        <p class="text-[11px] text-gray-500 px-3 py-2">Loading session indexes...</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="p-3 border-t border-white/5 space-y-1 bg-gray-950/20">
+        <div class="p-3 border-t border-white/5 space-y-1 bg-black">
             <button onclick="openModal('settings')" class="w-full text-left text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-3 py-2 flex items-center gap-2.5 transition-all">
                 <i class="fa-solid fa-sliders text-indigo-400/80"></i> Settings Configuration
             </button>
             
             <div onclick="openModal('profile')" class="w-full flex items-center justify-between text-left rounded-xl p-2 hover:bg-white/5 cursor-pointer border border-transparent hover:border-white/5 transition-all mt-1">
                 <div class="flex items-center gap-2.5">
-                    <div class="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center text-white text-xs font-bold font-mono shadow-sm">
+                    <div class="w-7 h-7 rounded-lg bg-indigo-900 border border-indigo-700/50 flex items-center justify-center text-white text-xs font-bold font-mono shadow-sm">
                         ST
                     </div>
                     <div class="truncate">
@@ -230,21 +222,21 @@
         </div>
     </div>
 
-    <div id="sidebarOverlay" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-30 hidden lg:hidden"></div>
+    <div id="sidebarOverlay" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 hidden lg:hidden"></div>
 
-    <div class="flex-1 flex flex-col h-full overflow-hidden">
+    <div class="flex-1 flex flex-col h-full overflow-hidden bg-black">
         
-        <div class="p-4 border-b border-white/5 flex justify-between items-center bg-gray-950/20 px-6">
+        <div class="p-4 border-b border-white/5 flex justify-between items-center bg-neutral-950 px-6">
             <div class="flex items-center gap-3.5">
                 <button onclick="toggleMobileSidebar()" class="block lg:hidden text-gray-400 hover:text-white mr-1">
                     <i class="fa-solid fa-bars text-lg"></i>
                 </button>
 
-                <div class="edith-orb w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold tracking-wider text-sm shadow-lg shadow-indigo-500/30">
+                <div class="edith-orb w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold tracking-wider text-sm shadow-lg">
                     E
                 </div>
                 <div>
-                    <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-indigo-300 bg-clip-text text-transparent">
+                    <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-white via-gray-300 to-indigo-200 bg-clip-text text-transparent">
                         EDITH <span class="text-xs font-semibold text-indigo-400 border border-indigo-500/30 px-1.5 py-0.5 rounded-md ml-1.5 bg-indigo-500/10">V3.2</span>
                     </h1>
                     <p class="text-[10px] uppercase tracking-widest text-indigo-400 font-bold flex items-center gap-1.5 mt-0.5">
@@ -281,7 +273,7 @@
             </div>
         </div>
 
-        <div class="p-4 sm:p-6 bg-gray-950/40 border-t border-white/5 backdrop-blur-md">
+        <div class="p-4 sm:p-6 bg-neutral-950 border-t border-white/5">
             <div class="flex flex-wrap gap-2 mb-3.5 px-1">
                 <button onclick="toggleSummarize()" id="sumBtn" class="px-4 py-1.5 rounded-full border border-white/10 hover:border-indigo-500/40 bg-white/5 text-[11px] font-medium transition-all flex items-center gap-2">
                     <span class="w-1.5 h-1.5 rounded-full bg-gray-400" id="sumDot"></span>
@@ -297,7 +289,7 @@
 
             <div class="flex gap-3 items-center relative">
                 <input type="text" id="msg" placeholder="Ask EDITH anything..." 
-                    class="w-full bg-gray-900/80 border border-white/10 focus:border-indigo-500/50 rounded-2xl pl-5 pr-28 py-4 outline-none transition-all text-sm placeholder-gray-500 text-gray-100 shadow-inner"
+                    class="w-full bg-neutral-900 border border-white/10 focus:border-indigo-500/40 rounded-2xl pl-5 pr-28 py-4 outline-none transition-all text-sm placeholder-gray-600 text-gray-100"
                     onkeypress="if(event.key==='Enter')sendMsg()" />
 
                 <div class="absolute right-2 flex items-center gap-1.5">
@@ -306,7 +298,7 @@
                         <i class="fa-solid fa-microphone text-sm"></i>
                     </button>
                     
-                    <button onclick="sendMsg()" class="w-10 h-10 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white rounded-xl flex items-center justify-center transition-all shadow-lg shadow-indigo-600/20">
+                    <button onclick="sendMsg()" class="w-10 h-10 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white rounded-xl flex items-center justify-center transition-all shadow-md shadow-indigo-600/10">
                         <i class="fa-solid fa-paper-plane text-xs"></i>
                     </button>
                 </div>
@@ -316,11 +308,10 @@
 </div>
 
 <div id="systemModal" class="fixed inset-0 z-50 flex items-center justify-center hidden p-4">
-    <div class="fixed inset-0 bg-black/60 backdrop-blur-md" onclick="closeModal()"></div>
-    <div class="glass-panel w-full max-w-md rounded-2xl p-6 relative z-10 shadow-2xl border border-white/10 text-gray-200">
+    <div class="fixed inset-0 bg-black/80 backdrop-blur-md" onclick="closeModal()"></div>
+    <div class="glass-panel w-full max-w-md rounded-2xl p-6 relative z-10 shadow-2xl border border-white/10 text-gray-200 bg-neutral-950">
         <h3 id="modalTitle" class="text-lg font-bold text-white mb-2 flex items-center gap-2">Configuration Panel</h3>
-        <div id="modalBody" class="text-xs space-y-4 py-2">
-            </div>
+        <div id="modalBody" class="text-xs space-y-4 py-2"></div>
         <div class="mt-6 flex justify-end">
             <button onclick="closeModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold transition-all">Close Pipeline</button>
         </div>
@@ -387,6 +378,7 @@ function toggleVoiceInput() {
     }
 }
 
+// Lifecycle Init
 window.onload = () => {
     const token = localStorage.getItem("token");
     const name = localStorage.getItem("userName");
@@ -399,9 +391,108 @@ window.onload = () => {
         document.getElementById("displayUserName").innerText = name;
         document.getElementById("sidebarUserName").innerText = name;
     }
+
+    // Load actual histories directly from operational server matrix
+    loadChatHistory();
 };
 
-/* --- NEW FEATURE IMPLEMENTATION SUITE EXTENSIONS --- */
+/* --- SYSTEM ROUTING & CHAT LIFE PIPELINES --- */
+
+async function loadChatHistory() {
+    const token = localStorage.getItem("token");
+    const historyList = document.getElementById("historyList");
+    if (!token || !historyList) return;
+
+    try {
+        const res = await fetch(`${API_BASE}/api/chats`, {
+            method: "GET",
+            headers: { 
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (!res.ok) throw new Error("Failed validation status extraction.");
+
+        const chats = await res.json();
+        historyList.innerHTML = ""; 
+
+        if (chats.length === 0) {
+            historyList.innerHTML = '<p class="text-[11px] text-gray-500 px-3 py-2">No past sessions found.</p>';
+            return;
+        }
+
+        chats.forEach(chat => {
+            const chatItem = document.createElement("div");
+            chatItem.className = "chat-history-item text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-3 py-2 cursor-pointer transition-all flex items-center justify-between group truncate";
+            chatItem.setAttribute("onclick", `loadChat('${chat._id || chat.id}')`);
+            
+            chatItem.innerHTML = `
+                <span class="truncate flex items-center gap-2">
+                    <i class="fa-regular fa-comment text-gray-600 text-[11px]"></i> 
+                    ${escapeHtml(chat.title || "Untitled Operation")}
+                </span>
+                <i class="fa-solid fa-trash text-[10px] text-gray-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity" 
+                   onclick="event.stopPropagation(); deleteChat('${chat._id || chat.id}')"></i>
+            `;
+            historyList.appendChild(chatItem);
+        });
+    } catch (err) {
+        console.error("History sync failure:", err);
+        historyList.innerHTML = '<p class="text-[11px] text-red-500/70 px-3 py-2">Failed to sync histories</p>';
+    }
+}
+
+async function loadChat(id) {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    chatArea.innerHTML = "";
+    showTypingIndicator();
+
+    try {
+        const res = await fetch(`${API_BASE}/api/chat/${id}`, {
+            method: "GET",
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+        
+        removeTypingIndicator();
+        if (!res.ok) return alert("Could not pull workspace context logs.");
+        
+        const data = await res.json();
+        
+        // Loop through and render retrieved operational dialogue rows
+        if (data.messages && data.messages.length > 0) {
+            data.messages.forEach(msg => {
+                addMessage(msg.text || msg.content, msg.isUser ?? (msg.role === 'user'));
+            });
+        }
+    } catch (err) {
+        removeTypingIndicator();
+        console.error(err);
+    }
+}
+
+async function deleteChat(id) {
+    if (!confirm("Confirm complete erasure of this operational timeline matrix?")) return;
+    const token = localStorage.getItem("token");
+
+    try {
+        const res = await fetch(`${API_BASE}/api/chat/${id}`, {
+            method: "DELETE",
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+
+        if (res.ok) {
+            loadChatHistory();
+            startNewChat();
+        } else {
+            alert("Execution fault during context database purging.");
+        }
+    } catch (err) {
+        console.error(err);
+    }
+}
 
 function toggleMobileSidebar() {
     const sidebar = document.getElementById("sidebar");
@@ -427,7 +518,6 @@ function startNewChat() {
     const msgInput = document.getElementById("msg");
     if (msgInput) msgInput.value = "";
     
-    // Close sidebar on mobile views
     if (!document.getElementById("sidebar").classList.contains("-translate-x-full")) {
         toggleMobileSidebar();
     }
@@ -440,15 +530,6 @@ function filterChats() {
         const text = item.textContent.toLowerCase();
         item.style.display = text.includes(query) ? "flex" : "none";
     });
-}
-
-function loadChat(id) {
-    alert(`Initializing extraction loop for Chat Matrix Workspace Block ID: ${id}`);
-    startNewChat();
-}
-
-function deleteChat(id) {
-    alert(`Purging database indexes for Chat Module Context: ${id}`);
 }
 
 function navigateTo(module) {
@@ -476,7 +557,7 @@ function openModal(type) {
                 </div>
                 <div class="space-y-1">
                     <label class="text-gray-400 font-medium text-[11px]">System Model Core Allocation Selection</label>
-                    <select class="w-full bg-gray-950 border border-white/10 rounded-xl p-2 text-xs text-gray-300 outline-none">
+                    <select class="w-full bg-neutral-900 border border-white/10 rounded-xl p-2 text-xs text-gray-300 outline-none">
                         <option>EDITH Neural Core (Default)</option>
                         <option>EDITH DeepReasoning 3.5</option>
                     </select>
@@ -488,7 +569,7 @@ function openModal(type) {
         title.innerHTML = '<i class="fa-solid fa-circle-user text-indigo-400"></i> Operator Preferences';
         body.innerHTML = `
             <div class="text-center space-y-3">
-                <div class="w-16 h-16 rounded-2xl bg-indigo-600 mx-auto flex items-center justify-center text-2xl font-bold tracking-tight text-white shadow-xl shadow-indigo-600/20">
+                <div class="w-16 h-16 rounded-2xl bg-indigo-950 border border-indigo-500/30 mx-auto flex items-center justify-center text-2xl font-bold tracking-tight text-white shadow-xl">
                     ST
                 </div>
                 <div>
@@ -496,7 +577,7 @@ function openModal(type) {
                     <p class="text-gray-400 text-[11px]">operator_id: x77_hub_session</p>
                 </div>
                 <hr class="border-white/5">
-                <button onclick="localStorage.clear(); window.location.reload();" class="w-full bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 text-red-200 py-2 rounded-xl font-bold text-xs transition-all">
+                <button onclick="localStorage.clear(); window.location.reload();" class="w-full bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-300 py-2 rounded-xl font-bold text-xs transition-all">
                     Terminate Session Lifecycle (Logout)
                 </button>
             </div>
@@ -507,8 +588,6 @@ function openModal(type) {
 function closeModal() {
     document.getElementById("systemModal").classList.add("hidden");
 }
-
-/* --- END OF EXTENSIONS SUITE --- */
 
 function toggleSummarize() {
     isSummarize = !isSummarize;
@@ -536,13 +615,11 @@ function updateFileStatus() {
         : "";
 }
 
-// Intercepts custom formatting hooks to enrich code blocks with clear actions
 function cleanAndParseMarkdown(text) {
     let rawHtml = marked.parse(text);
     const container = document.createElement('div');
     container.innerHTML = rawHtml;
 
-    // Process code segments to add inline copy utilities
     const preBlocks = container.querySelectorAll('pre');
     preBlocks.forEach((pre) => {
         const wrapper = document.createElement('div');
@@ -604,20 +681,13 @@ function showTypingIndicator() {
     chatArea.appendChild(div);
     chatArea.scrollTop = chatArea.scrollHeight;
 }
-    <!-- Chat History System Wrapper -->
-<div id="historyList" class="space-y-0.5">
-    <div class="chat-history-item ..." onclick="loadChat(1)">
-        <span>Quantum Mechanics Revision</span>
-    </div>
-</div>
 
 function removeTypingIndicator() {
     const indicator = document.getElementById("edithTypingIndicator");
     if (indicator) indicator.remove();
 }
 
-function escapeHtml(text) {
-    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
 async function sendMsg() {
@@ -639,7 +709,6 @@ async function sendMsg() {
         formData.append("files", file);
     }
 
-    // Initialize temporary display layout
     showTypingIndicator();
 
     try {
@@ -670,6 +739,9 @@ async function sendMsg() {
             aiBubble.innerHTML = cleanAndParseMarkdown(aiText);
             chatArea.scrollTop = chatArea.scrollHeight;
         }
+        
+        // Refresh history layout list since a new conversation context may have saved
+        loadChatHistory();
     } catch (err) {
         console.error(err);
         removeTypingIndicator();
