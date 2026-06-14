@@ -180,11 +180,11 @@
 
             <div class="flex-1 overflow-y-auto p-3 space-y-4 sidebar-scroll">
                 <div class="space-y-1">
-                    <button onclick="navigateTo('explore')" class="w-full text-left text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-3 py-2 flex items-center justify-between transition-all group">
+                    <button onclick="openModal('settings')" class="w-full text-left text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-3 py-2 flex items-center justify-between transition-all group">
                         <span class="flex items-center gap-2.5"><i class="fa-solid fa-compass text-indigo-400 group-hover:scale-110 transition-transform"></i> Explore Systems</span>
                         <i class="fa-solid fa-chevron-right text-[9px] text-gray-600"></i>
                     </button>
-                    <button onclick="navigateTo('projects')" class="w-full text-left text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-3 py-2 flex items-center justify-between transition-all group">
+                    <button onclick="openModal('settings')" class="w-full text-left text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-3 py-2 flex items-center justify-between transition-all group">
                         <span class="flex items-center gap-2.5"><i class="fa-solid fa-folder-open text-indigo-400 group-hover:scale-110 transition-transform"></i> Core Lab Projects</span>
                         <i class="fa-solid fa-chevron-right text-[9px] text-gray-600"></i>
                     </button>
@@ -371,6 +371,35 @@ function toggleVoiceInput() {
     }
 }
 
+function toggleSummarize() {
+    isSummarize = !isSummarize;
+    const dot = document.getElementById("sumDot");
+    const status = document.getElementById("sumStatus");
+    const btn = document.getElementById("sumBtn");
+    
+    if (isSummarize) {
+        status.innerText = "ON";
+        status.className = "font-bold text-emerald-400";
+        dot.className = "w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse";
+        btn.classList.add("border-emerald-500/30", "bg-emerald-500/5");
+    } else {
+        status.innerText = "OFF";
+        status.className = "font-bold text-gray-400";
+        dot.className = "w-1.5 h-1.5 rounded-full bg-gray-400";
+        btn.classList.remove("border-emerald-500/30", "bg-emerald-500/5");
+    }
+}
+
+function updateFileStatus() {
+    const fileInput = document.getElementById("fileInput");
+    const fileCount = document.getElementById("fileCount");
+    if(fileInput.files.length > 0) {
+        fileCount.innerText = `[${fileInput.files.length} Data Vector Payload Attached]`;
+    } else {
+        fileCount.innerText = "";
+    }
+}
+
 // Lifecycle Init Execution Sequence Layer
 window.onload = () => {
     const token = localStorage.getItem("token");
@@ -420,6 +449,21 @@ function renderHistoryUI(chats) {
     });
 }
 
+function escapeHtml(string) {
+    return String(string).replace(/[&<>"'`=\/]/g, function (s) {
+        return {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;',
+            '/': '&#x2F;',
+            '`': '&#x60;',
+            '=': '&#x3D;'
+        }[s];
+    });
+}
+
 async function loadChatHistory() {
     const token = localStorage.getItem("token");
     const historyList = document.getElementById("historyList");
@@ -436,6 +480,12 @@ async function loadChatHistory() {
             }
         });
 
+        if (res.status === 401 || res.status === 403) {
+            console.error("Session unauthorized or token signature rejected.");
+            logoutSequence();
+            return;
+        }
+
         if (!res.ok) throw new Error("Server core data extraction dropped.");
 
         const chats = await res.json();
@@ -444,13 +494,13 @@ async function loadChatHistory() {
     } catch (err) {
         console.warn("Server timeline down. Switching to offline cache:", err);
         const localBackup = localStorage.getItem("edith_chats_backup");
-        if (localBackup && localBackup !== "[]") {
+        if (localBackup && localBackup !== "[]" && localBackup !== null) {
             renderHistoryUI(JSON.parse(localBackup));
         } else {
             historyList.innerHTML = `
                 <div class="text-[11px] text-amber-500/90 px-3 py-2 space-y-1 bg-amber-500/5 rounded-xl border border-amber-500/10">
                     <span>⚠️ Core Server Hub Asleep.</span>
-                    <button onclick="loadChatHistory()" class="block text-indigo-400 font-bold hover:underline">Ping Server Matrix</button>
+                    <button onclick="loadChatHistory()" class="block text-indigo-400 font-bold hover:underline mt-1">Ping Server Matrix</button>
                 </div>`;
         }
     }
@@ -709,42 +759,15 @@ function openModal(type) {
                         <p class="text-[10px] text-indigo-400 font-medium">Premium Architecture</p>
                     </div>
                 </div>
-                <button onclick="logoutSequence()" class="w-full bg-red-600/10 hover:bg-red-600/20 border border-red-500/30 text-red-400 rounded-xl py-2 px-4 text-xs font-semibold tracking-wide transition-all active:scale-[0.98]">
-                    <i class="fa-solid fa-power-off mr-1.5"></i> Terminate Authorization Token
+                <button onclick="logoutSequence()" class="w-full bg-red-600/10 hover:bg-red-600/20 border border-red-500/30 text-red-400 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all active:scale-[0.98]">
+                    <i class="fa-solid fa-power-off mr-1.5"></i> Purge Terminal Access (Logout)
                 </button>
             </div>`;
     }
 }
 
-// Fixed missing closing elements from here down
 function closeModal() {
     document.getElementById("systemModal").classList.add("hidden");
-}
-
-function toggleSummarize() {
-    isSummarize = !isSummarize;
-    const sumDot = document.getElementById("sumDot");
-    const sumStatus = document.getElementById("sumStatus");
-    
-    if (isSummarize) {
-        sumDot.className = "w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse";
-        sumStatus.innerText = "ON";
-        sumStatus.className = "font-bold text-emerald-400";
-    } else {
-        sumDot.className = "w-1.5 h-1.5 rounded-full bg-gray-400";
-        sumStatus.innerText = "OFF";
-        sumStatus.className = "font-bold text-gray-400";
-    }
-}
-
-function updateFileStatus() {
-    const fileInput = document.getElementById("fileInput");
-    const fileCount = document.getElementById("fileCount");
-    if (fileInput.files.length > 0) {
-        fileCount.innerText = `(${fileInput.files.length} payload file${fileInput.files.length > 1 ? 's' : ''} staged)`;
-    } else {
-        fileCount.innerText = "";
-    }
 }
 
 function logoutSequence() {
@@ -752,23 +775,6 @@ function logoutSequence() {
     localStorage.removeItem("userName");
     localStorage.removeItem("edith_chats_backup");
     window.location.href = "login.html";
-}
-
-function escapeHtml(string) {
-    return String(string).replace(/[&<>"']/g, function(match) {
-        const escapeMap = {
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#39;'
-        };
-        return escapeMap[match];
-    });
-}
-
-function navigateTo(target) {
-    console.log(`Routing context system layer shift to: ${target}`);
 }
 </script>
 </body>
