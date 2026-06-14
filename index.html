@@ -322,7 +322,6 @@
 const API_BASE = "https://student-hub-edith-backend.onrender.com";
 
 const chatArea = document.getElementById("chatArea");
-const welcomeScreen = document.getElementById("welcomeScreen");
 let isSummarize = false;
 let currentChatId = null;
 
@@ -427,7 +426,6 @@ async function loadChatHistory() {
     if (!token || !historyList) return;
 
     try {
-        // Prevent Render Spin-down confusion state by showing active wake-up alert framework
         historyList.innerHTML = '<p class="text-[11px] text-indigo-400/90 px-3 py-2 animate-pulse"><i class="fa-solid fa-circle-notch animate-spin mr-1"></i> Synchronizing cloud core...</p>';
         
         const res = await fetch(`${API_BASE}/api/chats`, {
@@ -444,7 +442,7 @@ async function loadChatHistory() {
         localStorage.setItem("edith_chats_backup", JSON.stringify(chats));
         renderHistoryUI(chats);
     } catch (err) {
-        console.warn("Server timeline down. Switching instantly to browser container sandbox cache layout structures:", err);
+        console.warn("Server timeline down. Switching to offline cache:", err);
         const localBackup = localStorage.getItem("edith_chats_backup");
         if (localBackup && localBackup !== "[]") {
             renderHistoryUI(JSON.parse(localBackup));
@@ -463,12 +461,6 @@ async function loadChat(id) {
     const token = localStorage.getItem("token");
     chatArea.innerHTML = "";
     showTypingIndicator();
-
-    // Re-verify visual highlighting trace coordinates
-    const items = document.querySelectorAll(".chat-history-item");
-    items.forEach(item => {
-        // Simple UI catchup parsing rule
-    });
 
     try {
         const res = await fetch(`${API_BASE}/api/chat/${id}`, {
@@ -527,7 +519,6 @@ async function sendMsg() {
 
     showTypingIndicator();
 
-    // PHASE 1 DOCK: Immediate Client-Side Sandbox Local Storage Injection (Prevents blank traces)
     let placeholderId = currentChatId || "local_" + Date.now();
     let backupRegistry = JSON.parse(localStorage.getItem("edith_chats_backup") || "[]");
     let targetThread = backupRegistry.find(c => (c._id === placeholderId || c.id === placeholderId));
@@ -559,22 +550,17 @@ async function sendMsg() {
         
         addMessage(serverReply, false);
 
-        // PHASE 2 DOCK: Match dynamic channel pointers to map future updates correctly
         if (data.chatId || data._id) {
             if (!currentChatId) {
-                // Wipe structural initialization placeholder reference tracking context
                 backupRegistry = backupRegistry.filter(c => c._id !== placeholderId);
                 currentChatId = data.chatId || data._id;
             }
-            
-            // Reload and enforce perfect structural symmetry configuration data
             loadChatHistory();
         }
     } catch (err) {
         removeTypingIndicator();
         console.error("Network structural link drop detected:", err);
         
-        // PHASE 3 DOCK: Active Localhost Offline Recovery State Routing Protocol
         const fallbackText = "⚠️ Local Sandbox Response: Core Server is currently booting from sleep state. Chat saved directly to client container space.";
         addMessage(fallbackText, false);
         
@@ -710,25 +696,79 @@ function openModal(type) {
                 </div>
             </div>`;
     } else if(type === 'profile') {
-        const activeUser = localStorage.getItem("userName") || "Operator";
-        title.innerHTML = '<i class="fa-solid fa-circle-user text-indigo-400"></i> Operator Preferences';
+        const activeUser = localStorage.getItem("userName") || "Operator Core";
+        title.innerHTML = '<i class="fa-solid fa-circle-user text-indigo-400"></i> Operator Profile Context';
         body.innerHTML = `
-            <div class="text-center space-y-3">
-                <h4 class="text-sm font-bold text-white">${activeUser}</h4>
-                <hr class="border-white/5">
-                <button onclick="localStorage.clear(); window.location.reload();" class="w-full bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-300 py-2 rounded-xl font-bold text-xs transition-all">
-                    Disconnect Session
+            <div class="space-y-4">
+                <div class="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/5">
+                    <div class="w-10 h-10 rounded-lg bg-indigo-900 border border-indigo-700/50 flex items-center justify-center text-white text-sm font-bold font-mono shadow-inner">
+                        ST
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-gray-200">${escapeHtml(activeUser)}</p>
+                        <p class="text-[10px] text-indigo-400 font-medium">Premium Architecture</p>
+                    </div>
+                </div>
+                <button onclick="logoutSequence()" class="w-full bg-red-600/10 hover:bg-red-600/20 border border-red-500/30 text-red-400 rounded-xl py-2 px-4 text-xs font-semibold tracking-wide transition-all active:scale-[0.98]">
+                    <i class="fa-solid fa-power-off mr-1.5"></i> Terminate Authorization Token
                 </button>
             </div>`;
     }
 }
 
-function closeModal() { document.getElementById("systemModal").classList.add("hidden"); }
-function toggleSummarize() { isSummarize = !isSummarize; document.getElementById("sumStatus").innerText = isSummarize ? "ON" : "OFF"; }
-function updateFileStatus() { const f = document.getElementById("fileInput").files; document.getElementById("fileCount").innerText = f.length > 0 ? `• ${f.length} Loaded` : ""; }
-function navigateTo(module) { alert(`Routing Framework Engine Segment Layer: ${module.toUpperCase()}`); }
-function escapeHtml(text) { return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
-</script>
+function closeModal() {
+    document.getElementById("systemModal").classList.add("hidden");
+}
 
+function toggleSummarize() {
+    isSummarize = !isSummarize;
+    const sumDot = document.getElementById("sumDot");
+    const sumStatus = document.getElementById("sumStatus");
+    
+    if (isSummarize) {
+        sumDot.className = "w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse";
+        sumStatus.innerText = "ON";
+        sumStatus.className = "font-bold text-emerald-400";
+    } else {
+        sumDot.className = "w-1.5 h-1.5 rounded-full bg-gray-400";
+        sumStatus.innerText = "OFF";
+        sumStatus.className = "font-bold text-gray-400";
+    }
+}
+
+function updateFileStatus() {
+    const fileInput = document.getElementById("fileInput");
+    const fileCount = document.getElementById("fileCount");
+    if (fileInput.files.length > 0) {
+        fileCount.innerText = `(${fileInput.files.length} payload file${fileInput.files.length > 1 ? 's' : ''} staged)`;
+    } else {
+        fileCount.innerText = "";
+    }
+}
+
+function logoutSequence() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("edith_chats_backup");
+    window.location.href = "login.html";
+}
+
+function escapeHtml(string) {
+    return String(string).replace(/[&<>"']/g, function(match) {
+        const escapeMap = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        };
+        return escapeMap[match];
+    });
+}
+
+function navigateTo(target) {
+    console.log(`Routing context system layer shift to: ${target}`);
+}
+</script>
 </body>
 </html>
