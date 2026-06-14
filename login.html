@@ -147,8 +147,11 @@
 <body class="dark bg-animate flex items-center justify-center relative px-4">
 
   <script>
-    if (localStorage.getItem("isLoggedIn") === "true") {
-      window.location.href = "dashboard.html";
+    // LOOP GUARD CHECK: Token clean configuration verify chestundhi
+    const existingToken = localStorage.getItem("token");
+    const loginStatus = localStorage.getItem("isLoggedIn");
+    if (loginStatus === "true" && existingToken && existingToken !== "undefined") {
+      window.location.replace("dashboard.html");
     }
   </script>
 
@@ -219,7 +222,7 @@
   <div id="forgotModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300 px-4">
     <div class="glass-card w-full max-w-md rounded-[40px] p-8 text-center relative max-h-[90vh] overflow-y-auto border">
       
-      <button onclick="closeForgotModal()" class="absolute right-6 top-6 text-slate-400 hover:text-cyan-500 transition-colors focus:outline-none">
+      <button type="button" onclick="closeForgotModal()" class="absolute right-6 top-6 text-slate-400 hover:text-cyan-500 transition-colors focus:outline-none">
         <i class="fa-solid fa-xmark text-lg"></i>
       </button>
 
@@ -360,11 +363,13 @@
       forgotModal.classList.remove("pointer-events-none", "opacity-0");
       forgotModal.classList.add("opacity-100");
 
-      window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-        'size': 'normal',
-        'callback': (response) => { console.log("reCAPTCHA validation solved successfully."); }
-      });
-      window.recaptchaVerifier.render();
+      if (!window.recaptchaVerifier) {
+        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+          'size': 'normal',
+          'callback': (response) => { console.log("reCAPTCHA validation solved successfully."); }
+        });
+        window.recaptchaVerifier.render();
+      }
     }
 
     function closeForgotModal() {
@@ -372,6 +377,7 @@
       forgotModal.classList.add("pointer-events-none", "opacity-0");
       if (window.recaptchaVerifier) {
          document.getElementById("recaptcha-container").innerHTML = "";
+         window.recaptchaVerifier = null;
       }
     }
 
@@ -496,22 +502,30 @@
         const data = await response.json();
 
         if (response.ok) {
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("userName", data.username || username);
-          localStorage.setItem("isLoggedIn", "true");
+          // Token dynamic extraction
+          const tokenStr = data.token || data.accessToken;
+          if (tokenStr) {
+            localStorage.setItem("token", String(tokenStr).trim());
+            localStorage.setItem("userName", String(data.username || username).trim());
+            localStorage.setItem("isLoggedIn", "true");
 
-          btn.innerText = "ACCESS GRANTED...";
-          setTimeout(() => {
-            window.location.href = "dashboard.html";
-          }, 800);
+            btn.innerText = "ACCESS GRANTED...";
+            
+            // ⚠️ CRITICAL REPLACEMENT: Blinking loop avoid cheyadaniki replace logic execute avthundi
+            setTimeout(() => {
+              window.location.replace("dashboard.html");
+            }, 500);
+          } else {
+            throw new Error("Token payload signature error.");
+          }
         } else {
           alert(data.error || "Login failed");
           btn.innerText = "SIGN IN";
           btn.disabled = false;
         }
       } catch (err) {
-        console.log(err);
-        alert("❌ Server connection failed");
+        console.error("Network Link Mismatch Logged:", err);
+        alert("❌ Server connection failed or token signature dropped.");
         btn.innerText = "SIGN IN";
         btn.disabled = false;
       }
