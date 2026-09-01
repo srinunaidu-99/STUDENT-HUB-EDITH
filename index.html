@@ -157,7 +157,7 @@
 
 <div class="w-full max-w-5xl h-screen sm:h-[92vh] flex flex-col glass-panel sm:rounded-3xl shadow-2xl relative overflow-hidden">
     
-    <!-- Top Navbar (Cleaned & High-Tech Upgraded) -->
+    <!-- Top Navbar -->
     <div class="p-4 border-b border-white/5 flex justify-between items-center bg-gray-950/20 px-6">
         <div class="flex items-center gap-3.5">
             <div class="edith-orb w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold tracking-wider text-sm shadow-lg shadow-indigo-500/30">
@@ -251,7 +251,6 @@ const chatArea = document.getElementById("chatArea");
 const welcomeScreen = document.getElementById("welcomeScreen");
 let isSummarize = false;
 
-// Audio Configuration (Web Speech API Integration)
 let recognition;
 let isRecording = false;
 
@@ -341,13 +340,11 @@ function updateFileStatus() {
         : "";
 }
 
-// Intercepts custom formatting hooks to enrich code blocks with clear actions
 function cleanAndParseMarkdown(text) {
     let rawHtml = marked.parse(text);
     const container = document.createElement('div');
     container.innerHTML = rawHtml;
 
-    // Process code segments to add inline copy utilities
     const preBlocks = container.querySelectorAll('pre');
     preBlocks.forEach((pre) => {
         const wrapper = document.createElement('div');
@@ -437,7 +434,6 @@ async function sendMsg() {
         formData.append("files", file);
     }
 
-    // Initialize temporary display layout
     showTypingIndicator();
 
     try {
@@ -450,8 +446,15 @@ async function sendMsg() {
         removeTypingIndicator();
 
         if (!res.ok) {
-            const err = await res.text();
-            addMessage("❌ " + err, false);
+            const errText = await res.text();
+            let errMsg = "AI service error";
+            try {
+                const errJson = JSON.parse(errText);
+                errMsg = errJson.error || errMsg;
+            } catch (e) {
+                errMsg = errText || errMsg;
+            }
+            addMessage("❌ " + errMsg, false);
             return;
         }
 
